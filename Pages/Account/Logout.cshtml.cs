@@ -9,7 +9,10 @@ namespace GestorEventos.Pages.Account
     {
         public async Task<IActionResult> OnGetAsync()
         {
+            // Cerrar sesión de manera inmediata
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            
+            // Redirigir directamente sin espera
             return RedirectToPage("/Account/Login");
         }
     }

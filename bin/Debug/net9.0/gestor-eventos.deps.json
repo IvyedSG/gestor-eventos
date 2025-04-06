@@ -7,8 +7,19 @@
   "targets": {
     ".NETCoreApp,Version=v9.0": {
       "gestor-eventos/1.0.0": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Authentication.Google": "9.0.3"
+        },
         "runtime": {
           "gestor-eventos.dll": {}
+        }
+      },
+      "Microsoft.AspNetCore.Authentication.Google/9.0.3": {
+        "runtime": {
+          "lib/net9.0/Microsoft.AspNetCore.Authentication.Google.dll": {
+            "assemblyVersion": "9.0.3.0",
+            "fileVersion": "9.0.325.11220"
+          }
         }
       }
     }
@@ -18,6 +29,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "Microsoft.AspNetCore.Authentication.Google/9.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-vh5+T1wgwwQoJUVmuzAsEJ3y9Kq2zDjjgbScGWdKcVFR/rbDJX7IVy5q6rSCYBBuPqVj5EYMzzuf7UToVkqO0Q==",
+      "path": "microsoft.aspnetcore.authentication.google/9.0.3",
+      "hashPath": "microsoft.aspnetcore.authentication.google.9.0.3.nupkg.sha512"
     }
   }
 }

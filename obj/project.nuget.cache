@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "h6ARllTRtgI=",
+  "dgSpecHash": "xB1dSWorg8Q=",
   "success": true,
   "projectFilePath": "/Users/sagox16/Documents/gestor-eventos/gestor-eventos.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "/Users/sagox16/.nuget/packages/microsoft.aspnetcore.authentication.google/9.0.3/microsoft.aspnetcore.authentication.google.9.0.3.nupkg.sha512"
+  ],
   "logs": []
 }

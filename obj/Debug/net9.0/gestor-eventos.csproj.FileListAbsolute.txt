@@ -96,3 +96,6 @@
 /Users/sagox16/Documents/gestor-eventos/obj/Debug/net9.0/gestor-eventos.pdb
 /Users/sagox16/Documents/gestor-eventos/obj/Debug/net9.0/gestor-eventos.genruntimeconfig.cache
 /Users/sagox16/Documents/gestor-eventos/obj/Debug/net9.0/ref/gestor-eventos.dll
+/Users/sagox16/Documents/gestor-eventos/obj/Debug/net9.0/gestor-eventos.csproj.AssemblyReference.cache
+/Users/sagox16/Documents/gestor-eventos/bin/Debug/net9.0/Microsoft.AspNetCore.Authentication.Google.dll
+/Users/sagox16/Documents/gestor-eventos/obj/Debug/net9.0/gestor-e.723FBDBB.Up2Date

@@ -1,0 +1,3 @@
+# Nunca subas tus secretos
+appsettings.Development.json
+.env
