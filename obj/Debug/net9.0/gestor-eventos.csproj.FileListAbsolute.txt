@@ -99,3 +99,5 @@
 /Users/sagox16/Documents/gestor-eventos/obj/Debug/net9.0/gestor-eventos.csproj.AssemblyReference.cache
 /Users/sagox16/Documents/gestor-eventos/bin/Debug/net9.0/Microsoft.AspNetCore.Authentication.Google.dll
 /Users/sagox16/Documents/gestor-eventos/obj/Debug/net9.0/gestor-e.723FBDBB.Up2Date
+/Users/sagox16/Documents/gestor-eventos/bin/Debug/net9.0/DotNetEnv.dll
+/Users/sagox16/Documents/gestor-eventos/bin/Debug/net9.0/Sprache.dll
