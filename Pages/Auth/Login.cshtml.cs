@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 
-namespace GestorEventos.Pages.Account
+namespace GestorEventos.Pages.Auth
 {
     public class LoginModel : PageModel
     {

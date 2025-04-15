@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace GestorEventos.Pages.Account
+namespace GestorEventos.Pages.Auth
 {
     public class LogoutModel : PageModel
     {
@@ -13,7 +13,7 @@ namespace GestorEventos.Pages.Account
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             
             // Redirigir directamente sin espera
-            return RedirectToPage("/Account/Login");
+            return RedirectToPage("/Auth/Login");
         }
     }
 }

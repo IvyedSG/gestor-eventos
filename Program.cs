@@ -1,8 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 
-// Cargar variables de entorno desde .env
-DotNetEnv.Env.Load();
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -16,27 +13,11 @@ builder.Services.AddAuthentication(options =>
 })
 .AddCookie(options =>
 {
-    options.LoginPath = "/Account/Login";
-    options.LogoutPath = "/Account/Logout";
-    options.AccessDeniedPath = "/Account/AccessDenied";
+    options.LoginPath = "/Auth/Login";
+    options.LogoutPath = "/Auth/Logout";
+    options.AccessDeniedPath = "/Auth/AccessDenied";
     options.Cookie.HttpOnly = true;
     options.ExpireTimeSpan = TimeSpan.FromDays(7);
-})
-.AddGoogle(options =>
-{
-    // Usamos directamente Environment.GetEnvironmentVariable ya que DotNetEnv 
-    // carga las variables al sistema
-    var clientId = Environment.GetEnvironmentVariable("GOOGLE_CLIENT_ID");
-    var clientSecret = Environment.GetEnvironmentVariable("GOOGLE_CLIENT_SECRET");
-    
-    if (string.IsNullOrEmpty(clientId) || string.IsNullOrEmpty(clientSecret))
-    {
-        throw new Exception("Google ClientId y ClientSecret no están configurados. Revise su archivo .env");
-    }
-    
-    options.ClientId = clientId;
-    options.ClientSecret = clientSecret;
-    options.SaveTokens = true;
 });
 
 var app = builder.Build();

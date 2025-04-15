@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "gzI07/Hv7z4=",
+  "dgSpecHash": "xvpIi9vVU00=",
   "success": true,
-  "projectFilePath": "/Users/sagox16/Documents/gestor-eventos/gestor-eventos.csproj",
+  "projectFilePath": "/Users/sagox16/Documents/proyectos_u/gestor-eventos/gestor-eventos.csproj",
   "expectedPackageFiles": [
     "/Users/sagox16/.nuget/packages/dotnetenv/3.1.1/dotnetenv.3.1.1.nupkg.sha512",
     "/Users/sagox16/.nuget/packages/microsoft.aspnetcore.authentication.google/9.0.3/microsoft.aspnetcore.authentication.google.9.0.3.nupkg.sha512",

@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace GestorEventos.Pages.Account
+namespace GestorEventos.Pages.Auth
 {
     public class ExternalLoginModel : PageModel
     {
@@ -19,7 +19,7 @@ namespace GestorEventos.Pages.Account
             // Redirigir al usuario al proveedor de autenticación externo
             var properties = new AuthenticationProperties 
             { 
-                RedirectUri = Url.Page("/Account/ExternalLoginCallback"),
+                RedirectUri = Url.Page("/Auth/ExternalLoginCallback"),
                 Items = 
                 {
                     { "returnUrl", ReturnUrl },

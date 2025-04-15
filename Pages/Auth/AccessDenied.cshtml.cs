@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace GestorEventos.Pages.Account
+namespace GestorEventos.Pages.Auth
 {
     public class AccessDeniedModel : PageModel
     {

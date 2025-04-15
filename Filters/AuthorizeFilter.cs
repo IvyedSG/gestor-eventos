@@ -14,7 +14,7 @@ namespace GestorEventos.Filters
         {
             if (!context.HttpContext.User.Identity.IsAuthenticated)
             {
-                context.Result = new RedirectToPageResult("/Account/Login");
+                context.Result = new RedirectToPageResult("/Auth/Login");
             }
         }
 

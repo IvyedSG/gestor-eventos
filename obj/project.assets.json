@@ -4779,11 +4779,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/sagox16/Documents/gestor-eventos/gestor-eventos.csproj",
+      "projectUniqueName": "/Users/sagox16/Documents/proyectos_u/gestor-eventos/gestor-eventos.csproj",
       "projectName": "gestor-eventos",
-      "projectPath": "/Users/sagox16/Documents/gestor-eventos/gestor-eventos.csproj",
+      "projectPath": "/Users/sagox16/Documents/proyectos_u/gestor-eventos/gestor-eventos.csproj",
       "packagesPath": "/Users/sagox16/.nuget/packages/",
-      "outputPath": "/Users/sagox16/Documents/gestor-eventos/obj/",
+      "outputPath": "/Users/sagox16/Documents/proyectos_u/gestor-eventos/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/sagox16/.nuget/NuGet/NuGet.Config"

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Security.Claims;
 
-namespace GestorEventos.Pages.Account
+namespace GestorEventos.Pages.Auth 
 {
     public class ExternalLoginCallbackModel : PageModel
     {
@@ -12,11 +12,11 @@ namespace GestorEventos.Pages.Account
         {
             var result = await HttpContext.AuthenticateAsync("Google");
             if (!result.Succeeded)
-                return RedirectToPage("/Account/Login");
+                return RedirectToPage("/Auth/Login");
                 
             var externalUser = result.Principal;
             if (externalUser == null)
-                return RedirectToPage("/Account/Login");
+                return RedirectToPage("/Auth/Login");
                 
             // Extraer la información del usuario desde Google
             var userIdClaim = externalUser.FindFirst(ClaimTypes.NameIdentifier);
@@ -24,7 +24,7 @@ namespace GestorEventos.Pages.Account
             var nameClaim = externalUser.FindFirst(ClaimTypes.Name);
             
             if (userIdClaim == null || emailClaim == null)
-                return RedirectToPage("/Account/Login");
+                return RedirectToPage("/Auth/Login");
             
             // Aquí deberías validar si el usuario existe en tu base de datos
             // o crearlo si es la primera vez que inicia sesión

@@ -222,7 +222,7 @@
                 <div class="nav-heading">Menu principal</div>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link @(ViewContext.RouteData.Values["Page"]?.ToString() == "/Index" ? "active" : "")" asp-page="/Index">
+                        <a class="nav-link @(ViewContext.RouteData.Values["Page"]?.ToString() == "/Dashboard/Index" ? "active" : "")" asp-page="/Dashboard/Index">
                             <i class="bi bi-speedometer2"></i>
                             <span>Panel de Control</span>
                         </a>
@@ -278,7 +278,7 @@
                     <div class="user-name">@User.Identity.Name</div>
                     <div class="user-role">@User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Role)?.Value</div>
                 </div>
-                <a href="/Account/Logout" class="text-muted" title="Cerrar sesión">
+                <a href="/Auth/Logout" class="text-muted" title="Cerrar sesión">
                     <i class="bi bi-box-arrow-right"></i>
                 </a>
             </div>
