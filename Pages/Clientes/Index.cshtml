@@ -1,0 +1,658 @@
+@page
+@model gestor_eventos.Pages.Clientes.IndexModel
+@{
+    ViewData["Title"] = "Gestionar Clientes";
+}
+
+<!-- Filtros y búsqueda -->
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-body p-3">
+        <form method="get" id="filterForm">
+            <div class="row g-2 align-items-center">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-light">
+                            <i class="bi bi-search"></i>
+                        </span>
+                        <input type="text" class="form-control border-light bg-light" 
+                               placeholder="Buscar por nombre, correo o teléfono" 
+                               asp-for="SearchTerm">
+                    </div>
+                </div>
+                
+                <div class="col-md-2">
+                    <select class="form-select border-light bg-light" asp-for="TypeFilter">
+                        <option value="">Tipo de cliente</option>
+                        <option value="Individual">Individual</option>
+                        <option value="Empresa">Empresa</option>
+                    </select>
+                </div>
+                
+                <div class="col-md-1">
+                    <button type="button" id="clearFilters" class="btn btn-secondary w-100" title="Limpiar filtros">
+                        <i class="bi bi-arrow-counterclockwise"> Limpiar</i>
+                    </button>
+                </div>
+                
+                <div class="col-md-1">
+                    <button class="btn btn-primary w-100" type="submit" title="Filtrar">
+                        <i class="bi bi-funnel-fill"> Filtrar</i>
+                    </button>
+                </div>
+                
+                <div class="col-md-2">
+                    <button class="btn btn-success w-100" type="button" data-bs-toggle="modal" data-bs-target="#newClientModal">
+                        <i class="bi bi-person-plus me-1"></i> Nuevo Cliente
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Tabla de clientes -->
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col" class="ps-4">Nombre</th>
+                        <th scope="col">Correo</th>
+                        <th scope="col">Teléfono</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Total Eventos</th>
+                        <th scope="col">Última Reserva</th>
+                        <th scope="col" class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Clients != null && Model.Clients.Any())
+                    {
+                        @foreach (var client in Model.Clients)
+                        {
+                            <tr class="client-row" data-client-id="@client.Id">
+                                <td class="ps-4 fw-medium">@client.Name</td>
+                                <td>@client.Email</td>
+                                <td>@client.Phone</td>
+                                <td>
+                                    @if (client.Type == "Individual")
+                                    {
+                                        <span class="badge bg-primary bg-opacity-10 text-primary px-2 py-1">Individual</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-info bg-opacity-10 text-info px-2 py-1">Empresa</span>
+                                    }
+                                </td>
+                                <td>@client.EventCount</td>
+                                <td>
+                                    @if (client.LastReservation.HasValue)
+                                    {
+                                        <span>@client.LastReservation.Value.ToString("dd/MM/yyyy")</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Sin reservas</span>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <button class="btn btn-sm btn-outline-primary view-client-btn" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#viewClientModal" 
+                                                data-client-id="@client.Id">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-success" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#newReservationModal" 
+                                                data-client-id="@client.Id">
+                                            <i class="bi bi-calendar-plus"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary edit-client-btn"
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#editClientModal" 
+                                                data-client-id="@client.Id">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center py-4">
+                                <div class="d-flex flex-column align-items-center">
+                                    <i class="bi bi-people text-muted" style="font-size: 2.5rem;"></i>
+                                    <h5 class="mt-3 mb-2">No se encontraron clientes</h5>
+                                    <p class="text-muted mb-3">Intenta con otra búsqueda o agrega un nuevo cliente</p>
+                                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#newClientModal">
+                                        <i class="bi bi-person-plus me-1"></i> Nuevo Cliente
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Paginación -->
+@if (Model.Clients != null && Model.Clients.Any())
+{
+    <div class="d-flex justify-content-between align-items-center mt-4">
+        <p class="text-muted">Mostrando <strong>@Model.Clients.Count</strong> clientes</p>
+        <nav>
+            <ul class="pagination">
+                <li class="page-item disabled">
+                    <span class="page-link">
+                        <i class="bi bi-chevron-left"></i>
+                    </span>
+                </li>
+                <li class="page-item active">
+                    <a class="page-link" href="#">1</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">2</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">3</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">
+                        <i class="bi bi-chevron-right"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+}
+
+<!-- Modal para Nuevo Cliente -->
+<div class="modal fade" id="newClientModal" tabindex="-1" aria-labelledby="newClientModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title" id="newClientModalLabel">
+                    <i class="bi bi-person-plus me-2 text-primary"></i>Nuevo Cliente
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="newClientForm">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="clientType" id="individualClient" value="Individual" checked>
+                                <label class="form-check-label" for="individualClient">Individual</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="clientType" id="companyClient" value="Empresa">
+                                <label class="form-check-label" for="companyClient">Empresa</label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-12"></div>
+                        
+                        <div class="col-md-6">
+                            <label for="clientName" class="form-label">Nombre completo</label>
+                            <input type="text" class="form-control" id="clientName" required>
+                        </div>
+                        
+                        <div class="col-md-6 company-field d-none">
+                            <label for="companyName" class="form-label">Nombre de la empresa</label>
+                            <input type="text" class="form-control" id="companyName">
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="clientEmail" class="form-label">Correo electrónico</label>
+                            <input type="email" class="form-control" id="clientEmail" required>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="clientPhone" class="form-label">Teléfono</label>
+                            <input type="tel" class="form-control" id="clientPhone" required>
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <label for="clientAddress" class="form-label">Dirección</label>
+                            <input type="text" class="form-control" id="clientAddress">
+                        </div>
+                        
+                        <div class="col-md-12 company-field d-none">
+                            <label for="taxId" class="form-label">RUC/DNI</label>
+                            <input type="text" class="form-control" id="taxId">
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <label for="clientNotes" class="form-label">Notas adicionales</label>
+                            <textarea class="form-control" id="clientNotes" rows="3"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="saveNewClient">Guardar Cliente</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Editar Cliente -->
+<div class="modal fade" id="editClientModal" tabindex="-1" aria-labelledby="editClientModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title" id="editClientModalLabel">
+                    <i class="bi bi-pencil-square me-2 text-primary"></i>Editar Cliente
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editClientForm">
+                    <input type="hidden" id="editClientId">
+                    <div class="row g-3">
+                        <!-- Aquí iría el mismo formulario que en "Nuevo Cliente" pero con campos prellenados -->
+                        <div class="col-md-6">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="editClientType" id="editIndividualClient" value="Individual">
+                                <label class="form-check-label" for="editIndividualClient">Individual</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="editClientType" id="editCompanyClient" value="Empresa">
+                                <label class="form-check-label" for="editCompanyClient">Empresa</label>
+                            </div>
+                        </div>
+                        
+                        <div class="col-12"></div>
+                        
+                        <div class="col-md-6">
+                            <label for="editClientName" class="form-label">Nombre completo</label>
+                            <input type="text" class="form-control" id="editClientName" required>
+                        </div>
+                        
+                        <div class="col-md-6 edit-company-field">
+                            <label for="editCompanyName" class="form-label">Nombre de la empresa</label>
+                            <input type="text" class="form-control" id="editCompanyName">
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="editClientEmail" class="form-label">Correo electrónico</label>
+                            <input type="email" class="form-control" id="editClientEmail" required>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="editClientPhone" class="form-label">Teléfono</label>
+                            <input type="tel" class="form-control" id="editClientPhone" required>
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <label for="editClientAddress" class="form-label">Dirección</label>
+                            <input type="text" class="form-control" id="editClientAddress">
+                        </div>
+                        
+                        <div class="col-md-12 edit-company-field">
+                            <label for="editTaxId" class="form-label">RUC/DNI</label>
+                            <input type="text" class="form-control" id="editTaxId">
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <label for="editClientNotes" class="form-label">Notas adicionales</label>
+                            <textarea class="form-control" id="editClientNotes" rows="3"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="saveEditClient">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Ver Detalle de Cliente con su historial -->
+<div class="modal fade" id="viewClientModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title">
+                    <i class="bi bi-person me-2 text-primary"></i><span id="viewClientName">Nombre del Cliente</span>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <h6 class="card-title fw-bold mb-3">Información de Contacto</h6>
+                                <div class="mb-3">
+                                    <i class="bi bi-envelope text-primary me-2"></i>
+                                    <span id="viewClientEmail">correo@ejemplo.com</span>
+                                </div>
+                                <div class="mb-3">
+                                    <i class="bi bi-telephone text-primary me-2"></i>
+                                    <span id="viewClientPhone">123-456-7890</span>
+                                </div>
+                                <div class="mb-3">
+                                    <i class="bi bi-geo-alt text-primary me-2"></i>
+                                    <span id="viewClientAddress">Dirección del cliente</span>
+                                </div>
+                                
+                                <h6 class="card-title fw-bold mb-3 mt-4">Información Adicional</h6>
+                                <div id="viewCompanyInfo" class="mb-3">
+                                    <div>
+                                        <span class="text-muted">Empresa:</span>
+                                        <span id="viewCompanyName" class="ms-1">Nombre de la empresa</span>
+                                    </div>
+                                    <div class="mt-2">
+                                        <span class="text-muted">RUC/DNI:</span>
+                                        <span id="viewTaxId" class="ms-1">12345678901</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <span class="text-muted">Cliente desde:</span>
+                                    <span id="viewClientSince" class="ms-1">01/01/2025</span>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <span class="text-muted">Total eventos:</span>
+                                    <span id="viewTotalEvents" class="ms-1 fw-bold">3</span>
+                                </div>
+                                
+                                <div class="mt-4">
+                                    <h6 class="fw-bold mb-2">Notas:</h6>
+                                    <p id="viewClientNotes" class="text-muted">Notas sobre el cliente</p>
+                                </div>
+                                
+                                <div class="d-grid gap-2 mt-4">
+                                    <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#newReservationModal" id="btnAddReservationFromView">
+                                        <i class="bi bi-calendar-plus me-1"></i> Nueva Reserva
+                                    </button>
+                                    <button class="btn btn-outline-secondary" type="button" id="btnEditFromView">
+                                        <i class="bi bi-pencil me-1"></i> Editar Cliente
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <h6 class="card-title fw-bold mb-3">Historial de Reservas</h6>
+                                
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle" id="clientReservationsTable">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Fecha</th>
+                                                <th>Servicio</th>
+                                                <th>Monto</th>
+                                                <th>Estado</th>
+                                                <th class="text-center">Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="clientReservationsList">
+                                            <!-- El historial de reservas se cargará dinámicamente via JS -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <div id="noReservationsMessage" class="text-center py-4 d-none">
+                                    <i class="bi bi-calendar-x text-muted" style="font-size: 2rem;"></i>
+                                    <p class="mt-3 mb-0">Este cliente no tiene reservas</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Nueva Reserva desde Cliente -->
+<div class="modal fade" id="newReservationModal" tabindex="-1" aria-labelledby="newReservationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title" id="newReservationModalLabel">
+                    <i class="bi bi-calendar-plus me-2 text-primary"></i>Nueva Reserva para <span id="reservationClientName"></span>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="newReservationForm">
+                    <input type="hidden" id="reservationClientId">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="serviceType" class="form-label">Tipo de Servicio</label>
+                            <select class="form-select" id="serviceType" required>
+                                <option value="">Seleccione un servicio</option>
+                                <option value="Boda">Boda</option>
+                                <option value="Cumpleaños">Cumpleaños</option>
+                                <option value="Corporativo">Corporativo</option>
+                                <option value="Graduación">Graduación</option>
+                                <option value="Bautizo">Bautizo</option>
+                                <option value="Aniversario">Aniversario</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="reservationDate" class="form-label">Fecha del Evento</label>
+                            <input type="date" class="form-control" id="reservationDate" required>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="reservationTime" class="form-label">Hora de Inicio</label>
+                            <input type="time" class="form-control" id="reservationTime" required>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="reservationEndTime" class="form-label">Hora de Finalización</label>
+                            <input type="time" class="form-control" id="reservationEndTime" required>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="guestCount" class="form-label">Número de Invitados</label>
+                            <input type="number" class="form-control" id="guestCount" min="1" required>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="reservationAmount" class="form-label">Monto Estimado</label>
+                            <div class="input-group">
+                                <span class="input-group-text">S/</span>
+                                <input type="number" class="form-control" id="reservationAmount" min="0" step="0.01" required>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <label for="reservationDescription" class="form-label">Descripción del Evento</label>
+                            <textarea class="form-control" id="reservationDescription" rows="3"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="saveNewReservation">Crear Reserva</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle para tipo de cliente (Individual/Empresa)
+            document.getElementById('individualClient').addEventListener('change', function() {
+                document.querySelectorAll('.company-field').forEach(field => {
+                    field.classList.add('d-none');
+                });
+            });
+            
+            document.getElementById('companyClient').addEventListener('change', function() {
+                document.querySelectorAll('.company-field').forEach(field => {
+                    field.classList.remove('d-none');
+                });
+            });
+            
+            // Toggle para edición de tipo de cliente
+            document.getElementById('editIndividualClient').addEventListener('change', function() {
+                document.querySelectorAll('.edit-company-field').forEach(field => {
+                    field.classList.add('d-none');
+                });
+            });
+            
+            document.getElementById('editCompanyClient').addEventListener('change', function() {
+                document.querySelectorAll('.edit-company-field').forEach(field => {
+                    field.classList.remove('d-none');
+                });
+            });
+
+            // Manejador para abrir modal de nueva reserva desde cliente
+            const viewClientModal = document.getElementById('viewClientModal');
+            const editClientModal = document.getElementById('editClientModal');
+            const newReservationModal = document.getElementById('newReservationModal');
+            
+            document.getElementById('btnAddReservationFromView').addEventListener('click', function() {
+                // Cerrar el modal actual antes de abrir el de nueva reserva
+                const viewModal = bootstrap.Modal.getInstance(viewClientModal);
+                viewModal.hide();
+                
+                // Tomar los datos del cliente para la nueva reserva
+                const clientId = this.dataset.clientId;
+                const clientName = document.getElementById('viewClientName').textContent;
+                
+                document.getElementById('reservationClientId').value = clientId;
+                document.getElementById('reservationClientName').textContent = clientName;
+                
+                // Abrir el modal de nueva reserva
+                setTimeout(() => {
+                    const newReservationModalInstance = new bootstrap.Modal(newReservationModal);
+                    newReservationModalInstance.show();
+                }, 500);
+            });
+
+            // Manejador para abrir modal de edición desde la vista de detalle
+            document.getElementById('btnEditFromView').addEventListener('click', function() {
+                const viewModal = bootstrap.Modal.getInstance(viewClientModal);
+                viewModal.hide();
+                
+                const clientId = this.dataset.clientId;
+                document.getElementById('editClientId').value = clientId;
+                
+                // Aquí iría el código para cargar los datos del cliente en el formulario de edición
+                
+                setTimeout(() => {
+                    const editModalInstance = new bootstrap.Modal(editClientModal);
+                    editModalInstance.show();
+                }, 500);
+            });
+
+            // Botones de la tabla para ver cliente
+            document.querySelectorAll('.view-client-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const clientId = this.dataset.clientId;
+                    loadClientDetails(clientId);
+                });
+            });
+
+            // Función para cargar datos del cliente (simulado)
+            function loadClientDetails(clientId) {
+                // En un caso real, aquí harías una petición AJAX para obtener los datos del cliente
+                // Para este ejemplo, usamos datos de prueba
+                
+                // Simulamos la carga de datos
+                document.getElementById('viewClientName').textContent = "Carlos Rodríguez";
+                document.getElementById('viewClientEmail').textContent = "carlos@ejemplo.com";
+                document.getElementById('viewClientPhone').textContent = "987-654-321";
+                document.getElementById('viewClientAddress').textContent = "Av. Principal 123, Lima";
+                document.getElementById('viewClientSince').textContent = "15/01/2025";
+                document.getElementById('viewTotalEvents').textContent = "3";
+                document.getElementById('viewClientNotes').textContent = "Cliente preferencial, siempre solicita decoración personalizada.";
+                
+                // Configurar botones con el ID del cliente
+                document.getElementById('btnAddReservationFromView').dataset.clientId = clientId;
+                document.getElementById('btnEditFromView').dataset.clientId = clientId;
+                
+                // Cargar historial de reservas
+                loadClientReservations(clientId);
+            }
+
+            // Función para cargar historial de reservas (simulado)
+            function loadClientReservations(clientId) {
+                // En un caso real, aquí harías una petición AJAX para obtener las reservas del cliente
+                
+                // Para este ejemplo, si es cliente 1, mostramos reservas de ejemplo
+                if (clientId == "1") {
+                    document.getElementById('noReservationsMessage').classList.add('d-none');
+                    document.getElementById('clientReservationsTable').classList.remove('d-none');
+                    
+                    const reservationsList = document.getElementById('clientReservationsList');
+                    reservationsList.innerHTML = `
+                        <tr>
+                            <td>#1001</td>
+                            <td>18/04/2025</td>
+                            <td>Boda</td>
+                            <td>S/ 54,000</td>
+                            <td><span class="badge bg-success">Confirmada</span></td>
+                            <td class="text-center">
+                                <button class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#1002</td>
+                            <td>15/05/2025</td>
+                            <td>Aniversario</td>
+                            <td>S/ 22,000</td>
+                            <td><span class="badge bg-warning text-dark">Pendiente</span></td>
+                            <td class="text-center">
+                                <button class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#1003</td>
+                            <td>10/06/2025</td>
+                            <td>Graduación</td>
+                            <td>S/ 15,000</td>
+                            <td><span class="badge bg-secondary">En borrador</span></td>
+                            <td class="text-center">
+                                <button class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                } else {
+                    // Si no hay reservas
+                    document.getElementById('clientReservationsTable').classList.add('d-none');
+                    document.getElementById('noReservationsMessage').classList.remove('d-none');
+                }
+            }
+
+            // Funcionalidad para limpiar filtros
+            document.getElementById('clearFilters').addEventListener('click', function() {
+                document.querySelector('[name="SearchTerm"]').value = '';
+                document.querySelector('[name="TypeFilter"]').value = '';
+                document.getElementById('filterForm').submit();
+            });
+        });
+    </script>
+}

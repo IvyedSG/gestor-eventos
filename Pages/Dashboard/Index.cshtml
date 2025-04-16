@@ -4,258 +4,469 @@
     ViewData["Title"] = "Panel de Control";
 }
 
-<div class="content-header">
-    <div>
-        <h1 class="page-title">Panel de Control</h1>
-        <p class="text-muted">Bienvenido al sistema de gestión de eventos</p>
-    </div>
-    <div>
-        <button class="btn btn-primary" type="button">
-            <i class="bi bi-plus"></i> Nuevo evento
-        </button>
-    </div>
-</div>
-
-<!-- Estadísticas generales -->
-<div class="row g-4 mb-4">
-    <div class="col-lg-3 col-md-6">
-        <div class="card border-0">
-            <div class="card-body p-4">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <div class="bg-primary bg-opacity-10 p-2 rounded">
-                        <i class="bi bi-calendar-event text-primary fs-4"></i>
-                    </div>
-                    <span class="badge bg-success fs-6">+24%</span>
-                </div>
-                <h3 class="fw-bold mb-1">42</h3>
-                <p class="text-muted mb-0">Eventos este mes</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-3 col-md-6">
-        <div class="card border-0">
-            <div class="card-body p-4">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <div class="bg-success bg-opacity-10 p-2 rounded">
-                        <i class="bi bi-people text-success fs-4"></i>
-                    </div>
-                    <span class="badge bg-success fs-6">+12%</span>
-                </div>
-                <h3 class="fw-bold mb-1">124</h3>
-                <p class="text-muted mb-0">Clientes activos</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-3 col-md-6">
-        <div class="card border-0">
-            <div class="card-body p-4">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <div class="bg-info bg-opacity-10 p-2 rounded">
-                        <i class="bi bi-bookmark-check text-info fs-4"></i>
-                    </div>
-                    <span class="badge bg-info fs-6">+18%</span>
-                </div>
-                <h3 class="fw-bold mb-1">28</h3>
-                <p class="text-muted mb-0">Reservas pendientes</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-3 col-md-6">
-        <div class="card border-0">
-            <div class="card-body p-4">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <div class="bg-warning bg-opacity-10 p-2 rounded">
-                        <i class="bi bi-currency-dollar text-warning fs-4"></i>
-                    </div>
-                    <span class="badge bg-success fs-6">+32%</span>
-                </div>
-                <h3 class="fw-bold mb-1">$45,850</h3>
-                <p class="text-muted mb-0">Ingresos del mes</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Accesos rápidos -->
-<div class="row g-4 mb-4">
-    <div class="col-md-6 col-lg-3">
-        <div class="card border-0 bg-primary text-white">
-            <div class="card-body p-4">
-                <div class="d-flex align-items-center mb-3">
-                    <div class="p-2 bg-white bg-opacity-25 rounded-circle me-3">
-                        <i class="bi bi-calendar-event"></i>
-                    </div>
-                    <h5 class="card-title mb-0">Eventos</h5>
-                </div>
-                <p class="card-text opacity-75">Gestiona todos tus eventos y personaliza cada detalle</p>
-                <a href="/Events" class="btn btn-sm btn-light">
-                    Administrar <i class="bi bi-arrow-right ms-1"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6 col-lg-3">
-        <div class="card border-0 bg-success text-white">
-            <div class="card-body p-4">
-                <div class="d-flex align-items-center mb-3">
-                    <div class="p-2 bg-white bg-opacity-25 rounded-circle me-3">
-                        <i class="bi bi-people"></i>
-                    </div>
-                    <h5 class="card-title mb-0">Clientes</h5>
-                </div>
-                <p class="card-text opacity-75">Administra tu cartera de clientes y mantén contacto</p>
-                <a href="/Clients" class="btn btn-sm btn-light">
-                    Administrar <i class="bi bi-arrow-right ms-1"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6 col-lg-3">
-        <div class="card border-0 bg-info text-white">
-            <div class="card-body p-4">
-                <div class="d-flex align-items-center mb-3">
-                    <div class="p-2 bg-white bg-opacity-25 rounded-circle me-3">
-                        <i class="bi bi-bookmark-check"></i>
-                    </div>
-                    <h5 class="card-title mb-0">Reservas</h5>
-                </div>
-                <p class="card-text opacity-75">Control de reservas, disponibilidad y fechas</p>
-                <a href="/Reserves" class="btn btn-sm btn-light">
-                    Administrar <i class="bi bi-arrow-right ms-1"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6 col-lg-3">
-        <div class="card border-0 bg-warning">
-            <div class="card-body p-4">
-                <div class="d-flex align-items-center mb-3">
-                    <div class="p-2 bg-dark bg-opacity-10 rounded-circle me-3">
-                        <i class="bi bi-person-badge"></i>
-                    </div>
-                    <h5 class="card-title mb-0">Usuarios</h5>
-                </div>
-                <p class="card-text opacity-75">Gestiona el equipo de trabajo y sus permisos</p>
-                <a href="/Users" class="btn btn-sm btn-dark">
-                    Administrar <i class="bi bi-arrow-right ms-1"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Próximos eventos y tareas -->
-<div class="row g-4">
-    <div class="col-md-6">
-        <div class="card border-0">
-            <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Próximos Eventos</h5>
-                <a href="/Events" class="btn btn-sm btn-outline-primary">Ver todos</a>
-            </div>
-            <div class="card-body p-0">
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item border-0 py-3 px-4">
-                        <div class="d-flex align-items-center">
-                            <div class="bg-primary bg-opacity-10 text-primary p-3 rounded me-3 text-center" style="width: 60px">
-                                <span class="d-block fw-bold">8</span>
-                                <span>Abr</span>
-                            </div>
-                            <div class="flex-grow-1">
-                                <h6 class="mb-1">Boda García-Pérez</h6>
-                                <p class="text-muted mb-0"><i class="bi bi-geo-alt me-1"></i>Salón Diamante, 150 personas</p>
-                            </div>
-                            <span class="badge rounded-pill bg-primary bg-opacity-10 text-primary">Confirmado</span>
-                        </div>
-                    </li>
-                    <li class="list-group-item border-0 py-3 px-4">
-                        <div class="d-flex align-items-center">
-                            <div class="bg-info bg-opacity-10 text-info p-3 rounded me-3 text-center" style="width: 60px">
-                                <span class="d-block fw-bold">15</span>
-                                <span>Abr</span>
-                            </div>
-                            <div class="flex-grow-1">
-                                <h6 class="mb-1">Conferencia Tech 2025</h6>
-                                <p class="text-muted mb-0"><i class="bi bi-geo-alt me-1"></i>Centro de Convenciones, 300 personas</p>
-                            </div>
-                            <span class="badge rounded-pill bg-warning bg-opacity-10 text-warning">Pendiente</span>
-                        </div>
-                    </li>
-                    <li class="list-group-item border-0 py-3 px-4">
-                        <div class="d-flex align-items-center">
-                            <div class="bg-success bg-opacity-10 text-success p-3 rounded me-3 text-center" style="width: 60px">
-                                <span class="d-block fw-bold">22</span>
-                                <span>Abr</span>
-                            </div>
-                            <div class="flex-grow-1">
-                                <h6 class="mb-1">Cumpleaños Empresarial</h6>
-                                <p class="text-muted mb-0"><i class="bi bi-geo-alt me-1"></i>Terraza Mirador, 75 personas</p>
-                            </div>
-                            <span class="badge rounded-pill bg-primary bg-opacity-10 text-primary">Confirmado</span>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
+<!-- Estilos personalizados -->
+<style>
+    /* Estilos base mejorados con tamaños optimizados */
+    body {
+        overflow-x: hidden;
+    }
     
-    <div class="col-md-6">
-        <div class="card border-0">
-            <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Tareas Pendientes</h5>
-                <button class="btn btn-sm btn-outline-primary">Añadir tarea</button>
+    .stats-card {
+        border-radius: 16px;
+        transition: all 0.3s ease;
+        overflow: hidden;
+        height: 100%;
+    }
+    .stats-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 25px rgba(0,0,0,0.1);
+    }
+    .icon-container {
+        border-radius: 50%;
+        width: 42px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .event-card {
+        border-radius: 16px;
+        transition: all 0.3s ease;
+        overflow: hidden;
+        height: 100%;
+    }
+    .event-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+    }
+    .date-badge {
+        border-radius: 12px;
+        width: 45px;
+    }
+    
+    /* Eliminar líneas divisorias y mejorar componentes */
+    .card {
+        border: none !important;
+    }
+    .card-header {
+        background: transparent !important;
+        border-bottom: none !important;
+        padding-bottom: 0 !important;
+    }
+    .section-card {
+        border-radius: 20px;
+        overflow: hidden;
+        height: 100%;
+    }
+    
+    /* Mejoras para actividad y recordatorios con tamaños más compactos */
+    .activity-item {
+        transition: all 0.25s ease;
+        border-radius: 12px;
+        margin-bottom: 8px;
+        background: rgba(255, 255, 255, 0.7);
+        padding: 12px !important;
+    }
+    .activity-item:hover {
+        background-color: rgba(255,255,255,1);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        transform: translateY(-2px);
+    }
+    .reminder-item {
+        border-radius: 12px;
+        transition: all 0.25s ease;
+        margin-bottom: 8px;
+        background: rgba(255, 255, 255, 0.7);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        padding: 12px !important;
+    }
+    .reminder-item:hover {
+        background-color: rgba(255,255,255,1);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.07);
+        transform: translateY(-2px);
+    }
+    
+    /* Elementos creativos */
+    .gradient-bg {
+        background: linear-gradient(120deg, rgba(79, 70, 229, 0.03) 0%, rgba(16, 185, 129, 0.02) 100%);
+    }
+    .glass-effect {
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.8);
+    }
+    .section-title {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 16px;
+        font-size: 1.1rem;
+    }
+    .section-title:after {
+        content: '';
+        position: absolute;
+        bottom: -6px;
+        left: 0;
+        width: 35px;
+        height: 3px;
+        background: linear-gradient(90deg, var(--primary-color), rgba(79, 70, 229, 0.5));
+        border-radius: 3px;
+    }
+    
+    /* Optimización de espaciados generales */
+    .compact-padding {
+        padding: 1.25rem !important;
+    }
+    .compact-row {
+        margin-bottom: 1rem !important;
+    }
+    .card-body h3 {
+        font-size: 1.5rem;
+    }
+    .compact-margins {
+        margin-bottom: 0.6rem;
+    }
+    .btn-sm {
+        padding: 0.25rem 0.75rem;
+    }
+</style>
+
+<!-- Contenido con espaciados reducidos -->
+<div>
+    <!-- Estadísticas generales -->
+    <div class="row g-3 compact-row">
+        <!-- Ingresos totales con desglose -->
+        <div class="col-lg-3 col-sm-6">
+            <div class="stats-card card shadow-sm glass-effect">
+                <div class="card-body compact-padding">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="icon-container bg-success bg-opacity-10">
+                            <i class="bi bi-currency-dollar text-success"></i>
+                        </div>
+                        <div class="badge bg-success bg-opacity-10 text-success rounded-pill px-2 py-1"><small>+20.1% <i class="bi bi-graph-up-arrow"></i></small></div>
+                    </div>
+                    <h3 class="fw-bold mb-0">S/4,231.89</h3>
+                    <p class="text-muted small mb-0">mensual</p>
+                    <hr class="my-2 opacity-25">
+                    <div class="d-flex justify-content-between align-items-center small">
+                        <span class="text-muted">Anual:</span>
+                        <span class="fw-bold">S/52,780.45</span>
+                    </div>
+                </div>
             </div>
-            <div class="card-body p-0">
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item border-0 py-3 px-4">
-                        <div class="form-check d-flex align-items-center gap-3">
-                            <input class="form-check-input" type="checkbox" id="task1" style="transform: scale(1.2);">
-                            <div class="flex-grow-1">
-                                <label class="form-check-label fw-medium" for="task1">
-                                    Confirmar catering Boda García-Pérez
-                                </label>
-                                <p class="text-muted mb-0 small"><i class="bi bi-calendar me-1"></i>Fecha límite: 6 de abril</p>
-                            </div>
-                            <span class="badge bg-danger">Alta</span>
+        </div>
+        
+        <!-- Servicios más contratados -->
+        <div class="col-lg-3 col-sm-6">
+            <div class="stats-card card shadow-sm glass-effect">
+                <div class="card-body compact-padding">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="icon-container bg-primary bg-opacity-10">
+                            <i class="bi bi-grid text-primary"></i>
                         </div>
-                    </li>
-                    <li class="list-group-item border-0 py-3 px-4">
-                        <div class="form-check d-flex align-items-center gap-3">
-                            <input class="form-check-input" type="checkbox" id="task2" style="transform: scale(1.2);">
-                            <div class="flex-grow-1">
-                                <label class="form-check-label fw-medium" for="task2">
-                                    Enviar contrato Conferencia Tech 2025
-                                </label>
-                                <p class="text-muted mb-0 small"><i class="bi bi-calendar me-1"></i>Fecha límite: 10 de abril</p>
-                            </div>
-                            <span class="badge bg-warning text-dark">Media</span>
+                        <div class="badge bg-success bg-opacity-10 text-success rounded-pill px-2 py-1"><small>+2 nuevos</small></div>
+                    </div>
+                    <h5 class="fw-bold mb-2">Top Servicios</h5>
+                    <div class="progress mb-1" style="height: 8px; border-radius: 5px;">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: 65%;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center small mb-1">
+                        <span class="text-muted">Catering</span>
+                        <span>65%</span>
+                    </div>
+                    <div class="progress mb-1" style="height: 8px; border-radius: 5px;">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 40%;" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center small">
+                        <span class="text-muted">DJ</span>
+                        <span>40%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Total de eventos por tipo -->
+        <div class="col-lg-3 col-sm-6">
+            <div class="stats-card card shadow-sm glass-effect">
+                <div class="card-body compact-padding">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="icon-container bg-warning bg-opacity-10">
+                            <i class="bi bi-calendar-event text-warning"></i>
                         </div>
-                    </li>
-                    <li class="list-group-item border-0 py-3 px-4">
-                        <div class="form-check d-flex align-items-center gap-3">
-                            <input class="form-check-input" type="checkbox" id="task3" style="transform: scale(1.2);">
-                            <div class="flex-grow-1">
-                                <label class="form-check-label fw-medium" for="task3">
-                                    Coordinar proveedores cumpleaños empresarial
-                                </label>
-                                <p class="text-muted mb-0 small"><i class="bi bi-calendar me-1"></i>Fecha límite: 15 de abril</p>
-                            </div>
-                            <span class="badge bg-warning text-dark">Media</span>
+                        <div class="badge bg-success bg-opacity-10 text-success rounded-pill px-2 py-1"><small>+5 nuevos</small></div>
+                    </div>
+                    <h5 class="fw-bold mb-2">Eventos por Tipo</h5>
+                    <div class="d-flex justify-content-between align-items-center small mb-1">
+                        <span><i class="bi bi-circle-fill text-primary me-1" style="font-size: 0.6rem;"></i> Bodas</span>
+                        <span class="fw-bold">8</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center small mb-1">
+                        <span><i class="bi bi-circle-fill text-success me-1" style="font-size: 0.6rem;"></i> Cumpleaños</span>
+                        <span class="fw-bold">12</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center small">
+                        <span><i class="bi bi-circle-fill text-info me-1" style="font-size: 0.6rem;"></i> Conferencias</span>
+                        <span class="fw-bold">5</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Porcentaje de disponibilidad de inventario -->
+        <div class="col-lg-3 col-sm-6">
+            <div class="stats-card card shadow-sm glass-effect">
+                <div class="card-body compact-padding">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="icon-container bg-info bg-opacity-10">
+                            <i class="bi bi-box-seam text-info"></i>
                         </div>
-                    </li>
-                    <li class="list-group-item border-0 py-3 px-4">
-                        <div class="form-check d-flex align-items-center gap-3">
-                            <input class="form-check-input" type="checkbox" id="task4" style="transform: scale(1.2);">
-                            <div class="flex-grow-1">
-                                <label class="form-check-label fw-medium" for="task4">
-                                    Realizar seguimiento a clientes potenciales
-                                </label>
-                                <p class="text-muted mb-0 small"><i class="bi bi-calendar me-1"></i>Fecha límite: 20 de abril</p>
-                            </div>
-                            <span class="badge bg-info">Baja</span>
+                        <div class="badge bg-danger bg-opacity-10 text-danger rounded-pill px-2 py-1"><small>-5.2% <i class="bi bi-graph-down-arrow"></i></small></div>
+                    </div>
+                    <h5 class="fw-bold mb-2">Inventario Disponible</h5>
+                    <div class="d-flex justify-content-center my-2">
+                        <div class="position-relative" style="width: 70px; height: 70px;">
+                            <svg viewBox="0 0 36 36" class="circular-chart">
+                                <path class="circle-bg" d="M18 2.0845
+                                    a 15.9155 15.9155 0 0 1 0 31.831
+                                    a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#eee" stroke-width="3"/>
+                                <path class="circle" d="M18 2.0845
+                                    a 15.9155 15.9155 0 0 1 0 31.831
+                                    a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#3b82f6" stroke-width="3" stroke-dasharray="75, 100"/>
+                                <text x="18" y="20.5" class="percentage">75%</text>
+                            </svg>
                         </div>
-                    </li>
-                </ul>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center small">
+                        <span class="text-muted">Artículos disponibles:</span>
+                        <span class="fw-bold">180/240</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Próximos Eventos -->
+    <div class="card shadow-sm section-card gradient-bg compact-row">
+        <div class="card-body compact-padding">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="section-title fw-bold d-flex align-items-center">
+                    <i class="bi bi-calendar-event me-2 text-primary"></i>Próximos Eventos
+                </h5>
+                <a href="/Events" class="btn btn-sm btn-outline-primary rounded-pill">
+                    Ver todos <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+            </div>
+            
+            <div class="row g-3">
+                <!-- Evento 1 -->
+                <div class="col-md-4">
+                    <div class="event-card card shadow-sm glass-effect">
+                        <div class="card-body compact-padding">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="date-badge bg-primary bg-opacity-10 p-1 rounded me-2 text-center">
+                                    <span class="d-block fw-bold">18</span>
+                                    <span>Abr</span>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0 fw-bold">Boda García-Pérez</h6>
+                                    <p class="text-muted small mb-0"><i class="bi bi-clock me-1"></i>16:00 - 23:00</p>
+                                </div>
+                            </div>
+                            <p class="text-muted small mb-2">Paquete Premium para 150 personas</p>
+                            <div class="text-end">
+                                <a href="#" class="btn btn-sm btn-primary rounded-pill">
+                                    Detalles <i class="bi bi-arrow-right ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Evento 2 -->
+                <div class="col-md-4">
+                    <div class="event-card card shadow-sm glass-effect">
+                        <div class="card-body compact-padding">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="date-badge bg-success bg-opacity-10 p-1 rounded me-2 text-center">
+                                    <span class="d-block fw-bold">22</span>
+                                    <span>Abr</span>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0 fw-bold">Cumpleaños Torres</h6>
+                                    <p class="text-muted small mb-0"><i class="bi bi-clock me-1"></i>19:30 - 02:00</p>
+                                </div>
+                            </div>
+                            <p class="text-muted small mb-2">Paquete Estándar para 50 personas</p>
+                            <div class="text-end">
+                                <a href="#" class="btn btn-sm btn-primary rounded-pill">
+                                    Detalles <i class="bi bi-arrow-right ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Evento 3 -->
+                <div class="col-md-4">
+                    <div class="event-card card shadow-sm glass-effect">
+                        <div class="card-body compact-padding">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="date-badge bg-info bg-opacity-10 p-1 rounded me-2 text-center">
+                                    <span class="d-block fw-bold">25</span>
+                                    <span>Abr</span>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0 fw-bold">Conferencia Tech</h6>
+                                    <p class="text-muted small mb-0"><i class="bi bi-clock me-1"></i>09:00 - 18:00</p>
+                                </div>
+                            </div>
+                            <p class="text-muted small mb-2">Paquete Empresarial para 200 asistentes</p>
+                            <div class="text-end">
+                                <a href="#" class="btn btn-sm btn-primary rounded-pill">
+                                    Detalles <i class="bi bi-arrow-right ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección inferior - 2 columnas con diseño mejorado -->
+    <div class="row g-3">
+        <!-- Columna izquierda: Actividad Reciente -->
+        <div class="col-lg-7">
+            <div class="card shadow-sm section-card gradient-bg h-100">
+                <div class="card-body compact-padding">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="section-title fw-bold d-flex align-items-center">
+                            <i class="bi bi-activity me-2 text-primary"></i>Actividad Reciente
+                        </h5>
+                        <a href="#" class="btn btn-sm btn-outline-primary rounded-pill">Ver todo</a>
+                    </div>
+                    
+                    <div class="activity-item d-flex align-items-center">
+                        <div class="icon-container bg-primary bg-opacity-10 me-2">
+                            <i class="bi bi-calendar-check text-primary"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <p class="mb-0">Nueva reserva: <strong>Boda García-Pérez</strong></p>
+                            <p class="text-muted small mb-0">Hace 2 horas</p>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-item d-flex align-items-center">
+                        <div class="icon-container bg-success bg-opacity-10 me-2">
+                            <i class="bi bi-people text-success"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <p class="mb-0">Nuevo cliente: <strong>Empresa XYZ</strong></p>
+                            <p class="text-muted small mb-0">Hace 5 horas</p>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-item d-flex align-items-center">
+                        <div class="icon-container bg-info bg-opacity-10 me-2">
+                            <i class="bi bi-check-circle text-info"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <p class="mb-0">Evento completado: <strong>Conferencia ABC</strong></p>
+                            <p class="text-muted small mb-0">Hace 1 día</p>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-item d-flex align-items-center">
+                        <div class="icon-container bg-warning bg-opacity-10 me-2">
+                            <i class="bi bi-currency-dollar text-warning"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <p class="mb-0">Pago: <strong>S/1,500.00</strong> de Cumpleaños Torres</p>
+                            <p class="text-muted small mb-0">Hace 2 días</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Columna derecha: Recordatorios -->
+        <div class="col-lg-5">
+            <div class="card shadow-sm section-card gradient-bg h-100">
+                <div class="card-body compact-padding">
+                    <h5 class="section-title fw-bold d-flex align-items-center mb-3">
+                        <i class="bi bi-bell me-2 text-warning"></i>Recordatorios
+                    </h5>
+                    
+                    <div class="reminder-item d-flex align-items-center" style="border-left: 3px solid #ffc107;">
+                        <div class="flex-grow-1">
+                            <h6 class="mb-0 fw-bold">Confirmar detalles de catering</h6>
+                            <p class="text-muted small mb-0">Boda García-Pérez - Vence hoy</p>
+                        </div>
+                        <div>
+                            <button class="btn btn-sm btn-success rounded-circle">
+                                <i class="bi bi-check"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="reminder-item d-flex align-items-center" style="border-left: 3px solid #dc3545;">
+                        <div class="flex-grow-1">
+                            <h6 class="mb-0 fw-bold">Confirmar pago pendiente</h6>
+                            <p class="text-muted small mb-0">Empresa XYZ - Vence mañana</p>
+                        </div>
+                        <div>
+                            <button class="btn btn-sm btn-success rounded-circle">
+                                <i class="bi bi-check"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="reminder-item d-flex align-items-center" style="border-left: 3px solid #0dcaf0;">
+                        <div class="flex-grow-1">
+                            <h6 class="mb-0 fw-bold">Verificar disponibilidad de DJ</h6>
+                            <p class="text-muted small mb-0">Cumpleaños Torres - Vence en 2 días</p>
+                        </div>
+                        <div>
+                            <button class="btn btn-sm btn-success rounded-circle">
+                                <i class="bi bi-check"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-3 text-center">
+                        <button class="btn btn-sm btn-primary rounded-pill">
+                            <i class="bi bi-plus-lg me-1"></i> Nuevo recordatorio
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    /* Añadir estilos para el gráfico circular */
+    .circular-chart {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .circle-bg {
+        fill: none;
+        stroke: #eee;
+        stroke-width: 2.8;
+    }
+    
+    .circle {
+        fill: none;
+        stroke-width: 2.8;
+        stroke-linecap: round;
+    }
+    
+    .percentage {
+        fill: #666;
+        font-size: 0.3em;
+        text-anchor: middle;
+        font-weight: bold;
+    }
+</style>
