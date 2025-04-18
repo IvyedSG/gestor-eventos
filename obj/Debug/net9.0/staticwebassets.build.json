@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "G7FmASkkd8jTxBWIvB3Mesj2g1yNzVmp3AiS+fvvs+4=",
+  "Hash": "ZmUSdibfmBUBhqOHans8ZZn2+4a6w3gTrox+HXfgWsU=",
   "Source": "gestor-eventos",
   "BasePath": "_content/gestor-eventos",
   "Mode": "Default",
@@ -1403,6 +1403,27 @@
       "OriginalItemSpec": "/Users/sagox16/Documents/proyectos_u/gestor-eventos/obj/Debug/net9.0/scopedcss/projectbundle/gestor-eventos.bundle.scp.css"
     },
     {
+      "Identity": "/Users/sagox16/Documents/proyectos_u/gestor-eventos/wwwroot/assets/img/placeholder-img.png",
+      "SourceId": "gestor-eventos",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/sagox16/Documents/proyectos_u/gestor-eventos/wwwroot/",
+      "BasePath": "_content/gestor-eventos",
+      "RelativePath": "assets/img/placeholder-img#[.{fingerprint}]?.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "ddvxd4bphw",
+      "Integrity": "EcoKabUGqx89RZfPuG+hgrVqq6ctt1iLaeTTuaopFJ4=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/assets/img/placeholder-img.png"
+    },
+    {
       "Identity": "/Users/sagox16/Documents/proyectos_u/gestor-eventos/wwwroot/css/site.css",
       "SourceId": "gestor-eventos",
       "SourceType": "Discovered",
@@ -2727,6 +2748,88 @@
     }
   ],
   "Endpoints": [
+    {
+      "Route": "assets/img/placeholder-img.ddvxd4bphw.png",
+      "AssetFile": "/Users/sagox16/Documents/proyectos_u/gestor-eventos/wwwroot/assets/img/placeholder-img.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "13857"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"EcoKabUGqx89RZfPuG+hgrVqq6ctt1iLaeTTuaopFJ4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 17 Apr 2025 17:27:52 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "ddvxd4bphw"
+        },
+        {
+          "Name": "label",
+          "Value": "assets/img/placeholder-img.png"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-EcoKabUGqx89RZfPuG+hgrVqq6ctt1iLaeTTuaopFJ4="
+        }
+      ]
+    },
+    {
+      "Route": "assets/img/placeholder-img.png",
+      "AssetFile": "/Users/sagox16/Documents/proyectos_u/gestor-eventos/wwwroot/assets/img/placeholder-img.png",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "13857"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/png"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"EcoKabUGqx89RZfPuG+hgrVqq6ctt1iLaeTTuaopFJ4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 17 Apr 2025 17:27:52 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-EcoKabUGqx89RZfPuG+hgrVqq6ctt1iLaeTTuaopFJ4="
+        }
+      ]
+    },
     {
       "Route": "css/site.b9sayid5wm.css",
       "AssetFile": "/Users/sagox16/Documents/proyectos_u/gestor-eventos/obj/Debug/net9.0/compressed/x2vzo1zlq5-b9sayid5wm.gz",

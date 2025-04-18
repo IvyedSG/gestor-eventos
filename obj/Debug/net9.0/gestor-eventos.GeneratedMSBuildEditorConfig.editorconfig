@@ -40,6 +40,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQXV0aC9Mb2dvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Auth/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQXV0aC9SZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Clientes/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQ2xpZW50ZXMvSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -56,12 +60,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Inventario/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvSW52ZW50YXJpby9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvUHJpdmFjeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Reservas/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvUmVzZXJ2YXMvSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Servicios/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2VydmljaW9zL0luZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Shared/_ValidationScriptsPartial.cshtml]

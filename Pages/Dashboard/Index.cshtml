@@ -72,15 +72,15 @@
         box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         transform: translateY(-2px);
     }
-    .reminder-item {
+    .summary-item {
         border-radius: 12px;
         transition: all 0.25s ease;
-        margin-bottom: 8px;
+        margin-bottom: 12px;
         background: rgba(255, 255, 255, 0.7);
         box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-        padding: 12px !important;
+        padding: 16px !important;
     }
-    .reminder-item:hover {
+    .summary-item:hover {
         background-color: rgba(255,255,255,1);
         box-shadow: 0 5px 15px rgba(0,0,0,0.07);
         transform: translateY(-2px);
@@ -134,84 +134,7 @@
 <div>
     <!-- Estadísticas generales -->
     <div class="row g-3 compact-row">
-        <!-- Ingresos totales con desglose -->
-        <div class="col-lg-3 col-sm-6">
-            <div class="stats-card card shadow-sm glass-effect">
-                <div class="card-body compact-padding">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <div class="icon-container bg-success bg-opacity-10">
-                            <i class="bi bi-currency-dollar text-success"></i>
-                        </div>
-                        <div class="badge bg-success bg-opacity-10 text-success rounded-pill px-2 py-1"><small>+20.1% <i class="bi bi-graph-up-arrow"></i></small></div>
-                    </div>
-                    <h3 class="fw-bold mb-0">S/4,231.89</h3>
-                    <p class="text-muted small mb-0">mensual</p>
-                    <hr class="my-2 opacity-25">
-                    <div class="d-flex justify-content-between align-items-center small">
-                        <span class="text-muted">Anual:</span>
-                        <span class="fw-bold">S/52,780.45</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Servicios más contratados -->
-        <div class="col-lg-3 col-sm-6">
-            <div class="stats-card card shadow-sm glass-effect">
-                <div class="card-body compact-padding">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <div class="icon-container bg-primary bg-opacity-10">
-                            <i class="bi bi-grid text-primary"></i>
-                        </div>
-                        <div class="badge bg-success bg-opacity-10 text-success rounded-pill px-2 py-1"><small>+2 nuevos</small></div>
-                    </div>
-                    <h5 class="fw-bold mb-2">Top Servicios</h5>
-                    <div class="progress mb-1" style="height: 8px; border-radius: 5px;">
-                        <div class="progress-bar bg-primary" role="progressbar" style="width: 65%;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center small mb-1">
-                        <span class="text-muted">Catering</span>
-                        <span>65%</span>
-                    </div>
-                    <div class="progress mb-1" style="height: 8px; border-radius: 5px;">
-                        <div class="progress-bar bg-success" role="progressbar" style="width: 40%;" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center small">
-                        <span class="text-muted">DJ</span>
-                        <span>40%</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Total de eventos por tipo -->
-        <div class="col-lg-3 col-sm-6">
-            <div class="stats-card card shadow-sm glass-effect">
-                <div class="card-body compact-padding">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <div class="icon-container bg-warning bg-opacity-10">
-                            <i class="bi bi-calendar-event text-warning"></i>
-                        </div>
-                        <div class="badge bg-success bg-opacity-10 text-success rounded-pill px-2 py-1"><small>+5 nuevos</small></div>
-                    </div>
-                    <h5 class="fw-bold mb-2">Eventos por Tipo</h5>
-                    <div class="d-flex justify-content-between align-items-center small mb-1">
-                        <span><i class="bi bi-circle-fill text-primary me-1" style="font-size: 0.6rem;"></i> Bodas</span>
-                        <span class="fw-bold">8</span>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center small mb-1">
-                        <span><i class="bi bi-circle-fill text-success me-1" style="font-size: 0.6rem;"></i> Cumpleaños</span>
-                        <span class="fw-bold">12</span>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center small">
-                        <span><i class="bi bi-circle-fill text-info me-1" style="font-size: 0.6rem;"></i> Conferencias</span>
-                        <span class="fw-bold">5</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Porcentaje de disponibilidad de inventario -->
+        <!-- Items totales del inventario -->
         <div class="col-lg-3 col-sm-6">
             <div class="stats-card card shadow-sm glass-effect">
                 <div class="card-body compact-padding">
@@ -219,25 +142,77 @@
                         <div class="icon-container bg-info bg-opacity-10">
                             <i class="bi bi-box-seam text-info"></i>
                         </div>
-                        <div class="badge bg-danger bg-opacity-10 text-danger rounded-pill px-2 py-1"><small>-5.2% <i class="bi bi-graph-down-arrow"></i></small></div>
+                        <div class="badge bg-success bg-opacity-10 text-success rounded-pill px-2 py-1"><small>+12 <i class="bi bi-plus-circle"></i></small></div>
                     </div>
-                    <h5 class="fw-bold mb-2">Inventario Disponible</h5>
-                    <div class="d-flex justify-content-center my-2">
-                        <div class="position-relative" style="width: 70px; height: 70px;">
-                            <svg viewBox="0 0 36 36" class="circular-chart">
-                                <path class="circle-bg" d="M18 2.0845
-                                    a 15.9155 15.9155 0 0 1 0 31.831
-                                    a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#eee" stroke-width="3"/>
-                                <path class="circle" d="M18 2.0845
-                                    a 15.9155 15.9155 0 0 1 0 31.831
-                                    a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#3b82f6" stroke-width="3" stroke-dasharray="75, 100"/>
-                                <text x="18" y="20.5" class="percentage">75%</text>
-                            </svg>
-                        </div>
-                    </div>
+                    <h3 class="fw-bold mb-0">365</h3>
+                    <p class="text-muted small mb-0">Items totales</p>
+                    <hr class="my-2 opacity-25">
                     <div class="d-flex justify-content-between align-items-center small">
-                        <span class="text-muted">Artículos disponibles:</span>
-                        <span class="fw-bold">180/240</span>
+                        <span class="text-muted">Disponibles:</span>
+                        <span class="fw-bold">280 (76%)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Eventos activos -->
+        <div class="col-lg-3 col-sm-6">
+            <div class="stats-card card shadow-sm glass-effect">
+                <div class="card-body compact-padding">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="icon-container bg-warning bg-opacity-10">
+                            <i class="bi bi-calendar-event text-warning"></i>
+                        </div>
+                        <div class="badge bg-success bg-opacity-10 text-success rounded-pill px-2 py-1"><small>+3 nuevos</small></div>
+                    </div>
+                    <h3 class="fw-bold mb-0">25</h3>
+                    <p class="text-muted small mb-0">Eventos activos</p>
+                    <hr class="my-2 opacity-25">
+                    <div class="d-flex justify-content-between align-items-center small">
+                        <span class="text-muted">Este mes:</span>
+                        <span class="fw-bold">8 eventos</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Clientes -->
+        <div class="col-lg-3 col-sm-6">
+            <div class="stats-card card shadow-sm glass-effect">
+                <div class="card-body compact-padding">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="icon-container bg-primary bg-opacity-10">
+                            <i class="bi bi-people text-primary"></i>
+                        </div>
+                        <div class="badge bg-success bg-opacity-10 text-success rounded-pill px-2 py-1"><small>+5 nuevos</small></div>
+                    </div>
+                    <h3 class="fw-bold mb-0">142</h3>
+                    <p class="text-muted small mb-0">Clientes totales</p>
+                    <hr class="my-2 opacity-25">
+                    <div class="d-flex justify-content-between align-items-center small">
+                        <span class="text-muted">Recurrentes:</span>
+                        <span class="fw-bold">68 (48%)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Cantidad de servicios -->
+        <div class="col-lg-3 col-sm-6">
+            <div class="stats-card card shadow-sm glass-effect">
+                <div class="card-body compact-padding">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="icon-container bg-success bg-opacity-10">
+                            <i class="bi bi-grid text-success"></i>
+                        </div>
+                        <div class="badge bg-success bg-opacity-10 text-success rounded-pill px-2 py-1"><small>+2 nuevos</small></div>
+                    </div>
+                    <h3 class="fw-bold mb-0">18</h3>
+                    <p class="text-muted small mb-0">Servicios disponibles</p>
+                    <hr class="my-2 opacity-25">
+                    <div class="d-flex justify-content-between align-items-center small">
+                        <span class="text-muted">Más solicitado:</span>
+                        <span class="fw-bold">Catering</span>
                     </div>
                 </div>
             </div>
@@ -388,54 +363,57 @@
             </div>
         </div>
         
-        <!-- Columna derecha: Recordatorios -->
+        <!-- Columna derecha: Resumen del Mes -->
         <div class="col-lg-5">
             <div class="card shadow-sm section-card gradient-bg h-100">
                 <div class="card-body compact-padding">
                     <h5 class="section-title fw-bold d-flex align-items-center mb-3">
-                        <i class="bi bi-bell me-2 text-warning"></i>Recordatorios
+                        <i class="bi bi-graph-up me-2 text-success"></i>Resumen del Mes
                     </h5>
                     
-                    <div class="reminder-item d-flex align-items-center" style="border-left: 3px solid #ffc107;">
+                    <div class="summary-item d-flex align-items-center" style="border-left: 3px solid #198754;">
                         <div class="flex-grow-1">
-                            <h6 class="mb-0 fw-bold">Confirmar detalles de catering</h6>
-                            <p class="text-muted small mb-0">Boda García-Pérez - Vence hoy</p>
-                        </div>
-                        <div>
-                            <button class="btn btn-sm btn-success rounded-circle">
-                                <i class="bi bi-check"></i>
-                            </button>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6 class="mb-0 fw-bold">Reservas Confirmadas</h6>
+                                <span class="badge bg-success rounded-pill">8</span>
+                            </div>
+                            <div class="progress mt-2" style="height: 6px; border-radius: 10px;">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 80%;" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <p class="text-muted small mt-1 mb-0">+2 desde el mes anterior</p>
                         </div>
                     </div>
                     
-                    <div class="reminder-item d-flex align-items-center" style="border-left: 3px solid #dc3545;">
+                    <div class="summary-item d-flex align-items-center" style="border-left: 3px solid #ffc107;">
                         <div class="flex-grow-1">
-                            <h6 class="mb-0 fw-bold">Confirmar pago pendiente</h6>
-                            <p class="text-muted small mb-0">Empresa XYZ - Vence mañana</p>
-                        </div>
-                        <div>
-                            <button class="btn btn-sm btn-success rounded-circle">
-                                <i class="bi bi-check"></i>
-                            </button>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6 class="mb-0 fw-bold">Reservas Pendientes</h6>
+                                <span class="badge bg-warning text-dark rounded-pill">5</span>
+                            </div>
+                            <div class="progress mt-2" style="height: 6px; border-radius: 10px;">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <p class="text-muted small mt-1 mb-0">En espera de confirmación</p>
                         </div>
                     </div>
                     
-                    <div class="reminder-item d-flex align-items-center" style="border-left: 3px solid #0dcaf0;">
+                    <div class="summary-item d-flex align-items-center" style="border-left: 3px solid #0d6efd;">
                         <div class="flex-grow-1">
-                            <h6 class="mb-0 fw-bold">Verificar disponibilidad de DJ</h6>
-                            <p class="text-muted small mb-0">Cumpleaños Torres - Vence en 2 días</p>
-                        </div>
-                        <div>
-                            <button class="btn btn-sm btn-success rounded-circle">
-                                <i class="bi bi-check"></i>
-                            </button>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6 class="mb-0 fw-bold">Ingresos Estimados</h6>
+                                <span class="fw-bold text-primary">S/15,280.00</span>
+                            </div>
+                            <div class="progress mt-2" style="height: 6px; border-radius: 10px;">
+                                <div class="progress-bar bg-primary" role="progressbar" style="width: 65%;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <p class="text-muted small mt-1 mb-0">+15% respecto al mes anterior</p>
                         </div>
                     </div>
                     
-                    <div class="mt-3 text-center">
-                        <button class="btn btn-sm btn-primary rounded-pill">
-                            <i class="bi bi-plus-lg me-1"></i> Nuevo recordatorio
-                        </button>
+                    <div class="mt-4 text-center">
+                        <a href="/Reports" class="btn btn-sm btn-primary rounded-pill">
+                            <i class="bi bi-file-earmark-bar-graph me-1"></i> Ver reporte completo
+                        </a>
                     </div>
                 </div>
             </div>

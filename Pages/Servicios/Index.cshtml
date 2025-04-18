@@ -1,0 +1,1239 @@
+@page
+@model gestor_eventos.Pages.Servicios.IndexModel
+@{
+    ViewData["Title"] = "Gestionar Servicios";
+}
+
+<!-- Filtros y búsqueda -->
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-body p-3">
+        <form method="get" id="filterForm">
+            <div class="row g-2 align-items-center">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-light">
+                            <i class="bi bi-search"></i>
+                        </span>
+                        <input type="text" class="form-control border-light bg-light" 
+                               placeholder="Buscar por nombre o descripción" 
+                               asp-for="SearchTerm">
+                    </div>
+                </div>
+                
+                <div class="col-md-3">
+                    <select class="form-select border-light bg-light" asp-for="CategoryFilter">
+                        <option value="">Todas las categorías</option>
+                        <option value="Catering">Catering</option>
+                        <option value="Decoración">Decoración</option>
+                        <option value="Entretenimiento">Entretenimiento</option>
+                        <option value="Audio y Video">Audio y Video</option>
+                        <option value="Mobiliario">Mobiliario</option>
+                    </select>
+                </div>
+                
+                <div class="col-md-1">
+                    <button type="button" id="clearFilters" class="btn btn-secondary w-100" title="Limpiar filtros">
+                        <i class="bi bi-arrow-counterclockwise"></i><span class="d-none d-md-inline"> Limpiar</span>
+                    </button>
+                </div>
+                
+                <div class="col-md-2">
+                    <button class="btn btn-success w-100" type="button" data-bs-toggle="modal" data-bs-target="#newServiceModal">
+                        <i class="bi bi-plus-circle me-1"></i> Nuevo Servicio
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Vista de servicios en tarjetas -->
+<div class="row g-3" id="services-grid">
+    @if (Model.Services != null && Model.Services.Any())
+    {
+        foreach (var service in Model.Services)
+        {
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header border-0 bg-white p-0">
+                        <div class="service-image-container position-relative">
+                            @if (!string.IsNullOrEmpty(service.MainImage))
+                            {
+                                <img src="@service.MainImage" class="card-img-top service-image" alt="@service.Name">
+                            }
+                            else
+                            {
+                                <div class="card-img-top service-image-placeholder bg-light d-flex justify-content-center align-items-center">
+                                    <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
+                                </div>
+                            }
+                            <span class="service-category-badge 
+                                  @(service.Category == "Catering" ? "bg-success" : 
+                                     service.Category == "Decoración" ? "bg-info" : 
+                                     service.Category == "Entretenimiento" ? "bg-warning" : 
+                                     service.Category == "Audio y Video" ? "bg-danger" : 
+                                     service.Category == "Mobiliario" ? "bg-primary" : "bg-secondary")">
+                                @service.Category
+                            </span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold mb-1">@service.Name</h5>
+                        <p class="text-muted small mb-3">
+                            <i class="bi bi-tag me-1"></i>Para: @service.EventTypes
+                        </p>
+                        <p class="card-text text-truncate" title="@service.Description">
+                            @service.Description
+                        </p>
+                        
+                        <div class="row mt-3">
+                            @if (service.Images != null && service.Images.Count > 0)
+                            {
+                                <div class="col-12">
+                                    <div class="service-gallery d-flex">
+                                        @foreach (var image in service.Images.Take(3))
+                                        {
+                                            <div class="gallery-thumbnail me-2">
+                                                <img src="@image" class="img-thumbnail" alt="Galería">
+                                            </div>
+                                        }
+                                        @if (service.Images.Count > 3)
+                                        {
+                                            <div class="gallery-thumbnail-more d-flex justify-content-center align-items-center">
+                                                <span>+@(service.Images.Count - 3)</span>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white border-0 d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0 fw-bold">S/ @service.BasePrice.ToString("N2")</h5>
+                        <div class="btn-group">
+                            <button class="btn btn-outline-primary btn-sm edit-service-btn" 
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#editServiceModal" 
+                                    data-service-id="@service.Id">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="btn btn-outline-secondary btn-sm view-service-btn" 
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#viewServiceModal" 
+                                    data-service-id="@service.Id">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                            <button class="btn btn-outline-danger btn-sm delete-service-btn" 
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#deleteServiceModal"
+                                    data-service-id="@service.Id" 
+                                    data-service-name="@service.Name">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-5 text-center">
+                    <div class="p-4">
+                        <i class="bi bi-grid-3x3-gap text-muted" style="font-size: 3rem;"></i>
+                        <h4 class="mt-3">No se encontraron servicios</h4>
+                        <p class="text-muted">Crea un nuevo servicio o ajusta los filtros de búsqueda.</p>
+                        <button class="btn btn-success mt-3" data-bs-toggle="modal" data-bs-target="#newServiceModal">
+                            <i class="bi bi-plus-circle me-2"></i>Nuevo Servicio
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- Paginación -->
+@if (Model.Services != null && Model.Services.Count > 12)
+{
+    <div class="d-flex justify-content-between align-items-center mt-4">
+        <p class="text-muted">Mostrando <strong>@Model.Services.Count</strong> servicios</p>
+        <nav>
+            <ul class="pagination">
+                <li class="page-item disabled">
+                    <span class="page-link">
+                        <i class="bi bi-chevron-left"></i>
+                    </span>
+                </li>
+                <li class="page-item active">
+                    <a class="page-link" href="#">1</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">2</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">3</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">
+                        <i class="bi bi-chevron-right"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+}
+
+<!-- Vista de tabla alternativa -->
+<div class="mt-4 d-none" id="services-table">
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col" class="ps-4">Nombre</th>
+                            <th scope="col">Categoría</th>
+                            <th scope="col">Eventos</th>
+                            <th scope="col">Precio Base</th>
+                            <th scope="col">Imágenes</th>
+                            <th scope="col" class="text-end pe-4">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Services != null && Model.Services.Any())
+                        {
+                            @foreach (var service in Model.Services)
+                            {
+                                <tr>
+                                    <td class="ps-4 fw-medium">@service.Name</td>
+                                    <td>
+                                        <span class="badge 
+                                              @(service.Category == "Catering" ? "bg-success" : 
+                                                 service.Category == "Decoración" ? "bg-info" : 
+                                                 service.Category == "Entretenimiento" ? "bg-warning" : 
+                                                 service.Category == "Audio y Video" ? "bg-danger" : 
+                                                 service.Category == "Mobiliario" ? "bg-primary" : "bg-secondary")
+                                              px-3 py-2">
+                                            @service.Category
+                                        </span>
+                                    </td>
+                                    <td>@service.EventTypes</td>
+                                    <td>S/ @service.BasePrice.ToString("N2")</td>
+                                    <td>
+                                        <div class="d-flex">
+                                            @if (service.Images != null && service.Images.Count > 0)
+                                            {
+                                                @foreach (var image in service.Images.Take(2))
+                                                {
+                                                    <div class="table-thumbnail me-1">
+                                                        <img src="@image" class="img-thumbnail" alt="Galería">
+                                                    </div>
+                                                }
+                                                @if (service.Images.Count > 2)
+                                                {
+                                                    <div class="table-thumbnail-more d-flex justify-content-center align-items-center">
+                                                        <span>+@(service.Images.Count - 2)</span>
+                                                    </div>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">Sin imágenes</span>
+                                            }
+                                        </div>
+                                    </td>
+                                    <td class="text-end pe-4">
+                                        <div class="btn-group">
+                                            <button class="btn btn-outline-primary btn-sm edit-service-btn" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#editServiceModal" 
+                                                    data-service-id="@service.Id">
+                                                <i class="bi bi-pencil"></i>
+                                            </button>
+                                            <button class="btn btn-outline-secondary btn-sm view-service-btn" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#viewServiceModal" 
+                                                    data-service-id="@service.Id">
+                                                <i class="bi bi-eye"></i>
+                                            </button>
+                                            <button class="btn btn-outline-danger btn-sm delete-service-btn" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#deleteServiceModal"
+                                                    data-service-id="@service.Id" 
+                                                    data-service-name="@service.Name">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center py-5">
+                                    <i class="bi bi-grid-3x3-gap text-muted" style="font-size: 3rem;"></i>
+                                    <h4 class="mt-3">No se encontraron servicios</h4>
+                                    <p class="text-muted">Crea un nuevo servicio o ajusta los filtros de búsqueda.</p>
+                                    <button class="btn btn-success mt-2" data-bs-toggle="modal" data-bs-target="#newServiceModal">
+                                        <i class="bi bi-plus-circle me-2"></i>Nuevo Servicio
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Botones para alternar entre vista de tarjetas y tabla -->
+<div class="d-flex justify-content-center mt-4 mb-2">
+    <div class="btn-group">
+        <button class="btn btn-outline-primary active" id="grid-view-btn">
+            <i class="bi bi-grid-3x3-gap me-1"></i>Tarjetas
+        </button>
+        <button class="btn btn-outline-primary" id="table-view-btn">
+            <i class="bi bi-list-ul me-1"></i>Tabla
+        </button>
+    </div>
+</div>
+
+<!-- Modal para Nuevo Servicio -->
+<div class="modal fade" id="newServiceModal" tabindex="-1" aria-labelledby="newServiceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title" id="newServiceModalLabel">
+                    <i class="bi bi-plus-circle me-2 text-success"></i>Nuevo Servicio
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="newServiceForm">
+                    <div class="row g-3">
+                        <div class="col-md-12">
+                            <label for="serviceName" class="form-label">Nombre del servicio</label>
+                            <input type="text" class="form-control" id="serviceName" required>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="serviceCategory" class="form-label">Categoría</label>
+                            <select class="form-select" id="serviceCategory" required>
+                                <option value="" selected disabled>Seleccione una categoría</option>
+                                <option value="Catering">Catering</option>
+                                <option value="Decoración">Decoración</option>
+                                <option value="Entretenimiento">Entretenimiento</option>
+                                <option value="Audio y Video">Audio y Video</option>
+                                <option value="Mobiliario">Mobiliario</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="serviceBasePrice" class="form-label">Precio base</label>
+                            <div class="input-group">
+                                <span class="input-group-text">S/</span>
+                                <input type="number" class="form-control" id="serviceBasePrice" min="0" step="0.01" required>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <label class="form-label">Tipos de eventos aplicables</label>
+                            <div class="d-flex flex-wrap gap-2">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="chkBoda" value="Boda">
+                                    <label class="form-check-label" for="chkBoda">Bodas</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="chkCumpleanos" value="Cumpleaños">
+                                    <label class="form-check-label" for="chkCumpleanos">Cumpleaños</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="chkCorporativo" value="Corporativo">
+                                    <label class="form-check-label" for="chkCorporativo">Corporativo</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="chkGraduacion" value="Graduación">
+                                    <label class="form-check-label" for="chkGraduacion">Graduación</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="chkBautizo" value="Bautizo">
+                                    <label class="form-check-label" for="chkBautizo">Bautizo</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="chkAniversario" value="Aniversario">
+                                    <label class="form-check-label" for="chkAniversario">Aniversario</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <label for="serviceDescription" class="form-label">Descripción</label>
+                            <textarea class="form-control" id="serviceDescription" rows="4" required></textarea>
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <label class="form-label">Imágenes (Mínimo 3)</label>
+                            <div class="dropzone-container border border-dashed rounded p-3 text-center" id="imageDropzone">
+                                <div class="dropzone-placeholder">
+                                    <i class="bi bi-cloud-arrow-up display-6 text-muted"></i>
+                                    <p class="mb-2">Arrastra y suelta imágenes aquí o haz clic para seleccionarlas</p>
+                                    <p class="text-muted small">Formatos permitidos: JPG, JPEG, PNG. Máximo 5MB por archivo.</p>
+                                </div>
+                                <div class="dropzone-preview d-none">
+                                    <div class="row g-2" id="previewContainer">
+                                        <!-- Las imágenes se cargarán aquí -->
+                                    </div>
+                                </div>
+                                <input type="file" class="d-none" id="fileInput" multiple accept="image/*">
+                            </div>
+                            <div class="invalid-feedback" id="imageError">
+                                Debes añadir al menos 3 imágenes.
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" id="saveNewService">
+                    <i class="bi bi-check-circle me-1"></i>Crear Servicio
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Editar Servicio -->
+<div class="modal fade" id="editServiceModal" tabindex="-1" aria-labelledby="editServiceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title" id="editServiceModalLabel">
+                    <i class="bi bi-pencil-square me-2 text-primary"></i>Editar Servicio
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editServiceForm">
+                    <input type="hidden" id="editServiceId">
+                    <div class="row g-3">
+                        <!-- Campos idénticos a Nuevo Servicio pero con "edit" prefijo -->
+                        <div class="col-md-12">
+                            <label for="editServiceName" class="form-label">Nombre del servicio</label>
+                            <input type="text" class="form-control" id="editServiceName" required>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="editServiceCategory" class="form-label">Categoría</label>
+                            <select class="form-select" id="editServiceCategory" required>
+                                <option value="" selected disabled>Seleccione una categoría</option>
+                                <option value="Catering">Catering</option>
+                                <option value="Decoración">Decoración</option>
+                                <option value="Entretenimiento">Entretenimiento</option>
+                                <option value="Audio y Video">Audio y Video</option>
+                                <option value="Mobiliario">Mobiliario</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="editServiceBasePrice" class="form-label">Precio base</label>
+                            <div class="input-group">
+                                <span class="input-group-text">S/</span>
+                                <input type="number" class="form-control" id="editServiceBasePrice" min="0" step="0.01" required>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <label class="form-label">Tipos de eventos aplicables</label>
+                            <div class="d-flex flex-wrap gap-2">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="editChkBoda" value="Boda">
+                                    <label class="form-check-label" for="editChkBoda">Bodas</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="editChkCumpleanos" value="Cumpleaños">
+                                    <label class="form-check-label" for="editChkCumpleanos">Cumpleaños</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="editChkCorporativo" value="Corporativo">
+                                    <label class="form-check-label" for="editChkCorporativo">Corporativo</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="editChkGraduacion" value="Graduación">
+                                    <label class="form-check-label" for="editChkGraduacion">Graduación</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="editChkBautizo" value="Bautizo">
+                                    <label class="form-check-label" for="editChkBautizo">Bautizo</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="editChkAniversario" value="Aniversario">
+                                    <label class="form-check-label" for="editChkAniversario">Aniversario</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <label for="editServiceDescription" class="form-label">Descripción</label>
+                            <textarea class="form-control" id="editServiceDescription" rows="4" required></textarea>
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <label class="form-label">Imágenes actuales</label>
+                            <div class="row g-2" id="editImageContainer">
+                                <!-- Las imágenes existentes se cargarán aquí -->
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <label class="form-label">Añadir más imágenes</label>
+                            <div class="dropzone-container border border-dashed rounded p-3 text-center" id="editImageDropzone">
+                                <div class="dropzone-placeholder">
+                                    <i class="bi bi-cloud-arrow-up text-muted"></i>
+                                    <p class="mb-2">Arrastra y suelta imágenes aquí o haz clic para seleccionarlas</p>
+                                    <p class="text-muted small">Formatos permitidos: JPG, JPEG, PNG. Máximo 5MB por archivo.</p>
+                                </div>
+                                <div class="dropzone-preview d-none">
+                                    <div class="row g-2" id="editPreviewContainer">
+                                        <!-- Las nuevas imágenes se cargarán aquí -->
+                                    </div>
+                                </div>
+                                <input type="file" class="d-none" id="editFileInput" multiple accept="image/*">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="saveEditService">
+                    <i class="bi bi-check-circle me-1"></i>Guardar Cambios
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Ver Detalle de Servicio -->
+<div class="modal fade" id="viewServiceModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title">
+                    <i class="bi bi-info-circle me-2 text-primary"></i><span id="viewServiceName">Nombre del Servicio</span>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="main-image-container mb-3">
+                            <img id="viewMainImage" src="" class="img-fluid rounded" alt="Imagen principal">
+                        </div>
+                        <div class="thumbnail-container d-flex overflow-auto mb-3">
+                            <!-- Las miniaturas se cargarán aquí -->
+                            <div id="viewImageThumbnails" class="d-flex gap-2">
+                                <!-- Thumbnails se cargarán aquí -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <h6 class="card-title fw-bold mb-3">Detalles del Servicio</h6>
+                                
+                                <div class="mb-3">
+                                    <span class="badge 
+                                          view-category-badge
+                                          px-3 py-2" id="viewServiceCategory">
+                                        Categoría
+                                    </span>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <h6 class="mb-0 fw-bold">Precio Base</h6>
+                                    <h4 class="text-primary mb-0">S/ <span id="viewServicePrice">0.00</span></h4>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <h6 class="mb-2 fw-bold">Descripción</h6>
+                                    <p id="viewServiceDescription" class="text-muted">Descripción del servicio</p>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <h6 class="mb-2 fw-bold">Tipos de Eventos</h6>
+                                    <div id="viewEventTypes" class="d-flex flex-wrap gap-1">
+                                        <!-- Event types badges go here -->
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-4">
+                                    <button class="btn btn-primary" id="btnEditFromView">
+                                        <i class="bi bi-pencil me-1"></i> Editar Servicio
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Eliminar Servicio -->
+<div class="modal fade" id="deleteServiceModal" tabindex="-1" aria-labelledby="deleteServiceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="deleteServiceModalLabel">
+                    <i class="bi bi-exclamation-triangle me-2"></i>Eliminar Servicio
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>¿Estás seguro de que deseas eliminar el servicio <strong id="deleteServiceName"></strong>?</p>
+                <p class="text-danger">Esta acción no se puede deshacer. Los datos relacionados con este servicio también podrían verse afectados.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteService">
+                    <i class="bi bi-trash me-1"></i>Eliminar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .service-image-container {
+        height: 200px;
+        overflow: hidden;
+        border-top-left-radius: calc(0.25rem - 1px);
+        border-top-right-radius: calc(0.25rem - 1px);
+    }
+    
+    .service-image, .service-image-placeholder {
+        height: 200px;
+        object-fit: cover;
+        width: 100%;
+    }
+    
+    .service-category-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 5px 10px;
+        border-radius: 20px;
+        color: white;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+    
+    .gallery-thumbnail, .table-thumbnail {
+        width: 60px;
+        height: 60px;
+        overflow: hidden;
+        border-radius: 4px;
+    }
+    
+    .gallery-thumbnail img, .table-thumbnail img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .gallery-thumbnail-more, .table-thumbnail-more {
+        width: 60px;
+        height: 60px;
+        background: rgba(0,0,0,0.05);
+        border-radius: 4px;
+        color: #6c757d;
+        font-size: 0.8rem;
+        font-weight: bold;
+    }
+    
+    .border-dashed {
+        border-style: dashed !important;
+        border-width: 2px !important;
+        border-color: #dee2e6 !important;
+    }
+    
+    .dropzone-container {
+        min-height: 150px;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    
+    .dropzone-container:hover {
+        background-color: rgba(0,0,0,0.01);
+    }
+    
+    .thumbnail-preview {
+        position: relative;
+        overflow: hidden;
+        border-radius: 4px;
+    }
+    
+    .thumbnail-preview img {
+        width: 100%;
+        height: 100px;
+        object-fit: cover;
+    }
+    
+    .remove-image {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background-color: rgba(255,255,255,0.8);
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+    
+    .main-image-container {
+        height: 300px;
+        overflow: hidden;
+    }
+    
+    .main-image-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .thumbnail-image {
+        width: 70px;
+        height: 70px;
+        object-fit: cover;
+        cursor: pointer;
+        border-radius: 4px;
+        border: 2px solid transparent;
+    }
+    
+    .thumbnail-image.active {
+        border-color: #4F46E5;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle entre vista de tarjetas y tabla
+            document.getElementById('grid-view-btn').addEventListener('click', function() {
+                document.getElementById('services-grid').classList.remove('d-none');
+                document.getElementById('services-table').classList.add('d-none');
+                document.getElementById('grid-view-btn').classList.add('active');
+                document.getElementById('table-view-btn').classList.remove('active');
+            });
+            
+            document.getElementById('table-view-btn').addEventListener('click', function() {
+                document.getElementById('services-grid').classList.add('d-none');
+                document.getElementById('services-table').classList.remove('d-none');
+                document.getElementById('grid-view-btn').classList.remove('active');
+                document.getElementById('table-view-btn').classList.add('active');
+            });
+            
+            // Funcionalidad para la zona de carga de imágenes (drag & drop)
+            const dropzones = ['imageDropzone', 'editImageDropzone'];
+            
+            dropzones.forEach(dropzoneId => {
+                const dropzone = document.getElementById(dropzoneId);
+                const fileInput = document.getElementById(dropzoneId === 'imageDropzone' ? 'fileInput' : 'editFileInput');
+                const previewContainer = document.getElementById(dropzoneId === 'imageDropzone' ? 'previewContainer' : 'editPreviewContainer');
+                const previewArea = dropzone.querySelector('.dropzone-preview');
+                
+                if (dropzone && fileInput) {
+                    // Clic en la zona para seleccionar archivos
+                    dropzone.addEventListener('click', function() {
+                        fileInput.click();
+                    });
+                    
+                    // Manejar la selección de archivos
+                    fileInput.addEventListener('change', function() {
+                        handleFiles(this.files);
+                    });
+                    
+                    // Prevenir comportamiento predeterminado de arrastrar
+                    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                        dropzone.addEventListener(eventName, preventDefaults, false);
+                    });
+                    
+                    // Resaltar la zona al arrastrar sobre ella
+                    ['dragenter', 'dragover'].forEach(eventName => {
+                        dropzone.addEventListener(eventName, highlight, false);
+                    });
+                    
+                    // Quitar resaltado al salir o soltar
+                    ['dragleave', 'drop'].forEach(eventName => {
+                        dropzone.addEventListener(eventName, unhighlight, false);
+                    });
+                    
+                    // Manejar archivos arrastrados
+                    dropzone.addEventListener('drop', function(e) {
+                        const dt = e.dataTransfer;
+                        const files = dt.files;
+                        handleFiles(files);
+                    }, false);
+                    
+                    // Función para manejar los archivos
+                    function handleFiles(files) {
+                        if (files.length === 0) return;
+                        
+                        // Mostrar área de vista previa
+                        previewArea.classList.remove('d-none');
+                        
+                        // Procesar cada archivo
+                        [...files].forEach(file => {
+                            if (!file.type.match('image.*')) return;
+                            
+                            const reader = new FileReader();
+                            reader.onload = function(e) {
+                                // Crear elemento de vista previa
+                                const col = document.createElement('div');
+                                col.className = 'col-4 col-md-3';
+                                
+                                // Contenedor de la miniatura
+                                const preview = document.createElement('div');
+                                preview.className = 'thumbnail-preview';
+                                
+                                // Imagen
+                                const img = document.createElement('img');
+                                img.src = e.target.result;
+                                img.className = 'img-fluid';
+                                preview.appendChild(img);
+                                
+                                // Botón para eliminar
+                                const removeBtn = document.createElement('div');
+                                removeBtn.className = 'remove-image';
+                                removeBtn.innerHTML = '<i class="bi bi-x"></i>';
+                                removeBtn.addEventListener('click', function(e) {
+                                    e.stopPropagation();
+                                    col.remove();
+                                    
+                                    // Si no hay más imágenes, ocultar área de vista previa
+                                    if (previewContainer.children.length === 0) {
+                                        previewArea.classList.add('d-none');
+                                    }
+                                    
+                                    // Validar número mínimo de imágenes
+                                    validateMinimumImages();
+                                });
+                                
+                                preview.appendChild(removeBtn);
+                                col.appendChild(preview);
+                                previewContainer.appendChild(col);
+                                
+                                // Validar número mínimo de imágenes
+                                validateMinimumImages();
+                            };
+                            reader.readAsDataURL(file);
+                        });
+                    }
+                    
+                    function preventDefaults(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }
+                    
+                    function highlight() {
+                        dropzone.classList.add('bg-light');
+                    }
+                    
+                    function unhighlight() {
+                        dropzone.classList.remove('bg-light');
+                    }
+                    
+                    function validateMinimumImages() {
+                        // Solo para el formulario de nuevo servicio
+                        if (dropzoneId === 'imageDropzone') {
+                            const imageError = document.getElementById('imageError');
+                            if (previewContainer.children.length < 3) {
+                                imageError.style.display = 'block';
+                                return false;
+                            } else {
+                                imageError.style.display = 'none';
+                                return true;
+                            }
+                        }
+                        return true;
+                    }
+                }
+            });
+            
+            // Ver detalle de servicio
+            document.querySelectorAll('.view-service-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const serviceId = this.dataset.serviceId;
+                    loadServiceDetails(serviceId);
+                });
+            });
+            
+            // Editar servicio
+            document.querySelectorAll('.edit-service-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const serviceId = this.dataset.serviceId;
+                    loadServiceForEdit(serviceId);
+                });
+            });
+            
+            // Editar desde vista de detalle
+            document.getElementById('btnEditFromView').addEventListener('click', function() {
+                const viewModal = bootstrap.Modal.getInstance(document.getElementById('viewServiceModal'));
+                viewModal.hide();
+                
+                // Tomar el ID del servicio actual
+                const serviceId = this.dataset.serviceId;
+                
+                // Cargar datos para edición
+                setTimeout(() => {
+                    loadServiceForEdit(serviceId);
+                    const editModal = new bootstrap.Modal(document.getElementById('editServiceModal'));
+                    editModal.show();
+                }, 500);
+            });
+            
+            // Eliminar servicio
+            document.querySelectorAll('.delete-service-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const serviceId = this.dataset.serviceId;
+                    const serviceName = this.dataset.serviceName;
+                    
+                    document.getElementById('deleteServiceName').textContent = serviceName;
+                    document.getElementById('confirmDeleteService').setAttribute('data-service-id', serviceId);
+                });
+            });
+            
+            // Confirmar eliminación
+            document.getElementById('confirmDeleteService').addEventListener('click', function() {
+                const serviceId = this.getAttribute('data-service-id');
+                deleteService(serviceId);
+            });
+            
+            // Guardar nuevo servicio
+            document.getElementById('saveNewService').addEventListener('click', function() {
+                if (validateServiceForm('new')) {
+                    saveService();
+                }
+            });
+            
+            // Guardar cambios en servicio existente
+            document.getElementById('saveEditService').addEventListener('click', function() {
+                if (validateServiceForm('edit')) {
+                    updateService();
+                }
+            });
+            
+            // Funcionalidad para limpiar filtros
+            document.getElementById('clearFilters').addEventListener('click', function() {
+                document.querySelector('[name="SearchTerm"]').value = '';
+                document.querySelector('[name="CategoryFilter"]').value = '';
+                document.getElementById('filterForm').submit();
+            });
+            
+            // Funciones para manipular la galería en la vista detallada
+            function setupImageGallery(images) {
+                const mainImage = document.getElementById('viewMainImage');
+                const thumbnailContainer = document.getElementById('viewImageThumbnails');
+                
+                // Limpiar contenedor de miniaturas
+                thumbnailContainer.innerHTML = '';
+                
+                // Configurar imagen principal con la primera imagen
+                mainImage.src = images[0];
+                
+                // Crear miniaturas
+                images.forEach((image, index) => {
+                    const thumbnail = document.createElement('img');
+                    thumbnail.src = image;
+                    thumbnail.className = 'thumbnail-image' + (index === 0 ? ' active' : '');
+                    thumbnail.alt = 'Miniatura';
+                    
+                    thumbnail.addEventListener('click', function() {
+                        // Actualizar imagen principal
+                        mainImage.src = image;
+                        
+                        // Actualizar clase activa
+                        document.querySelectorAll('.thumbnail-image').forEach(thumb => {
+                            thumb.classList.remove('active');
+                        });
+                        thumbnail.classList.add('active');
+                    });
+                    
+                    thumbnailContainer.appendChild(thumbnail);
+                });
+            }
+            
+            // Función para cargar detalles del servicio (simulada)
+            function loadServiceDetails(serviceId) {
+                // En un caso real, aquí harías una petición AJAX para obtener los datos
+                // Para este ejemplo, usamos datos de prueba según el ID
+                
+                // Simulamos datos diferentes según el ID
+                const services = {
+                    '1': {
+                        name: 'Catering Premium',
+                        category: 'Catering',
+                        basePrice: 5500.00,
+                        description: 'Servicio de catering premium para eventos exclusivos. Incluye menú personalizado, decoración de mesa y personal de servicio.',
+                        eventTypes: ['Boda', 'Corporativo', 'Graduación'],
+                        images: [
+                            '/assets/img/placeholder-img.png',
+                            '/assets/img/placeholder-img.png',
+                            '/assets/img/placeholder-img.png',
+                            '/assets/img/placeholder-img.png'
+                        ]
+                    },
+                    '2': {
+                        name: 'Decoración Elegante',
+                        category: 'Decoración',
+                        basePrice: 3200.00,
+                        description: 'Servicio completo de decoración temática con flores naturales, telas y elementos decorativos premium.',
+                        eventTypes: ['Boda', 'Aniversario', 'Graduación'],
+                        images: [
+                            '/assets/img/placeholder-img.png',
+                            '/assets/img/placeholder-img.png',
+                            '/assets/img/placeholder-img.png'
+                        ]
+                    }
+                };
+                
+                // Obtener datos del servicio seleccionado (o predeterminado si no existe)
+                const service = services[serviceId] || services['1'];
+                
+                // Actualizar los campos en el modal
+                document.getElementById('viewServiceName').textContent = service.name;
+                document.getElementById('viewServiceCategory').textContent = service.category;
+                document.getElementById('viewServicePrice').textContent = service.basePrice.toFixed(2);
+                document.getElementById('viewServiceDescription').textContent = service.description;
+                
+                // Actualizar clase de la categoría
+                const categoryBadge = document.getElementById('viewServiceCategory');
+                categoryBadge.className = 'badge px-3 py-2';
+                
+                // Añadir clase de color según categoría
+                switch(service.category) {
+                    case 'Catering':
+                        categoryBadge.classList.add('bg-success');
+                        break;
+                    case 'Decoración':
+                        categoryBadge.classList.add('bg-info');
+                        break;
+                    case 'Entretenimiento':
+                        categoryBadge.classList.add('bg-warning');
+                        break;
+                    case 'Audio y Video':
+                        categoryBadge.classList.add('bg-danger');
+                        break;
+                    case 'Mobiliario':
+                        categoryBadge.classList.add('bg-primary');
+                        break;
+                    default:
+                        categoryBadge.classList.add('bg-secondary');
+                }
+                
+                // Actualizar tipos de eventos
+                const eventTypesContainer = document.getElementById('viewEventTypes');
+                eventTypesContainer.innerHTML = '';
+                
+                service.eventTypes.forEach(type => {
+                    const badge = document.createElement('span');
+                    badge.className = 'badge bg-light text-dark';
+                    badge.textContent = type;
+                    eventTypesContainer.appendChild(badge);
+                });
+                
+                // Configurar botón de edición con el ID
+                document.getElementById('btnEditFromView').dataset.serviceId = serviceId;
+                
+                // Configurar galería de imágenes
+                setupImageGallery(service.images);
+            }
+            
+            // Función para cargar servicio para edición (simulada)
+            function loadServiceForEdit(serviceId) {
+                // Simulación similar a loadServiceDetails
+                const services = {
+                    '1': {
+                        name: 'Catering Premium',
+                        category: 'Catering',
+                        basePrice: 5500.00,
+                        description: 'Servicio de catering premium para eventos exclusivos. Incluye menú personalizado, decoración de mesa y personal de servicio.',
+                        eventTypes: ['Boda', 'Corporativo', 'Graduación'],
+                        images: [
+                            '/assets/img/placeholder-img.png',
+                            '/assets/img/placeholder-img.png',
+                            '/assets/img/placeholder-img.png',
+                            '/assets/img/placeholder-img.png'
+                        ]
+                    },
+                    '2': {
+                        name: 'Decoración Elegante',
+                        category: 'Decoración',
+                        basePrice: 3200.00,
+                        description: 'Servicio completo de decoración temática con flores naturales, telas y elementos decorativos premium.',
+                        eventTypes: ['Boda', 'Aniversario', 'Graduación'],
+                        images: [
+                            '/assets/img/placeholder-img.png',
+                            '/assets/img/placeholder-img.png',
+                            '/assets/img/placeholder-img.png'
+                        ]
+                    }
+                };
+                
+                const service = services[serviceId] || services['1'];
+                
+                // Actualizar campos del formulario
+                document.getElementById('editServiceId').value = serviceId;
+                document.getElementById('editServiceName').value = service.name;
+                document.getElementById('editServiceCategory').value = service.category;
+                document.getElementById('editServiceBasePrice').value = service.basePrice;
+                document.getElementById('editServiceDescription').value = service.description;
+                
+                // Marcar checkboxes según tipos de evento
+                document.querySelectorAll('#editServiceForm input[type="checkbox"]').forEach(checkbox => {
+                    checkbox.checked = service.eventTypes.includes(checkbox.value);
+                });
+                
+                // Cargar imágenes existentes
+                const imageContainer = document.getElementById('editImageContainer');
+                imageContainer.innerHTML = '';
+                
+                service.images.forEach((image, index) => {
+                    const col = document.createElement('div');
+                    col.className = 'col-4 col-md-3';
+                    
+                    const preview = document.createElement('div');
+                    preview.className = 'thumbnail-preview';
+                    
+                    const img = document.createElement('img');
+                    img.src = image;
+                    img.className = 'img-fluid';
+                    preview.appendChild(img);
+                    
+                    const removeBtn = document.createElement('div');
+                    removeBtn.className = 'remove-image';
+                    removeBtn.innerHTML = '<i class="bi bi-x"></i>';
+                    removeBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        col.remove();
+                    });
+                    
+                    preview.appendChild(removeBtn);
+                    col.appendChild(preview);
+                    imageContainer.appendChild(col);
+                });
+            }
+            
+            // Función para validar el formulario
+            function validateServiceForm(formType) {
+                const prefix = formType === 'edit' ? 'edit' : '';
+                
+                // Validar campos obligatorios
+                const name = document.getElementById(`${prefix}ServiceName`).value;
+                const category = document.getElementById(`${prefix}ServiceCategory`).value;
+                const basePrice = document.getElementById(`${prefix}ServiceBasePrice`).value;
+                const description = document.getElementById(`${prefix}ServiceDescription`).value;
+                
+                if (!name || !category || !basePrice || !description) {
+                    alert('Por favor, completa todos los campos obligatorios.');
+                    return false;
+                }
+                
+                // En el caso de nuevo servicio, validar mínimo de imágenes
+                if (formType !== 'edit') {
+                    const previewContainer = document.getElementById('previewContainer');
+                    if (previewContainer.children.length < 3) {
+                        const imageError = document.getElementById('imageError');
+                        imageError.style.display = 'block';
+                        return false;
+                    }
+                }
+                
+                return true;
+            }
+            
+            // Función para guardar nuevo servicio (simulada)
+            function saveService() {
+                // En un caso real, aquí enviarías los datos al servidor
+                alert('Servicio guardado correctamente (simulado)');
+                
+                // Cerrar modal y recargar página
+                const modal = bootstrap.Modal.getInstance(document.getElementById('newServiceModal'));
+                modal.hide();
+                setTimeout(() => {
+                    location.reload();
+                }, 500);
+            }
+            
+            // Función para actualizar servicio existente (simulada)
+            function updateService() {
+                // En un caso real, aquí enviarías los datos al servidor
+                alert('Servicio actualizado correctamente (simulado)');
+                
+                // Cerrar modal y recargar página
+                const modal = bootstrap.Modal.getInstance(document.getElementById('editServiceModal'));
+                modal.hide();
+                setTimeout(() => {
+                    location.reload();
+                }, 500);
+            }
+            
+            // Función para eliminar servicio (simulada)
+            function deleteService(serviceId) {
+                // En un caso real, aquí enviarías una petición al servidor
+                alert('Servicio eliminado correctamente (simulado)');
+                
+                // Cerrar modal y recargar página
+                const modal = bootstrap.Modal.getInstance(document.getElementById('deleteServiceModal'));
+                modal.hide();
+                setTimeout(() => {
+                    location.reload();
+                }, 500);
+            }
+        });
+        
+        // Modificar esta sección en el script existente, dentro del document.addEventListener('DOMContentLoaded', function() {...})
+
+        // Agregar event listeners para los filtros automáticos
+        const searchInput = document.querySelector('[name="SearchTerm"]');
+        const categoryFilter = document.querySelector('[name="CategoryFilter"]');
+
+        // Filtrar al escribir en el campo de búsqueda (con pequeño delay para evitar muchas solicitudes)
+        searchInput.addEventListener('input', debounce(function() {
+            document.getElementById('filterForm').submit();
+        }, 500));
+
+        // Filtrar inmediatamente al cambiar la categoría
+        categoryFilter.addEventListener('change', function() {
+            document.getElementById('filterForm').submit();
+        });
+
+        // Función debounce para evitar múltiples envíos mientras el usuario escribe
+        function debounce(func, wait) {
+            let timeout;
+            return function() {
+                const context = this;
+                const args = arguments;
+                clearTimeout(timeout);
+                timeout = setTimeout(function() {
+                    func.apply(context, args);
+                }, wait);
+            };
+        }
+    </script>
+}

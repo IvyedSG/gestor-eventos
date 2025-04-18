@@ -73,20 +73,21 @@
     </div>
 </div>
 
-<!-- Tabla de reservas -->
+<!-- Tabla de reservas - MODIFICADA -->
 <div class="card border-0 shadow-sm">
     <div class="card-body p-0">
         <div class="table-responsive">
             <table class="table table-hover align-middle">
                 <thead class="bg-light">
                     <tr>
-                        <th class="ps-4">Cliente</th>
-                        <th>Servicio</th>
+                        <th class="ps-4">Nombre del evento</th>
+                        <th>Nombre del cliente</th>
+                        <th>Correo electrónico</th>
                         <th>Fecha</th>
                         <th>Hora</th>
-                        <th>Monto</th>
+                        <th>Precio total</th>
+                        <th>Tipo de evento</th>
                         <th>Estado</th>
-                        <th>Descripción</th>
                         <th class="text-end pe-4">Acciones</th>
                     </tr>
                 </thead>
@@ -96,11 +97,13 @@
                         foreach (var reservation in Model.Reservations)
                         {
                             <tr>
-                                <td class="ps-4 fw-medium">@reservation.ClientName</td>
-                                <td>@reservation.ServiceName</td>
+                                <td class="ps-4 fw-medium">@reservation.EventName</td>
+                                <td>@reservation.ClientName</td>
+                                <td>@reservation.ClientEmail</td>
                                 <td>@reservation.Date.ToString("dd/MM/yyyy")</td>
                                 <td>@reservation.Time</td>
                                 <td>$@reservation.Amount.ToString("N0")</td>
+                                <td>@reservation.EventType</td>
                                 <td>
                                     @if (reservation.Status == "Confirmada")
                                     {
@@ -120,25 +123,24 @@
                                             <i class="bi bi-x-circle me-1"></i>Cancelada
                                         </span>
                                     }
-                                </td>
-                                <td>
-                                    <span class="text-truncate d-inline-block" style="max-width: 200px;" 
-                                          data-bs-toggle="tooltip" title="@reservation.Description">
-                                        @reservation.Description
-                                    </span>
+                                    else if (reservation.Status == "Finalizada")
+                                    {
+                                        <span class="badge bg-secondary bg-opacity-10 text-secondary px-3 py-2 rounded-pill">
+                                            <i class="bi bi-flag me-1"></i>Finalizada
+                                        </span>
+                                    }
                                 </td>
                                 <td class="text-end pe-4">
-                                    <div class="dropdown">
-                                        <button class="btn btn-sm btn-icon" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="bi bi-three-dots"></i>
+                                    <div class="btn-group">
+                                        <button class="btn btn-sm btn-outline-secondary" title="Ver detalles" data-bs-toggle="modal" data-bs-target="#viewReservationModal">
+                                            <i class="bi bi-eye"></i>
                                         </button>
-                                        <ul class="dropdown-menu dropdown-menu-end">
-                                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#viewReservationModal"><i class="bi bi-eye me-2"></i>Ver detalles</a></li>
-                                            <li><a class="dropdown-item" href="#"><i class="bi bi-pencil me-2"></i>Editar</a></li>
-                                            <li><a class="dropdown-item" href="#"><i class="bi bi-printer me-2"></i>Imprimir</a></li>
-                                            <li><hr class="dropdown-divider"></li>
-                                            <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash me-2"></i>Eliminar</a></li>
-                                        </ul>
+                                        <button class="btn btn-sm btn-outline-primary" title="Editar">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-success" title="Imprimir">
+                                            <i class="bi bi-printer"></i>
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
@@ -147,7 +149,7 @@
                     else
                     {
                         <tr>
-                            <td colspan="8" class="text-center py-4">
+                            <td colspan="9" class="text-center py-4">
                                 <div class="d-flex flex-column align-items-center py-5">
                                     <i class="bi bi-calendar-x text-muted" style="font-size: 3rem;"></i>
                                     <h5 class="mt-3">No se encontraron reservas</h5>
@@ -234,7 +236,7 @@
                                         </div>
                                     </div>
                                     
-                                    <!-- Cliente nuevo (inicialmente oculto) -->
+                                    <!-- Cliente nuevo (inicialmente oculto) - SIMPLIFICADO -->
                                     <div id="newClientForm" style="display: none;">
                                         <div class="row">
                                             <div class="col-md-6 mb-3">
@@ -242,16 +244,8 @@
                                                 <input type="text" class="form-control" placeholder="Nombre del cliente">
                                             </div>
                                             <div class="col-md-6 mb-3">
-                                                <label class="form-label">Correo electrónico</label>
-                                                <input type="email" class="form-control" placeholder="Email">
-                                            </div>
-                                            <div class="col-md-6 mb-3">
                                                 <label class="form-label">Teléfono</label>
                                                 <input type="tel" class="form-control" placeholder="Teléfono">
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label class="form-label">Empresa (opcional)</label>
-                                                <input type="text" class="form-control" placeholder="Empresa">
                                             </div>
                                         </div>
                                     </div>
@@ -266,6 +260,10 @@
                                 <div class="card-body pt-0">
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
+                                            <label class="form-label">Nombre del Evento</label>
+                                            <input type="text" class="form-control" placeholder="Nombre del evento">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
                                             <label class="form-label">Tipo de Evento</label>
                                             <select class="form-select">
                                                 <option selected disabled>Seleccionar tipo</option>
@@ -278,19 +276,11 @@
                                             </select>
                                         </div>
                                         <div class="col-md-6 mb-3">
-                                            <label class="form-label">Número de Invitados</label>
-                                            <input type="number" class="form-control" placeholder="0">
-                                        </div>
-                                        <div class="col-md-6 mb-3">
                                             <label class="form-label">Fecha</label>
                                             <input type="date" class="form-control">
                                         </div>
-                                        <div class="col-md-3 mb-3">
-                                            <label class="form-label">Hora Inicio</label>
-                                            <input type="time" class="form-control">
-                                        </div>
-                                        <div class="col-md-3 mb-3">
-                                            <label class="form-label">Hora Fin</label>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Hora</label>
                                             <input type="time" class="form-control">
                                         </div>
                                         <div class="col-md-12 mb-3">
@@ -301,90 +291,58 @@
                                 </div>
                             </div>
                             
-                            <!-- Servicios -->
+                            <!-- Servicios - MODIFICADO -->
                             <div class="card border-0 shadow-sm mb-3">
-                                <div class="card-header bg-white pt-3 pb-2 border-0 d-flex justify-content-between align-items-center">
-                                    <h6 class="fw-bold mb-0"><i class="bi bi-basket me-2"></i>Servicios</h6>
-                                    <button type="button" class="btn btn-sm btn-primary">
-                                        <i class="bi bi-plus"></i> Añadir
-                                    </button>
+                                <div class="card-header bg-white pt-3 pb-2 border-0">
+                                    <h6 class="fw-bold"><i class="bi bi-basket me-2"></i>Servicios</h6>
                                 </div>
                                 <div class="card-body pt-0">
+                                    <div class="row mb-3">
+                                        <div class="col-md-12">
+                                            <select id="serviceSelect" class="form-select">
+                                                <option selected disabled>Seleccionar servicio para añadir</option>
+                                                <option value="1">Salón Principal - $250,000</option>
+                                                <option value="2">Catering Premium - $15,000 por persona</option>
+                                                <option value="3">DJ - $120,000</option>
+                                                <option value="4">Decoración Básica - $80,000</option>
+                                                <option value="5">Fotografía - $150,000</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
                                     <div class="table-responsive">
-                                        <table class="table table-sm">
+                                        <table class="table table-sm" id="servicesTable">
                                             <thead>
                                                 <tr>
                                                     <th>Servicio</th>
-                                                    <th>Cantidad</th>
+                                                    <th>Cantidad (Items)</th>
                                                     <th>Precio</th>
-                                                    <th class="text-end">Subtotal</th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
+                                                <tr data-service-id="1">
                                                     <td>Salón Principal</td>
                                                     <td>1</td>
                                                     <td>$250,000</td>
-                                                    <td class="text-end">$250,000</td>
-                                                    <td class="text-end"><button class="btn btn-sm btn-link text-danger"><i class="bi bi-trash"></i></button></td>
+                                                    <td class="text-end"><button class="btn btn-sm btn-link text-danger delete-service"><i class="bi bi-trash"></i></button></td>
                                                 </tr>
-                                                <tr>
+                                                <tr data-service-id="2">
                                                     <td>Catering Premium</td>
                                                     <td>50</td>
-                                                    <td>$15,000</td>
-                                                    <td class="text-end">$750,000</td>
-                                                    <td class="text-end"><button class="btn btn-sm btn-link text-danger"><i class="bi bi-trash"></i></button></td>
+                                                    <td>$750,000</td>
+                                                    <td class="text-end"><button class="btn btn-sm btn-link text-danger delete-service"><i class="bi bi-trash"></i></button></td>
                                                 </tr>
-                                                <tr>
+                                                <tr data-service-id="3">
                                                     <td>DJ</td>
                                                     <td>1</td>
                                                     <td>$120,000</td>
-                                                    <td class="text-end">$120,000</td>
-                                                    <td class="text-end"><button class="btn btn-sm btn-link text-danger"><i class="bi bi-trash"></i></button></td>
+                                                    <td class="text-end"><button class="btn btn-sm btn-link text-danger delete-service"><i class="bi bi-trash"></i></button></td>
                                                 </tr>
                                                 <tr class="fw-bold bg-light">
-                                                    <td colspan="3" class="text-end">Total:</td>
-                                                    <td class="text-end">$1,120,000</td>
+                                                    <td colspan="2" class="text-end">Total:</td>
+                                                    <td id="servicesTotalAmount">$1,120,000</td>
                                                     <td></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Materiales -->
-                            <div class="card border-0 shadow-sm mb-3">
-                                <div class="card-header bg-white pt-3 pb-2 border-0 d-flex justify-content-between align-items-center">
-                                    <h6 class="fw-bold mb-0"><i class="bi bi-box-seam me-2"></i>Materiales del Inventario</h6>
-                                    <button type="button" class="btn btn-sm btn-primary">
-                                        <i class="bi bi-plus"></i> Añadir
-                                    </button>
-                                </div>
-                                <div class="card-body pt-0">
-                                    <div class="table-responsive">
-                                        <table class="table table-sm">
-                                            <thead>
-                                                <tr>
-                                                    <th>Material</th>
-                                                    <th>Cantidad</th>
-                                                    <th>Disponibilidad</th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Mesas redondas</td>
-                                                    <td>8</td>
-                                                    <td><span class="badge bg-success">Disponible</span></td>
-                                                    <td class="text-end"><button class="btn btn-sm btn-link text-danger"><i class="bi bi-trash"></i></button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Sillas Tiffany</td>
-                                                    <td>50</td>
-                                                    <td><span class="badge bg-success">Disponible</span></td>
-                                                    <td class="text-end"><button class="btn btn-sm btn-link text-danger"><i class="bi bi-trash"></i></button></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -394,27 +352,8 @@
                         </form>
                     </div>
                     
-                    <!-- Calendario y estado -->
+                    <!-- Estado de reserva - MODIFICADO -->
                     <div class="col-md-4">
-                        <div class="card border-0 shadow-sm mb-3">
-                            <div class="card-header bg-white pt-3 pb-2 border-0">
-                                <h6 class="fw-bold"><i class="bi bi-calendar-check me-2"></i>Disponibilidad</h6>
-                            </div>
-                            <div class="card-body pt-0">
-                                <div class="calendar-container bg-light p-2 rounded mb-3">
-                                    <!-- Aquí iría un pequeño calendario -->
-                                    <div class="text-center p-4">
-                                        <i class="bi bi-calendar-week" style="font-size: 3rem;"></i>
-                                        <p class="mt-2">Vista del calendario de disponibilidad</p>
-                                    </div>
-                                </div>
-                                <div class="d-flex gap-2 flex-wrap">
-                                    <span class="badge bg-success px-3 py-2">Disponible</span>
-                                    <span class="badge bg-warning px-3 py-2">Parcialmente ocupado</span>
-                                    <span class="badge bg-danger px-3 py-2">No disponible</span>
-                                </div>
-                            </div>
-                        </div>
                         <div class="card border-0 shadow-sm">
                             <div class="card-header bg-white pt-3 pb-2 border-0">
                                 <h6 class="fw-bold"><i class="bi bi-info-circle me-2"></i>Estado de la Reserva</h6>
@@ -430,15 +369,12 @@
                                     </select>
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label">Pago inicial</label>
+                                    <label class="form-label">Precio total</label>
                                     <div class="input-group">
                                         <span class="input-group-text">$</span>
-                                        <input type="number" class="form-control" placeholder="0">
+                                        <input type="number" id="totalPrice" class="form-control" value="1120000">
                                     </div>
-                                </div>
-                                <div>
-                                    <label class="form-label">Notas internas</label>
-                                    <textarea class="form-control" rows="3" placeholder="Notas solo visibles para administradores..."></textarea>
+                                    <small class="text-muted">El precio total se actualiza automáticamente según los servicios seleccionados, pero puede ser modificado manualmente.</small>
                                 </div>
                             </div>
                         </div>
@@ -455,162 +391,236 @@
     </div>
 </div>
 
+<!-- Modal para Seleccionar Servicios -->
+<div class="modal fade" id="selectServiceModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-basket me-2"></i>Seleccionar Servicios</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <input type="text" class="form-control" placeholder="Buscar servicios...">
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;"></th>
+                                <th>Servicio</th>
+                                <th>Descripción</th>
+                                <th>Precio</th>
+                                <th>Cantidad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="service1">
+                                    </div>
+                                </td>
+                                <td>Salón Principal</td>
+                                <td>Salón con capacidad para 200 personas</td>
+                                <td>$250,000</td>
+                                <td>
+                                    <input type="number" class="form-control form-control-sm" value="1" min="1" style="width: 70px">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="service2">
+                                    </div>
+                                </td>
+                                <td>Catering Premium</td>
+                                <td>Menú gourmet por persona</td>
+                                <td>$15,000</td>
+                                <td>
+                                    <input type="number" class="form-control form-control-sm" value="1" min="1" style="width: 70px">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="service3">
+                                    </div>
+                                </td>
+                                <td>DJ</td>
+                                <td>DJ profesional con equipo completo</td>
+                                <td>$120,000</td>
+                                <td>
+                                    <input type="number" class="form-control form-control-sm" value="1" min="1" style="width: 70px">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="service4">
+                                    </div>
+                                </td>
+                                <td>Decoración Básica</td>
+                                <td>Decoración estándar del salón</td>
+                                <td>$80,000</td>
+                                <td>
+                                    <input type="number" class="form-control form-control-sm" value="1" min="1" style="width: 70px">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="service5">
+                                    </div>
+                                </td>
+                                <td>Fotografía</td>
+                                <td>Servicio de fotografía profesional</td>
+                                <td>$150,000</td>
+                                <td>
+                                    <input type="number" class="form-control form-control-sm" value="1" min="1" style="width: 70px">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                    <i class="bi bi-check-lg me-1"></i>Añadir Seleccionados
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Modal para Ver Detalle de Reserva -->
 <div class="modal fade" id="viewReservationModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header bg-light">
                 <h5 class="modal-title">
-                    <i class="bi bi-info-circle me-2"></i>Detalle de Reserva #1234
+                    <i class="bi bi-info-circle me-2"></i>Detalle de Reserva #<span id="viewReservationId">1234</span>
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <!-- Cabecera con info básica -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <h4 id="viewEventName" class="mb-2">Boda de Carlos y María</h4>
+                                <span id="viewEventType" class="badge bg-info bg-opacity-10 text-info px-3 py-2 mb-0">
+                                    <i class="bi bi-bookmark me-1"></i>Boda
+                                </span>
+                            </div>
+                            <div class="col-md-4 text-md-end">
+                                <span id="viewEventStatus" class="badge bg-success bg-opacity-10 text-success px-3 py-2">
+                                    <i class="bi bi-check-circle me-1"></i>Confirmada
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Información principal -->
                 <div class="row mb-4">
                     <div class="col-md-6">
-                        <h6 class="text-muted mb-2">Información del Cliente</h6>
-                        <h5 class="mb-1">Carlos Rodríguez</h5>
-                        <p class="mb-1"><i class="bi bi-envelope me-2"></i>carlos@ejemplo.com</p>
-                        <p class="mb-0"><i class="bi bi-telephone me-2"></i>+56 9 1234 5678</p>
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-header bg-white pt-3 pb-2 border-0">
+                                <h6 class="fw-bold"><i class="bi bi-person me-2"></i>Información del Cliente</h6>
+                            </div>
+                            <div class="card-body pt-0">
+                                <div class="mb-3">
+                                    <p class="mb-1 fw-medium" id="viewClientName">Carlos Rodríguez</p>
+                                    <p class="mb-1"><i class="bi bi-envelope me-2"></i><span id="viewClientEmail">carlos@ejemplo.com</span></p>
+                                    <p class="mb-0"><i class="bi bi-telephone me-2"></i><span id="viewClientPhone">+56 9 1234 5678</span></p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-6 text-md-end">
-                        <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 mb-2">
-                            <i class="bi bi-check-circle me-1"></i>Confirmada
-                        </span>
-                        <h5 class="mb-1">Boda</h5>
-                        <p class="mb-1"><i class="bi bi-calendar me-2"></i>15/05/2025</p>
-                        <p class="mb-0"><i class="bi bi-clock me-2"></i>19:00 - 02:00</p>
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-header bg-white pt-3 pb-2 border-0">
+                                <h6 class="fw-bold"><i class="bi bi-calendar-event me-2"></i>Detalles del Evento</h6>
+                            </div>
+                            <div class="card-body pt-0">
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="bi bi-calendar me-2 text-muted"></i>
+                                    <span id="viewEventDate">18/04/2025</span>
+                                </div>
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="bi bi-clock me-2 text-muted"></i>
+                                    <span id="viewEventTime">16:00</span>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-cash me-2 text-muted"></i>
+                                    <span id="viewEventPrice" class="fw-medium">$1,570,000</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card border-light bg-light mb-3">
-                            <div class="card-body">
-                                <h6 class="mb-2">Descripción del Evento</h6>
-                                <p class="mb-0">Boda para 80 personas con ceremonia y recepción. El novio solicita decoración en tonos azules y plateados. Se requiere estacionamiento para al menos 30 vehículos.</p>
-                            </div>
-                        </div>
+                <!-- Descripción -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white pt-3 pb-2 border-0">
+                        <h6 class="fw-bold"><i class="bi bi-file-text me-2"></i>Descripción del Evento</h6>
+                    </div>
+                    <div class="card-body pt-0">
+                        <p id="viewEventDescription" class="mb-0">
+                            Boda para 150 personas en Salón Diamante. El novio solicita decoración en tonos azules y plateados. 
+                            Se requiere estacionamiento para al menos 30 vehículos.
+                        </p>
                     </div>
                 </div>
                 
-                <div class="row">
-                    <div class="col-md-6">
-                        <h6 class="mb-3">Servicios Contratados</h6>
-                        <ul class="list-group list-group-flush mb-4">
-                            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                                <span>Salón Principal (1)</span>
-                                <span class="fw-medium">$250,000</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                                <span>Catering Premium (80)</span>
-                                <span class="fw-medium">$1,200,000</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                                <span>DJ (1)</span>
-                                <span class="fw-medium">$120,000</span>
-                            </li>
-                        </ul>
-                        <div class="d-flex justify-content-between fw-bold mb-4">
-                            <span>Total</span>
-                            <span>$1,570,000</span>
-                        </div>
-                        
-                        <h6 class="mb-3">Materiales Asignados</h6>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                                <span>Mesas redondas</span>
-                                <span>8 unidades</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                                <span>Sillas Tiffany</span>
-                                <span>80 unidades</span>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                                <span>Manteles blancos</span>
-                                <span>8 unidades</span>
-                            </li>
-                        </ul>
+                <!-- Servicios contratados -->
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white pt-3 pb-2 border-0">
+                        <h6 class="fw-bold"><i class="bi bi-basket me-2"></i>Servicios Contratados</h6>
                     </div>
-                    
-                    <div class="col-md-6">
-                        <h6 class="mb-3">Estado del Pago</h6>
-                        <div class="card border-0 shadow-sm mb-4">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between mb-3">
-                                    <span>Total</span>
-                                    <span class="fw-medium">$1,570,000</span>
-                                </div>
-                                <div class="d-flex justify-content-between mb-3">
-                                    <span>Pagado</span>
-                                    <span class="fw-medium text-success">$785,000</span>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <span>Pendiente</span>
-                                    <span class="fw-medium text-danger">$785,000</span>
-                                </div>
-                                
-                                <div class="progress mt-3" style="height: 10px;">
-                                    <div class="progress-bar bg-success" role="progressbar" style="width: 50%;" 
-                                         aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <div class="text-center mt-2">
-                                    <small>50% pagado</small>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <h6 class="mb-3">Historial de la Reserva</h6>
-                        <div class="timeline">
-                            <div class="timeline-item pb-3">
-                                <div class="d-flex">
-                                    <div class="timeline-icon bg-primary">
-                                        <i class="bi bi-check-lg text-white"></i>
-                                    </div>
-                                    <div class="ms-3">
-                                        <h6 class="mb-1">Reserva confirmada</h6>
-                                        <p class="text-muted mb-0 small">15/03/2025 - 10:30</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="timeline-item pb-3">
-                                <div class="d-flex">
-                                    <div class="timeline-icon bg-success">
-                                        <i class="bi bi-cash text-white"></i>
-                                    </div>
-                                    <div class="ms-3">
-                                        <h6 class="mb-1">Pago inicial recibido</h6>
-                                        <p class="text-muted mb-0 small">10/03/2025 - 15:45</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="timeline-item">
-                                <div class="d-flex">
-                                    <div class="timeline-icon bg-secondary">
-                                        <i class="bi bi-calendar-plus text-white"></i>
-                                    </div>
-                                    <div class="ms-3">
-                                        <h6 class="mb-1">Reserva creada</h6>
-                                        <p class="text-muted mb-0 small">05/03/2025 - 09:15</p>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="card-body pt-0">
+                        <div class="table-responsive">
+                            <table class="table table-sm" id="viewServicesTable">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Servicio</th>
+                                        <th>Cantidad (Items)</th>
+                                        <th class="text-end">Precio</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Salón Principal</td>
+                                        <td>1</td>
+                                        <td class="text-end">$250,000</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Catering Premium</td>
+                                        <td>50</td>
+                                        <td class="text-end">$750,000</td>
+                                    </tr>
+                                    <tr>
+                                        <td>DJ</td>
+                                        <td>1</td>
+                                        <td class="text-end">$120,000</td>
+                                    </tr>
+                                    <tr class="fw-bold bg-light">
+                                        <td colspan="2" class="text-end">Total:</td>
+                                        <td class="text-end" id="viewServicesTotalAmount">$1,120,000</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <div class="d-flex gap-2">
-                    <button type="button" class="btn btn-warning" title="Enviar recordatorio">
-                        <i class="bi bi-bell me-1"></i>Enviar Recordatorio
-                    </button>
-                    <button type="button" class="btn btn-primary" title="Editar reserva">
-                        <i class="bi bi-pencil me-1"></i>Editar
-                    </button>
-                    <button type="button" class="btn btn-danger" title="Cancelar reserva">
-                        <i class="bi bi-x-circle me-1"></i>Cancelar Reserva
-                    </button>
-                </div>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-lg me-1"></i>Cerrar
+                </button>
             </div>
         </div>
     </div>
@@ -618,6 +628,7 @@
 
 @section Scripts {
     <script>
+        // Configurar modal de ver detalles de reserva
         document.addEventListener('DOMContentLoaded', function() {
             // Inicializar tooltips para descripciones truncadas
             var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
@@ -649,6 +660,237 @@
                 
                 // Opcional: enviar el formulario automáticamente después de limpiar
                 document.getElementById('filterForm').submit();
+            });
+            
+            // Definición de servicios disponibles
+            const servicios = {
+                1: { nombre: "Salón Principal", precio: 250000, items: 1 },
+                2: { nombre: "Catering Premium", precio: 15000, items: 50 },
+                3: { nombre: "DJ", precio: 120000, items: 1 },
+                4: { nombre: "Decoración Básica", precio: 80000, items: 1 },
+                5: { nombre: "Fotografía", precio: 150000, items: 1 }
+            };
+            
+            // Actualizar el select de servicios ocultando los ya seleccionados
+            function actualizarSelectServicios() {
+                const select = document.getElementById('serviceSelect');
+                const serviciosEnTabla = Array.from(document.querySelectorAll('#servicesTable tr[data-service-id]'))
+                    .map(row => row.getAttribute('data-service-id'));
+                
+                // Restaurar todas las opciones
+                Array.from(select.options).forEach((option, index) => {
+                    if (index === 0) return; // Saltar la primera opción (placeholder)
+                    option.style.display = '';
+                });
+                
+                // Ocultar opciones ya seleccionadas
+                serviciosEnTabla.forEach(serviceId => {
+                    const option = select.querySelector(`option[value="${serviceId}"]`);
+                    if (option) {
+                        option.style.display = 'none';
+                    }
+                });
+            }
+            
+            // Inicializar el select
+            actualizarSelectServicios();
+            
+            // Añadir servicio al hacer clic en el selector
+            document.getElementById('serviceSelect').addEventListener('change', function() {
+                const serviceId = this.value;
+                if (!serviceId || serviceId === 'Seleccionar servicio para añadir') return;
+                
+                const servicio = servicios[serviceId];
+                if (!servicio) return;
+                
+                // Crear nueva fila en la tabla
+                const tbody = document.querySelector('#servicesTable tbody');
+                const newRow = document.createElement('tr');
+                newRow.setAttribute('data-service-id', serviceId);
+                
+                // Cantidad fija según el tipo de servicio
+                const cantidad = servicio.items;
+                const precioTotal = servicio.precio * cantidad;
+                
+                newRow.innerHTML = `
+                    <td>${servicio.nombre}</td>
+                    <td>${cantidad}</td>
+                    <td>${formatCurrency(precioTotal)}</td>
+                    <td class="text-end">
+                        <button class="btn btn-sm btn-link text-danger delete-service">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                `;
+                
+                // Insertar antes de la fila del total
+                const totalRow = tbody.querySelector('tr.fw-bold');
+                tbody.insertBefore(newRow, totalRow);
+                
+                // Actualizar el total
+                actualizarTotal();
+                
+                // Actualizar opciones disponibles en el selector
+                actualizarSelectServicios();
+                
+                // Reiniciar selección
+                this.selectedIndex = 0;
+            });
+            
+            // Eliminar servicio al hacer clic en el ícono de basura
+            document.querySelector('#servicesTable').addEventListener('click', function(e) {
+                if (e.target.closest('.delete-service')) {
+                    const row = e.target.closest('tr');
+                    const serviceId = row.getAttribute('data-service-id');
+                    
+                    // Eliminar la fila
+                    row.remove();
+                    
+                    // Actualizar total
+                    actualizarTotal();
+                    
+                    // Actualizar opciones disponibles en el selector
+                    actualizarSelectServicios();
+                }
+            });
+            
+            // Función para formatear moneda
+            function formatCurrency(amount) {
+                return new Intl.NumberFormat('es-CL', { 
+                    style: 'currency', 
+                    currency: 'CLP', 
+                    maximumFractionDigits: 0 
+                }).format(amount);
+            }
+            
+            // Función para actualizar el total
+            function actualizarTotal() {
+                let total = 0;
+                const filas = document.querySelectorAll('#servicesTable tbody tr:not(.fw-bold)');
+                
+                filas.forEach(fila => {
+                    const precioText = fila.cells[2].textContent;
+                    const precio = parseInt(precioText.replace(/[^\d]/g, ''));
+                    total += precio;
+                });
+                
+                document.getElementById('servicesTotalAmount').textContent = formatCurrency(total);
+                document.getElementById('totalPrice').value = total;
+            }
+            
+            // Actualizar precio total al cambiar manualmente
+            document.getElementById('totalPrice').addEventListener('input', function() {
+                // No es necesario actualizar la tabla, solo permitimos la edición manual
+            });
+            
+            // Configurar eventos iniciales para botones de eliminar servicio en filas existentes
+            document.querySelectorAll('.delete-service').forEach(button => {
+                button.addEventListener('click', function() {
+                    const row = this.closest('tr');
+                    const serviceId = row.getAttribute('data-service-id');
+                    
+                    // Eliminar la fila
+                    row.remove();
+                    
+                    // Actualizar total
+                    actualizarTotal();
+                    
+                    // Actualizar opciones disponibles en el selector
+                    actualizarSelectServicios();
+                });
+            });
+            
+            // Calcular total inicial
+            actualizarTotal();
+            
+            // Cargar datos en el modal de ver detalle cuando se abre
+            const viewReservationModal = document.getElementById('viewReservationModal');
+            viewReservationModal.addEventListener('show.bs.modal', function (event) {
+                // Obtener el botón que activó el modal
+                const button = event.relatedTarget;
+                
+                // Obtener el ID de la reserva desde el botón (por ejemplo, data-reservation-id)
+                const reservationId = button.getAttribute('data-reservation-id') || "1";
+                
+                // En un caso real, aquí harías una petición AJAX para obtener los detalles de la reserva
+                // Para esta demostración, usaremos datos de ejemplo
+                
+                // Datos de ejemplo de una reserva
+                const reservationExample = {
+                    id: reservationId,
+                    eventName: "Boda de Carlos y María",
+                    clientName: "Carlos Rodríguez",
+                    clientEmail: "carlos@ejemplo.com",
+                    clientPhone: "+56 9 1234 5678",
+                    status: "Confirmada",
+                    eventType: "Boda",
+                    date: "18/04/2025",
+                    time: "16:00",
+                    price: 1120000,
+                    description: "Boda para 150 personas en Salón Diamante. El novio solicita decoración en tonos azules y plateados. Se requiere estacionamiento para al menos 30 vehículos.",
+                    services: [
+                        { name: "Salón Principal", quantity: 1, price: 250000 },
+                        { name: "Catering Premium", quantity: 50, price: 750000 },
+                        { name: "DJ", quantity: 1, price: 120000 }
+                    ]
+                };
+                
+                // Actualizar los elementos en el modal con los datos de la reserva
+                document.getElementById('viewReservationId').textContent = reservationExample.id;
+                document.getElementById('viewEventName').textContent = reservationExample.eventName;
+                document.getElementById('viewClientName').textContent = reservationExample.clientName;
+                document.getElementById('viewClientEmail').textContent = reservationExample.clientEmail;
+                document.getElementById('viewClientPhone').textContent = reservationExample.clientPhone;
+                document.getElementById('viewEventDate').textContent = reservationExample.date;
+                document.getElementById('viewEventTime').textContent = reservationExample.time;
+                document.getElementById('viewEventPrice').textContent = formatCurrency(reservationExample.price);
+                document.getElementById('viewEventDescription').textContent = reservationExample.description;
+                
+                // Actualizar tipo de evento y estado con el diseño de badge adecuado
+                const eventTypeEl = document.getElementById('viewEventType');
+                eventTypeEl.innerHTML = `<i class="bi bi-bookmark me-1"></i>${reservationExample.eventType}`;
+                
+                const eventStatusEl = document.getElementById('viewEventStatus');
+                if (reservationExample.status === "Confirmada") {
+                    eventStatusEl.className = "badge bg-success bg-opacity-10 text-success px-3 py-2";
+                    eventStatusEl.innerHTML = '<i class="bi bi-check-circle me-1"></i>Confirmada';
+                } else if (reservationExample.status === "Pendiente") {
+                    eventStatusEl.className = "badge bg-warning bg-opacity-10 text-warning px-3 py-2";
+                    eventStatusEl.innerHTML = '<i class="bi bi-clock me-1"></i>Pendiente';
+                } else if (reservationExample.status === "Cancelada") {
+                    eventStatusEl.className = "badge bg-danger bg-opacity-10 text-danger px-3 py-2";
+                    eventStatusEl.innerHTML = '<i class="bi bi-x-circle me-1"></i>Cancelada';
+                } else if (reservationExample.status === "Finalizada") {
+                    eventStatusEl.className = "badge bg-secondary bg-opacity-10 text-secondary px-3 py-2";
+                    eventStatusEl.innerHTML = '<i class="bi bi-flag me-1"></i>Finalizada';
+                }
+                
+                // Cargar servicios en la tabla
+                const servicesTable = document.getElementById('viewServicesTable').querySelector('tbody');
+                // Limpiar tabla excepto la última fila (total)
+                const totalRow = servicesTable.querySelector('tr.fw-bold');
+                while (servicesTable.firstChild && servicesTable.firstChild !== totalRow) {
+                    servicesTable.removeChild(servicesTable.firstChild);
+                }
+                
+                // Agregar servicios
+                let totalAmount = 0;
+                reservationExample.services.forEach(service => {
+                    const serviceAmount = service.quantity * service.price;
+                    totalAmount += serviceAmount;
+                    
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${service.name}</td>
+                        <td>${service.quantity}</td>
+                        <td class="text-end">${formatCurrency(serviceAmount)}</td>
+                    `;
+                    
+                    servicesTable.insertBefore(row, totalRow);
+                });
+                
+                // Actualizar total
+                document.getElementById('viewServicesTotalAmount').textContent = formatCurrency(totalAmount);
             });
         });
     </script>

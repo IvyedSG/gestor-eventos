@@ -51,8 +51,9 @@ namespace gestor_eventos.Pages.Reservas
             if (!string.IsNullOrEmpty(SearchTerm))
             {
                 Reservations = Reservations.Where(r => 
+                    r.EventName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ||
                     r.ClientName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ||
-                    r.ServiceName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ||
+                    r.ClientEmail.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ||
                     r.Description.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)
                 ).ToList();
             }
@@ -62,13 +63,13 @@ namespace gestor_eventos.Pages.Reservas
                 Reservations = Reservations.Where(r => r.Status == StatusFilter).ToList();
             }
             
-            // Añadimos la lógica para filtrar por tipo de evento
+            // Filtrar por tipo de evento
             if (!string.IsNullOrEmpty(EventTypeFilter))
             {
-                Reservations = Reservations.Where(r => r.ServiceName.Contains(EventTypeFilter)).ToList();
+                Reservations = Reservations.Where(r => r.EventType == EventTypeFilter).ToList();
             }
             
-            // Añadimos la lógica para filtrar por fecha específica
+            // Filtrar por fecha específica
             if (DateFilter.HasValue)
             {
                 Reservations = Reservations.Where(r => r.Date.Date == DateFilter.Value.Date).ToList();
@@ -128,79 +129,114 @@ namespace gestor_eventos.Pages.Reservas
                 new Reservation
                 {
                     Id = 1,
+                    EventName = "Boda de Carlos y María",
                     ClientName = "Carlos Rodríguez",
+                    ClientEmail = "carlos@ejemplo.com",
                     ServiceName = "Boda Completa",
+                    EventType = "Boda",
                     Date = new DateTime(2025, 4, 18),
                     Time = "16:00",
-                    Amount = 54000,
+                    Amount = 1540000,
                     Status = "Confirmada",
                     Description = "Boda para 150 personas en Salón Diamante"
                 },
                 new Reservation
                 {
                     Id = 2,
+                    EventName = "Cumpleaños de Lucía",
                     ClientName = "María González",
+                    ClientEmail = "maria@ejemplo.com",
                     ServiceName = "Cumpleaños",
+                    EventType = "Cumpleaños",
                     Date = new DateTime(2025, 4, 22),
                     Time = "19:30",
-                    Amount = 15000,
+                    Amount = 850000,
                     Status = "Pendiente",
                     Description = "Cumpleaños para 50 personas, requiere decoración temática"
                 },
                 new Reservation
                 {
                     Id = 3,
+                    EventName = "Tech Summit 2025",
                     ClientName = "Empresa ABC",
+                    ClientEmail = "eventos@abc.com",
                     ServiceName = "Conferencia Corporativa",
+                    EventType = "Corporativo",
                     Date = new DateTime(2025, 5, 5),
                     Time = "09:00",
-                    Amount = 35000,
+                    Amount = 2350000,
                     Status = "Confirmada",
                     Description = "Conferencia de tecnología para 200 asistentes"
                 },
                 new Reservation
                 {
                     Id = 4,
+                    EventName = "Graduación Universidad Central",
                     ClientName = "Juan Pérez",
+                    ClientEmail = "juan@ejemplo.com",
                     ServiceName = "Fiesta de Graduación",
+                    EventType = "Graduación",
                     Date = new DateTime(2025, 5, 15),
                     Time = "20:00",
-                    Amount = 28000,
+                    Amount = 1280000,
                     Status = "Cancelada",
                     Description = "Evento cancelado por el cliente"
                 },
                 new Reservation
                 {
                     Id = 5,
+                    EventName = "Bautizo de Matías",
                     ClientName = "Ana López",
+                    ClientEmail = "ana@ejemplo.com",
                     ServiceName = "Bautizo",
+                    EventType = "Bautizo",
                     Date = new DateTime(2025, 4, 30),
                     Time = "11:30",
-                    Amount = 18000,
+                    Amount = 980000,
                     Status = "Pendiente",
                     Description = "Bautizo con recepción para 80 personas"
                 },
                 new Reservation
                 {
                     Id = 6,
+                    EventName = "25 Aniversario",
                     ClientName = "Roberto Díaz",
+                    ClientEmail = "roberto@ejemplo.com",
                     ServiceName = "Aniversario",
+                    EventType = "Aniversario",
                     Date = new DateTime(2025, 5, 10),
                     Time = "20:30",
-                    Amount = 22000,
+                    Amount = 1220000,
                     Status = "Confirmada",
                     Description = "Cena de aniversario para 40 personas"
                 },
                 new Reservation
                 {
                     Id = 7,
+                    EventName = "Lanzamiento Producto Z-1000",
                     ClientName = "Empresa XYZ",
+                    ClientEmail = "marketing@xyz.com",
                     ServiceName = "Lanzamiento de Producto",
+                    EventType = "Corporativo",
                     Date = new DateTime(2025, 5, 20),
                     Time = "17:00",
-                    Amount = 42000,
+                    Amount = 1842000,
                     Status = "Pendiente",
                     Description = "Presentación de nuevo producto con cóctel para 120 invitados"
+                },
+                new Reservation
+                {
+                    Id = 8,
+                    EventName = "Conferencia Anual de Medicina",
+                    ClientName = "Hospital Central",
+                    ClientEmail = "eventos@hospitalcentral.com",
+                    ServiceName = "Conferencia",
+                    EventType = "Corporativo",
+                    Date = new DateTime(2025, 6, 5),
+                    Time = "08:30",
+                    Amount = 2750000,
+                    Status = "Finalizada",
+                    Description = "Conferencia médica con participación internacional"
                 }
             };
         }
@@ -209,12 +245,15 @@ namespace gestor_eventos.Pages.Reservas
     public class Reservation
     {
         public int Id { get; set; }
+        public string EventName { get; set; }
         public string ClientName { get; set; }
-        public string ServiceName { get; set; }
+        public string ClientEmail { get; set; }
         public DateTime Date { get; set; }
         public string Time { get; set; }
         public decimal Amount { get; set; }
+        public string EventType { get; set; }
         public string Status { get; set; }
         public string Description { get; set; }
+        public string ServiceName { get; set; } // Mantener para compatibilidad con código existente
     }
 }

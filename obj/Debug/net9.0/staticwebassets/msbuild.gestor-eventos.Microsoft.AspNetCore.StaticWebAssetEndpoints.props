@@ -1,5 +1,17 @@
 ﻿<Project>
   <ItemGroup>
+    <StaticWebAssetEndpoint Include="_content/gestor-eventos/assets/img/placeholder-img.ddvxd4bphw.png">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\assets\img\placeholder-img.png'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"ddvxd4bphw"},{"Name":"integrity","Value":"sha256-EcoKabUGqx89RZfPuG\u002BhgrVqq6ctt1iLaeTTuaopFJ4="},{"Name":"label","Value":"_content/gestor-eventos/assets/img/placeholder-img.png"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"13857"},{"Name":"Content-Type","Value":"image/png"},{"Name":"ETag","Value":"\u0022EcoKabUGqx89RZfPuG\u002BhgrVqq6ctt1iLaeTTuaopFJ4=\u0022"},{"Name":"Last-Modified","Value":"Thu, 17 Apr 2025 17:27:52 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/gestor-eventos/assets/img/placeholder-img.png">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\assets\img\placeholder-img.png'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-EcoKabUGqx89RZfPuG\u002BhgrVqq6ctt1iLaeTTuaopFJ4="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=3600, must-revalidate"},{"Name":"Content-Length","Value":"13857"},{"Name":"Content-Type","Value":"image/png"},{"Name":"ETag","Value":"\u0022EcoKabUGqx89RZfPuG\u002BhgrVqq6ctt1iLaeTTuaopFJ4=\u0022"},{"Name":"Last-Modified","Value":"Thu, 17 Apr 2025 17:27:52 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/gestor-eventos/css/site.b9sayid5wm.css">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\site.css'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>

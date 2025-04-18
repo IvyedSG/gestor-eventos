@@ -5,6 +5,10 @@
       "PackagePath": "staticwebassets/gestor-eventos.h9fmkt2ib1.bundle.scp.css"
     },
     {
+      "Id": "/Users/sagox16/Documents/proyectos_u/gestor-eventos/wwwroot/assets/img/placeholder-img.png",
+      "PackagePath": "staticwebassets/assets/img/placeholder-img.png"
+    },
+    {
       "Id": "/Users/sagox16/Documents/proyectos_u/gestor-eventos/wwwroot/css/site.css",
       "PackagePath": "staticwebassets/css/site.css"
     },
