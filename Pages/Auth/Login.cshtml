@@ -125,7 +125,7 @@
             width: 100%;
             height: 100%;
             opacity: 0.025;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%234F46E5' fill-opacity='1'%3E%3Cpath opacity='.5' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%234F46E5' fill-opacity='1'%3E%3Cpath opacity='.5' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
         
         /* Logo y título */
@@ -425,6 +425,8 @@
             }
         }
     </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <!-- Burbujas de fondo -->
@@ -451,16 +453,6 @@
                 </div>
                 <h4 class="login-title">Iniciar Sesión</h4>
             </div>
-            
-            @if (!string.IsNullOrEmpty(Model.ErrorMessage))
-            {
-                <div class="alert alert-danger" role="alert">
-                    <div class="d-flex align-items-center">
-                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                        <span>@Model.ErrorMessage</span>
-                    </div>
-                </div>
-            }
             
             <form method="post">
                 <div class="mb-4">
@@ -498,5 +490,43 @@
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <!-- Los scripts de validación permanecen activos para el formulario de inicio de sesión -->
+
+    <script>
+    // Verificar si hay mensajes de error
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <text>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                title: 'Error',
+                text: '@Html.Raw(Json.Serialize(Model.ErrorMessage))',
+                icon: 'error',
+                confirmButtonText: 'Intentar de nuevo',
+                confirmButtonColor: '#4F46E5'
+            });
+        });
+        </text>
+    }
+    
+    // Verificar si hay mensajes de éxito con la bandera de mostrar alerta
+    @if (!string.IsNullOrEmpty(Model.SuccessMessage) && Model.ShowSuccessAlert)
+    {
+        <text>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                title: 'Éxito',
+                text: '@Html.Raw(Json.Serialize(Model.SuccessMessage))',
+                icon: 'success',
+                confirmButtonText: 'Continuar',
+                confirmButtonColor: '#10B981'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '/Index';
+                }
+            });
+        });
+        </text>
+    }
+    </script>
 </body>
 </html>

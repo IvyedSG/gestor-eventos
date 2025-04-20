@@ -1,18 +1,32 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using System.Security.Claims;
+using Microsoft.Extensions.Options;
+using System.Text;
+using System.Text.Json;
+using GestorEventos.Services;
 
 namespace GestorEventos.Pages.Auth
 {
     public class RegisterModel : PageModel
     {
+        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ApiSettings _apiSettings;
+
+        public RegisterModel(IHttpClientFactory httpClientFactory, IOptions<ApiSettings> apiSettings)
+        {
+            _httpClientFactory = httpClientFactory;
+            _apiSettings = apiSettings.Value;
+        }
+
         [BindProperty]
         public InputModel Input { get; set; }
 
         public string ErrorMessage { get; set; }
+        
+        // Mensaje de éxito para mostrar en la página de login
+        [TempData]
+        public string SuccessMessage { get; set; }
 
         public class InputModel
         {
@@ -44,8 +58,24 @@ namespace GestorEventos.Pages.Auth
             [Display(Name = "Confirmar contraseña")]
             [Compare("Password", ErrorMessage = "Las contraseñas no coinciden")]
             public string ConfirmPassword { get; set; }
+        }
 
-        
+        public class RegisterRequest
+        {
+            public string Email { get; set; }
+            public string Password { get; set; }
+            public string Nombre { get; set; }
+            public string Apellido { get; set; }
+            public string Telefono { get; set; }
+        }
+
+        public class RegisterResponse
+        {
+            public string Email { get; set; }
+            public string Token { get; set; }
+            public string UserId { get; set; }
+            public string Nombre { get; set; }
+            public string Apellido { get; set; }
         }
 
         public IActionResult OnGet()
@@ -66,44 +96,76 @@ namespace GestorEventos.Pages.Auth
                 return Page();
             }
 
-            // Aquí implementarías el registro real del usuario en tu base de datos
-            // Este es solo un ejemplo para mostrar el flujo
-            
-            // Comprobar si el correo ya está en uso (simulated check)
-            if (Input.Email == "admin@admin.com") // Simulamos que este correo ya existe
+            try
             {
-                ErrorMessage = "El correo electrónico ya está registrado.";
+                // Crear cliente HTTP
+                var client = _httpClientFactory.CreateClient();
+                
+                // Preparar la solicitud de registro
+                var registerRequest = new RegisterRequest
+                {
+                    Email = Input.Email,
+                    Password = Input.Password,
+                    Nombre = Input.FirstName,
+                    Apellido = Input.LastName,
+                    Telefono = Input.PhoneNumber
+                };
+                
+                // Convertir a JSON
+                var content = new StringContent(
+                    JsonSerializer.Serialize(registerRequest),
+                    Encoding.UTF8,
+                    "application/json");
+                
+                // Realizar la petición POST al endpoint de registro
+                var response = await client.PostAsync($"{_apiSettings.BaseUrl}/api/auth/register", content);
+                
+                if (response.IsSuccessStatusCode)
+                {
+                    // Configurar mensaje de éxito para la página de login
+                    SuccessMessage = "¡Registro exitoso! Por favor, inicia sesión con tus nuevas credenciales.";
+                    
+                    // Redirigir al usuario a la página de login
+                    return RedirectToPage("/Auth/Login");
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    // Si el servidor devuelve un error de validación
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    try
+                    {
+                        var errorResponse = JsonSerializer.Deserialize<Dictionary<string, string[]>>(
+                            responseContent, 
+                            new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                        
+                        ErrorMessage = errorResponse.First().Value.First();
+                    }
+                    catch
+                    {
+                        ErrorMessage = "Ha ocurrido un error al procesar el registro. Por favor, inténtelo de nuevo.";
+                    }
+                    
+                    return Page();
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
+                {
+                    // Si el usuario ya existe
+                    ErrorMessage = "El correo electrónico ya está registrado.";
+                    return Page();
+                }
+                else
+                {
+                    // Otros errores
+                    ErrorMessage = "Error en el servidor al procesar la solicitud.";
+                    return Page();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Capturar errores de conexión u otros
+                ErrorMessage = $"Error al conectar con el servidor: {ex.Message}";
                 return Page();
             }
-
-            // En una implementación real, aquí crearías el usuario en la base de datos
-            // y probablemente enviarías un correo de verificación
-            
-            // Para este ejemplo, registramos al usuario y lo iniciamos sesión directamente
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, $"{Input.FirstName} {Input.LastName}"),
-                new Claim(ClaimTypes.Email, Input.Email),
-                new Claim(ClaimTypes.MobilePhone, Input.PhoneNumber),
-                new Claim(ClaimTypes.Role, "Usuario")
-            };
-
-            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            var principal = new ClaimsPrincipal(identity);
-
-            var authProperties = new AuthenticationProperties
-            {
-                IsPersistent = true,
-                ExpiresUtc = DateTime.UtcNow.AddDays(7)
-            };
-
-            await HttpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                principal,
-                authProperties);
-
-            // Redireccionar al usuario a la página principal
-            return RedirectToPage("/Index");
         }
     }
 }

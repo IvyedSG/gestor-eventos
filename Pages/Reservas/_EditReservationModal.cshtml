@@ -1,0 +1,183 @@
+@model gestor_eventos.Pages.Reservas.IndexModel
+<div class="modal fade" id="editReservationModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title">
+                    <i class="bi bi-pencil-square me-2"></i>Editar Reserva #<span id="editReservationId">1234</span>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <form id="editReservationForm">
+                            <!-- Cabecera con info básica -->
+                            <div class="card border-0 shadow-sm mb-4">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-8 mb-3">
+                                            <label class="form-label">Nombre del evento</label>
+                                            <input type="text" class="form-control" id="editEventName" value="Boda de Carlos y María">
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label class="form-label">Tipo de evento</label>
+                                            <select class="form-select" id="editEventType">
+                                                <option value="Boda">Boda</option>
+                                                <option value="Cumpleaños">Cumpleaños</option>
+                                                <option value="Corporativo">Corporativo</option>
+                                                <option value="Graduación">Graduación</option>
+                                                <option value="Bautizo">Bautizo</option>
+                                                <option value="Aniversario">Aniversario</option>
+                                                <option value="Otro">Otro</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Información del cliente -->
+                            <div class="card border-0 shadow-sm mb-4">
+                                <div class="card-header bg-white pt-3 pb-2 border-0">
+                                    <h6 class="fw-bold"><i class="bi bi-person me-2"></i>Información del Cliente</h6>
+                                </div>
+                                <div class="card-body pt-0">
+                                    <div class="row">
+                                        <div class="col-md-12 mb-3">
+                                            <label class="form-label">Nombre del cliente</label>
+                                            <input type="text" class="form-control" id="editClientName" value="Carlos Rodríguez">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Email</label>
+                                            <input type="email" class="form-control" id="editClientEmail" value="carlos@ejemplo.com">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Teléfono</label>
+                                            <input type="tel" class="form-control" id="editClientPhone" value="+56 9 1234 5678">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Detalles del evento -->
+                            <div class="card border-0 shadow-sm mb-4">
+                                <div class="card-header bg-white pt-3 pb-2 border-0">
+                                    <h6 class="fw-bold"><i class="bi bi-calendar-event me-2"></i>Detalles del Evento</h6>
+                                </div>
+                                <div class="card-body pt-0">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Fecha</label>
+                                            <input type="date" class="form-control" id="editEventDate" value="2025-04-18">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Hora</label>
+                                            <input type="time" class="form-control" id="editEventTime" value="16:00">
+                                        </div>
+                                        <div class="col-md-12 mb-3">
+                                            <label class="form-label">Descripción</label>
+                                            <textarea class="form-control" id="editEventDescription" rows="3">Boda para 150 personas en Salón Diamante. El novio solicita decoración en tonos azules y plateados. Se requiere estacionamiento para al menos 30 vehículos.</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Servicios contratados -->
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-white pt-3 pb-2 border-0">
+                                    <h6 class="fw-bold"><i class="bi bi-basket me-2"></i>Servicios</h6>
+                                </div>
+                                <div class="card-body pt-0">
+                                    <div class="row mb-3">
+                                        <div class="col-md-12">
+                                            <select id="editServiceSelect" class="form-select">
+                                                <option selected disabled>Seleccionar servicio para añadir</option>
+                                                <option value="1">Salón Principal - $250,000</option>
+                                                <option value="2">Catering Premium - $15,000 por persona</option>
+                                                <option value="3">DJ - $120,000</option>
+                                                <option value="4">Decoración Básica - $80,000</option>
+                                                <option value="5">Fotografía - $150,000</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="table-responsive">
+                                        <table class="table table-sm" id="editServicesTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>Servicio</th>
+                                                    <th>Cantidad (Items)</th>
+                                                    <th>Precio</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr data-service-id="1">
+                                                    <td>Salón Principal</td>
+                                                    <td>1</td>
+                                                    <td>$250,000</td>
+                                                    <td class="text-end"><button class="btn btn-sm btn-link text-danger delete-service"><i class="bi bi-trash"></i></button></td>
+                                                </tr>
+                                                <tr data-service-id="2">
+                                                    <td>Catering Premium</td>
+                                                    <td>50</td>
+                                                    <td>$750,000</td>
+                                                    <td class="text-end"><button class="btn btn-sm btn-link text-danger delete-service"><i class="bi bi-trash"></i></button></td>
+                                                </tr>
+                                                <tr data-service-id="3">
+                                                    <td>DJ</td>
+                                                    <td>1</td>
+                                                    <td>$120,000</td>
+                                                    <td class="text-end"><button class="btn btn-sm btn-link text-danger delete-service"><i class="bi bi-trash"></i></button></td>
+                                                </tr>
+                                                <tr class="fw-bold bg-light">
+                                                    <td colspan="2" class="text-end">Total:</td>
+                                                    <td id="editServicesTotalAmount">$1,120,000</td>
+                                                    <td></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- Estado y opciones de la reserva -->
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow-sm mb-4">
+                            <div class="card-header bg-white pt-3 pb-2 border-0">
+                                <h6 class="fw-bold"><i class="bi bi-info-circle me-2"></i>Estado de la Reserva</h6>
+                            </div>
+                            <div class="card-body pt-0">
+                                <div class="mb-3">
+                                    <label class="form-label">Estado</label>
+                                    <select class="form-select" id="editEventStatus">
+                                        <option value="Pendiente">Pendiente</option>
+                                        <option value="Confirmada" selected>Confirmada</option>
+                                        <option value="Cancelada">Cancelada</option>
+                                        <option value="Finalizada">Finalizada</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Precio total</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input type="number" id="editTotalPrice" class="form-control" value="1120000">
+                                    </div>
+                                    <small class="text-muted">El precio total se actualiza automáticamente según los servicios seleccionados, pero puede ser modificado manualmente.</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="saveEditReservation">
+                    <i class="bi bi-save me-1"></i>Guardar Cambios
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

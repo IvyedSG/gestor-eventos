@@ -1,0 +1,138 @@
+@model gestor_eventos.Pages.Reservas.IndexModel
+<div class="modal fade" id="printReservationModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title">
+                    <i class="bi bi-printer me-2"></i>Comprobante de Reserva #<span id="printReservationId">1234</span>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Contenido imprimible -->
+                <div id="printableArea" class="border p-4">
+                    <!-- Encabezado del comprobante -->
+                    <div class="row mb-4">
+                        <div class="col-6">
+                            <h2 class="mb-1">Gestor de Eventos</h2>
+                            <p class="mb-0 text-muted">Sistema de Gestión de Eventos</p>
+                            <p class="mb-0 text-muted">Teléfono: +56 2 2123 4567</p>
+                            <p class="text-muted">Email: contacto@gestoreventos.com</p>
+                        </div>
+                        <div class="col-6 text-end">
+                            <h4 class="mb-1">Comprobante de Reserva</h4>
+                            <p class="mb-0"><strong>No. Reserva:</strong> <span id="printComprobantId">1234</span></p>
+                            <p class="mb-0"><strong>Fecha:</strong> <span id="printCurrentDate"></span></p>
+                            <p><span class="badge bg-success" id="printReservationStatus">Confirmada</span></p>
+                        </div>
+                    </div>
+                    
+                    <hr class="my-4">
+                    
+                    <!-- Datos del evento -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="mb-3" id="printEventName">Boda de Carlos y María</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p class="mb-1"><strong>Tipo de evento:</strong> <span id="printEventType">Boda</span></p>
+                                    <p class="mb-1"><strong>Fecha:</strong> <span id="printEventDate">18/04/2025</span></p>
+                                    <p class="mb-1"><strong>Hora:</strong> <span id="printEventTime">16:00</span></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p class="mb-1"><strong>Cliente:</strong> <span id="printClientName">Carlos Rodríguez</span></p>
+                                    <p class="mb-1"><strong>Email:</strong> <span id="printClientEmail">carlos@ejemplo.com</span></p>
+                                    <p class="mb-1"><strong>Teléfono:</strong> <span id="printClientPhone">+56 9 1234 5678</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Descripción -->
+                    <div class="mb-4">
+                        <h6 class="mb-2">Descripción del Evento:</h6>
+                        <p id="printEventDescription" class="p-2 bg-light">
+                            Boda para 150 personas en Salón Diamante. El novio solicita decoración en tonos azules y plateados. 
+                            Se requiere estacionamiento para al menos 30 vehículos.
+                        </p>
+                    </div>
+                    
+                    <!-- Servicios contratados -->
+                    <div class="mb-4">
+                        <h6 class="mb-2">Servicios Contratados:</h6>
+                        <table class="table table-striped table-bordered" id="printServicesTable">
+                            <thead>
+                                <tr class="bg-light">
+                                    <th>Servicio</th>
+                                    <th class="text-center">Cantidad</th>
+                                    <th class="text-center">Precio Unitario</th>
+                                    <th class="text-end">Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Salón Principal</td>
+                                    <td class="text-center">1</td>
+                                    <td class="text-center">$250,000</td>
+                                    <td class="text-end">$250,000</td>
+                                </tr>
+                                <tr>
+                                    <td>Catering Premium</td>
+                                    <td class="text-center">50</td>
+                                    <td class="text-center">$15,000</td>
+                                    <td class="text-end">$750,000</td>
+                                </tr>
+                                <tr>
+                                    <td>DJ</td>
+                                    <td class="text-center">1</td>
+                                    <td class="text-center">$120,000</td>
+                                    <td class="text-end">$120,000</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr class="fw-bold">
+                                    <td colspan="3" class="text-end">Total:</td>
+                                    <td class="text-end" id="printServicesTotalAmount">$1,120,000</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    
+                    <!-- Condiciones y firmas -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h6 class="mb-2">Términos y Condiciones:</h6>
+                            <ul class="small">
+                                <li>La reserva se considera confirmada una vez realizado el pago del 50% del monto total.</li>
+                                <li>Cancelaciones con menos de 30 días de anticipación tendrán un cargo del 30%.</li>
+                                <li>El pago completo debe realizarse 7 días antes del evento.</li>
+                                <li>Cualquier cambio o adición de servicios está sujeto a disponibilidad.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Firmas -->
+                    <div class="row mt-5 pt-4">
+                        <div class="col-6 text-center border-top">
+                            <p class="mt-1">Firma Cliente</p>
+                        </div>
+                        <div class="col-6 text-center border-top">
+                            <p class="mt-1">Firma Empresa</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-lg me-1"></i>Cerrar
+                </button>
+                <button type="button" class="btn btn-primary" id="downloadPDF">
+                    <i class="bi bi-file-pdf me-1"></i>Descargar PDF
+                </button>
+                <button type="button" class="btn btn-success" id="printButton">
+                    <i class="bi bi-printer me-1"></i>Imprimir
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

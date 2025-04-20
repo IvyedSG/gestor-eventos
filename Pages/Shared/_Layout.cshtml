@@ -624,6 +624,12 @@
                         <span class="nav-text">Inventario</span>
                     </a>
                 </li>
+                <li class="nav-item"></li>
+                    <a href="/Usuario/Perfil" class="nav-link @(ViewContext.RouteData.Values["Page"]?.ToString() == "/Usuario/Perfil" ? "active" : "")">
+                        <i class="bi bi-person-circle"></i>
+                        <span class="nav-text">Perfil</span>
+                    </a>
+                </li>
             </ul>
         </div>
         <!-- Botón de cerrar sesión separado al final del sidebar -->
@@ -666,7 +672,6 @@
                 </div>
                 <div class="user-info d-none d-sm-flex">
                     <span class="user-name">@(User.Identity?.Name ?? "Usuario")</span>
-                    <span class="user-role">@(User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Role)?.Value ?? "Administrador")</span>
                 </div>
             </div>
         </div>
@@ -721,35 +726,6 @@
         </div>
     </div>
 
-    <!-- Dropdown del perfil -->
-    <div class="dropdown-profile" id="profileDropdown">
-        <ul class="profile-menu">
-            <li>
-                <a href="/Profile">
-                    <i class="bi bi-person-vcard"></i>
-                    <span>Mi perfil</span>
-                </a>
-            </li>
-            <li>
-                <a href="/Settings">
-                    <i class="bi bi-gear"></i>
-                    <span>Configuración</span>
-                </a>
-            </li>
-            <li>
-                <a href="/Notifications">
-                    <i class="bi bi-bell"></i>
-                    <span>Notificaciones</span>
-                </a>
-            </li>
-            <li>
-                <a href="/Help">
-                    <i class="bi bi-question-circle"></i>
-                    <span>Ayuda</span>
-                </a>
-            </li>
-        </ul>
-    </div>
 
     <!-- Main Content -->
     <main class="main-content">

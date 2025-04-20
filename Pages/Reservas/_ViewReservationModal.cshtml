@@ -1,0 +1,131 @@
+@model gestor_eventos.Pages.Reservas.IndexModel
+<div class="modal fade" id="viewReservationModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title">
+                    <i class="bi bi-info-circle me-2"></i>Detalle de Reserva #<span id="viewReservationId">1234</span>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Cabecera con info básica -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <h4 id="viewEventName" class="mb-2">Boda de Carlos y María</h4>
+                                <span id="viewEventType" class="badge bg-info bg-opacity-10 text-info px-3 py-2 mb-0">
+                                    <i class="bi bi-bookmark me-1"></i>Boda
+                                </span>
+                            </div>
+                            <div class="col-md-4 text-md-end">
+                                <span id="viewEventStatus" class="badge bg-success bg-opacity-10 text-success px-3 py-2">
+                                    <i class="bi bi-check-circle me-1"></i>Confirmada
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Información principal -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-header bg-white pt-3 pb-2 border-0">
+                                <h6 class="fw-bold"><i class="bi bi-person me-2"></i>Información del Cliente</h6>
+                            </div>
+                            <div class="card-body pt-0">
+                                <div class="mb-3">
+                                    <p class="mb-1 fw-medium" id="viewClientName">Carlos Rodríguez</p>
+                                    <p class="mb-1"><i class="bi bi-envelope me-2"></i><span id="viewClientEmail">carlos@ejemplo.com</span></p>
+                                    <p class="mb-0"><i class="bi bi-telephone me-2"></i><span id="viewClientPhone">+56 9 1234 5678</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-header bg-white pt-3 pb-2 border-0">
+                                <h6 class="fw-bold"><i class="bi bi-calendar-event me-2"></i>Detalles del Evento</h6>
+                            </div>
+                            <div class="card-body pt-0">
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="bi bi-calendar me-2 text-muted"></i>
+                                    <span id="viewEventDate">18/04/2025</span>
+                                </div>
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="bi bi-clock me-2 text-muted"></i>
+                                    <span id="viewEventTime">16:00</span>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-cash me-2 text-muted"></i>
+                                    <span id="viewEventPrice" class="fw-medium">$1,570,000</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Descripción -->
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white pt-3 pb-2 border-0">
+                        <h6 class="fw-bold"><i class="bi bi-file-text me-2"></i>Descripción del Evento</h6>
+                    </div>
+                    <div class="card-body pt-0">
+                        <p id="viewEventDescription" class="mb-0">
+                            Boda para 150 personas en Salón Diamante. El novio solicita decoración en tonos azules y plateados. 
+                            Se requiere estacionamiento para al menos 30 vehículos.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Servicios contratados -->
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white pt-3 pb-2 border-0">
+                        <h6 class="fw-bold"><i class="bi bi-basket me-2"></i>Servicios Contratados</h6>
+                    </div>
+                    <div class="card-body pt-0">
+                        <div class="table-responsive">
+                            <table class="table table-sm" id="viewServicesTable">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Servicio</th>
+                                        <th>Cantidad (Items)</th>
+                                        <th class="text-end">Precio</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Salón Principal</td>
+                                        <td>1</td>
+                                        <td class="text-end">$250,000</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Catering Premium</td>
+                                        <td>50</td>
+                                        <td class="text-end">$750,000</td>
+                                    </tr>
+                                    <tr>
+                                        <td>DJ</td>
+                                        <td>1</td>
+                                        <td class="text-end">$120,000</td>
+                                    </tr>
+                                    <tr class="fw-bold bg-light">
+                                        <td colspan="2" class="text-end">Total:</td>
+                                        <td class="text-end" id="viewServicesTotalAmount">$1,120,000</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-lg me-1"></i>Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

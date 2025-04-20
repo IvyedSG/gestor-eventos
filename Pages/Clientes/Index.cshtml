@@ -1,7 +1,7 @@
 @page
 @model gestor_eventos.Pages.Clientes.IndexModel
 @{
-    ViewData["Title"] = "Gestionar Clientes";
+    ViewData["Title"] = "Clientes";
 }
 
 <!-- Filtros y búsqueda -->
@@ -60,6 +60,7 @@
                         <th scope="col" class="ps-4">Nombre</th>
                         <th scope="col">Correo</th>
                         <th scope="col">Teléfono</th>
+                        <th scope="col">Dirección</th>
                         <th scope="col">Tipo</th>
                         <th scope="col">Total Eventos</th>
                         <th scope="col">Última Reserva</th>
@@ -71,10 +72,11 @@
                     {
                         @foreach (var client in Model.Clients)
                         {
-                            <tr class="client-row" data-client-id="@client.Id">
+                            <tr class="client-row" data-client-id="@client.Id" data-registration-date="@client.RegistrationDate.ToString("dd/MM/yyyy")">
                                 <td class="ps-4 fw-medium">@client.Name</td>
                                 <td>@client.Email</td>
                                 <td>@client.Phone</td>
+                                <td>@client.Address</td>
                                 <td>
                                     @if (client.Type == "Individual")
                                     {
@@ -124,7 +126,7 @@
                     else
                     {
                         <tr>
-                            <td colspan="7" class="text-center py-4">
+                            <td colspan="8" class="text-center py-4">
                                 <div class="d-flex flex-column align-items-center">
                                     <i class="bi bi-people text-muted" style="font-size: 2.5rem;"></i>
                                     <h5 class="mt-3 mb-2">No se encontraron clientes</h5>
@@ -200,13 +202,8 @@
                         <div class="col-12"></div>
                         
                         <div class="col-md-6">
-                            <label for="clientName" class="form-label">Nombre completo</label>
+                            <label for="clientName" class="form-label" id="nameLabel">Nombre completo</label>
                             <input type="text" class="form-control" id="clientName" required>
-                        </div>
-                        
-                        <div class="col-md-6 company-field d-none">
-                            <label for="companyName" class="form-label">Nombre de la empresa</label>
-                            <input type="text" class="form-control" id="companyName">
                         </div>
                         
                         <div class="col-md-6">
@@ -219,19 +216,9 @@
                             <input type="tel" class="form-control" id="clientPhone" required>
                         </div>
                         
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <label for="clientAddress" class="form-label">Dirección</label>
                             <input type="text" class="form-control" id="clientAddress">
-                        </div>
-                        
-                        <div class="col-md-12 company-field d-none">
-                            <label for="taxId" class="form-label">RUC/DNI</label>
-                            <input type="text" class="form-control" id="taxId">
-                        </div>
-                        
-                        <div class="col-md-12">
-                            <label for="clientNotes" class="form-label">Notas adicionales</label>
-                            <textarea class="form-control" id="clientNotes" rows="3"></textarea>
                         </div>
                     </div>
                 </form>
@@ -258,7 +245,6 @@
                 <form id="editClientForm">
                     <input type="hidden" id="editClientId">
                     <div class="row g-3">
-                        <!-- Aquí iría el mismo formulario que en "Nuevo Cliente" pero con campos prellenados -->
                         <div class="col-md-6">
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="editClientType" id="editIndividualClient" value="Individual">
@@ -273,13 +259,8 @@
                         <div class="col-12"></div>
                         
                         <div class="col-md-6">
-                            <label for="editClientName" class="form-label">Nombre completo</label>
+                            <label for="editClientName" class="form-label" id="editNameLabel">Nombre completo</label>
                             <input type="text" class="form-control" id="editClientName" required>
-                        </div>
-                        
-                        <div class="col-md-6 edit-company-field">
-                            <label for="editCompanyName" class="form-label">Nombre de la empresa</label>
-                            <input type="text" class="form-control" id="editCompanyName">
                         </div>
                         
                         <div class="col-md-6">
@@ -292,19 +273,9 @@
                             <input type="tel" class="form-control" id="editClientPhone" required>
                         </div>
                         
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <label for="editClientAddress" class="form-label">Dirección</label>
                             <input type="text" class="form-control" id="editClientAddress">
-                        </div>
-                        
-                        <div class="col-md-12 edit-company-field">
-                            <label for="editTaxId" class="form-label">RUC/DNI</label>
-                            <input type="text" class="form-control" id="editTaxId">
-                        </div>
-                        
-                        <div class="col-md-12">
-                            <label for="editClientNotes" class="form-label">Notas adicionales</label>
-                            <textarea class="form-control" id="editClientNotes" rows="3"></textarea>
                         </div>
                     </div>
                 </form>
@@ -347,17 +318,6 @@
                                 </div>
                                 
                                 <h6 class="card-title fw-bold mb-3 mt-4">Información Adicional</h6>
-                                <div id="viewCompanyInfo" class="mb-3">
-                                    <div>
-                                        <span class="text-muted">Empresa:</span>
-                                        <span id="viewCompanyName" class="ms-1">Nombre de la empresa</span>
-                                    </div>
-                                    <div class="mt-2">
-                                        <span class="text-muted">RUC/DNI:</span>
-                                        <span id="viewTaxId" class="ms-1">12345678901</span>
-                                    </div>
-                                </div>
-                                
                                 <div class="mb-3">
                                     <span class="text-muted">Cliente desde:</span>
                                     <span id="viewClientSince" class="ms-1">01/01/2025</span>
@@ -368,19 +328,11 @@
                                     <span id="viewTotalEvents" class="ms-1 fw-bold">3</span>
                                 </div>
                                 
-                                <div class="mt-4">
-                                    <h6 class="fw-bold mb-2">Notas:</h6>
-                                    <p id="viewClientNotes" class="text-muted">Notas sobre el cliente</p>
+                                <div class="mb-3">
+                                    <span class="text-muted">Última reserva:</span>
+                                    <span id="viewLastReservation" class="ms-1">18/04/2025</span>
                                 </div>
-                                
-                                <div class="d-grid gap-2 mt-4">
-                                    <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#newReservationModal" id="btnAddReservationFromView">
-                                        <i class="bi bi-calendar-plus me-1"></i> Nueva Reserva
-                                    </button>
-                                    <button class="btn btn-outline-secondary" type="button" id="btnEditFromView">
-                                        <i class="bi bi-pencil me-1"></i> Editar Cliente
-                                    </button>
-                                </div>
+                            
                             </div>
                         </div>
                     </div>
@@ -398,7 +350,6 @@
                                                 <th>Servicio</th>
                                                 <th>Monto</th>
                                                 <th>Estado</th>
-                                                <th class="text-center">Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody id="clientReservationsList">
@@ -438,9 +389,14 @@
                     <input type="hidden" id="reservationClientId">
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <label for="serviceType" class="form-label">Tipo de Servicio</label>
+                            <label for="eventName" class="form-label">Nombre del Evento</label>
+                            <input type="text" class="form-control" id="eventName" required>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="serviceType" class="form-label">Tipo de Evento</label>
                             <select class="form-select" id="serviceType" required>
-                                <option value="">Seleccione un servicio</option>
+                                <option value="">Seleccione un tipo</option>
                                 <option value="Boda">Boda</option>
                                 <option value="Cumpleaños">Cumpleaños</option>
                                 <option value="Corporativo">Corporativo</option>
@@ -456,26 +412,8 @@
                         </div>
                         
                         <div class="col-md-6">
-                            <label for="reservationTime" class="form-label">Hora de Inicio</label>
+                            <label for="reservationTime" class="form-label">Hora del Evento</label>
                             <input type="time" class="form-control" id="reservationTime" required>
-                        </div>
-                        
-                        <div class="col-md-6">
-                            <label for="reservationEndTime" class="form-label">Hora de Finalización</label>
-                            <input type="time" class="form-control" id="reservationEndTime" required>
-                        </div>
-                        
-                        <div class="col-md-6">
-                            <label for="guestCount" class="form-label">Número de Invitados</label>
-                            <input type="number" class="form-control" id="guestCount" min="1" required>
-                        </div>
-                        
-                        <div class="col-md-6">
-                            <label for="reservationAmount" class="form-label">Monto Estimado</label>
-                            <div class="input-group">
-                                <span class="input-group-text">S/</span>
-                                <input type="number" class="form-control" id="reservationAmount" min="0" step="0.01" required>
-                            </div>
                         </div>
                         
                         <div class="col-md-12">
@@ -493,74 +431,96 @@
     </div>
 </div>
 
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        @Model.ErrorMessage
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Toggle para tipo de cliente (Individual/Empresa)
-            document.getElementById('individualClient').addEventListener('change', function() {
-                document.querySelectorAll('.company-field').forEach(field => {
-                    field.classList.add('d-none');
-                });
-            });
+            const individualClient = document.getElementById('individualClient');
+            const companyClient = document.getElementById('companyClient');
             
-            document.getElementById('companyClient').addEventListener('change', function() {
-                document.querySelectorAll('.company-field').forEach(field => {
-                    field.classList.remove('d-none');
+            if (individualClient) {
+                individualClient.addEventListener('change', function() {
+                    document.getElementById('nameLabel').textContent = 'Nombre completo';
                 });
-            });
+            }
+            
+            if (companyClient) {
+                companyClient.addEventListener('change', function() {
+                    document.getElementById('nameLabel').textContent = 'Nombre de la empresa';
+                });
+            }
             
             // Toggle para edición de tipo de cliente
-            document.getElementById('editIndividualClient').addEventListener('change', function() {
-                document.querySelectorAll('.edit-company-field').forEach(field => {
-                    field.classList.add('d-none');
-                });
-            });
+            const editIndividualClient = document.getElementById('editIndividualClient');
+            const editCompanyClient = document.getElementById('editCompanyClient');
             
-            document.getElementById('editCompanyClient').addEventListener('change', function() {
-                document.querySelectorAll('.edit-company-field').forEach(field => {
-                    field.classList.remove('d-none');
+            if (editIndividualClient) {
+                editIndividualClient.addEventListener('change', function() {
+                    document.getElementById('editNameLabel').textContent = 'Nombre completo';
                 });
-            });
+            }
+            
+            if (editCompanyClient) {
+                editCompanyClient.addEventListener('change', function() {
+                    document.getElementById('editNameLabel').textContent = 'Nombre de la empresa';
+                });
+            }
 
             // Manejador para abrir modal de nueva reserva desde cliente
             const viewClientModal = document.getElementById('viewClientModal');
             const editClientModal = document.getElementById('editClientModal');
             const newReservationModal = document.getElementById('newReservationModal');
+            const btnAddReservationFromView = document.getElementById('btnAddReservationFromView');
+            const btnEditFromView = document.getElementById('btnEditFromView');
             
-            document.getElementById('btnAddReservationFromView').addEventListener('click', function() {
-                // Cerrar el modal actual antes de abrir el de nueva reserva
-                const viewModal = bootstrap.Modal.getInstance(viewClientModal);
-                viewModal.hide();
-                
-                // Tomar los datos del cliente para la nueva reserva
-                const clientId = this.dataset.clientId;
-                const clientName = document.getElementById('viewClientName').textContent;
-                
-                document.getElementById('reservationClientId').value = clientId;
-                document.getElementById('reservationClientName').textContent = clientName;
-                
-                // Abrir el modal de nueva reserva
-                setTimeout(() => {
-                    const newReservationModalInstance = new bootstrap.Modal(newReservationModal);
-                    newReservationModalInstance.show();
-                }, 500);
-            });
+            // Verificar si existen los botones antes de asignar eventos
+            if (btnAddReservationFromView) {
+                btnAddReservationFromView.addEventListener('click', function() {
+                    // Cerrar el modal actual antes de abrir el de nueva reserva
+                    const viewModal = bootstrap.Modal.getInstance(viewClientModal);
+                    viewModal.hide();
+                    
+                    // Tomar los datos del cliente para la nueva reserva
+                    const clientId = this.dataset.clientId;
+                    const clientName = document.getElementById('viewClientName').textContent;
+                    
+                    document.getElementById('reservationClientId').value = clientId;
+                    document.getElementById('reservationClientName').textContent = clientName;
+                    
+                    // Abrir el modal de nueva reserva
+                    setTimeout(() => {
+                        const newReservationModalInstance = new bootstrap.Modal(newReservationModal);
+                        newReservationModalInstance.show();
+                    }, 500);
+                });
+            }
 
             // Manejador para abrir modal de edición desde la vista de detalle
-            document.getElementById('btnEditFromView').addEventListener('click', function() {
-                const viewModal = bootstrap.Modal.getInstance(viewClientModal);
-                viewModal.hide();
-                
-                const clientId = this.dataset.clientId;
-                document.getElementById('editClientId').value = clientId;
-                
-                // Aquí iría el código para cargar los datos del cliente en el formulario de edición
-                
-                setTimeout(() => {
-                    const editModalInstance = new bootstrap.Modal(editClientModal);
-                    editModalInstance.show();
-                }, 500);
-            });
+            if (btnEditFromView) {
+                btnEditFromView.addEventListener('click', function() {
+                    const viewModal = bootstrap.Modal.getInstance(viewClientModal);
+                    viewModal.hide();
+                    
+                    const clientId = this.dataset.clientId;
+                    document.getElementById('editClientId').value = clientId;
+                    
+                    // Aquí iría el código para cargar los datos del cliente en el formulario de edición
+                    
+                    setTimeout(() => {
+                        const editModalInstance = new bootstrap.Modal(editClientModal);
+                        editModalInstance.show();
+                    }, 500);
+                });
+            }
 
             // Botones de la tabla para ver cliente
             document.querySelectorAll('.view-client-btn').forEach(button => {
@@ -570,23 +530,41 @@
                 });
             });
 
-            // Función para cargar datos del cliente (simulado)
+            // Función para cargar datos del cliente
             function loadClientDetails(clientId) {
-                // En un caso real, aquí harías una petición AJAX para obtener los datos del cliente
-                // Para este ejemplo, usamos datos de prueba
+                // Buscar el cliente en el modelo de datos
+                const clientRow = document.querySelector(`[data-client-id="${clientId}"]`);
                 
-                // Simulamos la carga de datos
-                document.getElementById('viewClientName').textContent = "Carlos Rodríguez";
-                document.getElementById('viewClientEmail').textContent = "carlos@ejemplo.com";
-                document.getElementById('viewClientPhone').textContent = "987-654-321";
-                document.getElementById('viewClientAddress').textContent = "Av. Principal 123, Lima";
-                document.getElementById('viewClientSince').textContent = "15/01/2025";
-                document.getElementById('viewTotalEvents').textContent = "3";
-                document.getElementById('viewClientNotes').textContent = "Cliente preferencial, siempre solicita decoración personalizada.";
+                if (!clientRow) return;
                 
-                // Configurar botones con el ID del cliente
-                document.getElementById('btnAddReservationFromView').dataset.clientId = clientId;
-                document.getElementById('btnEditFromView').dataset.clientId = clientId;
+                const row = clientRow.closest('tr');
+                
+                // Obtener los datos básicos de la fila
+                const name = row.querySelector('td:nth-child(1)').textContent.trim();
+                const email = row.querySelector('td:nth-child(2)').textContent.trim();
+                const phone = row.querySelector('td:nth-child(3)').textContent.trim();
+                const address = row.querySelector('td:nth-child(4)').textContent.trim();
+                const type = row.querySelector('td:nth-child(5)').textContent.trim();
+                
+                // Actualizar el modal con los datos disponibles
+                document.getElementById('viewClientName').textContent = name;
+                document.getElementById('viewClientEmail').textContent = email;
+                document.getElementById('viewClientPhone').textContent = phone;
+                document.getElementById('viewClientAddress').textContent = address || "No disponible";
+                
+                // Fecha de registro (obtener del atributo data del row)
+                const registrationDate = row.hasAttribute('data-registration-date') 
+                    ? row.getAttribute('data-registration-date') 
+                    : "No disponible";
+                document.getElementById('viewClientSince').textContent = registrationDate;
+                
+                // Total de eventos
+                const eventCount = row.querySelector('td:nth-child(6)').textContent.trim();
+                document.getElementById('viewTotalEvents').textContent = eventCount;
+                
+                // Última reserva
+                const lastReservation = row.querySelector('td:nth-child(7)').textContent.trim();
+                document.getElementById('viewLastReservation').textContent = lastReservation;
                 
                 // Cargar historial de reservas
                 loadClientReservations(clientId);
@@ -594,65 +572,32 @@
 
             // Función para cargar historial de reservas (simulado)
             function loadClientReservations(clientId) {
-                // En un caso real, aquí harías una petición AJAX para obtener las reservas del cliente
+                const clientReservationsTable = document.getElementById('clientReservationsTable');
+                const noReservationsMessage = document.getElementById('noReservationsMessage');
+                const clientReservationsList = document.getElementById('clientReservationsList');
                 
-                // Para este ejemplo, si es cliente 1, mostramos reservas de ejemplo
-                if (clientId == "1") {
-                    document.getElementById('noReservationsMessage').classList.add('d-none');
-                    document.getElementById('clientReservationsTable').classList.remove('d-none');
-                    
-                    const reservationsList = document.getElementById('clientReservationsList');
-                    reservationsList.innerHTML = `
-                        <tr>
-                            <td>#1001</td>
-                            <td>18/04/2025</td>
-                            <td>Boda</td>
-                            <td>S/ 54,000</td>
-                            <td><span class="badge bg-success">Confirmada</span></td>
-                            <td class="text-center">
-                                <button class="btn btn-sm btn-outline-primary">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#1002</td>
-                            <td>15/05/2025</td>
-                            <td>Aniversario</td>
-                            <td>S/ 22,000</td>
-                            <td><span class="badge bg-warning text-dark">Pendiente</span></td>
-                            <td class="text-center">
-                                <button class="btn btn-sm btn-outline-primary">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#1003</td>
-                            <td>10/06/2025</td>
-                            <td>Graduación</td>
-                            <td>S/ 15,000</td>
-                            <td><span class="badge bg-secondary">En borrador</span></td>
-                            <td class="text-center">
-                                <button class="btn btn-sm btn-outline-primary">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    `;
-                } else {
-                    // Si no hay reservas
-                    document.getElementById('clientReservationsTable').classList.add('d-none');
-                    document.getElementById('noReservationsMessage').classList.remove('d-none');
-                }
+                if (!clientReservationsTable || !noReservationsMessage || !clientReservationsList) return;
+                
+                // En un caso real, aquí harías una petición AJAX para obtener las reservas del cliente
+                // Para este ejemplo, asumimos que ningún cliente tiene reservas
+                clientReservationsTable.classList.add('d-none');
+                noReservationsMessage.classList.remove('d-none');
+                clientReservationsList.innerHTML = '';
             }
 
             // Funcionalidad para limpiar filtros
-            document.getElementById('clearFilters').addEventListener('click', function() {
-                document.querySelector('[name="SearchTerm"]').value = '';
-                document.querySelector('[name="TypeFilter"]').value = '';
-                document.getElementById('filterForm').submit();
-            });
+            const clearFiltersBtn = document.getElementById('clearFilters');
+            if (clearFiltersBtn) {
+                clearFiltersBtn.addEventListener('click', function() {
+                    const searchTermInput = document.querySelector('[name="SearchTerm"]');
+                    const typeFilterSelect = document.querySelector('[name="TypeFilter"]');
+                    const filterForm = document.getElementById('filterForm');
+                    
+                    if (searchTermInput) searchTermInput.value = '';
+                    if (typeFilterSelect) typeFilterSelect.value = '';
+                    if (filterForm) filterForm.submit();
+                });
+            }
         });
     </script>
 }

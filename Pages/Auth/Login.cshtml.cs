@@ -5,14 +5,39 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 
+using System.Text;
+using System.Text.Json;
+
+
 namespace GestorEventos.Pages.Auth
 {
     public class LoginModel : PageModel
     {
+        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IConfiguration _configuration;
+
+        public LoginModel(IHttpClientFactory httpClientFactory, IConfiguration configuration)
+        {
+            _httpClientFactory = httpClientFactory;
+            _configuration = configuration;
+        }
+
         [BindProperty]
         public InputModel Input { get; set; }
 
+        [TempData]
         public string ErrorMessage { get; set; }
+        
+        [TempData]
+        public string SuccessMessage { get; set; }
+        
+        // Flag para señalar que necesitamos mostrar el alert de éxito
+        [TempData]
+        public bool ShowSuccessAlert { get; set; }
+        
+        // Ruta de redirección después del login exitoso
+        [TempData]
+        public string RedirectPath { get; set; }
 
         public class InputModel
         {
@@ -35,6 +60,22 @@ namespace GestorEventos.Pages.Auth
                 return RedirectToPage("/Index");
             }
 
+            // Si venimos de un login exitoso con el flag ShowSuccessAlert,
+            // permitir mostrar la página con el flag activo para que el alert se muestre
+            if (ShowSuccessAlert && !string.IsNullOrEmpty(RedirectPath))
+            {
+                // Preparamos la ruta de redirección
+                var redirectPath = RedirectPath;
+                
+                // Limpiamos las variables TempData para la próxima visita
+                RedirectPath = null;
+                
+                // Mantenemos ShowSuccessAlert para que la vista pueda leerlo
+                // Se limpiará automáticamente después de que la vista lo lea
+                
+                return Page();
+            }
+
             return Page();
         }
 
@@ -42,39 +83,95 @@ namespace GestorEventos.Pages.Auth
         {
             if (!ModelState.IsValid)
             {
+                ErrorMessage = "Por favor, completa todos los campos correctamente.";
                 return Page();
             }
 
-            // En un entorno real, aquí validarías las credenciales contra tu base de datos
-            // Para este ejemplo, usamos credenciales hardcodeadas
-            if (Input.Email == "admin@admin.com" && Input.Password == "admin123")
+            try 
             {
-                var claims = new List<Claim>
+                // Crear el cliente HTTP
+                var client = _httpClientFactory.CreateClient();
+                var apiUrl = $"{_configuration["ApiSettings:BaseUrl"]}/api/auth/login";
+
+                // Crear el contenido de la solicitud
+                var loginData = new
                 {
-                    new Claim(ClaimTypes.Name, "Admin"),
-                    new Claim(ClaimTypes.Email, Input.Email),
-                    new Claim(ClaimTypes.Role, "Administrador")
+                    Email = Input.Email,
+                    Password = Input.Password
                 };
+                
+                var content = new StringContent(
+                    JsonSerializer.Serialize(loginData),
+                    Encoding.UTF8,
+                    "application/json");
 
-                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                var principal = new ClaimsPrincipal(identity);
+                // Enviar la solicitud al API
+                var response = await client.PostAsync(apiUrl, content);
 
-                var authProperties = new AuthenticationProperties
+                // Verificar si la respuesta fue exitosa
+                if (response.IsSuccessStatusCode)
                 {
-                    IsPersistent = Input.RememberMe,
-                    ExpiresUtc = DateTime.UtcNow.AddDays(7)
-                };
+                    // Leer y deserializar la respuesta
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+                    
+                    var authResponse = JsonSerializer.Deserialize<AuthResponse>(responseContent, options);
 
-                await HttpContext.SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme,
-                    principal,
-                    authProperties);
+                    // Crear los claims para la autenticación
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, $"{authResponse.Nombre} {authResponse.Apellido}"),
+                        new Claim(ClaimTypes.Email, authResponse.Email),
+                        new Claim("UserId", authResponse.UserId),
+                        // Almacenar el token en las claims
+                        new Claim("AccessToken", authResponse.Token)
+                    };
 
-                return RedirectToPage("/Index");
+                    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var principal = new ClaimsPrincipal(identity);
+
+                    var authProperties = new AuthenticationProperties
+                    {
+                        IsPersistent = Input.RememberMe,
+                        ExpiresUtc = DateTime.UtcNow.AddDays(7)
+                    };
+
+                    await HttpContext.SignInAsync(
+                        CookieAuthenticationDefaults.AuthenticationScheme,
+                        principal,
+                        authProperties);
+
+                    // Configurar el mensaje de éxito y activar el flag para mostrar alert
+                    SuccessMessage = $"¡Bienvenid@ {authResponse.Nombre}!";
+                    ShowSuccessAlert = true;
+                    
+                    // En lugar de redireccionar inmediatamente, mostramos primero el mensaje de éxito
+                    return Page();
+                }
+                else
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    ErrorMessage = "Error de autenticación. Por favor, verifica tus credenciales.";
+                    return Page();
+                }
             }
+            catch (Exception ex)
+            {
+                ErrorMessage = $"Error al iniciar sesión: {ex.Message}";
+                return Page();
+            }
+        }
 
-            ErrorMessage = "Correo electrónico o contraseña incorrectos.";
-            return Page();
+        private class AuthResponse
+        {
+            public string Email { get; set; }
+            public string Token { get; set; }
+            public string UserId { get; set; }
+            public string Nombre { get; set; }
+            public string Apellido { get; set; }
         }
     }
 }

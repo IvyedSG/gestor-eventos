@@ -7,12 +7,13 @@ namespace GestorEventos.Pages.Auth
 {
     public class LogoutModel : PageModel
     {
-        public async Task<IActionResult> OnGetAsync()
+        public async Task<IActionResult> OnGet()
         {
-            // Cerrar sesión de manera inmediata
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             
-            // Redirigir directamente sin espera
+
+            TempData.Clear();
+            
             return RedirectToPage("/Auth/Login");
         }
     }
