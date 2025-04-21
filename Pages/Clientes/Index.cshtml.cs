@@ -74,8 +74,8 @@ namespace gestor_eventos.Pages.Clientes
                     Phone = c.Telefono,
                     Address = c.Direccion,
                     Type = c.TipoCliente == "INDIVIDUAL" ? "Individual" : "Empresa",
-                    EventCount = 0, // Este dato no viene de la API, se podría implementar luego
-                    LastReservation = null, // Este dato no viene de la API, se podría implementar luego
+                    EventCount = c.TotalReservas, // Usar el valor de la API
+                    LastReservation = c.UltimaFechaReserva, // Usar el valor de la API
                     RegistrationDate = c.FechaRegistro
                 }).ToList();
 
@@ -100,6 +100,217 @@ namespace gestor_eventos.Pages.Clientes
                 _logger.LogError(ex, "Error al cargar los clientes");
                 ErrorMessage = "Ocurrió un error al cargar los clientes. Por favor, inténtalo de nuevo más tarde.";
                 Clients = new List<Client>();
+            }
+        }
+
+        public class ClienteCreateRequest
+        {
+            public string TipoCliente { get; set; }
+            public string Nombre { get; set; }
+            public string CorreoElectronico { get; set; }
+            public string Telefono { get; set; }
+            public string Direccion { get; set; }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> OnPostCreateClienteAsync([FromBody] ClienteCreateRequest request)
+        {
+            try
+            {
+                // Validar el modelo recibido
+                if (request == null)
+                {
+                    _logger.LogWarning("Request body es nulo");
+                    return new JsonResult(new { success = false, message = "No se recibió información del cliente" });
+                }
+
+                // Obtener el correo del usuario actual desde las claims
+                var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+                
+                if (string.IsNullOrEmpty(userEmail))
+                {
+                    _logger.LogWarning("No se pudo determinar el usuario actual");
+                    return new JsonResult(new { success = false, message = "No se pudo determinar el usuario actual" });
+                }
+
+                // Verificar si tenemos token
+                if (User.FindFirst("AccessToken") == null)
+                {
+                    _logger.LogWarning("Token no encontrado para el usuario {Email}", userEmail);
+                    return new JsonResult(new { success = false, message = "No se ha podido autenticar con el API. Por favor, vuelve a iniciar sesión." });
+                }
+
+                // Validar campos obligatorios
+                if (string.IsNullOrEmpty(request.Nombre) || string.IsNullOrEmpty(request.CorreoElectronico) || 
+                    string.IsNullOrEmpty(request.Telefono) || string.IsNullOrEmpty(request.TipoCliente))
+                {
+                    return new JsonResult(new { success = false, message = "Los campos obligatorios no pueden estar vacíos" });
+                }
+
+                // Crear el DTO para enviar a la API
+                var clienteDto = new GestorEventos.Models.ApiModels.ClienteCreateDto
+                {
+                    TipoCliente = request.TipoCliente,
+                    Nombre = request.Nombre,
+                    CorreoElectronico = request.CorreoElectronico,
+                    Telefono = request.Telefono,
+                    Direccion = request.Direccion ?? string.Empty
+                };
+
+                // Llamar al servicio para crear el cliente
+                _logger.LogInformation("Llamando al servicio para crear cliente: {@ClienteDto}", clienteDto);
+                var result = await _clienteService.CreateClienteAsync(userEmail, clienteDto);
+                
+                _logger.LogInformation("Resultado de crear cliente: {Result}", result);
+                
+                if (result)
+                {
+                    return new JsonResult(new { success = true });
+                }
+                else
+                {
+                    return new JsonResult(new { success = false, message = "No se pudo crear el cliente" });
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al crear cliente");
+                return new JsonResult(new { success = false, message = "Ocurrió un error al procesar la solicitud" });
+            }
+        }
+
+        public class ClienteUpdateRequest
+        {
+            public string Id { get; set; }
+            public string TipoCliente { get; set; }
+            public string Nombre { get; set; }
+            public string CorreoElectronico { get; set; }
+            public string Telefono { get; set; }
+            public string Direccion { get; set; }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> OnPostUpdateClienteAsync([FromBody] ClienteUpdateRequest request)
+        {
+            try
+            {
+                // Validar el modelo recibido
+                if (request == null || string.IsNullOrEmpty(request.Id))
+                {
+                    _logger.LogWarning("Request body es nulo o no contiene ID");
+                    return new JsonResult(new { success = false, message = "No se recibió información válida del cliente" });
+                }
+
+                // Obtener el correo del usuario actual desde las claims
+                var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+                
+                if (string.IsNullOrEmpty(userEmail))
+                {
+                    _logger.LogWarning("No se pudo determinar el usuario actual");
+                    return new JsonResult(new { success = false, message = "No se pudo determinar el usuario actual" });
+                }
+
+                // Verificar si tenemos token
+                if (User.FindFirst("AccessToken") == null)
+                {
+                    _logger.LogWarning("Token no encontrado para el usuario {Email}", userEmail);
+                    return new JsonResult(new { success = false, message = "No se ha podido autenticar con el API. Por favor, vuelve a iniciar sesión." });
+                }
+
+                // Validar campos obligatorios
+                if (string.IsNullOrEmpty(request.Nombre) || string.IsNullOrEmpty(request.CorreoElectronico) || 
+                    string.IsNullOrEmpty(request.Telefono) || string.IsNullOrEmpty(request.TipoCliente))
+                {
+                    return new JsonResult(new { success = false, message = "Los campos obligatorios no pueden estar vacíos" });
+                }
+
+                // Crear el DTO para enviar a la API
+                var clienteDto = new GestorEventos.Models.ApiModels.ClienteCreateDto
+                {
+                    TipoCliente = request.TipoCliente,
+                    Nombre = request.Nombre,
+                    CorreoElectronico = request.CorreoElectronico,
+                    Telefono = request.Telefono,
+                    Direccion = request.Direccion ?? string.Empty
+                };
+
+                // Llamar al servicio para actualizar el cliente
+                _logger.LogInformation("Llamando al servicio para actualizar cliente {Id}: {@ClienteDto}", request.Id, clienteDto);
+                var result = await _clienteService.UpdateClienteAsync(request.Id, clienteDto);
+                
+                _logger.LogInformation("Resultado de actualizar cliente: {Result}", result);
+                
+                if (result)
+                {
+                    return new JsonResult(new { success = true });
+                }
+                else
+                {
+                    return new JsonResult(new { success = false, message = "No se pudo actualizar el cliente" });
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al actualizar cliente");
+                return new JsonResult(new { success = false, message = "Ocurrió un error al procesar la solicitud" });
+            }
+        }
+
+        public class ClienteDeleteRequest
+        {
+            public string Id { get; set; }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> OnPostDeleteClienteAsync([FromBody] ClienteDeleteRequest request)
+        {
+            try
+            {
+                // Validar el modelo recibido
+                if (request == null || string.IsNullOrEmpty(request.Id))
+                {
+                    _logger.LogWarning("Request body es nulo o no contiene ID");
+                    return new JsonResult(new { success = false, message = "No se recibió información válida del cliente" });
+                }
+
+                // Obtener el correo del usuario actual desde las claims
+                var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+                
+                if (string.IsNullOrEmpty(userEmail))
+                {
+                    _logger.LogWarning("No se pudo determinar el usuario actual");
+                    return new JsonResult(new { success = false, message = "No se pudo determinar el usuario actual" });
+                }
+
+                // Verificar si tenemos token
+                if (User.FindFirst("AccessToken") == null)
+                {
+                    _logger.LogWarning("Token no encontrado para el usuario {Email}", userEmail);
+                    return new JsonResult(new { success = false, message = "No se ha podido autenticar con el API. Por favor, vuelve a iniciar sesión." });
+                }
+
+                // Llamar al servicio para eliminar el cliente
+                _logger.LogInformation("Llamando al servicio para eliminar cliente {Id}", request.Id);
+                var result = await _clienteService.DeleteClienteAsync(request.Id);
+                
+                _logger.LogInformation("Resultado de eliminar cliente: {Result}", result);
+                
+                if (result)
+                {
+                    return new JsonResult(new { success = true });
+                }
+                else
+                {
+                    return new JsonResult(new { success = false, message = "No se pudo eliminar el cliente" });
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al eliminar cliente");
+                return new JsonResult(new { success = false, message = "Ocurrió un error al procesar la solicitud" });
             }
         }
     }
