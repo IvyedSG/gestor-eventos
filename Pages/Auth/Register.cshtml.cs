@@ -96,8 +96,7 @@ namespace GestorEventos.Pages.Auth
                 return Page();
             }
 
-            try
-            {
+            try {
                 // Crear cliente HTTP
                 var client = _httpClientFactory.CreateClient();
                 
@@ -122,10 +121,11 @@ namespace GestorEventos.Pages.Auth
                 
                 if (response.IsSuccessStatusCode)
                 {
-                    // Configurar mensaje de éxito para la página de login
+                    // Set flag to show success message
+                    TempData["ShowSuccessAlert"] = true;
                     SuccessMessage = "¡Registro exitoso! Por favor, inicia sesión con tus nuevas credenciales.";
                     
-                    // Redirigir al usuario a la página de login
+                    // Redirect to login page
                     return RedirectToPage("/Auth/Login");
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)

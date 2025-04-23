@@ -207,61 +207,39 @@
                 // Obtener el botón que activó el modal
                 const button = event.relatedTarget;
                 
-                // Obtener el ID de la reserva desde el botón (por ejemplo, data-reservation-id)
-                const reservationId = button.getAttribute('data-reservation-id') || "1";
+                // Obtener el ID de la reserva desde el botón
+                const reservationId = button.getAttribute('data-reservation-id');
                 
-                // En un caso real, aquí harías una petición AJAX para obtener los detalles de la reserva
-                // Para esta demostración, usaremos datos de ejemplo
+                // Encontrar la reserva correspondiente en los datos cargados
+                // Usamos la variable global reservationsData que definiremos más adelante
+                const reservation = window.reservationsData.find(r => r.id == reservationId);
                 
-                // Datos de ejemplo de una reserva
-                const reservationExample = {
-                    id: reservationId,
-                    eventName: "Boda de Carlos y María",
-                    clientName: "Carlos Rodríguez",
-                    clientEmail: "carlos@ejemplo.com",
-                    clientPhone: "+56 9 1234 5678",
-                    status: "Confirmada",
-                    eventType: "Boda",
-                    date: "18/04/2025",
-                    time: "16:00",
-                    price: 1120000,
-                    description: "Boda para 150 personas en Salón Diamante. El novio solicita decoración en tonos azules y plateados. Se requiere estacionamiento para al menos 30 vehículos.",
-                    services: [
-                        { name: "Salón Principal", quantity: 1, price: 250000 },
-                        { name: "Catering Premium", quantity: 50, price: 750000 },
-                        { name: "DJ", quantity: 1, price: 120000 }
-                    ]
-                };
+                if (!reservation) {
+                    console.error('No se encontró la reserva con ID:', reservationId);
+                    return;
+                }
                 
                 // Actualizar los elementos en el modal con los datos de la reserva
-                document.getElementById('viewReservationId').textContent = reservationExample.id;
-                document.getElementById('viewEventName').textContent = reservationExample.eventName;
-                document.getElementById('viewClientName').textContent = reservationExample.clientName;
-                document.getElementById('viewClientEmail').textContent = reservationExample.clientEmail;
-                document.getElementById('viewClientPhone').textContent = reservationExample.clientPhone;
-                document.getElementById('viewEventDate').textContent = reservationExample.date;
-                document.getElementById('viewEventTime').textContent = reservationExample.time;
-                document.getElementById('viewEventPrice').textContent = formatCurrency(reservationExample.price);
-                document.getElementById('viewEventDescription').textContent = reservationExample.description;
+                document.getElementById('viewReservationId').textContent = reservation.id;
+                document.getElementById('viewEventName').textContent = reservation.eventName;
+                document.getElementById('viewClientName').textContent = reservation.clientName;
+                document.getElementById('viewClientEmail').textContent = reservation.clientEmail;
+                document.getElementById('viewClientPhone').textContent = reservation.clientPhone || 'No disponible';
+                document.getElementById('viewEventDate').textContent = new Date(reservation.date).toLocaleDateString('es-CL');
+                document.getElementById('viewEventTime').textContent = reservation.time;
+                document.getElementById('viewEventPrice').textContent = formatCurrency(reservation.amount);
+                document.getElementById('viewEventDescription').textContent = reservation.description || 'Sin descripción';
                 
                 // Actualizar tipo de evento y estado con el diseño de badge adecuado
                 const eventTypeEl = document.getElementById('viewEventType');
-                eventTypeEl.innerHTML = `<i class="bi bi-bookmark me-1"></i>${reservationExample.eventType}`;
+                eventTypeEl.innerHTML = `<i class="bi bi-bookmark me-1"></i>${reservation.eventType || 'No especificado'}`;
                 
                 const eventStatusEl = document.getElementById('viewEventStatus');
-                if (reservationExample.status === "Confirmada") {
-                    eventStatusEl.className = "badge bg-success bg-opacity-10 text-success px-3 py-2";
-                    eventStatusEl.innerHTML = '<i class="bi bi-check-circle me-1"></i>Confirmada';
-                } else if (reservationExample.status === "Pendiente") {
-                    eventStatusEl.className = "badge bg-warning bg-opacity-10 text-warning px-3 py-2";
-                    eventStatusEl.innerHTML = '<i class="bi bi-clock me-1"></i>Pendiente';
-                } else if (reservationExample.status === "Cancelada") {
-                    eventStatusEl.className = "badge bg-danger bg-opacity-10 text-danger px-3 py-2";
-                    eventStatusEl.innerHTML = '<i class="bi bi-x-circle me-1"></i>Cancelada';
-                } else if (reservationExample.status === "Finalizada") {
-                    eventStatusEl.className = "badge bg-secondary bg-opacity-10 text-secondary px-3 py-2";
-                    eventStatusEl.innerHTML = '<i class="bi bi-flag me-1"></i>Finalizada';
-                }
+                updateStatusBadge(eventStatusEl, reservation.status);
+                
+                // TODO: En un caso real, aquí cargarías los servicios desde la API
+                // Por ahora, crearemos algunos servicios de ejemplo basados en el monto total
+                const exampleServices = generateExampleServices(reservation.amount);
                 
                 // Cargar servicios en la tabla
                 const servicesTable = document.getElementById('viewServicesTable').querySelector('tbody');
@@ -273,7 +251,7 @@
                 
                 // Agregar servicios
                 let totalAmount = 0;
-                reservationExample.services.forEach(service => {
+                exampleServices.forEach(service => {
                     const serviceAmount = service.quantity * service.price;
                     totalAmount += serviceAmount;
                     
@@ -323,94 +301,67 @@
                 const button = event.relatedTarget;
                 
                 // Obtener el ID de la reserva
-                const reservationId = button.getAttribute('data-reservation-id') || "1";
+                const reservationId = button.getAttribute('data-reservation-id');
                 
-                // Establecer el ID en el modal
-                document.getElementById('editReservationId').textContent = reservationId;
+                // Buscar la reserva en nuestros datos
+                const reservation = window.reservationsData.find(r => r.id == reservationId);
                 
-                // En un caso real, aquí harías una petición AJAX para cargar los datos actuales
-                
-                // Inicializar el selector de servicios
-                actualizarSelectServiciosEdicion();
-                
-                // Añadir servicio al hacer clic en el selector
-                const editServiceSelect = document.getElementById('editServiceSelect');
-                if (editServiceSelect) {
-                    // Eliminar manejadores de eventos anteriores
-                    const newEditServiceSelect = editServiceSelect.cloneNode(true);
-                    editServiceSelect.parentNode.replaceChild(newEditServiceSelect, editServiceSelect);
-                    
-                    // Añadir nuevo manejador de evento
-                    newEditServiceSelect.addEventListener('change', function() {
-                        const serviceId = this.value;
-                        if (!serviceId || serviceId === 'Seleccionar servicio para añadir') return;
-                        
-                        const servicios = {
-                            1: { nombre: "Salón Principal", precio: 250000, items: 1 },
-                            2: { nombre: "Catering Premium", precio: 15000, items: 50 },
-                            3: { nombre: "DJ", precio: 120000, items: 1 },
-                            4: { nombre: "Decoración Básica", precio: 80000, items: 1 },
-                            5: { nombre: "Fotografía", precio: 150000, items: 1 }
-                        };
-                        
-                        const servicio = servicios[serviceId];
-                        if (!servicio) return;
-                        
-                        // Crear nueva fila en la tabla
-                        const tbody = document.querySelector('#editServicesTable tbody');
-                        const newRow = document.createElement('tr');
-                        newRow.setAttribute('data-service-id', serviceId);
-                        
-                        // Cantidad fija según el tipo de servicio
-                        const cantidad = servicio.items;
-                        const precioTotal = servicio.precio * cantidad;
-                        
-                        newRow.innerHTML = `
-                            <td>${servicio.nombre}</td>
-                            <td>${cantidad}</td>
-                            <td>${formatCurrency(precioTotal)}</td>
-                            <td class="text-end">
-                                <button class="btn btn-sm btn-link text-danger delete-service">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </td>
-                        `;
-                        
-                        // Insertar antes de la fila del total
-                        const totalRow = tbody.querySelector('tr.fw-bold');
-                        tbody.insertBefore(newRow, totalRow);
-                        
-                        // Configurar el botón de eliminar para la nueva fila
-                        const deleteButton = newRow.querySelector('.delete-service');
-                        deleteButton.addEventListener('click', function() {
-                            newRow.remove();
-                            actualizarTotalEdicion();
-                            actualizarSelectServiciosEdicion();
-                        });
-                        
-                        // Actualizar el total
-                        actualizarTotalEdicion();
-                        
-                        // Actualizar opciones disponibles en el selector
-                        actualizarSelectServiciosEdicion();
-                        
-                        // Reiniciar selección
-                        this.selectedIndex = 0;
-                    });
+                if (!reservation) {
+                    console.error('No se encontró la reserva con ID:', reservationId);
+                    return;
                 }
                 
-                // Configurar botones de eliminación existentes
-                document.querySelectorAll('#editServicesTable .delete-service').forEach(button => {
-                    // Eliminar manejadores de eventos anteriores
-                    const newButton = button.cloneNode(true);
-                    button.parentNode.replaceChild(newButton, button);
+                // Establecer el ID en el modal
+                document.getElementById('editReservationId').textContent = reservation.id;
+                
+                // Rellenar los campos del formulario con los datos de la reserva
+                document.getElementById('editEventName').value = reservation.eventName || '';
+                document.getElementById('editEventType').value = reservation.eventType || '';
+                document.getElementById('editEventDate').value = formatDateForInput(reservation.date);
+                document.getElementById('editEventTime').value = reservation.time || '';
+                document.getElementById('editClientName').value = reservation.clientName || '';
+                document.getElementById('editClientEmail').value = reservation.clientEmail || '';
+                document.getElementById('editClientPhone').value = reservation.clientPhone || '';
+                document.getElementById('editEventDescription').value = reservation.description || '';
+                document.getElementById('editStatus').value = reservation.status || 'Pendiente';
+                document.getElementById('editTotalPrice').value = reservation.amount || 0;
+                
+                // Generar servicios de ejemplo para mostrar en la tabla de edición
+                const exampleServices = generateExampleServices(reservation.amount);
+                
+                // Limpiar la tabla de servicios antes de añadir nuevos
+                const tbody = document.querySelector('#editServicesTable tbody');
+                const totalRow = tbody.querySelector('tr.fw-bold');
+                while (tbody.firstChild && tbody.firstChild !== totalRow) {
+                    tbody.removeChild(tbody.firstChild);
+                }
+                
+                // Añadir servicios a la tabla
+                exampleServices.forEach((service, index) => {
+                    const newRow = document.createElement('tr');
+                    newRow.setAttribute('data-service-id', index + 1);
                     
-                    // Añadir nuevo manejador de evento
-                    newButton.addEventListener('click', function() {
-                        const row = this.closest('tr');
-                        // No eliminamos si es la última fila
+                    const serviceAmount = service.price * service.quantity;
+                    
+                    newRow.innerHTML = `
+                        <td>${service.name}</td>
+                        <td>${service.quantity}</td>
+                        <td>${formatCurrency(serviceAmount)}</td>
+                        <td class="text-end">
+                            <button class="btn btn-sm btn-link text-danger delete-service">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    
+                    // Insertar antes de la fila del total
+                    tbody.insertBefore(newRow, totalRow);
+                    
+                    // Configurar el botón de eliminar para la nueva fila
+                    const deleteButton = newRow.querySelector('.delete-service');
+                    deleteButton.addEventListener('click', function() {
                         if (document.querySelectorAll('#editServicesTable tbody tr:not(.fw-bold)').length > 1) {
-                            row.remove();
+                            newRow.remove();
                             actualizarTotalEdicion();
                             actualizarSelectServiciosEdicion();
                         } else {
@@ -419,39 +370,84 @@
                     });
                 });
                 
-                // Calcular total inicial
+                // Inicializar el selector de servicios
+                actualizarSelectServiciosEdicion();
+                
+                // Actualizar total
                 actualizarTotalEdicion();
             });
         }
         
-        // Función para actualizar el total en el formulario de edición
-        function actualizarTotalEdicion() {
-            let total = 0;
-            const filas = document.querySelectorAll('#editServicesTable tbody tr:not(.fw-bold)');
+        // Función para formatear una fecha para input type="date"
+        function formatDateForInput(dateString) {
+            const date = new Date(dateString);
+            return date.toISOString().split('T')[0];
+        }
+        
+        // Función para actualizar el estilo del badge según el estado
+        function updateStatusBadge(element, status) {
+            const statusUpper = status ? status.toUpperCase() : '';
             
-            filas.forEach(fila => {
-                const precioText = fila.cells[2].textContent;
-                const precio = parseInt(precioText.replace(/[^\d]/g, ''));
-                total += precio;
-            });
-            
-            const totalElement = document.getElementById('editServicesTotalAmount');
-            if (totalElement) {
-                totalElement.textContent = formatCurrency(total);
-            }
-            
-            const totalPriceInput = document.getElementById('editTotalPrice');
-            if (totalPriceInput) {
-                totalPriceInput.value = total;
+            if (statusUpper.includes('CONFIRM')) {
+                element.className = "badge bg-success bg-opacity-10 text-success px-3 py-2";
+                element.innerHTML = '<i class="bi bi-check-circle me-1"></i>Confirmada';
+            } else if (statusUpper.includes('PENDIENTE') || statusUpper.includes('PENDING')) {
+                element.className = "badge bg-warning bg-opacity-10 text-warning px-3 py-2";
+                element.innerHTML = '<i class="bi bi-clock me-1"></i>Pendiente';
+            } else if (statusUpper.includes('CANCEL')) {
+                element.className = "badge bg-danger bg-opacity-10 text-danger px-3 py-2";
+                element.innerHTML = '<i class="bi bi-x-circle me-1"></i>Cancelada';
+            } else if (statusUpper.includes('FINAL') || statusUpper.includes('COMPLET') || statusUpper.includes('FINISH')) {
+                element.className = "badge bg-secondary bg-opacity-10 text-secondary px-3 py-2";
+                element.innerHTML = '<i class="bi bi-flag me-1"></i>Finalizada';
+            } else {
+                element.className = "badge bg-info bg-opacity-10 text-info px-3 py-2";
+                element.innerHTML = `<i class="bi bi-info-circle me-1"></i>${status || 'Desconocido'}`;
             }
         }
         
-        // Guardar cambios
-        document.getElementById('saveEditReservation')?.addEventListener('click', function() {
-            // Aquí implementarías la lógica para enviar los datos al servidor
-            alert('Cambios guardados correctamente');
-            const modal = bootstrap.Modal.getInstance(document.getElementById('editReservationModal'));
-            modal.hide();
+        // Función para generar servicios de ejemplo basados en el monto total
+        function generateExampleServices(totalAmount) {
+            const amount = parseFloat(totalAmount) || 0;
+            
+            if (amount <= 0) {
+                return [{ name: "Servicio básico", quantity: 1, price: 0 }];
+            }
+            
+            let services = [];
+            
+            // Generar servicios basados en el tipo de eventos comunes
+            if (amount > 500000) {
+                // Evento grande (boda, corporativo grande)
+                services = [
+                    { name: "Salón Principal", quantity: 1, price: Math.round(amount * 0.25) },
+                    { name: "Catering Premium", quantity: Math.floor(amount / 15000), price: 15000 },
+                    { name: "DJ", quantity: 1, price: 120000 },
+                    { name: "Decoración", quantity: 1, price: Math.round(amount * 0.1) }
+                ];
+            } else if (amount > 200000) {
+                // Evento mediano (cumpleaños grande, corporativo pequeño)
+                services = [
+                    { name: "Salón Mediano", quantity: 1, price: Math.round(amount * 0.3) },
+                    { name: "Catering Estándar", quantity: Math.floor(amount / 10000), price: 10000 },
+                    { name: "Música", quantity: 1, price: 70000 }
+                ];
+            } else {
+                // Evento pequeño (reunión pequeña)
+                services = [
+                    { name: "Sala de Reuniones", quantity: 1, price: Math.round(amount * 0.5) },
+                    { name: "Coffee Break", quantity: Math.floor(amount / 5000), price: 5000 }
+                ];
+            }
+            
+            return services;
+        }
+        
+        // Al cargar la página, almacenar los datos de las reservaciones en una variable global
+        document.addEventListener('DOMContentLoaded', function() {
+            // Convertir los datos del modelo a un objeto JavaScript
+            window.reservationsData = @Html.Raw(Json.Serialize(Model.Reservations));
+            console.log("Datos de reservaciones cargados:", window.reservationsData);
         });
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>

@@ -1,9 +1,14 @@
-using GestorEventos.Filters;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Logging;
+using gestor_eventos.Models.ApiModels;
+using gestor_eventos.Services;
+using GestorEventos.Filters;
+using Microsoft.AspNetCore.Http;
 
 namespace gestor_eventos.Pages.Reservas
 {
@@ -11,10 +16,12 @@ namespace gestor_eventos.Pages.Reservas
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
+        private readonly ReservacionService _reservacionService;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        public IndexModel(ILogger<IndexModel> logger, ReservacionService reservacionService)
         {
             _logger = logger;
+            _reservacionService = reservacionService;
         }
 
         [BindProperty(SupportsGet = true)]
@@ -24,236 +31,123 @@ namespace gestor_eventos.Pages.Reservas
         public string StatusFilter { get; set; }
 
         [BindProperty(SupportsGet = true)]
-        public string PeriodFilter { get; set; }
-
-        // Añadimos EventTypeFilter
-        [BindProperty(SupportsGet = true)]
         public string EventTypeFilter { get; set; }
 
-        // Añadimos DateFilter
         [BindProperty(SupportsGet = true)]
         public DateTime? DateFilter { get; set; }
 
-        // Las propiedades StartDate y EndDate pueden mantenerse para uso interno
-        private DateTime? StartDate { get; set; }
-        private DateTime? EndDate { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string PeriodFilter { get; set; }
 
+        public List<ReservacionApi> Reservaciones { get; set; }
+
+        // Para compatibilidad con el código existente mientras hacemos la transición
         public List<Reservation> Reservations { get; set; }
 
-        public void OnGet()
+        public async Task OnGetAsync()
         {
-            // Procesar PeriodFilter y convertirlo a fechas StartDate y EndDate
-            ProcessPeriodFilter();
+            try
+            {
+                // Obtener correo del usuario de los claims (forma más confiable)
+                var userEmail = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")?.Value;
+                
+                // Si no hay email en los claims, buscar en los claims con formato estándar
+                if (string.IsNullOrEmpty(userEmail))
+                {
+                    userEmail = HttpContext.User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Email)?.Value;
+                }
+                
+                // Validar que tenemos un correo electrónico
+                if (string.IsNullOrEmpty(userEmail))
+                {
+                    _logger.LogWarning("No se pudo obtener el correo electrónico del usuario autenticado");
+                    Reservaciones = new List<ReservacionApi>();
+                    Reservations = new List<Reservation>();
+                    return;
+                }
+                
+                _logger.LogInformation($"Obteniendo reservaciones para el usuario: {userEmail}");
+                
+                // Obtener reservaciones del API
+                var apiReservaciones = await _reservacionService.GetReservacionesByCorreoAsync(userEmail);
+                Reservaciones = apiReservaciones.ToList();
+                
+                // Aplicar filtros a las reservaciones
+                AplicarFiltros();
+                
+                // Convertir ReservacionApi a Reservation para mantener compatibilidad con la vista existente
+                Reservations = Reservaciones.Select(ConvertirAReservation).ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al obtener las reservaciones");
+                Reservaciones = new List<ReservacionApi>();
+                Reservations = new List<Reservation>();
+            }
+        }
 
-            // Obtener y filtrar reservas
-            Reservations = GetSampleReservations();
-
+        private void AplicarFiltros()
+        {
+            // Filtrar reservaciones según los criterios
             if (!string.IsNullOrEmpty(SearchTerm))
             {
-                Reservations = Reservations.Where(r => 
-                    r.EventName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ||
-                    r.ClientName.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ||
-                    r.ClientEmail.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ||
-                    r.Description.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)
+                Reservaciones = Reservaciones.Where(r => 
+                    (r.NombreEvento?.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                    (r.NombreCliente?.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                    (r.CorreoCliente?.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                    (r.Descripcion?.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ?? false)
                 ).ToList();
             }
 
             if (!string.IsNullOrEmpty(StatusFilter))
             {
-                Reservations = Reservations.Where(r => r.Status == StatusFilter).ToList();
+                Reservaciones = Reservaciones.Where(r => r.Estado?.Equals(StatusFilter, StringComparison.OrdinalIgnoreCase) ?? false).ToList();
             }
             
-            // Filtrar por tipo de evento
             if (!string.IsNullOrEmpty(EventTypeFilter))
             {
-                Reservations = Reservations.Where(r => r.EventType == EventTypeFilter).ToList();
+                Reservaciones = Reservaciones.Where(r => r.TipoEvento?.Equals(EventTypeFilter, StringComparison.OrdinalIgnoreCase) ?? false).ToList();
             }
             
-            // Filtrar por fecha específica
             if (DateFilter.HasValue)
             {
-                Reservations = Reservations.Where(r => r.Date.Date == DateFilter.Value.Date).ToList();
-            }
-            else
-            {
-                // Solo usamos StartDate y EndDate si DateFilter no está definido
-                if (StartDate.HasValue)
-                {
-                    Reservations = Reservations.Where(r => r.Date >= StartDate.Value).ToList();
-                }
-
-                if (EndDate.HasValue)
-                {
-                    Reservations = Reservations.Where(r => r.Date <= EndDate.Value).ToList();
-                }
+                Reservaciones = Reservaciones.Where(r => r.FechaEvento.Date == DateFilter.Value.Date).ToList();
             }
         }
 
-        private void ProcessPeriodFilter()
+        private Reservation ConvertirAReservation(ReservacionApi r)
         {
-            if (string.IsNullOrEmpty(PeriodFilter))
-                return;
-
-            var today = DateTime.Today;
-
-            switch (PeriodFilter)
+            return new Reservation
             {
-                case "today":
-                    StartDate = today;
-                    EndDate = today;
-                    break;
-                case "yesterday":
-                    StartDate = today.AddDays(-1);
-                    EndDate = today.AddDays(-1);
-                    break;
-                case "3days":
-                    StartDate = today.AddDays(-3);
-                    EndDate = today;
-                    break;
-                case "week":
-                    StartDate = today.AddDays(-7);
-                    EndDate = today;
-                    break;
-                case "month":
-                    StartDate = today.AddMonths(-1);
-                    EndDate = today;
-                    break;
-            }
-        }
-
-        private List<Reservation> GetSampleReservations()
-        {
-            // Este es solo un ejemplo de datos para fines de demostración
-            return new List<Reservation>
-            {
-                new Reservation
-                {
-                    Id = 1,
-                    EventName = "Boda de Carlos y María",
-                    ClientName = "Carlos Rodríguez",
-                    ClientEmail = "carlos@ejemplo.com",
-                    ServiceName = "Boda Completa",
-                    EventType = "Boda",
-                    Date = new DateTime(2025, 4, 18),
-                    Time = "16:00",
-                    Amount = 1540000,
-                    Status = "Confirmada",
-                    Description = "Boda para 150 personas en Salón Diamante"
-                },
-                new Reservation
-                {
-                    Id = 2,
-                    EventName = "Cumpleaños de Lucía",
-                    ClientName = "María González",
-                    ClientEmail = "maria@ejemplo.com",
-                    ServiceName = "Cumpleaños",
-                    EventType = "Cumpleaños",
-                    Date = new DateTime(2025, 4, 22),
-                    Time = "19:30",
-                    Amount = 850000,
-                    Status = "Pendiente",
-                    Description = "Cumpleaños para 50 personas, requiere decoración temática"
-                },
-                new Reservation
-                {
-                    Id = 3,
-                    EventName = "Tech Summit 2025",
-                    ClientName = "Empresa ABC",
-                    ClientEmail = "eventos@abc.com",
-                    ServiceName = "Conferencia Corporativa",
-                    EventType = "Corporativo",
-                    Date = new DateTime(2025, 5, 5),
-                    Time = "09:00",
-                    Amount = 2350000,
-                    Status = "Confirmada",
-                    Description = "Conferencia de tecnología para 200 asistentes"
-                },
-                new Reservation
-                {
-                    Id = 4,
-                    EventName = "Graduación Universidad Central",
-                    ClientName = "Juan Pérez",
-                    ClientEmail = "juan@ejemplo.com",
-                    ServiceName = "Fiesta de Graduación",
-                    EventType = "Graduación",
-                    Date = new DateTime(2025, 5, 15),
-                    Time = "20:00",
-                    Amount = 1280000,
-                    Status = "Cancelada",
-                    Description = "Evento cancelado por el cliente"
-                },
-                new Reservation
-                {
-                    Id = 5,
-                    EventName = "Bautizo de Matías",
-                    ClientName = "Ana López",
-                    ClientEmail = "ana@ejemplo.com",
-                    ServiceName = "Bautizo",
-                    EventType = "Bautizo",
-                    Date = new DateTime(2025, 4, 30),
-                    Time = "11:30",
-                    Amount = 980000,
-                    Status = "Pendiente",
-                    Description = "Bautizo con recepción para 80 personas"
-                },
-                new Reservation
-                {
-                    Id = 6,
-                    EventName = "25 Aniversario",
-                    ClientName = "Roberto Díaz",
-                    ClientEmail = "roberto@ejemplo.com",
-                    ServiceName = "Aniversario",
-                    EventType = "Aniversario",
-                    Date = new DateTime(2025, 5, 10),
-                    Time = "20:30",
-                    Amount = 1220000,
-                    Status = "Confirmada",
-                    Description = "Cena de aniversario para 40 personas"
-                },
-                new Reservation
-                {
-                    Id = 7,
-                    EventName = "Lanzamiento Producto Z-1000",
-                    ClientName = "Empresa XYZ",
-                    ClientEmail = "marketing@xyz.com",
-                    ServiceName = "Lanzamiento de Producto",
-                    EventType = "Corporativo",
-                    Date = new DateTime(2025, 5, 20),
-                    Time = "17:00",
-                    Amount = 1842000,
-                    Status = "Pendiente",
-                    Description = "Presentación de nuevo producto con cóctel para 120 invitados"
-                },
-                new Reservation
-                {
-                    Id = 8,
-                    EventName = "Conferencia Anual de Medicina",
-                    ClientName = "Hospital Central",
-                    ClientEmail = "eventos@hospitalcentral.com",
-                    ServiceName = "Conferencia",
-                    EventType = "Corporativo",
-                    Date = new DateTime(2025, 6, 5),
-                    Time = "08:30",
-                    Amount = 2750000,
-                    Status = "Finalizada",
-                    Description = "Conferencia médica con participación internacional"
-                }
+                Id = r.Id.GetHashCode() % 10000, // ID numérico simplificado
+                EventName = r.NombreEvento,
+                ClientName = r.NombreCliente,
+                ClientEmail = r.CorreoCliente,
+                Date = r.FechaEvento,
+                Time = r.HoraEvento,
+                Amount = r.PrecioTotal,
+                EventType = r.TipoEvento,
+                Status = r.Estado,
+                Description = r.Descripcion,
+                ServiceName = r.ServicioId.ToString(),
+                ClientPhone = r.TelefonoCliente
             };
         }
-    }
 
-    public class Reservation
-    {
-        public int Id { get; set; }
-        public string EventName { get; set; }
-        public string ClientName { get; set; }
-        public string ClientEmail { get; set; }
-        public DateTime Date { get; set; }
-        public string Time { get; set; }
-        public decimal Amount { get; set; }
-        public string EventType { get; set; }
-        public string Status { get; set; }
-        public string Description { get; set; }
-        public string ServiceName { get; set; } // Mantener para compatibilidad con código existente
+        public class Reservation
+        {
+            public int Id { get; set; }
+            public string EventName { get; set; }
+            public string ClientName { get; set; }
+            public string ClientEmail { get; set; }
+            public string ClientPhone { get; set; }  // Nueva propiedad para el teléfono
+            public DateTime Date { get; set; }
+            public string Time { get; set; }
+            public decimal Amount { get; set; }
+            public string EventType { get; set; }
+            public string Status { get; set; }
+            public string Description { get; set; }
+            public string ServiceName { get; set; }
+        }
     }
 }

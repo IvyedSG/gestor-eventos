@@ -63,17 +63,17 @@
         </div>
 
         <!-- Formulario modo edición -->
-        <form id="editMode" method="post" style="display: none;">
+        <form id="editMode" method="post" asp-page-handler="Update" style="display: none;" onsubmit="return validateForm()">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             
             <div class="row mb-4">
                 <div class="col-md-6">
-                    <label asp-for="Input.Nombre" class="form-label"></label>
+                    <label asp-for="Input.Nombre" class="form-label">Nombre</label>
                     <input asp-for="Input.Nombre" class="form-control" placeholder="Tu nombre" />
                     <span asp-validation-for="Input.Nombre" class="text-danger"></span>
                 </div>
                 <div class="col-md-6">
-                    <label asp-for="Input.Apellido" class="form-label"></label>
+                    <label asp-for="Input.Apellido" class="form-label">Apellido</label>
                     <input asp-for="Input.Apellido" class="form-control" placeholder="Tu apellido" />
                     <span asp-validation-for="Input.Apellido" class="text-danger"></span>
                 </div>
@@ -81,23 +81,30 @@
             
             <div class="row mb-4">
                 <div class="col-md-6">
-                    <label asp-for="Input.Telefono" class="form-label"></label>
+                    <label asp-for="Input.Telefono" class="form-label">Teléfono</label>
                     <input asp-for="Input.Telefono" class="form-control" placeholder="Tu número de teléfono" />
                     <span asp-validation-for="Input.Telefono" class="text-danger"></span>
                 </div>
                 <div class="col-md-6">
-                    <label asp-for="Input.Email" class="form-label"></label>
+                    <label asp-for="Input.Email" class="form-label">Correo electrónico</label>
                     <div class="input-group">
                         <span class="input-group-text bg-light"><i class="bi bi-envelope"></i></span>
+                        <!-- Cambia readonly disabled por solo readonly para asegurar que se envía el valor -->
                         <input asp-for="Input.Email" class="form-control" readonly />
                     </div>
+                    <small class="text-muted">El correo electrónico no puede ser modificado</small>
                 </div>
             </div>
 
             <div class="d-flex justify-content-center mt-4">
-                <button type="submit" class="btn btn-primary px-4">
+                <button id="btnSubmitForm" type="submit" class="btn btn-primary px-4">
                     <i class="bi bi-check2 me-1"></i> Guardar cambios
                 </button>
+                <div id="loadingSpinner" class="d-none ms-2">
+                    <div class="spinner-border spinner-border-sm text-primary" role="status">
+                        <span class="visually-hidden">Guardando...</span>
+                    </div>
+                </div>
             </div>
         </form>
     </div>
@@ -107,7 +114,7 @@
         <div class="signature-content">
             <i class="bi bi-stars signature-icon"></i>
             <p class="signature-text">Gracias por elegir <span class="brand-highlight">Eventus</span></p>
-            <p class="signature-tagline">Nuestra misión es hacer de tus eventos maravillas</nav></p>
+            <p class="signature-tagline">Nuestra misión es hacer de tus eventos maravillas</p>
         </div>
     </div>
 </div>
@@ -272,6 +279,87 @@
                 $("#btnCancelarEdicion").hide();
                 $("#btnEditarPerfil").show();
             });
+            
+            // Mostrar spinner durante el envío del formulario
+            $("#editMode").on("submit", function() {
+                if ($(this).valid()) {
+                    console.log("Enviando formulario con handler Update...");
+                    $("#btnSubmitForm").attr("disabled", true);
+                    $("#loadingSpinner").removeClass("d-none");
+                    
+                    // Capturar los valores actualizados para actualizar el header después del envío exitoso
+                    localStorage.setItem('nuevoNombre', $("#Input_Nombre").val());
+                    localStorage.setItem('nuevoApellido', $("#Input_Apellido").val());
+                    
+                    return true; // Asegurar que el formulario se envíe
+                }
+                return false;
+            });
+            
+            // Verificar si venimos de una actualización exitosa y actualizar el header si es necesario
+            if (@(!string.IsNullOrEmpty(Model.StatusMessage) ? "true" : "false")) {
+                const nombre = "@Model.Input.Nombre";
+                const apellido = "@Model.Input.Apellido";
+                const iniciales = nombre.charAt(0) + apellido.charAt(0);
+                
+                // Actualizar el avatar y el nombre en el header
+                updateHeaderUserInfo(nombre, apellido, iniciales.toUpperCase());
+                
+                // Limpiar localStorage
+                localStorage.removeItem('nuevoNombre');
+                localStorage.removeItem('nuevoApellido');
+            }
         });
+
+        // Función para actualizar la información del usuario en el header
+        function updateHeaderUserInfo(nombre, apellido, iniciales) {
+            // Actualizar el avatar en el header
+            const userAvatar = document.querySelector('.header .user-avatar');
+            if (userAvatar) {
+                userAvatar.textContent = iniciales;
+            }
+            
+            // Actualizar el nombre en el header
+            const userName = document.querySelector('.header .user-name');
+            if (userName) {
+                userName.textContent = nombre + ' ' + apellido;
+            }
+            
+            console.log("Header actualizado con nombre: " + nombre + " " + apellido);
+        }
+
+        // Función de validación adicional
+        function validateForm() {
+            var nombre = $("#Input_Nombre").val();
+            var apellido = $("#Input_Apellido").val();
+            var telefono = $("#Input_Telefono").val();
+            
+            if (!nombre || nombre.trim().length < 2) {
+                alert("El nombre debe tener al menos 2 caracteres");
+                $("#btnSubmitForm").attr("disabled", false);
+                $("#loadingSpinner").addClass("d-none");
+                return false;
+            }
+            
+            if (!apellido || apellido.trim().length < 2) {
+                alert("El apellido debe tener al menos 2 caracteres");
+                $("#btnSubmitForm").attr("disabled", false);
+                $("#loadingSpinner").addClass("d-none");
+                return false;
+            }
+            
+            if (!telefono) {
+                alert("El número de teléfono es obligatorio");
+                $("#btnSubmitForm").attr("disabled", false);
+                $("#loadingSpinner").addClass("d-none");
+                return false;
+            }
+            
+            // Mostramos spinner y deshabilitamos botón antes de enviar
+            $("#btnSubmitForm").attr("disabled", true);
+            $("#loadingSpinner").removeClass("d-none");
+            console.log("Formulario validado, enviando...");
+            return true;
+        }
     </script>
 }

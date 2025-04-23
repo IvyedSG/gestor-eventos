@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
     <style>
         :root {
             --primary-color: #4F46E5;
@@ -657,6 +658,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script>
         // Toggle password visibility
@@ -763,6 +765,23 @@
             
             // Evitar el autocompletado del formulario
             document.querySelector('form').setAttribute('autocomplete', 'off');
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const showSuccessAlert = '@TempData["ShowSuccessAlert"]' === 'True';
+            const successMessage = '@TempData["SuccessMessage"]';
+            
+            if (showSuccessAlert) {
+                Swal.fire({
+                    title: '¡Registro Exitoso!',
+                    text: successMessage || 'Tu cuenta ha sido creada correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Continuar',
+                    confirmButtonColor: '#4F46E5',
+                    timer: 3000,
+                    timerProgressBar: true
+                });
+            }
         });
     </script>
 </body>

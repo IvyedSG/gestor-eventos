@@ -31,34 +31,44 @@
                                 <td>$@reservation.Amount.ToString("N0")</td>
                                 <td>@reservation.EventType</td>
                                 <td>
-                                    @if (reservation.Status == "Confirmada")
-                                    {
-                                        <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">
-                                            <i class="bi bi-check-circle me-1"></i>Confirmada
-                                        </span>
-                                    }
-                                    else if (reservation.Status == "Pendiente")
-                                    {
-                                        <span class="badge bg-warning bg-opacity-10 text-warning px-3 py-2 rounded-pill">
-                                            <i class="bi bi-clock me-1"></i>Pendiente
-                                        </span>
-                                    }
-                                    else if (reservation.Status == "Cancelada")
-                                    {
-                                        <span class="badge bg-danger bg-opacity-10 text-danger px-3 py-2 rounded-pill">
-                                            <i class="bi bi-x-circle me-1"></i>Cancelada
-                                        </span>
-                                    }
-                                    else if (reservation.Status == "Finalizada")
-                                    {
-                                        <span class="badge bg-secondary bg-opacity-10 text-secondary px-3 py-2 rounded-pill">
-                                            <i class="bi bi-flag me-1"></i>Finalizada
-                                        </span>
+                                    @{
+                                        var status = reservation.Status.ToUpper();
+                                        
+                                        if (status == "CONFIRMADA" || status == "CONFIRMED")
+                                        {
+                                            <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">
+                                                <i class="bi bi-check-circle me-1"></i>Confirmada
+                                            </span>
+                                        }
+                                        else if (status == "PENDIENTE" || status == "PENDING")
+                                        {
+                                            <span class="badge bg-warning bg-opacity-10 text-warning px-3 py-2 rounded-pill">
+                                                <i class="bi bi-clock me-1"></i>Pendiente
+                                            </span>
+                                        }
+                                        else if (status == "CANCELADA" || status == "CANCELED" || status == "CANCELLED")
+                                        {
+                                            <span class="badge bg-danger bg-opacity-10 text-danger px-3 py-2 rounded-pill">
+                                                <i class="bi bi-x-circle me-1"></i>Cancelada
+                                            </span>
+                                        }
+                                        else if (status == "FINALIZADA" || status == "COMPLETED" || status == "FINISHED")
+                                        {
+                                            <span class="badge bg-secondary bg-opacity-10 text-secondary px-3 py-2 rounded-pill">
+                                                <i class="bi bi-flag me-1"></i>Finalizada
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-info bg-opacity-10 text-info px-3 py-2 rounded-pill">
+                                                <i class="bi bi-info-circle me-1"></i>@reservation.Status
+                                            </span>
+                                        }
                                     }
                                 </td>
                                 <td class="text-end pe-4">
                                     <div class="btn-group">
-                                        <button class="btn btn-sm btn-outline-secondary" title="Ver detalles" data-bs-toggle="modal" data-bs-target="#viewReservationModal">
+                                        <button class="btn btn-sm btn-outline-secondary" title="Ver detalles" data-bs-toggle="modal" data-bs-target="#viewReservationModal" data-reservation-id="@reservation.Id">
                                             <i class="bi bi-eye"></i>
                                         </button>
                                         <button class="btn btn-sm btn-outline-primary" title="Editar" 
