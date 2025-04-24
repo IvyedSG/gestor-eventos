@@ -1,0 +1,106 @@
+@model List<gestor_eventos.Pages.Servicios.ServiceModel>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="col-12 text-center py-5">
+        <div class="empty-state">
+            <i class="bi bi-box text-muted display-1"></i>
+            <h4 class="mt-3">No hay servicios disponibles</h4>
+            <p class="text-muted">No se encontraron servicios registrados. Puedes crear uno nuevo.</p>
+            <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#newServiceModal">
+                <i class="bi bi-plus-circle me-2"></i>Crear servicio
+            </button>
+        </div>
+    </div>
+}
+else
+{
+    @foreach (var service in Model)
+    {
+        <div class="col-md-4 col-sm-6">
+            <div class="card service-card h-100 shadow-sm border-0">
+                <div class="service-image-container">
+                    <img src="@(string.IsNullOrEmpty(service.MainImage) ? "/assets/img/placeholder-img.png" : service.MainImage)" 
+                         class="card-img-top service-image" 
+                         alt="@service.Name" 
+                         loading="lazy">
+                    <div class="service-category-badge">
+                        <span class="badge @GetCategoryClass(service.Category)">@service.Category</span>
+                    </div>
+                </div>
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title mb-1">@service.Name</h5>
+                    <p class="card-text small text-muted mb-2">
+                        @(service.Description?.Length > 70 ? service.Description.Substring(0, 70) + "..." : service.Description)
+                    </p>
+                    
+                    @if (!string.IsNullOrEmpty(service.EventTypes))
+                    {
+                        <div class="mb-2">
+                            @foreach (var eventType in service.EventTypes.Split(','))
+                            {
+                                if (!string.IsNullOrEmpty(eventType.Trim()))
+                                {
+                                    <span class="badge bg-light text-dark me-1 mb-1">@eventType.Trim()</span>
+                                }
+                            }
+                        </div>
+                    }
+                    
+                    <div class="mt-auto">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <strong class="text-primary">S/ @service.BasePrice.ToString("0.00")</strong>
+                            <div class="btn-group">
+                                <button type="button"
+                                    class="btn btn-sm btn-outline-primary view-service-btn"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#viewServiceModal"
+                                    data-service-id="@service.Id"
+                                    data-service-name="@service.Name"
+                                    data-service-description="@service.Description"
+                                    data-service-category="@service.Category"
+                                    data-service-price="@service.BasePrice"
+                                    data-service-events="@service.EventTypes"
+                                    data-service-images="@string.Join(",", service.Images)"
+                                    data-service-total-items="@service.TotalItems"
+                                    data-service-items='@System.Text.Json.JsonSerializer.Serialize(service.Items)'>
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                                <button type="button" 
+                                    class="btn btn-sm btn-outline-secondary edit-service-btn"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#editServiceModal"
+                                    data-service-id="@service.Id">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button type="button" 
+                                    class="btn btn-sm btn-outline-danger delete-service-btn"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#deleteServiceModal"
+                                    data-service-id="@service.Id"
+                                    data-service-name="@service.Name">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+@functions {
+    public string GetCategoryClass(string category)
+    {
+        return category?.ToLower() switch
+        {
+            "catering" => "bg-success",
+            "decoración" => "bg-info",
+            "entretenimiento" => "bg-warning",
+            "audio y video" => "bg-danger",
+            "mobiliario" => "bg-primary",
+            _ => "bg-secondary"
+        };
+    }
+}

@@ -1,0 +1,256 @@
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Configurar evento para el modal de visualización
+    const viewServiceModal = document.getElementById('viewServiceModal');
+    
+    if (viewServiceModal) {
+        viewServiceModal.addEventListener('show.bs.modal', function(event) {
+            // Obtener el botón que activó el modal
+            const button = event.relatedTarget;
+            
+            // Extraer información del atributo data-* del botón
+            const serviceId = button.getAttribute('data-service-id');
+            const serviceName = button.getAttribute('data-service-name') || 'Sin nombre';
+            const serviceDescription = button.getAttribute('data-service-description') || 'Sin descripción';
+            const servicePrice = button.getAttribute('data-service-price') || '0.00';
+            const serviceCategory = button.getAttribute('data-service-category') || 'Otros';
+            // Corrección: Usar el nombre correcto del atributo que coincide con _ServicesGrid.cshtml
+            const serviceEventTypes = button.getAttribute('data-service-events') || '';
+            const serviceImages = button.getAttribute('data-service-images') || '';
+            const serviceTotalItems = button.getAttribute('data-service-total-items') || '0';
+            
+            // Parsear items con manejo de errores
+            let serviceItems = [];
+            try {
+                const itemsData = button.getAttribute('data-service-items');
+                if (itemsData && itemsData !== 'null') {
+                    serviceItems = JSON.parse(itemsData);
+                }
+            } catch (error) {
+                console.error("Error al parsear items:", error);
+            }
+            
+            // Actualizar el contenido del modal - Usar operador de coalescencia nula para valores fallback
+            document.getElementById('viewServiceName').textContent = serviceName;
+            document.getElementById('viewServiceDescription').textContent = serviceDescription || 'Sin descripción';
+            document.getElementById('viewServicePrice').textContent = servicePrice;
+            document.getElementById('viewTotalItems').textContent = serviceTotalItems;
+            
+            // Actualizar la categoría con clase de color correspondiente
+            const categoryBadge = document.getElementById('viewServiceCategory');
+            categoryBadge.textContent = serviceCategory;
+            categoryBadge.className = 'badge px-3 py-2 view-category-badge';
+            
+            // Añadir clase específica según la categoría
+            switch (serviceCategory.toLowerCase()) {
+                case 'catering':
+                    categoryBadge.classList.add('bg-success-subtle', 'text-success');
+                    break;
+                case 'decoración':
+                    categoryBadge.classList.add('bg-primary-subtle', 'text-primary');
+                    break;
+                case 'audio y video':
+                    categoryBadge.classList.add('bg-info-subtle', 'text-info');
+                    break;
+                case 'mobiliario':
+                    categoryBadge.classList.add('bg-warning-subtle', 'text-warning');
+                    break;
+                case 'entretenimiento':
+                    categoryBadge.classList.add('bg-purple-subtle', 'text-purple');
+                    break;
+                default:
+                    categoryBadge.classList.add('bg-secondary-subtle', 'text-secondary');
+            }
+            
+            // Procesar tipos de eventos - Mejorado para manejar diferentes formatos
+            const eventTypesContainer = document.getElementById('viewEventTypes');
+            eventTypesContainer.innerHTML = '';
+            
+            if (serviceEventTypes && serviceEventTypes.trim() !== '') {
+                // Crear array de tipos de eventos - puede ser un string singular o múltiple separado por comas
+                let eventTypesArray;
+                
+                // Verificar si contiene comas (formato múltiple)
+                if (serviceEventTypes.includes(',')) {
+                    eventTypesArray = serviceEventTypes.split(',');
+                } else {
+                    // Es un solo tipo de evento
+                    eventTypesArray = [serviceEventTypes];
+                }
+                
+                // Filtrar valores vacíos y crear badges
+                eventTypesArray
+                    .filter(eventType => eventType && eventType.trim() !== '')
+                    .forEach(eventType => {
+                        const badge = document.createElement('span');
+                        badge.className = 'badge bg-light text-dark me-1 mb-1';
+                        badge.textContent = eventType.trim();
+                        eventTypesContainer.appendChild(badge);
+                    });
+                
+                // Si después de procesar no hay elementos, mostrar mensaje
+                if (eventTypesContainer.childElementCount === 0) {
+                    eventTypesContainer.innerHTML = '<span class="text-muted">No especificado</span>';
+                }
+            } else {
+                eventTypesContainer.innerHTML = '<span class="text-muted">No especificado</span>';
+            }
+            
+            // Cargar imágenes con mejor manejo
+            let serviceImageArray = [];
+            
+            // Procesar imágenes con seguridad
+            if (serviceImages && serviceImages.trim() !== '') {
+                serviceImageArray = serviceImages.split(',').filter(img => img && img.trim() !== '');
+            }
+            
+            // Si no hay imágenes después de procesar, usar default
+            if (serviceImageArray.length === 0) {
+                serviceImageArray = ['/assets/img/placeholder-img.png'];
+            }
+            
+            setupEnhancedImageGallery(serviceImageArray);
+            
+            // Cargar items
+            loadServiceItems(serviceItems);
+        });
+    }
+    
+    // Función mejorada para cargar y validar la galería de imágenes
+    function setupEnhancedImageGallery(images) {
+        const mainImage = document.getElementById('viewMainImage');
+        const thumbnailContainer = document.getElementById('viewImageThumbnails');
+        const errorOverlay = document.getElementById('imageErrorOverlay');
+        const noImagesMessage = document.getElementById('noImagesMessage');
+        
+        // Resetear estado
+        thumbnailContainer.innerHTML = '';
+        mainImage.classList.add('image-loading');
+        errorOverlay.classList.add('d-none');
+        thumbnailContainer.classList.remove('d-none');
+        noImagesMessage.classList.add('d-none');
+        
+        // Si no hay imágenes, mostrar mensaje
+        if (!images || images.length === 0) {
+            noImagesMessage.classList.remove('d-none');
+            thumbnailContainer.classList.add('d-none');
+            mainImage.classList.remove('image-loading');
+            return;
+        }
+        
+        // Crear una imagen temporal para validar la URL principal
+        const tempImg = new Image();
+        tempImg.onload = () => {
+            mainImage.src = images[0];
+            mainImage.classList.remove('image-loading');
+            errorOverlay.classList.add('d-none');
+        };
+        
+        tempImg.onerror = () => {
+            mainImage.src = '/assets/img/placeholder-img.png';
+            mainImage.classList.remove('image-loading');
+            errorOverlay.classList.remove('d-none');
+        };
+        
+        // Iniciar la carga
+        tempImg.src = images[0];
+        
+        // Crear miniaturas con validación
+        images.forEach((imageSrc, index) => {
+            const thumbnail = document.createElement('div');
+            thumbnail.className = 'thumbnail-container me-2 mb-2';
+            
+            // Crear contenido de la miniatura
+            thumbnail.innerHTML = `<img src="${imageSrc}" class="thumbnail-image" alt="Miniatura ${index + 1}">`;
+            
+            // Validar cada miniatura individualmente
+            const validateThumbnail = new Image();
+            validateThumbnail.onload = () => {
+                // La imagen se cargó correctamente
+                // Añadir evento clic para cambiar la imagen principal
+                thumbnail.addEventListener('click', () => {
+                    mainImage.src = imageSrc;
+                    mainImage.classList.remove('image-loading');
+                    errorOverlay.classList.add('d-none');
+                });
+            };
+            
+            validateThumbnail.onerror = () => {
+                // Error al cargar la imagen, mostrar placeholder
+                thumbnail.innerHTML = `<div class="thumbnail-error">
+                    <i class="bi bi-exclamation-triangle"></i>
+                </div>`;
+                thumbnail.classList.add('thumbnail-error');
+            };
+            
+            // Iniciar validación
+            validateThumbnail.src = imageSrc;
+            
+            thumbnailContainer.appendChild(thumbnail);
+        });
+        
+        // Verificar si todas las miniaturas tienen error
+        setTimeout(() => {
+            const allErrorThumbnails = document.querySelectorAll('#viewImageThumbnails .thumbnail-error').length;
+            const totalThumbnails = images.length;
+            
+            if (allErrorThumbnails === totalThumbnails) {
+                noImagesMessage.classList.remove('d-none');
+            }
+        }, 1000);
+    }
+    
+    // Función para cargar los items en la tabla - Función mejorada
+    function loadServiceItems(items) {
+        const itemsContainer = document.getElementById('itemsContainer');
+        const noItemsMessage = document.getElementById('noItemsMessage');
+        
+        // Limpiar el contenedor
+        itemsContainer.innerHTML = '';
+        
+        if (!items || items.length === 0) {
+            // Mostrar mensaje de que no hay items
+            noItemsMessage.classList.remove('d-none');
+            return;
+        }
+        
+        // Ocultar mensaje de "no hay elementos"
+        noItemsMessage.classList.add('d-none');
+        
+        // Iterar sobre los items y crear las tarjetas
+        items.forEach(item => {
+            // Normalizar nombres de propiedades (camelCase o PascalCase)
+            const nombreItem = item.nombreItem ?? item.NombreItem ?? 'N/A';
+            const categoriaItem = item.categoriaItem ?? item.CategoriaItem ?? 'N/A';
+            const cantidad = item.cantidad ?? item.Cantidad ?? 0;
+            const stockActual = item.stockActual ?? item.StockActual ?? 0;
+            
+            const itemCard = document.createElement('div');
+            itemCard.className = 'col-md-6 mb-3';
+            
+            itemCard.innerHTML = `
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <h6 class="card-title fw-bold mb-2">${nombreItem}</h6>
+                        <p class="card-text mb-1">
+                            <small class="text-muted">Categoría: <span class="fw-medium">${categoriaItem}</span></small>
+                        </p>
+                        <div class="d-flex justify-content-between mt-2">
+                            <span class="badge bg-primary">Cantidad: ${cantidad}</span>
+                            <span class="badge bg-secondary">Stock: ${stockActual}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            itemsContainer.appendChild(itemCard);
+        });
+    }
+
+    // Función de utilidad para mostrar mensajes toast
+    function showToast(message, type = 'info') {
+        console.log(`[${type}] ${message}`);
+        // Implementa tu sistema de toast aquí si lo necesitas
+    }
+});
+</script>

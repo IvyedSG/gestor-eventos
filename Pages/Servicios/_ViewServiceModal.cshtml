@@ -1,0 +1,90 @@
+<div class="modal fade" id="viewServiceModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title">
+                    <i class="bi bi-info-circle me-2 text-primary"></i><span id="viewServiceName">Nombre del Servicio</span>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- Contenedor mejorado de imagen principal -->
+                        <div class="main-image-container mb-3 position-relative">
+                            <img id="viewMainImage" src="" class="img-fluid rounded shadow" alt="Imagen principal">
+                            <!-- Overlay para cuando la imagen no carga -->
+                            <div id="imageErrorOverlay" class="image-error-overlay d-none">
+                                <div class="text-center">
+                                    <i class="bi bi-image text-secondary"></i>
+                                    <p class="mb-0">Sin imagen disponible</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Contenedor de miniaturas con indicator de carga -->
+                        <div class="thumbnail-container">
+                            <div id="viewImageThumbnails" class="d-flex gap-2 flex-wrap thumbnail-gallery">
+                                <!-- Las miniaturas se cargarán aquí -->
+                            </div>
+                            <div id="noImagesMessage" class="text-center p-3 rounded bg-light d-none">
+                                <i class="bi bi-images text-secondary"></i>
+                                <p class="text-muted mb-0 mt-2">No hay imágenes para mostrar</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body">
+                                <h6 class="card-title fw-bold mb-3">Detalles del Servicio</h6>
+                                
+                                <div class="mb-3">
+                                    <span class="badge 
+                                          view-category-badge
+                                          px-3 py-2" id="viewServiceCategory">
+                                        Categoría
+                                    </span>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <h6 class="mb-0 fw-bold">Precio Base</h6>
+                                    <h4 class="text-primary mb-0">S/ <span id="viewServicePrice">0.00</span></h4>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <h6 class="mb-2 fw-bold">Descripción</h6>
+                                    <p id="viewServiceDescription" class="text-muted">Descripción del servicio</p>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <h6 class="mb-2 fw-bold">Tipos de Eventos</h6>
+                                    <div id="viewEventTypes" class="d-flex flex-wrap gap-1">
+                                        <!-- Event types badges go here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Elementos incluidos en el servicio -->
+                <div class="mt-4">
+                    <h5 class="fw-bold mb-3">
+                        <i class="bi bi-box me-2"></i>Elementos incluidos (<span id="viewTotalItems">0</span>)
+                    </h5>
+                    
+                    <div id="itemsContainer" class="row g-3">
+                        <!-- Los items se cargarán aquí -->
+                    </div>
+                    
+                    <div id="noItemsMessage" class="text-center py-4 d-none">
+                        <i class="bi bi-box text-muted" style="font-size: 2rem;"></i>
+                        <p class="text-muted mt-2">Este servicio no incluye elementos</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

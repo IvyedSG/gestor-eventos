@@ -4,154 +4,180 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Logging;
+using gestor_eventos.Services;
+using gestor_eventos.Models.ApiModels;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace gestor_eventos.Pages.Servicios
 {
+    [Authorize]
     public class IndexModel : PageModel
     {
+        private readonly ServicioService _servicioService;
+        private readonly ILogger<IndexModel> _logger;
+
         [BindProperty(SupportsGet = true)]
         public string SearchTerm { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public string CategoryFilter { get; set; }
 
-        public List<ServiceModel> Services { get; set; }
+        public List<ServiceModel> Services { get; set; } = new List<ServiceModel>();
 
-        public void OnGet()
+        public IndexModel(ServicioService servicioService, ILogger<IndexModel> logger)
         {
-            // En un caso real, cargarías datos desde tu base de datos
-            // Esta es una implementación simulada para demostración
-            Services = GetSampleServices();
+            _servicioService = servicioService;
+            _logger = logger;
+        }
 
-            // Aplicar filtros si existen
-            if (!string.IsNullOrEmpty(SearchTerm))
+        public async Task OnGetAsync()
+        {
+            try
             {
-                Services = Services.Where(s => 
-                    s.Name.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ||
-                    s.Description.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)
-                ).ToList();
+                // Obtener el correo del usuario actual
+                var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+
+                if (string.IsNullOrEmpty(userEmail))
+                {
+                    _logger.LogWarning("No se encontró el email del usuario en las claims");
+                    return;
+                }
+
+                // Obtener los servicios desde el API
+                var serviciosApi = await _servicioService.GetServiciosByCorreoAsync(userEmail);
+
+                // Convertir los datos del API al modelo de la vista
+                Services = ConvertToServiceModels(serviciosApi);
+
+                // Aplicar filtros si existen
+                if (!string.IsNullOrEmpty(SearchTerm))
+                {
+                    Services = Services.Where(s => 
+                        s.Name.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ||
+                        s.Description.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)
+                    ).ToList();
+                }
+
+                if (!string.IsNullOrEmpty(CategoryFilter))
+                {
+                    Services = Services.Where(s => 
+                        s.Category.Equals(CategoryFilter, StringComparison.OrdinalIgnoreCase)
+                    ).ToList();
+                }
             }
-
-            if (!string.IsNullOrEmpty(CategoryFilter))
+            catch (Exception ex)
             {
-                Services = Services.Where(s => 
-                    s.Category.Equals(CategoryFilter, StringComparison.OrdinalIgnoreCase)
-                ).ToList();
+                _logger.LogError(ex, "Error al obtener servicios: {Message}", ex.Message);
             }
         }
 
-        private List<ServiceModel> GetSampleServices()
+        private List<ServiceModel> ConvertToServiceModels(List<ServicioApi> serviciosApi)
         {
-            // Datos de muestra para demostración
-            return new List<ServiceModel>
+            var result = new List<ServiceModel>();
+
+            foreach (var servicio in serviciosApi)
             {
-                new ServiceModel
+                // Convertir cada servicio del API a ServiceModel
+                var serviceModel = new ServiceModel
                 {
-                    Id = 1,
-                    Name = "Catering Premium",
-                    Description = "Servicio de catering premium para eventos exclusivos. Incluye menú personalizado, decoración de mesa y personal de servicio.",
-                    Category = "Catering",
-                    BasePrice = 5500.00m,
-                    EventTypes = "Boda, Corporativo, Graduación",
-                    MainImage = "/assets/img/placeholder-img.png",
-                    Images = new List<string>
+                    Id = servicio.Id.ToString(),
+                    Name = servicio.NombreServicio,
+                    Description = servicio.Descripcion,
+                    BasePrice = servicio.PrecioBase,
+                    EventTypes = servicio.TipoEvento,
+                    
+                    // Determinar la categoría según los ítems o usar una por defecto
+                    Category = DetermineServiceCategory(servicio),
+                    
+                    // Procesar las imágenes si existen, o usar una imagen por defecto
+                    MainImage = !string.IsNullOrEmpty(servicio.Imagenes) ? 
+                        servicio.Imagenes.Split(',').First() : 
+                        "/assets/img/placeholder-img.png",
+                    
+                    Images = !string.IsNullOrEmpty(servicio.Imagenes) ? 
+                        servicio.Imagenes.Split(',').ToList() : 
+                        new List<string> { "/assets/img/placeholder-img.png" },
+                        
+                    // Mapear los items
+                    Items = servicio.Items?.Select(item => new ServiceItemModel
                     {
-                        "/assets/img/placeholder-img.png",
-                        "/assets/img/placeholder-img.png",
-                        "/assets/img/placeholder-img.png",
-                        "/assets/img/placeholder-img.png"
-                    }
-                },
-                new ServiceModel
+                        Id = item.Id.ToString(),
+                        InventarioId = item.InventarioId.ToString(),
+                        Cantidad = item.Cantidad,
+                        NombreItem = item.NombreItem,
+                        CategoriaItem = item.CategoriaItem,
+                        StockActual = item.StockActual
+                    }).ToList() ?? new List<ServiceItemModel>(),
+                    
+                    TotalItems = servicio.TotalItems
+                };
+
+                result.Add(serviceModel);
+            }
+
+            return result;
+        }
+
+        private string DetermineServiceCategory(ServicioApi servicio)
+        {
+            // Lógica para determinar la categoría según los ítems o tipo de evento
+            if (servicio.Items != null && servicio.Items.Any())
+            {
+                // Contar categorías para determinar la predominante
+                var categories = servicio.Items
+                    .GroupBy(i => i.CategoriaItem)
+                    .OrderByDescending(g => g.Count())
+                    .Select(g => g.Key)
+                    .ToList();
+
+                if (categories.Any())
                 {
-                    Id = 2,
-                    Name = "Decoración Elegante",
-                    Description = "Servicio completo de decoración temática con flores naturales, telas y elementos decorativos premium. Personalizable según el tipo de evento.",
-                    Category = "Decoración",
-                    BasePrice = 3200.00m,
-                    EventTypes = "Boda, Aniversario, Graduación",
-                    MainImage = "/assets/img/placeholder-img.png",
-                    Images = new List<string>
+                    // Mapear categorías del API a las categorías de la UI
+                    switch (categories.First().ToLower())
                     {
-                        "/assets/img/placeholder-img.png",
-                        "/assets/img/placeholder-img.png",
-                        "/assets/img/placeholder-img.png"
-                    }
-                },
-                new ServiceModel
-                {
-                    Id = 3,
-                    Name = "DJ y Sonido Profesional",
-                    Description = "Equipo de audio profesional con DJ experimentado, luces LED y efectos especiales para mantener el ambiente festivo durante todo el evento.",
-                    Category = "Entretenimiento",
-                    BasePrice = 2800.00m,
-                    EventTypes = "Boda, Cumpleaños, Corporativo",
-                    MainImage = "/assets/img/placeholder-img.png",
-                    Images = new List<string>
-                    {
-                        "/assets/img/placeholder-img.png",
-                        "/assets/img/placeholder-img.png",
-                        "/assets/img/placeholder-img.png",
-                        "/assets/img/placeholder-img.png",
-                        "/assets/img/placeholder-img.png"
-                    }
-                },
-                new ServiceModel
-                {
-                    Id = 4,
-                    Name = "Proyección y Pantallas",
-                    Description = "Equipos de proyección en alta definición con pantallas de diversos tamaños. Incluye técnico especializado durante todo el evento.",
-                    Category = "Audio y Video",
-                    BasePrice = 1500.00m,
-                    EventTypes = "Corporativo, Graduación, Conferencia",
-                    MainImage = "/assets/img/placeholder-img.png",
-                    Images = new List<string>
-                    {
-                        "/assets/img/placeholder-img.png",
-                        "/assets/img/placeholder-img.png",
-                        "/assets/img/placeholder-img.png"
-                    }
-                },
-                new ServiceModel
-                {
-                    Id = 5,
-                    Name = "Mesas y Sillas VIP",
-                    Description = "Mobiliario premium para eventos elegantes. Incluye mesas redondas, sillas Tiffany, manteles de alta calidad y montaje completo.",
-                    Category = "Mobiliario",
-                    BasePrice = 3800.00m,
-                    EventTypes = "Boda, Gala, Aniversario",
-                    MainImage = "/assets/img/placeholder-img.png",
-                    Images = new List<string>
-                    {
-                        "/assets/img/placeholder-img.png",
-                        "/assets/img/placeholder-img.png",
-                        "/assets/img/placeholder-img.png",
-                        "/assets/img/placeholder-img.png"
-                    }
-                },
-                new ServiceModel
-                {
-                    Id = 6,
-                    Name = "Fotografía y Video",
-                    Description = "Cobertura completa de fotografía y video para tu evento. Incluye equipo profesional, edición básica y entrega de material en alta resolución.",
-                    Category = "Audio y Video",
-                    BasePrice = 4200.00m,
-                    EventTypes = "Boda, Cumpleaños, Bautizo",
-                    MainImage = "/assets/img/placeholder-img.png",
-                    Images = new List<string>
-                    {
-                        "/assets/img/placeholder-img.png",
-                        "/assets/img/placeholder-img.png",
-                        "/assets/img/placeholder-img.png"
+                        case "alimentacion":
+                        case "comida":
+                            return "Catering";
+                        case "decoracion":
+                        case "adornos":
+                            return "Decoración";
+                        case "iluminacion":
+                        case "sonido":
+                        case "video":
+                            return "Audio y Video";
+                        case "muebles":
+                        case "sillas":
+                        case "mesas":
+                            return "Mobiliario";
+                        case "entretenimiento":
+                        case "musica":
+                            return "Entretenimiento";
+                        default:
+                            return "Otros";
                     }
                 }
-            };
+            }
+
+            // Si no hay ítems, intentamos determinar por el tipo de evento
+            switch (servicio.TipoEvento.ToLower())
+            {
+                case "boda":
+                    return "Decoración";
+                case "cumpleaños":
+                    return "Entretenimiento";
+                case "corporativo":
+                    return "Audio y Video";
+                default:
+                    return "Otros";
+            }
         }
     }
 
     public class ServiceModel
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string Category { get; set; }
@@ -159,5 +185,17 @@ namespace gestor_eventos.Pages.Servicios
         public string EventTypes { get; set; }
         public string MainImage { get; set; }
         public List<string> Images { get; set; }
+        public List<ServiceItemModel> Items { get; set; } = new List<ServiceItemModel>();
+        public int TotalItems { get; set; }
+    }
+
+    public class ServiceItemModel
+    {
+        public string Id { get; set; }
+        public string InventarioId { get; set; }
+        public int Cantidad { get; set; }
+        public string NombreItem { get; set; }
+        public string CategoriaItem { get; set; }
+        public int StockActual { get; set; }
     }
 }

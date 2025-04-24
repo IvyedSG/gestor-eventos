@@ -108,6 +108,38 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2VydmljaW9zL0luZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Servicios/_DeleteServiceModal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2VydmljaW9zL19EZWxldGVTZXJ2aWNlTW9kYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Servicios/_EditServiceModal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2VydmljaW9zL19FZGl0U2VydmljZU1vZGFsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Servicios/_FilterBar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2VydmljaW9zL19GaWx0ZXJCYXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Servicios/_NewServiceModal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2VydmljaW9zL19OZXdTZXJ2aWNlTW9kYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Servicios/_ServiceScripts.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2VydmljaW9zL19TZXJ2aWNlU2NyaXB0cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Servicios/_ServicesGrid.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2VydmljaW9zL19TZXJ2aWNlc0dyaWQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Servicios/_ServiceStyles.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2VydmljaW9zL19TZXJ2aWNlU3R5bGVzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Servicios/_ViewServiceModal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2VydmljaW9zL19WaWV3U2VydmljZU1vZGFsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 

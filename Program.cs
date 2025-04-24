@@ -34,7 +34,7 @@ builder.Services.AddScoped<ClienteService>();
 // Registrar el servicio de reservaciones
 builder.Services.AddHttpClient<ReservacionService>();
 
-
+builder.Services.AddHttpClient<ServicioService>();
 
 // Configura la autenticación por cookies
 builder.Services.AddAuthentication(options => 

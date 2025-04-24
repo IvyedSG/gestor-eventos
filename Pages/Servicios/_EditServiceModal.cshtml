@@ -1,0 +1,99 @@
+<div class="modal fade" id="editServiceModal" tabindex="-1" aria-labelledby="editServiceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editServiceModalLabel">Editar Servicio</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editServiceForm">
+                    <input type="hidden" id="editServiceId">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="editServiceName" class="form-label">Nombre del servicio</label>
+                                <input type="text" class="form-control" id="editServiceName" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="editServiceCategory" class="form-label">Categoría</label>
+                                <select class="form-select" id="editServiceCategory" required>
+                                    <option value="">Seleccionar categoría</option>
+                                    <option value="Catering">Catering</option>
+                                    <option value="Decoración">Decoración</option>
+                                    <option value="Entretenimiento">Entretenimiento</option>
+                                    <option value="Audio y Video">Audio y Video</option>
+                                    <option value="Mobiliario">Mobiliario</option>
+                                    <option value="Otros">Otros</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="editServicePrice" class="form-label">Precio base (S/)</label>
+                                <input type="number" class="form-control" id="editServicePrice" min="0" step="0.01" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Tipos de eventos</label>
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="Boda" id="editEventTypeBoda">
+                                            <label class="form-check-label" for="editEventTypeBoda">Bodas</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="Corporativo" id="editEventTypeCorporativo">
+                                            <label class="form-check-label" for="editEventTypeCorporativo">Corporativos</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="Cumpleaños" id="editEventTypeCumpleanos">
+                                            <label class="form-check-label" for="editEventTypeCumpleanos">Cumpleaños</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="Otro" id="editEventTypeOtro">
+                                            <label class="form-check-label" for="editEventTypeOtro">Otros</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="editServiceDescription" class="form-label">Descripción</label>
+                                <textarea class="form-control" id="editServiceDescription" rows="4" required></textarea>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Imágenes actuales</label>
+                                <div class="current-images-container" id="editCurrentImages"></div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Agregar nuevas imágenes</label>
+                                <div class="dropzone-container border rounded p-3 text-center">
+                                    <div class="dropzone-placeholder">
+                                        <i class="bi bi-cloud-arrow-up fs-3 text-muted"></i>
+                                        <p class="mb-0 small text-muted">Arrastra imágenes aquí o haz clic para seleccionarlas</p>
+                                    </div>
+                                    <input type="file" class="d-none" id="editServiceImages" multiple accept="image/*">
+                                </div>
+                                <div class="image-preview-container d-flex flex-wrap mt-2" id="editImagePreviewContainer"></div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="updateServiceBtn">Actualizar Servicio</button>
+            </div>
+        </div>
+    </div>
+</div>

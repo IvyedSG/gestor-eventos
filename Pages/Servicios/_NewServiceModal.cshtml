@@ -1,0 +1,203 @@
+<div class="modal fade" id="newServiceModal" tabindex="-1" aria-labelledby="newServiceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="newServiceModalLabel">Crear Nuevo Servicio</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="newServiceForm">
+                    <!-- Información básica -->
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="newServiceName" class="form-label">Nombre del servicio <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="newServiceName" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="newServicePrice" class="form-label">Precio base (S/) <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text">S/</span>
+                                    <input type="number" class="form-control" id="newServicePrice" min="0" step="0.01" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="newServiceDescription" class="form-label">Descripción <span class="text-danger">*</span></label>
+                                <textarea class="form-control" id="newServiceDescription" rows="4" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tipo de evento -->
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <label for="newServiceEventType" class="form-label">Tipo de evento <span class="text-danger">*</span></label>
+                            <select class="form-select" id="newServiceEventType" required>
+                                <option value="">Seleccionar tipo de evento</option>
+                                <option value="Boda">Boda</option>
+                                <option value="Corporativo">Corporativo</option>
+                                <option value="Cumpleaños">Cumpleaños</option>
+                                <option value="Fiesta infantil">Fiesta infantil</option>
+                                <option value="Conferencia">Conferencia</option>
+                                <option value="Graduación">Graduación</option>
+                                <option value="Otro">Otro</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Imágenes -->
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <div class="mb-2">
+                                <label class="form-label d-flex justify-content-between align-items-center">
+                                    <span>Imágenes del servicio</span>
+                                    <small class="text-muted">Máximo 5 imágenes</small>
+                                </label>
+                                <div class="dropzone-container border rounded p-3 text-center" id="imageDropzone">
+                                    <div class="dropzone-placeholder">
+                                        <i class="bi bi-cloud-arrow-up fs-3 text-muted"></i>
+                                        <p class="mb-0 small text-muted">Arrastra imágenes aquí o haz clic para seleccionarlas</p>
+                                    </div>
+                                    <input type="file" class="d-none" id="newServiceImages" multiple accept="image/*">
+                                </div>
+                            </div>
+                            <div class="image-preview-container d-flex flex-wrap gap-2 mt-2" id="imagePreviewContainer"></div>
+                        </div>
+                    </div>
+
+                    <!-- Selección de ítems integrada -->
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <h6 class="border-bottom pb-2 mb-3">Ítems del Servicio</h6>
+                            
+                            <!-- Selección de ítem integrada -->
+                            <div class="card mb-3 border-light bg-light">
+                                <div class="card-body">
+                                    <div class="row g-2 align-items-end">
+                                        <div class="col-md-6">
+                                            <label for="itemSelect" class="form-label">Seleccionar ítem</label>
+                                            
+                                            <select class="form-select" id="itemSelect">
+                                                <option value="" selected disabled>Seleccione un ítem</option>
+                                                <!-- Las opciones se cargarán dinámicamente -->
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="itemQuantity" class="form-label">Cantidad</label>
+                                            <input type="number" class="form-control" id="itemQuantity" min="1" value="1">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button type="button" class="btn btn-primary w-100" id="addSelectedItemBtn">
+                                                <i class="bi bi-plus-lg"></i> Agregar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Contador de ítems -->
+                            <div class="d-flex justify-content-end mb-2">
+                                <span class="badge bg-primary" id="itemsCountBadge">0 ítems</span>
+                            </div>
+                            
+                            <!-- Tabla de ítems -->
+                            <div class="table-responsive">
+                                <table class="table table-sm table-hover" id="itemsTable">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Ítem</th>
+                                            <th>Categoría</th>
+                                            <th>Stock</th>
+                                            <th>Cantidad</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="itemsTableBody">
+                                        <tr id="noItemsRow">
+                                            <td colspan="5" class="text-center text-muted py-3">
+                                                No hay ítems seleccionados
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" id="saveNewServiceBtn">
+                    <i class="bi bi-check-circle"></i> Guardar Servicio
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Función para cargar ítems disponibles desde la API
+function loadAvailableItems() {
+    // Obtener el userId y token del usuario actual
+    const userId = document.querySelector('meta[name="user-id"]')?.content;
+    const token = document.querySelector('meta[name="access-token"]')?.content;
+    
+    if (!userId || !token) {
+        console.error('No se pudo obtener la información del usuario');
+        showToast('Error al cargar los ítems disponibles', 'danger');
+        return;
+    }
+    
+    // Limpiar el select y mostrar mensaje de carga
+    const itemSelect = document.getElementById('itemSelect');
+    itemSelect.innerHTML = '<option value="" selected disabled>Cargando ítems...</option>';
+    
+    // Realizar la petición al API
+    fetch(`/api/inventario/usuario/${userId}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Error al cargar ítems: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(items => {
+        // Limpiar select
+        itemSelect.innerHTML = '<option value="" selected disabled>Seleccione un ítem</option>';
+        
+        // Si no hay ítems, mostrar mensaje
+        if (!items || items.length === 0) {
+            itemSelect.innerHTML = '<option value="" selected disabled>No hay ítems disponibles</option>';
+            return;
+        }
+        
+        // Agregar opciones
+        items.forEach(item => {
+            // Solo mostrar ítems con stock disponible
+            if (item.stock > 0) {
+                const option = document.createElement('option');
+                option.value = item.id;
+                option.textContent = `${item.nombre} (${item.stock} disponibles)`;
+                option.dataset.nombre = item.nombre;
+                option.dataset.categoria = item.categoria;
+                option.dataset.stock = item.stock;
+                itemSelect.appendChild(option);
+            }
+        });
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        itemSelect.innerHTML = '<option value="" selected disabled>Error al cargar ítems</option>';
+        showToast('Error al cargar los ítems de inventario', 'danger');
+    });
+}
+</script>
