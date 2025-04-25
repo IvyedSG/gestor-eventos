@@ -128,300 +128,35 @@
     .btn-sm {
         padding: 0.25rem 0.75rem;
     }
-</style>
 
-<!-- Contenido con espaciados reducidos -->
-<div>
-    <!-- Estadísticas generales -->
-    <div class="row g-3 compact-row">
-        <!-- Items totales del inventario -->
-        <div class="col-lg-3 col-sm-6">
-            <div class="stats-card card shadow-sm glass-effect">
-                <div class="card-body compact-padding">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <div class="icon-container bg-info bg-opacity-10">
-                            <i class="bi bi-box-seam text-info"></i>
-                        </div>
-                        <div class="badge bg-success bg-opacity-10 text-success rounded-pill px-2 py-1"><small>+12 <i class="bi bi-plus-circle"></i></small></div>
-                    </div>
-                    <h3 class="fw-bold mb-0">365</h3>
-                    <p class="text-muted small mb-0">Items totales</p>
-                    <hr class="my-2 opacity-25">
-                    <div class="d-flex justify-content-between align-items-center small">
-                        <span class="text-muted">Disponibles:</span>
-                        <span class="fw-bold">280 (76%)</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Eventos activos -->
-        <div class="col-lg-3 col-sm-6">
-            <div class="stats-card card shadow-sm glass-effect">
-                <div class="card-body compact-padding">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <div class="icon-container bg-warning bg-opacity-10">
-                            <i class="bi bi-calendar-event text-warning"></i>
-                        </div>
-                        <div class="badge bg-success bg-opacity-10 text-success rounded-pill px-2 py-1"><small>+3 nuevos</small></div>
-                    </div>
-                    <h3 class="fw-bold mb-0">25</h3>
-                    <p class="text-muted small mb-0">Eventos activos</p>
-                    <hr class="my-2 opacity-25">
-                    <div class="d-flex justify-content-between align-items-center small">
-                        <span class="text-muted">Este mes:</span>
-                        <span class="fw-bold">8 eventos</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Clientes -->
-        <div class="col-lg-3 col-sm-6">
-            <div class="stats-card card shadow-sm glass-effect">
-                <div class="card-body compact-padding">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <div class="icon-container bg-primary bg-opacity-10">
-                            <i class="bi bi-people text-primary"></i>
-                        </div>
-                        <div class="badge bg-success bg-opacity-10 text-success rounded-pill px-2 py-1"><small>+5 nuevos</small></div>
-                    </div>
-                    <h3 class="fw-bold mb-0">142</h3>
-                    <p class="text-muted small mb-0">Clientes totales</p>
-                    <hr class="my-2 opacity-25">
-                    <div class="d-flex justify-content-between align-items-center small">
-                        <span class="text-muted">Recurrentes:</span>
-                        <span class="fw-bold">68 (48%)</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Cantidad de servicios -->
-        <div class="col-lg-3 col-sm-6">
-            <div class="stats-card card shadow-sm glass-effect">
-                <div class="card-body compact-padding">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <div class="icon-container bg-success bg-opacity-10">
-                            <i class="bi bi-grid text-success"></i>
-                        </div>
-                        <div class="badge bg-success bg-opacity-10 text-success rounded-pill px-2 py-1"><small>+2 nuevos</small></div>
-                    </div>
-                    <h3 class="fw-bold mb-0">18</h3>
-                    <p class="text-muted small mb-0">Servicios disponibles</p>
-                    <hr class="my-2 opacity-25">
-                    <div class="d-flex justify-content-between align-items-center small">
-                        <span class="text-muted">Más solicitado:</span>
-                        <span class="fw-bold">Catering</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Próximos Eventos -->
-    <div class="card shadow-sm section-card gradient-bg compact-row">
-        <div class="card-body compact-padding">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5 class="section-title fw-bold d-flex align-items-center">
-                    <i class="bi bi-calendar-event me-2 text-primary"></i>Próximos Eventos
-                </h5>
-                <a href="/Events" class="btn btn-sm btn-outline-primary rounded-pill">
-                    Ver todos <i class="bi bi-arrow-right ms-1"></i>
-                </a>
-            </div>
-            
-            <div class="row g-3">
-                <!-- Evento 1 -->
-                <div class="col-md-4">
-                    <div class="event-card card shadow-sm glass-effect">
-                        <div class="card-body compact-padding">
-                            <div class="d-flex align-items-center mb-2">
-                                <div class="date-badge bg-primary bg-opacity-10 p-1 rounded me-2 text-center">
-                                    <span class="d-block fw-bold">18</span>
-                                    <span>Abr</span>
-                                </div>
-                                <div>
-                                    <h6 class="mb-0 fw-bold">Boda García-Pérez</h6>
-                                    <p class="text-muted small mb-0"><i class="bi bi-clock me-1"></i>16:00 - 23:00</p>
-                                </div>
-                            </div>
-                            <p class="text-muted small mb-2">Paquete Premium para 150 personas</p>
-                            <div class="text-end">
-                                <a href="#" class="btn btn-sm btn-primary rounded-pill">
-                                    Detalles <i class="bi bi-arrow-right ms-1"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Evento 2 -->
-                <div class="col-md-4">
-                    <div class="event-card card shadow-sm glass-effect">
-                        <div class="card-body compact-padding">
-                            <div class="d-flex align-items-center mb-2">
-                                <div class="date-badge bg-success bg-opacity-10 p-1 rounded me-2 text-center">
-                                    <span class="d-block fw-bold">22</span>
-                                    <span>Abr</span>
-                                </div>
-                                <div>
-                                    <h6 class="mb-0 fw-bold">Cumpleaños Torres</h6>
-                                    <p class="text-muted small mb-0"><i class="bi bi-clock me-1"></i>19:30 - 02:00</p>
-                                </div>
-                            </div>
-                            <p class="text-muted small mb-2">Paquete Estándar para 50 personas</p>
-                            <div class="text-end">
-                                <a href="#" class="btn btn-sm btn-primary rounded-pill">
-                                    Detalles <i class="bi bi-arrow-right ms-1"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Evento 3 -->
-                <div class="col-md-4">
-                    <div class="event-card card shadow-sm glass-effect">
-                        <div class="card-body compact-padding">
-                            <div class="d-flex align-items-center mb-2">
-                                <div class="date-badge bg-info bg-opacity-10 p-1 rounded me-2 text-center">
-                                    <span class="d-block fw-bold">25</span>
-                                    <span>Abr</span>
-                                </div>
-                                <div>
-                                    <h6 class="mb-0 fw-bold">Conferencia Tech</h6>
-                                    <p class="text-muted small mb-0"><i class="bi bi-clock me-1"></i>09:00 - 18:00</p>
-                                </div>
-                            </div>
-                            <p class="text-muted small mb-2">Paquete Empresarial para 200 asistentes</p>
-                            <div class="text-end">
-                                <a href="#" class="btn btn-sm btn-primary rounded-pill">
-                                    Detalles <i class="bi bi-arrow-right ms-1"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Sección inferior - 2 columnas con diseño mejorado -->
-    <div class="row g-3">
-        <!-- Columna izquierda: Actividad Reciente -->
-        <div class="col-lg-7">
-            <div class="card shadow-sm section-card gradient-bg h-100">
-                <div class="card-body compact-padding">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="section-title fw-bold d-flex align-items-center">
-                            <i class="bi bi-activity me-2 text-primary"></i>Actividad Reciente
-                        </h5>
-                        <a href="#" class="btn btn-sm btn-outline-primary rounded-pill">Ver todo</a>
-                    </div>
-                    
-                    <div class="activity-item d-flex align-items-center">
-                        <div class="icon-container bg-primary bg-opacity-10 me-2">
-                            <i class="bi bi-calendar-check text-primary"></i>
-                        </div>
-                        <div class="flex-grow-1">
-                            <p class="mb-0">Nueva reserva: <strong>Boda García-Pérez</strong></p>
-                            <p class="text-muted small mb-0">Hace 2 horas</p>
-                        </div>
-                    </div>
-                    
-                    <div class="activity-item d-flex align-items-center">
-                        <div class="icon-container bg-success bg-opacity-10 me-2">
-                            <i class="bi bi-people text-success"></i>
-                        </div>
-                        <div class="flex-grow-1">
-                            <p class="mb-0">Nuevo cliente: <strong>Empresa XYZ</strong></p>
-                            <p class="text-muted small mb-0">Hace 5 horas</p>
-                        </div>
-                    </div>
-                    
-                    <div class="activity-item d-flex align-items-center">
-                        <div class="icon-container bg-info bg-opacity-10 me-2">
-                            <i class="bi bi-check-circle text-info"></i>
-                        </div>
-                        <div class="flex-grow-1">
-                            <p class="mb-0">Evento completado: <strong>Conferencia ABC</strong></p>
-                            <p class="text-muted small mb-0">Hace 1 día</p>
-                        </div>
-                    </div>
-                    
-                    <div class="activity-item d-flex align-items-center">
-                        <div class="icon-container bg-warning bg-opacity-10 me-2">
-                            <i class="bi bi-currency-dollar text-warning"></i>
-                        </div>
-                        <div class="flex-grow-1">
-                            <p class="mb-0">Pago: <strong>S/1,500.00</strong> de Cumpleaños Torres</p>
-                            <p class="text-muted small mb-0">Hace 2 días</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Columna derecha: Resumen del Mes -->
-        <div class="col-lg-5">
-            <div class="card shadow-sm section-card gradient-bg h-100">
-                <div class="card-body compact-padding">
-                    <h5 class="section-title fw-bold d-flex align-items-center mb-3">
-                        <i class="bi bi-graph-up me-2 text-success"></i>Resumen del Mes
-                    </h5>
-                    
-                    <div class="summary-item d-flex align-items-center" style="border-left: 3px solid #198754;">
-                        <div class="flex-grow-1">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <h6 class="mb-0 fw-bold">Reservas Confirmadas</h6>
-                                <span class="badge bg-success rounded-pill">8</span>
-                            </div>
-                            <div class="progress mt-2" style="height: 6px; border-radius: 10px;">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: 80%;" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <p class="text-muted small mt-1 mb-0">+2 desde el mes anterior</p>
-                        </div>
-                    </div>
-                    
-                    <div class="summary-item d-flex align-items-center" style="border-left: 3px solid #ffc107;">
-                        <div class="flex-grow-1">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <h6 class="mb-0 fw-bold">Reservas Pendientes</h6>
-                                <span class="badge bg-warning text-dark rounded-pill">5</span>
-                            </div>
-                            <div class="progress mt-2" style="height: 6px; border-radius: 10px;">
-                                <div class="progress-bar bg-warning" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <p class="text-muted small mt-1 mb-0">En espera de confirmación</p>
-                        </div>
-                    </div>
-                    
-                    <div class="summary-item d-flex align-items-center" style="border-left: 3px solid #0d6efd;">
-                        <div class="flex-grow-1">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <h6 class="mb-0 fw-bold">Ingresos Estimados</h6>
-                                <span class="fw-bold text-primary">S/15,280.00</span>
-                            </div>
-                            <div class="progress mt-2" style="height: 6px; border-radius: 10px;">
-                                <div class="progress-bar bg-primary" role="progressbar" style="width: 65%;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <p class="text-muted small mt-1 mb-0">+15% respecto al mes anterior</p>
-                        </div>
-                    </div>
-                    
-                    <div class="mt-4 text-center">
-                        <a href="/Reports" class="btn btn-sm btn-primary rounded-pill">
-                            <i class="bi bi-file-earmark-bar-graph me-1"></i> Ver reporte completo
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<style>
+    /* Estado de carga */
+    .loading-container {
+        padding: 3rem;
+        text-align: center;
+    }
+    
+    .spinner-grow {
+        width: 3rem;
+        height: 3rem;
+    }
+    
+    /* Estado de error */
+    .error-container {
+        background: rgba(239, 68, 68, 0.05);
+        border-radius: 16px;
+        padding: 2rem;
+        text-align: center;
+        border-left: 4px solid #ef4444;
+    }
+    
+    .empty-state {
+        background: rgba(79, 70, 229, 0.05);
+        border-radius: 16px;
+        padding: 1.5rem;
+        text-align: center;
+        margin: 1rem 0;
+    }
+    
     /* Añadir estilos para el gráfico circular */
     .circular-chart {
         display: block;
@@ -448,3 +183,286 @@
         font-weight: bold;
     }
 </style>
+
+<!-- Estado de carga o error -->
+@if (Model.LoadError)
+{
+    <div class="error-container shadow-sm">
+        <div class="mb-4">
+            <i class="bi bi-exclamation-triangle text-danger" style="font-size: 3rem;"></i>
+        </div>
+        <h3 class="mb-2">No se pudieron cargar los datos</h3>
+        <p class="text-muted mb-3">@Model.ErrorMessage</p>
+        <a asp-page="/Dashboard/Index" class="btn btn-outline-primary">
+            <i class="bi bi-arrow-clockwise me-1"></i> Reintentar
+        </a>
+    </div>
+}
+else if (Model.DashboardData == null)
+{
+    <div class="loading-container">
+        <div class="spinner-grow text-primary mb-3" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+        <h4 class="mb-0">Cargando datos del dashboard</h4>
+        <p class="text-muted">Por favor espere...</p>
+    </div>
+}
+else
+{
+    <!-- Contenido del Dashboard -->
+    <div>
+        <!-- Estadísticas generales -->
+        <div class="row g-3 compact-row">
+            <!-- Items totales del inventario -->
+            <div class="col-lg-3 col-sm-6">
+                <div class="stats-card card shadow-sm glass-effect">
+                    <div class="card-body compact-padding">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div class="icon-container bg-info bg-opacity-10">
+                                <i class="bi bi-box-seam text-info"></i>
+                            </div>
+                            <div class="badge bg-success bg-opacity-10 text-success rounded-pill px-2 py-1"><small>Inventario</small></div>
+                        </div>
+                        <h3 class="fw-bold mb-0">@Model.DashboardData.Metricas.TotalInventarioItems</h3>
+                        <p class="text-muted small mb-0">Items totales</p>
+                        <hr class="my-2 opacity-25">
+                        <div class="d-flex justify-content-between align-items-center small">
+                            <span class="text-muted">Disponibles:</span>
+                            <span class="fw-bold">@Model.DashboardData.Metricas.TotalInventarioItems</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Eventos activos -->
+            <div class="col-lg-3 col-sm-6">
+                <div class="stats-card card shadow-sm glass-effect">
+                    <div class="card-body compact-padding">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div class="icon-container bg-warning bg-opacity-10">
+                                <i class="bi bi-calendar-event text-warning"></i>
+                            </div>
+                            <div class="badge bg-success bg-opacity-10 text-success rounded-pill px-2 py-1"><small>Eventos</small></div>
+                        </div>
+                        <h3 class="fw-bold mb-0">@Model.DashboardData.Metricas.EventosActivos</h3>
+                        <p class="text-muted small mb-0">Eventos activos</p>
+                        <hr class="my-2 opacity-25">
+                        <div class="d-flex justify-content-between align-items-center small">
+                            <span class="text-muted">Este mes:</span>
+                            <span class="fw-bold">@(Model.DashboardData.Metricas.ReservasConfirmadasMes + Model.DashboardData.Metricas.ReservasPendientesMes)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Clientes -->
+            <div class="col-lg-3 col-sm-6">
+                <div class="stats-card card shadow-sm glass-effect">
+                    <div class="card-body compact-padding">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div class="icon-container bg-primary bg-opacity-10">
+                                <i class="bi bi-people text-primary"></i>
+                            </div>
+                            <div class="badge bg-success bg-opacity-10 text-success rounded-pill px-2 py-1"><small>Clientes</small></div>
+                        </div>
+                        <h3 class="fw-bold mb-0">@Model.DashboardData.Metricas.TotalClientes</h3>
+                        <p class="text-muted small mb-0">Clientes totales</p>
+                        <hr class="my-2 opacity-25">
+                        <div class="d-flex justify-content-between align-items-center small">
+                            <span class="text-muted">Registros:</span>
+                            <span class="fw-bold">Este mes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Cantidad de servicios -->
+            <div class="col-lg-3 col-sm-6">
+                <div class="stats-card card shadow-sm glass-effect">
+                    <div class="card-body compact-padding">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div class="icon-container bg-success bg-opacity-10">
+                                <i class="bi bi-grid text-success"></i>
+                            </div>
+                            <div class="badge bg-success bg-opacity-10 text-success rounded-pill px-2 py-1"><small>Servicios</small></div>
+                        </div>
+                        <h3 class="fw-bold mb-0">@Model.DashboardData.Metricas.CantidadServicios</h3>
+                        <p class="text-muted small mb-0">Servicios disponibles</p>
+                        <hr class="my-2 opacity-25">
+                        <div class="d-flex justify-content-between align-items-center small">
+                            <span class="text-muted">Estado:</span>
+                            <span class="fw-bold text-success">Activos</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Próximos Eventos -->
+        <div class="card shadow-sm section-card gradient-bg compact-row">
+            <div class="card-body compact-padding">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="section-title fw-bold d-flex align-items-center">
+                        <i class="bi bi-calendar-event me-2 text-primary"></i>Próximos Eventos
+                    </h5>
+                    <a href="/Reservas" class="btn btn-sm btn-outline-primary rounded-pill">
+                        Ver todos <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                </div>
+                
+                <div class="row g-3">
+                    @if (Model.DashboardData.ProximasReservas.Reservas.Any())
+                    {
+                        foreach (var reserva in Model.DashboardData.ProximasReservas.Reservas.Take(3))
+                        {
+                            <div class="col-md-4">
+                                <div class="event-card card shadow-sm glass-effect">
+                                    <div class="card-body compact-padding">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <div class="date-badge bg-primary bg-opacity-10 p-1 rounded me-2 text-center">
+                                                <span class="d-block fw-bold">@reserva.Fecha.Day</span>
+                                                <span>@reserva.Fecha.ToString("MMM")</span>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0 fw-bold">@reserva.NombreEvento</h6>
+                                                <p class="text-muted small mb-0"><i class="bi bi-clock me-1"></i>@reserva.HoraEvento</p>
+                                            </div>
+                                        </div>
+                                        <p class="text-muted small mb-2">@(String.IsNullOrEmpty(reserva.Descripcion) ? "Sin descripción" : reserva.Descripcion)</p>
+                                        <div class="text-end">
+                                            <a href="/Reservaciones/Detalle/@reserva.Id" class="btn btn-sm btn-primary rounded-pill">
+                                                Detalles <i class="bi bi-arrow-right ms-1"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="col-12">
+                            <div class="empty-state">
+                                <i class="bi bi-calendar-x text-primary mb-3" style="font-size: 2rem;"></i>
+                                <h5 class="mb-2">No hay eventos próximos</h5>
+                                <p class="text-muted mb-3">Aún no tienes eventos programados próximamente</p>
+                                <a href="/Reservaciones/Crear" class="btn btn-sm btn-primary rounded-pill">
+                                    <i class="bi bi-plus-circle me-1"></i> Crear nueva reservación
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección inferior - 2 columnas con diseño mejorado -->
+        <div class="row g-3">
+            <!-- Columna izquierda: Actividad Reciente -->
+            <div class="col-lg-7">
+                <div class="card shadow-sm section-card gradient-bg h-100">
+                    <div class="card-body compact-padding">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="section-title fw-bold d-flex align-items-center">
+                                <i class="bi bi-activity me-2 text-primary"></i>Actividad Reciente
+                            </h5>
+                        </div>
+                        
+                        @if (Model.DashboardData.ActividadReciente.Actividades.Any())
+                        {
+                            foreach (var actividad in Model.DashboardData.ActividadReciente.Actividades.Take(4))
+                            {
+                                <div class="activity-item d-flex align-items-center">
+                                    @{
+                                        var iconClass = actividad.Tipo switch {
+                                            "Reserva" => "bi-calendar-check text-primary",
+                                            "Cliente" => "bi-people text-success",
+                                            "Item" => "bi-box-seam text-info",
+                                            "Pago" => "bi-currency-dollar text-warning",
+                                            _ => "bi-check-circle text-secondary"
+                                        };
+                                        
+                                        var bgClass = actividad.Tipo switch {
+                                            "Reserva" => "bg-primary bg-opacity-10",
+                                            "Cliente" => "bg-success bg-opacity-10",
+                                            "Item" => "bg-info bg-opacity-10",
+                                            "Pago" => "bg-warning bg-opacity-10",
+                                            _ => "bg-secondary bg-opacity-10"
+                                        };
+                                    }
+                                    <div class="icon-container @bgClass me-2">
+                                        <i class="bi @iconClass"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <p class="mb-0">@actividad.Tipo: <strong>@actividad.Nombre</strong></p>
+                                        <p class="text-muted small mb-0">@actividad.TiempoTranscurrido</p>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="empty-state">
+                                <i class="bi bi-hourglass text-primary mb-3" style="font-size: 2rem;"></i>
+                                <h5 class="mb-2">Sin actividad reciente</h5>
+                                <p class="text-muted">No se ha registrado actividad recientemente</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Columna derecha: Resumen del Mes -->
+            <div class="col-lg-5">
+                <div class="card shadow-sm section-card gradient-bg h-100">
+                    <div class="card-body compact-padding">
+                        <h5 class="section-title fw-bold d-flex align-items-center mb-3">
+                            <i class="bi bi-graph-up me-2 text-success"></i>Resumen del Mes
+                        </h5>
+                        
+                        <div class="summary-item d-flex align-items-center" style="border-left: 3px solid #198754;">
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h6 class="mb-0 fw-bold">Reservas Confirmadas</h6>
+                                    <span class="badge bg-success rounded-pill">@Model.DashboardData.Metricas.ReservasConfirmadasMes</span>
+                                </div>
+                                <div class="progress mt-2" style="height: 6px; border-radius: 10px;">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: @(Model.DashboardData.Metricas.ReservasConfirmadasMes > 0 ? 100 : 0)%;" aria-valuenow="@Model.DashboardData.Metricas.ReservasConfirmadasMes" aria-valuemin="0" aria-valuemax="10"></div>
+                                </div>
+                                <p class="text-muted small mt-1 mb-0">Eventos confirmados este mes</p>
+                            </div>
+                        </div>
+                        
+                        <div class="summary-item d-flex align-items-center" style="border-left: 3px solid #ffc107;">
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h6 class="mb-0 fw-bold">Reservas Pendientes</h6>
+                                    <span class="badge bg-warning text-dark rounded-pill">@Model.DashboardData.Metricas.ReservasPendientesMes</span>
+                                </div>
+                                <div class="progress mt-2" style="height: 6px; border-radius: 10px;">
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: @(Model.DashboardData.Metricas.ReservasPendientesMes > 0 ? 100 : 0)%;" aria-valuenow="@Model.DashboardData.Metricas.ReservasPendientesMes" aria-valuemin="0" aria-valuemax="10"></div>
+                                </div>
+                                <p class="text-muted small mt-1 mb-0">En espera de confirmación</p>
+                            </div>
+                        </div>
+                        
+                        <div class="summary-item d-flex align-items-center" style="border-left: 3px solid #0d6efd;">
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h6 class="mb-0 fw-bold">Ingresos Estimados</h6>
+                                    <span class="fw-bold text-primary">S/@Model.DashboardData.Metricas.IngresosEstimadosMes.ToString("N2")</span>
+                                </div>
+                                <div class="progress mt-2" style="height: 6px; border-radius: 10px;">
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: @(Model.DashboardData.Metricas.IngresosEstimadosMes > 0 ? 65 : 0)%;" aria-valuenow="@(Model.DashboardData.Metricas.IngresosEstimadosMes > 0 ? 65 : 0)" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <p class="text-muted small mt-1 mb-0">Total estimado para este mes</p>
+                            </div>
+                        </div>
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

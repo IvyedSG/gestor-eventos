@@ -11,7 +11,7 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-8">
-                        <form>
+                        <form id="newReservationForm">
                             <!-- Cliente -->
                             <div class="card border-0 shadow-sm mb-3">
                                 <div class="card-header bg-white pt-3 pb-2 border-0">
@@ -32,26 +32,27 @@
                                     <!-- Cliente existente -->
                                     <div id="existingClientForm">
                                         <div class="mb-3">
-                                            <select class="form-select form-select-lg">
+                                            <select class="form-select form-select-lg" id="clientSelect">
                                                 <option selected disabled>Seleccionar cliente</option>
-                                                <option>Carlos Rodríguez</option>
-                                                <option>María González</option>
-                                                <option>Empresa ABC</option>
-                                                <option>Juan Pérez</option>
+                                                <!-- Clients will be loaded dynamically -->
                                             </select>
                                         </div>
                                     </div>
                                     
-                                    <!-- Cliente nuevo (inicialmente oculto) - SIMPLIFICADO -->
+                                    <!-- Cliente nuevo (inicialmente oculto) -->
                                     <div id="newClientForm" style="display: none;">
                                         <div class="row">
                                             <div class="col-md-6 mb-3">
                                                 <label class="form-label">Nombre</label>
-                                                <input type="text" class="form-control" placeholder="Nombre del cliente">
+                                                <input type="text" class="form-control" id="newClientName" placeholder="Nombre del cliente">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Email</label>
+                                                <input type="email" class="form-control" id="newClientEmail" placeholder="Correo electrónico">
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label class="form-label">Teléfono</label>
-                                                <input type="tel" class="form-control" placeholder="Teléfono">
+                                                <input type="tel" class="form-control" id="newClientPhone" placeholder="Teléfono">
                                             </div>
                                         </div>
                                     </div>
@@ -67,37 +68,41 @@
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label">Nombre del Evento</label>
-                                            <input type="text" class="form-control" placeholder="Nombre del evento">
+                                            <input type="text" class="form-control" id="newEventName" placeholder="Nombre del evento">
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label">Tipo de Evento</label>
-                                            <select class="form-select">
+                                            <select class="form-select" id="newEventType">
                                                 <option selected disabled>Seleccionar tipo</option>
-                                                <option>Boda</option>
-                                                <option>Cumpleaños</option>
-                                                <option>Evento Corporativo</option>
-                                                <option>Graduación</option>
-                                                <option>Bautizo</option>
-                                                <option>Otro</option>
+                                                <option value="Boda">Boda</option>
+                                                <option value="Cumpleaños">Cumpleaños</option>
+                                                <option value="Evento Corporativo">Evento Corporativo</option>
+                                                <option value="Graduación">Graduación</option>
+                                                <option value="Bautizo">Bautizo</option>
+                                                <option value="Aniversario">Aniversario</option>
+                                                <option value="Primera comunión">Primera comunión</option>
+                                                <option value="Baby shower">Baby shower</option>
+                                                <option value="Despedida de soltero/a">Despedida de soltero/a</option>
+                                                <option value="Otro">Otro</option>
                                             </select>
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label">Fecha</label>
-                                            <input type="date" class="form-control">
+                                            <input type="date" class="form-control" id="newEventDate">
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label">Hora</label>
-                                            <input type="time" class="form-control">
+                                            <input type="time" class="form-control" id="newEventTime">
                                         </div>
                                         <div class="col-md-12 mb-3">
                                             <label class="form-label">Descripción del Evento</label>
-                                            <textarea class="form-control" rows="3" placeholder="Detalles del evento..."></textarea>
+                                            <textarea class="form-control" id="newEventDescription" rows="3" placeholder="Detalles del evento..."></textarea>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             
-                            <!-- Servicios - MODIFICADO -->
+                            <!-- Servicios -->
                             <div class="card border-0 shadow-sm mb-3">
                                 <div class="card-header bg-white pt-3 pb-2 border-0">
                                     <h6 class="fw-bold"><i class="bi bi-basket me-2"></i>Servicios</h6>
@@ -107,11 +112,7 @@
                                         <div class="col-md-12">
                                             <select id="serviceSelect" class="form-select">
                                                 <option selected disabled>Seleccionar servicio para añadir</option>
-                                                <option value="1">Salón Principal - $250,000</option>
-                                                <option value="2">Catering Premium - $15,000 por persona</option>
-                                                <option value="3">DJ - $120,000</option>
-                                                <option value="4">Decoración Básica - $80,000</option>
-                                                <option value="5">Fotografía - $150,000</option>
+                                                <!-- Services will be loaded dynamically -->
                                             </select>
                                         </div>
                                     </div>
@@ -127,27 +128,10 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr data-service-id="1">
-                                                    <td>Salón Principal</td>
-                                                    <td>1</td>
-                                                    <td>$250,000</td>
-                                                    <td class="text-end"><button class="btn btn-sm btn-link text-danger delete-service"><i class="bi bi-trash"></i></button></td>
-                                                </tr>
-                                                <tr data-service-id="2">
-                                                    <td>Catering Premium</td>
-                                                    <td>50</td>
-                                                    <td>$750,000</td>
-                                                    <td class="text-end"><button class="btn btn-sm btn-link text-danger delete-service"><i class="bi bi-trash"></i></button></td>
-                                                </tr>
-                                                <tr data-service-id="3">
-                                                    <td>DJ</td>
-                                                    <td>1</td>
-                                                    <td>$120,000</td>
-                                                    <td class="text-end"><button class="btn btn-sm btn-link text-danger delete-service"><i class="bi bi-trash"></i></button></td>
-                                                </tr>
+                                                <!-- Empty table that will be filled dynamically -->
                                                 <tr class="fw-bold bg-light">
                                                     <td colspan="2" class="text-end">Total:</td>
-                                                    <td id="servicesTotalAmount">$1,120,000</td>
+                                                    <td id="servicesTotalAmount">$0</td>
                                                     <td></td>
                                                 </tr>
                                             </tbody>
@@ -158,7 +142,7 @@
                         </form>
                     </div>
                     
-                    <!-- Estado de reserva - MODIFICADO -->
+                    <!-- Estado de reserva -->
                     <div class="col-md-4">
                         <div class="card border-0 shadow-sm">
                             <div class="card-header bg-white pt-3 pb-2 border-0">
@@ -167,18 +151,17 @@
                             <div class="card-body pt-0">
                                 <div class="mb-3">
                                     <label class="form-label">Estado</label>
-                                    <select class="form-select">
-                                        <option selected>Pendiente</option>
-                                        <option>Confirmada</option>
-                                        <option>Cancelada</option>
-                                        <option>Finalizada</option>
+                                    <select class="form-select" id="newEventStatus">
+                                        <option selected value="Pendiente">Pendiente</option>
+                                        <option value="Confirmada">Confirmada</option>
+                                        <option value="Cancelada">Cancelada</option>
                                     </select>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Precio total</label>
                                     <div class="input-group">
-                                        <span class="input-group-text">$</span>
-                                        <input type="number" id="totalPrice" class="form-control" value="1120000">
+                                        <span class="input-group-text">S/</span>
+                                        <input type="number" id="totalPrice" class="form-control" value="0">
                                     </div>
                                     <small class="text-muted">El precio total se actualiza automáticamente según los servicios seleccionados, pero puede ser modificado manualmente.</small>
                                 </div>
@@ -189,7 +172,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary">
+                <button type="button" class="btn btn-primary" id="createReservationBtn">
                     <i class="bi bi-save me-1"></i>Crear Reserva
                 </button>
             </div>

@@ -28,40 +28,40 @@
                                 <td>@reservation.ClientEmail</td>
                                 <td>@reservation.Date.ToString("dd/MM/yyyy")</td>
                                 <td>@reservation.Time</td>
-                                <td>$@reservation.Amount.ToString("N0")</td>
+                                <td>S/@reservation.Amount.ToString("N0")</td>
                                 <td>@reservation.EventType</td>
                                 <td>
                                     @{
                                         var status = reservation.Status.ToUpper();
                                         
-                                        if (status == "CONFIRMADA" || status == "CONFIRMED")
+                                        if (status == "CONFIRMADO" || status == "CONFIRMED")
                                         {
-                                            <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">
-                                                <i class="bi bi-check-circle me-1"></i>Confirmada
+                                            <span class="badge bg-success px-3 py-2 rounded-pill">
+                                                <i class="bi bi-check-circle-fill me-1"></i>Confirmado
                                             </span>
                                         }
                                         else if (status == "PENDIENTE" || status == "PENDING")
                                         {
-                                            <span class="badge bg-warning bg-opacity-10 text-warning px-3 py-2 rounded-pill">
-                                                <i class="bi bi-clock me-1"></i>Pendiente
+                                            <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">
+                                                <i class="bi bi-hourglass-split me-1"></i>Pendiente
                                             </span>
                                         }
-                                        else if (status == "CANCELADA" || status == "CANCELED" || status == "CANCELLED")
+                                        else if (status == "CANCELADO" || status == "CANCELED" || status == "CANCELLED")
                                         {
-                                            <span class="badge bg-danger bg-opacity-10 text-danger px-3 py-2 rounded-pill">
-                                                <i class="bi bi-x-circle me-1"></i>Cancelada
+                                            <span class="badge bg-danger px-3 py-2 rounded-pill">
+                                                <i class="bi bi-x-octagon-fill me-1"></i>Cancelado
                                             </span>
                                         }
-                                        else if (status == "FINALIZADA" || status == "COMPLETED" || status == "FINISHED")
+                                        else if (status == "FINALIZADO" || status == "COMPLETED" || status == "FINISHED")
                                         {
-                                            <span class="badge bg-secondary bg-opacity-10 text-secondary px-3 py-2 rounded-pill">
-                                                <i class="bi bi-flag me-1"></i>Finalizada
+                                            <span class="badge bg-info px-3 py-2 rounded-pill">
+                                                <i class="bi bi-trophy-fill me-1"></i>Finalizado
                                             </span>
                                         }
                                         else
                                         {
-                                            <span class="badge bg-info bg-opacity-10 text-info px-3 py-2 rounded-pill">
-                                                <i class="bi bi-info-circle me-1"></i>@reservation.Status
+                                            <span class="badge bg-secondary px-3 py-2 rounded-pill">
+                                                <i class="bi bi-question-circle-fill me-1"></i>@reservation.Status
                                             </span>
                                         }
                                     }
@@ -82,6 +82,10 @@
                                                 data-bs-target="#printReservationModal"
                                                 data-reservation-id="@reservation.Id">
                                             <i class="bi bi-printer"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-danger" title="Eliminar" 
+                                                onclick="confirmDeleteReservation('@reservation.Id', '@reservation.EventName')">
+                                            <i class="bi bi-trash"></i>
                                         </button>
                                     </div>
                                 </td>

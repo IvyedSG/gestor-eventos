@@ -16,19 +16,28 @@ namespace gestor_eventos.Pages.Servicios
     public class IndexModel : PageModel
     {
         private readonly ServicioService _servicioService;
+        private readonly InventoryService _inventoryService;
         private readonly ILogger<IndexModel> _logger;
 
         [BindProperty(SupportsGet = true)]
         public string SearchTerm { get; set; }
 
         [BindProperty(SupportsGet = true)]
-        public string CategoryFilter { get; set; }
+        public string EventTypeFilter { get; set; } // Cambiado de CategoryFilter a EventTypeFilter
 
         public List<ServiceModel> Services { get; set; } = new List<ServiceModel>();
 
-        public IndexModel(ServicioService servicioService, ILogger<IndexModel> logger)
+        // Add this property to store inventory items
+        public List<InventoryItem> InventoryItems { get; set; } = new List<InventoryItem>();
+
+        // Update the constructor to inject the InventoryService
+        public IndexModel(
+            ServicioService servicioService, 
+            InventoryService inventoryService,
+            ILogger<IndexModel> logger)
         {
             _servicioService = servicioService;
+            _inventoryService = inventoryService;
             _logger = logger;
         }
 
@@ -36,22 +45,21 @@ namespace gestor_eventos.Pages.Servicios
         {
             try
             {
-                // Obtener el correo del usuario actual
+                // Get the current user's email and ID
                 var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+                var userId = User.FindFirst("UserId")?.Value;
 
-                if (string.IsNullOrEmpty(userEmail))
+                if (string.IsNullOrEmpty(userEmail) || string.IsNullOrEmpty(userId))
                 {
-                    _logger.LogWarning("No se encontró el email del usuario en las claims");
+                    _logger.LogWarning("User email or ID not found in claims");
                     return;
                 }
 
-                // Obtener los servicios desde el API
+                // Load services for the user
                 var serviciosApi = await _servicioService.GetServiciosByCorreoAsync(userEmail);
-
-                // Convertir los datos del API al modelo de la vista
                 Services = ConvertToServiceModels(serviciosApi);
 
-                // Aplicar filtros si existen
+                // Apply filters if they exist
                 if (!string.IsNullOrEmpty(SearchTerm))
                 {
                     Services = Services.Where(s => 
@@ -60,16 +68,20 @@ namespace gestor_eventos.Pages.Servicios
                     ).ToList();
                 }
 
-                if (!string.IsNullOrEmpty(CategoryFilter))
+                if (!string.IsNullOrEmpty(EventTypeFilter))
                 {
                     Services = Services.Where(s => 
-                        s.Category.Equals(CategoryFilter, StringComparison.OrdinalIgnoreCase)
+                        s.EventTypes.Contains(EventTypeFilter, StringComparison.OrdinalIgnoreCase)
                     ).ToList();
                 }
+
+                // Load inventory items for the user
+                InventoryItems = await _inventoryService.GetInventoryItemsByUserIdAsync(userId);
+                _logger.LogInformation("Loaded {ItemCount} inventory items for user", InventoryItems.Count);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al obtener servicios: {Message}", ex.Message);
+                _logger.LogError(ex, "Error loading page data: {Message}", ex.Message);
             }
         }
 
@@ -87,9 +99,6 @@ namespace gestor_eventos.Pages.Servicios
                     Description = servicio.Descripcion,
                     BasePrice = servicio.PrecioBase,
                     EventTypes = servicio.TipoEvento,
-                    
-                    // Determinar la categoría según los ítems o usar una por defecto
-                    Category = DetermineServiceCategory(servicio),
                     
                     // Procesar las imágenes si existen, o usar una imagen por defecto
                     MainImage = !string.IsNullOrEmpty(servicio.Imagenes) ? 
@@ -119,60 +128,6 @@ namespace gestor_eventos.Pages.Servicios
 
             return result;
         }
-
-        private string DetermineServiceCategory(ServicioApi servicio)
-        {
-            // Lógica para determinar la categoría según los ítems o tipo de evento
-            if (servicio.Items != null && servicio.Items.Any())
-            {
-                // Contar categorías para determinar la predominante
-                var categories = servicio.Items
-                    .GroupBy(i => i.CategoriaItem)
-                    .OrderByDescending(g => g.Count())
-                    .Select(g => g.Key)
-                    .ToList();
-
-                if (categories.Any())
-                {
-                    // Mapear categorías del API a las categorías de la UI
-                    switch (categories.First().ToLower())
-                    {
-                        case "alimentacion":
-                        case "comida":
-                            return "Catering";
-                        case "decoracion":
-                        case "adornos":
-                            return "Decoración";
-                        case "iluminacion":
-                        case "sonido":
-                        case "video":
-                            return "Audio y Video";
-                        case "muebles":
-                        case "sillas":
-                        case "mesas":
-                            return "Mobiliario";
-                        case "entretenimiento":
-                        case "musica":
-                            return "Entretenimiento";
-                        default:
-                            return "Otros";
-                    }
-                }
-            }
-
-            // Si no hay ítems, intentamos determinar por el tipo de evento
-            switch (servicio.TipoEvento.ToLower())
-            {
-                case "boda":
-                    return "Decoración";
-                case "cumpleaños":
-                    return "Entretenimiento";
-                case "corporativo":
-                    return "Audio y Video";
-                default:
-                    return "Otros";
-            }
-        }
     }
 
     public class ServiceModel
@@ -180,7 +135,6 @@ namespace gestor_eventos.Pages.Servicios
         public string Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public string Category { get; set; }
         public decimal BasePrice { get; set; }
         public string EventTypes { get; set; }
         public string MainImage { get; set; }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace gestor_eventos.Models.ApiModels
 {
@@ -17,5 +18,14 @@ namespace gestor_eventos.Models.ApiModels
         public string TelefonoCliente { get; set; }
         public Guid ServicioId { get; set; }
         public DateTime FechaReserva { get; set; }
+        public List<ServicioReservacionApi> Servicios { get; set; } = new List<ServicioReservacionApi>();
+    }
+
+    public class ServicioReservacionApi
+    {
+        public Guid ServicioId { get; set; }
+        public string NombreServicio { get; set; }
+        public int CantidadItems { get; set; }
+        public decimal Precio { get; set; }
     }
 }

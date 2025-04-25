@@ -4,6 +4,9 @@
     ViewData["Title"] = "Gestionar Servicios";
 }
 
+<!-- Información del usuario (oculta) -->
+<input type="hidden" id="userEmail" value="@User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value" />
+
 <!-- Filtros y búsqueda -->
 <partial name="_FilterBar" />
 

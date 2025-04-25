@@ -1,3 +1,5 @@
+@model gestor_eventos.Pages.Servicios.IndexModel
+
 <div class="modal fade" id="newServiceModal" tabindex="-1" aria-labelledby="newServiceModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
@@ -38,13 +40,16 @@
                             <label for="newServiceEventType" class="form-label">Tipo de evento <span class="text-danger">*</span></label>
                             <select class="form-select" id="newServiceEventType" required>
                                 <option value="">Seleccionar tipo de evento</option>
-                                <option value="Boda">Boda</option>
-                                <option value="Corporativo">Corporativo</option>
-                                <option value="Cumpleaños">Cumpleaños</option>
-                                <option value="Fiesta infantil">Fiesta infantil</option>
                                 <option value="Conferencia">Conferencia</option>
-                                <option value="Graduación">Graduación</option>
-                                <option value="Otro">Otro</option>
+                                <option value="Taller">Taller</option>
+                                <option value="Seminario">Seminario</option>
+                                <option value="Concierto">Concierto</option>
+                                <option value="Festival">Festival</option>
+                                <option value="Webinar">Webinar</option>
+                                <option value="Reunión de negocios">Reunión de negocios</option>
+                                <option value="Feria o Expo">Feria o Expo</option>
+                                <option value="Evento deportivo">Evento deportivo</option>
+                                <option value="Evento social">Evento social</option>
                             </select>
                         </div>
                     </div>
@@ -52,20 +57,24 @@
                     <!-- Imágenes -->
                     <div class="row mb-3">
                         <div class="col-12">
-                            <div class="mb-2">
-                                <label class="form-label d-flex justify-content-between align-items-center">
-                                    <span>Imágenes del servicio</span>
-                                    <small class="text-muted">Máximo 5 imágenes</small>
-                                </label>
-                                <div class="dropzone-container border rounded p-3 text-center" id="imageDropzone">
-                                    <div class="dropzone-placeholder">
-                                        <i class="bi bi-cloud-arrow-up fs-3 text-muted"></i>
-                                        <p class="mb-0 small text-muted">Arrastra imágenes aquí o haz clic para seleccionarlas</p>
-                                    </div>
-                                    <input type="file" class="d-none" id="newServiceImages" multiple accept="image/*">
+                            <div class="mb-3">
+                                <label for="newServiceImageUrl" class="form-label">URL de la imagen <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-image"></i></span>
+                                    <input type="url" class="form-control" id="newServiceImageUrl" 
+                                           placeholder="https://ejemplo.com/imagen.jpg" required>
+                                </div>
+                                <div class="form-text">Introduce la URL de la imagen principal para el servicio</div>
+                            </div>
+                            <!-- Previsualización de la imagen -->
+                            <div class="mt-2" id="imagePreviewContainer">
+                                <div class="d-none" id="imagePreview">
+                                    <img src="" class="img-thumbnail" style="max-height: 150px;" alt="Vista previa">
+                                    <button type="button" class="btn btn-sm btn-outline-danger mt-1" id="clearImageBtn">
+                                        <i class="bi bi-x-circle"></i> Limpiar imagen
+                                    </button>
                                 </div>
                             </div>
-                            <div class="image-preview-container d-flex flex-wrap gap-2 mt-2" id="imagePreviewContainer"></div>
                         </div>
                     </div>
 
@@ -83,7 +92,18 @@
                                             
                                             <select class="form-select" id="itemSelect">
                                                 <option value="" selected disabled>Seleccione un ítem</option>
-                                                <!-- Las opciones se cargarán dinámicamente -->
+                                                @if (Model.InventoryItems != null && Model.InventoryItems.Any())
+                                                {
+                                                    @foreach (var item in Model.InventoryItems.Where(i => i.Stock > 0))
+                                                    {
+                                                        <option value="@item.Id" 
+                                                                data-nombre="@item.Nombre" 
+                                                                data-stock="@item.Stock" 
+                                                                data-categoria="@item.Categoria ?? "General"">
+                                                            @item.Nombre (@item.Stock disponibles)
+                                                        </option>
+                                                    }
+                                                }
                                             </select>
                                         </div>
                                         <div class="col-md-3">
@@ -110,7 +130,6 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th>Ítem</th>
-                                            <th>Categoría</th>
                                             <th>Stock</th>
                                             <th>Cantidad</th>
                                             <th>Acciones</th>
@@ -127,6 +146,9 @@
                             </div>
                         </div>
                     </div>
+                    <div id="itemsHelp" class="small text-danger d-none mt-2">
+                        <i class="bi bi-exclamation-circle"></i> Debes agregar al menos un ítem para crear el servicio
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -138,66 +160,3 @@
         </div>
     </div>
 </div>
-
-<script>
-// Función para cargar ítems disponibles desde la API
-function loadAvailableItems() {
-    // Obtener el userId y token del usuario actual
-    const userId = document.querySelector('meta[name="user-id"]')?.content;
-    const token = document.querySelector('meta[name="access-token"]')?.content;
-    
-    if (!userId || !token) {
-        console.error('No se pudo obtener la información del usuario');
-        showToast('Error al cargar los ítems disponibles', 'danger');
-        return;
-    }
-    
-    // Limpiar el select y mostrar mensaje de carga
-    const itemSelect = document.getElementById('itemSelect');
-    itemSelect.innerHTML = '<option value="" selected disabled>Cargando ítems...</option>';
-    
-    // Realizar la petición al API
-    fetch(`/api/inventario/usuario/${userId}`, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`Error al cargar ítems: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(items => {
-        // Limpiar select
-        itemSelect.innerHTML = '<option value="" selected disabled>Seleccione un ítem</option>';
-        
-        // Si no hay ítems, mostrar mensaje
-        if (!items || items.length === 0) {
-            itemSelect.innerHTML = '<option value="" selected disabled>No hay ítems disponibles</option>';
-            return;
-        }
-        
-        // Agregar opciones
-        items.forEach(item => {
-            // Solo mostrar ítems con stock disponible
-            if (item.stock > 0) {
-                const option = document.createElement('option');
-                option.value = item.id;
-                option.textContent = `${item.nombre} (${item.stock} disponibles)`;
-                option.dataset.nombre = item.nombre;
-                option.dataset.categoria = item.categoria;
-                option.dataset.stock = item.stock;
-                itemSelect.appendChild(option);
-            }
-        });
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        itemSelect.innerHTML = '<option value="" selected disabled>Error al cargar ítems</option>';
-        showToast('Error al cargar los ítems de inventario', 'danger');
-    });
-}
-</script>

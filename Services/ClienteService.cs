@@ -8,6 +8,8 @@ using Microsoft.Extensions.Options;
 using GestorEventos.Models.ApiModels;
 using Microsoft.AspNetCore.Http;
 using System.Diagnostics;
+using Microsoft.Extensions.Logging;
+using gestor_eventos.Models.ApiModels;
 
 namespace GestorEventos.Services
 {
@@ -41,9 +43,14 @@ namespace GestorEventos.Services
                 {
                     _logger.LogWarning("Token no encontrado en las claims del usuario: {Email}", correo);
                     
-                    // Devolvemos una lista vacía en lugar de lanzar excepción
-                    // para manejar el caso de forma más elegante en la UI
-                    return new List<ClienteApi>();
+                    // Intentar obtener el token de las cookies
+                    token = _httpContextAccessor.HttpContext.Request.Cookies["AuthToken"];
+                    
+                    if (string.IsNullOrEmpty(token))
+                    {
+                        _logger.LogWarning("Token no encontrado en las cookies para el usuario: {Email}", correo);
+                        return new List<ClienteApi>();
+                    }
                 }
 
                 _logger.LogInformation("Obteniendo clientes para el usuario: {Email}", correo);

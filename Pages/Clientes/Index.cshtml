@@ -289,7 +289,7 @@
 
 <!-- Modal para Ver Detalle de Cliente con su historial -->
 <div class="modal fade" id="viewClientModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-light">
                 <h5 class="modal-title">
@@ -298,70 +298,36 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="card border-0 shadow-sm h-100">
-                            <div class="card-body">
-                                <h6 class="card-title fw-bold mb-3">Información de Contacto</h6>
-                                <div class="mb-3">
-                                    <i class="bi bi-envelope text-primary me-2"></i>
-                                    <span id="viewClientEmail">correo@ejemplo.com</span>
-                                </div>
-                                <div class="mb-3">
-                                    <i class="bi bi-telephone text-primary me-2"></i>
-                                    <span id="viewClientPhone">123-456-7890</span>
-                                </div>
-                                <div class="mb-3">
-                                    <i class="bi bi-geo-alt text-primary me-2"></i>
-                                    <span id="viewClientAddress">Dirección del cliente</span>
-                                </div>
-                                
-                                <h6 class="card-title fw-bold mb-3 mt-4">Información Adicional</h6>
-                                <div class="mb-3">
-                                    <span class="text-muted">Cliente desde:</span>
-                                    <span id="viewClientSince" class="ms-1">01/01/2025</span>
-                                </div>
-                                
-                                <div class="mb-3">
-                                    <span class="text-muted">Total eventos:</span>
-                                    <span id="viewTotalEvents" class="ms-1 fw-bold">3</span>
-                                </div>
-                                
-                                <div class="mb-3">
-                                    <span class="text-muted">Última reserva:</span>
-                                    <span id="viewLastReservation" class="ms-1">18/04/2025</span>
-                                </div>
-                            
-                            </div>
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <h6 class="card-title fw-bold mb-3">Información de Contacto</h6>
+                        <div class="mb-3">
+                            <i class="bi bi-envelope text-primary me-2"></i>
+                            <span id="viewClientEmail">correo@ejemplo.com</span>
                         </div>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card border-0 shadow-sm h-100">
-                            <div class="card-body">
-                                <h6 class="card-title fw-bold mb-3">Historial de Reservas</h6>
-                                
-                                <div class="table-responsive">
-                                    <table class="table table-hover align-middle" id="clientReservationsTable">
-                                        <thead class="table-light">
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Fecha</th>
-                                                <th>Servicio</th>
-                                                <th>Monto</th>
-                                                <th>Estado</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="clientReservationsList">
-                                            <!-- El historial de reservas se cargará dinámicamente via JS -->
-                                        </tbody>
-                                    </table>
-                                </div>
-                                
-                                <div id="noReservationsMessage" class="text-center py-4 d-none">
-                                    <i class="bi bi-calendar-x text-muted" style="font-size: 2rem;"></i>
-                                    <p class="mt-3 mb-0">Este cliente no tiene reservas</p>
-                                </div>
-                            </div>
+                        <div class="mb-3">
+                            <i class="bi bi-telephone text-primary me-2"></i>
+                            <span id="viewClientPhone">123-456-7890</span>
+                        </div>
+                        <div class="mb-3">
+                            <i class="bi bi-geo-alt text-primary me-2"></i>
+                            <span id="viewClientAddress">Dirección del cliente</span>
+                        </div>
+                        
+                        <h6 class="card-title fw-bold mb-3 mt-4">Información Adicional</h6>
+                        <div class="mb-3">
+                            <span class="text-muted">Cliente desde:</span>
+                            <span id="viewClientSince" class="ms-1">01/01/2025</span>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <span class="text-muted">Total eventos:</span>
+                            <span id="viewTotalEvents" class="ms-1 fw-bold">3</span>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <span class="text-muted">Última reserva:</span>
+                            <span id="viewLastReservation" class="ms-1">18/04/2025</span>
                         </div>
                     </div>
                 </div>
@@ -485,24 +451,6 @@
                 // Última reserva
                 const lastReservation = row.querySelector('td:nth-child(7)').textContent.trim();
                 document.getElementById('viewLastReservation').textContent = lastReservation;
-                
-                // Cargar historial de reservas
-                loadClientReservations(clientId);
-            }
-
-            // Función para cargar historial de reservas (simulado)
-            function loadClientReservations(clientId) {
-                const clientReservationsTable = document.getElementById('clientReservationsTable');
-                const noReservationsMessage = document.getElementById('noReservationsMessage');
-                const clientReservationsList = document.getElementById('clientReservationsList');
-                
-                if (!clientReservationsTable || !noReservationsMessage || !clientReservationsList) return;
-                
-                // En un caso real, aquí harías una petición AJAX para obtener las reservas del cliente
-                // Para este ejemplo, asumimos que ningún cliente tiene reservas
-                clientReservationsTable.classList.add('d-none');
-                noReservationsMessage.classList.remove('d-none');
-                clientReservationsList.innerHTML = '';
             }
 
             // Funcionalidad para limpiar filtros

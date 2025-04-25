@@ -1,98 +1,166 @@
+@model gestor_eventos.Pages.Servicios.IndexModel
+
 <div class="modal fade" id="editServiceModal" tabindex="-1" aria-labelledby="editServiceModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editServiceModalLabel">Editar Servicio</h5>
+                <h5 class="modal-title" id="editServiceModalLabel">
+                    <i class="bi bi-pencil-square me-2 text-primary"></i>Editar Servicio
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="editServiceForm">
                     <input type="hidden" id="editServiceId">
-                    <div class="row">
+                    
+                    <!-- Información básica -->
+                    <div class="row mb-3">
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="editServiceName" class="form-label">Nombre del servicio</label>
+                                <label for="editServiceName" class="form-label">Nombre del servicio <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="editServiceName" required>
                             </div>
                             
                             <div class="mb-3">
-                                <label for="editServiceCategory" class="form-label">Categoría</label>
-                                <select class="form-select" id="editServiceCategory" required>
-                                    <option value="">Seleccionar categoría</option>
-                                    <option value="Catering">Catering</option>
-                                    <option value="Decoración">Decoración</option>
-                                    <option value="Entretenimiento">Entretenimiento</option>
-                                    <option value="Audio y Video">Audio y Video</option>
-                                    <option value="Mobiliario">Mobiliario</option>
-                                    <option value="Otros">Otros</option>
-                                </select>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="editServicePrice" class="form-label">Precio base (S/)</label>
-                                <input type="number" class="form-control" id="editServicePrice" min="0" step="0.01" required>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label class="form-label">Tipos de eventos</label>
-                                <div class="row g-2">
-                                    <div class="col-6">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="Boda" id="editEventTypeBoda">
-                                            <label class="form-check-label" for="editEventTypeBoda">Bodas</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="Corporativo" id="editEventTypeCorporativo">
-                                            <label class="form-check-label" for="editEventTypeCorporativo">Corporativos</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="Cumpleaños" id="editEventTypeCumpleanos">
-                                            <label class="form-check-label" for="editEventTypeCumpleanos">Cumpleaños</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="Otro" id="editEventTypeOtro">
-                                            <label class="form-check-label" for="editEventTypeOtro">Otros</label>
-                                        </div>
-                                    </div>
+                                <label for="editServicePrice" class="form-label">Precio base (S/) <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text">S/</span>
+                                    <input type="number" class="form-control" id="editServicePrice" min="0" step="0.01" required>
                                 </div>
                             </div>
                         </div>
                         
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="editServiceDescription" class="form-label">Descripción</label>
+                                <label for="editServiceDescription" class="form-label">Descripción <span class="text-danger">*</span></label>
                                 <textarea class="form-control" id="editServiceDescription" rows="4" required></textarea>
                             </div>
-                            
+                        </div>
+                    </div>
+
+                    <!-- Tipo de evento -->
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <label for="editServiceEventType" class="form-label">Tipo de evento <span class="text-danger">*</span></label>
+                            <select class="form-select" id="editServiceEventType" required>
+                                <option value="">Seleccionar tipo de evento</option>
+                                <option value="Conferencia">Conferencia</option>
+                                <option value="Taller">Taller</option>
+                                <option value="Seminario">Seminario</option>
+                                <option value="Concierto">Concierto</option>
+                                <option value="Festival">Festival</option>
+                                <option value="Webinar">Webinar</option>
+                                <option value="Reunión de negocios">Reunión de negocios</option>
+                                <option value="Feria o Expo">Feria o Expo</option>
+                                <option value="Evento deportivo">Evento deportivo</option>
+                                <option value="Evento social">Evento social</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Imágenes -->
+                    <div class="row mb-3">
+                        <div class="col-12">
                             <div class="mb-3">
-                                <label class="form-label">Imágenes actuales</label>
-                                <div class="current-images-container" id="editCurrentImages"></div>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label class="form-label">Agregar nuevas imágenes</label>
-                                <div class="dropzone-container border rounded p-3 text-center">
-                                    <div class="dropzone-placeholder">
-                                        <i class="bi bi-cloud-arrow-up fs-3 text-muted"></i>
-                                        <p class="mb-0 small text-muted">Arrastra imágenes aquí o haz clic para seleccionarlas</p>
-                                    </div>
-                                    <input type="file" class="d-none" id="editServiceImages" multiple accept="image/*">
+                                <label for="editServiceImageUrl" class="form-label">URL de la imagen <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-image"></i></span>
+                                    <input type="url" class="form-control" id="editServiceImageUrl" 
+                                           placeholder="https://ejemplo.com/imagen.jpg" required>
                                 </div>
-                                <div class="image-preview-container d-flex flex-wrap mt-2" id="editImagePreviewContainer"></div>
+                                <div class="form-text">Introduce la URL de la imagen principal para el servicio</div>
+                            </div>
+                            <!-- Previsualización de la imagen -->
+                            <div class="mt-2" id="editImagePreviewContainer">
+                                <div class="d-none" id="editImagePreview">
+                                    <img src="" class="img-thumbnail" style="max-height: 150px;" alt="Vista previa">
+                                    <button type="button" class="btn btn-sm btn-outline-danger mt-1" id="clearEditImageBtn">
+                                        <i class="bi bi-x-circle"></i> Limpiar imagen
+                                    </button>
+                                </div>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Selección de ítems integrada -->
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <h6 class="border-bottom pb-2 mb-3">Ítems del Servicio</h6>
+                            
+                            <!-- Selección de ítem integrada -->
+                            <div class="card mb-3 border-light bg-light">
+                                <div class="card-body">
+                                    <div class="row g-2 align-items-end">
+                                        <div class="col-md-6">
+                                            <label for="editItemSelect" class="form-label">Seleccionar ítem</label>
+                                            
+                                            <select class="form-select" id="editItemSelect">
+                                                <option value="" selected disabled>Seleccione un ítem</option>
+                                                @if (Model.InventoryItems != null && Model.InventoryItems.Any())
+                                                {
+                                                    @foreach (var item in Model.InventoryItems.Where(i => i.Stock > 0))
+                                                    {
+                                                        <option value="@item.Id" 
+                                                                data-nombre="@item.Nombre" 
+                                                                data-stock="@item.Stock" 
+                                                                data-categoria="@item.Categoria ?? "General"">
+                                                            @item.Nombre (@item.Stock disponibles)
+                                                        </option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="editItemQuantity" class="form-label">Cantidad</label>
+                                            <input type="number" class="form-control" id="editItemQuantity" min="1" value="1">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button type="button" class="btn btn-primary w-100" id="addEditSelectedItemBtn">
+                                                <i class="bi bi-plus-lg"></i> Agregar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Contador de ítems -->
+                            <div class="d-flex justify-content-end mb-2">
+                                <span class="badge bg-primary" id="editItemsCountBadge">0 ítems</span>
+                            </div>
+                            
+                            <!-- Tabla de ítems -->
+                            <div class="table-responsive">
+                                <table class="table table-sm table-hover" id="editItemsTable">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Ítem</th>
+                                            <th>Categoría</th>
+                                            <th>Stock</th>
+                                            <th>Cantidad</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="editItemsTableBody">
+                                        <tr id="editNoItemsRow">
+                                            <td colspan="5" class="text-center text-muted py-3">
+                                                No hay ítems seleccionados
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="editItemsHelp" class="small text-danger d-none mt-2">
+                        <i class="bi bi-exclamation-circle"></i> Debes agregar al menos un ítem para actualizar el servicio
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" id="updateServiceBtn">Actualizar Servicio</button>
+                <button type="button" class="btn btn-primary" id="saveEditServiceBtn">
+                    <i class="bi bi-check-circle"></i> Actualizar Servicio
+                </button>
             </div>
         </div>
     </div>
