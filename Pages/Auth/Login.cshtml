@@ -35,7 +35,7 @@
             background: linear-gradient(135deg, #f4f5ff 0%, #eef1ff 100%);
         }
         
-        /* Burbujas de fondo */
+
         .bg-bubbles {
             position: absolute;
             top: 0;
@@ -128,7 +128,7 @@
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%234F46E5' fill-opacity='1'%3E%3Cpath opacity='.5' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         }
         
-        /* Logo y título */
+
         .login-branding {
             position: relative;
             margin-bottom: 2.8rem;
@@ -177,7 +177,7 @@
             border-radius: 2px;
         }
         
-        /* Inputs y botón */
+ 
         .form-control {
             padding: 0.9rem 1.2rem;
             border-radius: 12px;
@@ -302,7 +302,7 @@
             transform: translateY(1px);
         }
         
-        /* Botón de Google */
+  
         .separator {
             display: flex;
             align-items: center;
@@ -340,7 +340,7 @@
             color: var(--dark-color);
         }
         
-        /* Error alert */
+ 
         .alert {
             border-radius: 12px;
             padding: 1rem 1.2rem;
@@ -356,7 +356,7 @@
             font-size: 1.2rem;
         }
         
-        /* Footer */
+ 
         .login-footer {
             text-align: center;
         
@@ -386,7 +386,7 @@
             text-decoration: none;
         }
         
-        /* Elementos decorativos */
+ 
         .decoration {
             position: absolute;
             z-index: 2;
@@ -429,7 +429,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
-    <!-- Burbujas de fondo -->
+
     <div class="bg-bubbles">
         <div class="bg-bubble bubble-1"></div>
         <div class="bg-bubble bubble-2"></div>
@@ -442,7 +442,7 @@
             <div class="bg-pattern"></div>
             <div class="card-glass-effect"></div>
             
-            <!-- Elementos decorativos -->
+   
             <div class="decoration decoration-1"></div>
             <div class="decoration decoration-2"></div>
             
@@ -489,10 +489,9 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-    <!-- Los scripts de validación permanecen activos para el formulario de inicio de sesión -->
 
     <script>
-    // Verificar si hay mensajes de error
+ 
     @if (!string.IsNullOrEmpty(Model.ErrorMessage))
     {
         <text>
@@ -508,7 +507,7 @@
         </text>
     }
     
-    // Verificar si hay mensajes de éxito con la bandera de mostrar alerta
+
     @if (!string.IsNullOrEmpty(Model.SuccessMessage) && Model.ShowSuccessAlert)
     {
         <text>

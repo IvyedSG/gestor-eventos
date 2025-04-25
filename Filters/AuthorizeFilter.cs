@@ -7,7 +7,7 @@ namespace GestorEventos.Filters
     {
         public void OnPageHandlerSelected(PageHandlerSelectedContext context)
         {
-            // No hacemos nada aquí
+
         }
 
         public void OnPageHandlerExecuting(PageHandlerExecutingContext context)
@@ -20,7 +20,7 @@ namespace GestorEventos.Filters
 
         public void OnPageHandlerExecuted(PageHandlerExecutedContext context)
         {
-            // No hacemos nada aquí
+
         }
     }
 }

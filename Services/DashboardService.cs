@@ -34,14 +34,14 @@ namespace gestor_eventos.Services
         {
             try
             {
-                // Obtener el token del usuario actual
+ 
                 var token = _httpContextAccessor.HttpContext.User.FindFirst("AccessToken")?.Value;
                 
                 if (string.IsNullOrEmpty(token))
                 {
                     _logger.LogWarning("Token no encontrado en las claims del usuario: {Email}", correo);
                     
-                    // Intentar obtener el token de las cookies
+ 
                     token = _httpContextAccessor.HttpContext.Request.Cookies["AuthToken"];
                     
                     if (string.IsNullOrEmpty(token))
@@ -53,13 +53,13 @@ namespace gestor_eventos.Services
 
                 _logger.LogInformation("Obteniendo datos del dashboard para el usuario: {Email}", correo);
                 
-                // Configurar el header de autenticación
+ 
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-                // Realizar la petición al API
+ 
                 var response = await _httpClient.GetAsync($"{_apiSettings.BaseUrl}/api/dashboard/{correo}");
                 
-                // Verificar si la respuesta fue exitosa
+ 
                 if (!response.IsSuccessStatusCode)
                 {
                     _logger.LogWarning("Error al obtener datos del dashboard. Código: {StatusCode}, Mensaje: {Message}", 
@@ -67,7 +67,7 @@ namespace gestor_eventos.Services
                     return null;
                 }
 
-                // Leer y deserializar la respuesta
+ 
                 var content = await response.Content.ReadAsStringAsync();
                 _logger.LogDebug("Respuesta del API: {Response}", content);
                 

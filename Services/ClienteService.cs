@@ -36,14 +36,14 @@ namespace GestorEventos.Services
         {
             try
             {
-                // Obtener el token del usuario actual
+ 
                 var token = _httpContextAccessor.HttpContext.User.FindFirst("AccessToken")?.Value;
                 
                 if (string.IsNullOrEmpty(token))
                 {
                     _logger.LogWarning("Token no encontrado en las claims del usuario: {Email}", correo);
                     
-                    // Intentar obtener el token de las cookies
+ 
                     token = _httpContextAccessor.HttpContext.Request.Cookies["AuthToken"];
                     
                     if (string.IsNullOrEmpty(token))
@@ -55,13 +55,13 @@ namespace GestorEventos.Services
 
                 _logger.LogInformation("Obteniendo clientes para el usuario: {Email}", correo);
                 
-                // Configurar el header de autenticación
+ 
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-                // Realizar la petición al API
+ 
                 var response = await _httpClient.GetAsync($"{_apiSettings.BaseUrl}/api/clientes/usuario/{correo}");
                 
-                // Verificar si la respuesta fue exitosa
+ 
                 if (!response.IsSuccessStatusCode)
                 {
                     _logger.LogWarning("Error al obtener clientes. Código: {StatusCode}, Mensaje: {Message}", 
@@ -70,7 +70,7 @@ namespace GestorEventos.Services
                     return new List<ClienteApi>();
                 }
 
-                // Leer y deserializar la respuesta
+ 
                 var content = await response.Content.ReadAsStringAsync();
                 _logger.LogDebug("Respuesta del API: {Response}", content);
                 
@@ -102,7 +102,7 @@ namespace GestorEventos.Services
         {
             try
             {
-                // Obtener el token del usuario actual
+ 
                 var token = _httpContextAccessor.HttpContext.User.FindFirst("AccessToken")?.Value;
                 
                 if (string.IsNullOrEmpty(token))
@@ -113,18 +113,18 @@ namespace GestorEventos.Services
 
                 _logger.LogInformation("Creando cliente para el usuario: {Email}", userEmail);
                 
-                // Configurar el header de autenticación
+ 
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-                // Crear el contenido de la petición
+ 
                 var jsonContent = JsonSerializer.Serialize(cliente);
                 _logger.LogDebug("Enviando datos al API: {JsonContent}", jsonContent);
                 var content = new StringContent(jsonContent, System.Text.Encoding.UTF8, "application/json");
 
-                // Realizar la petición POST al API
+ 
                 var response = await _httpClient.PostAsync($"{_apiSettings.BaseUrl}/api/clientes/{userEmail}", content);
                 
-                // Verificar si la respuesta fue exitosa
+ 
                 if (!response.IsSuccessStatusCode)
                 {
                     var errorContent = await response.Content.ReadAsStringAsync();
@@ -147,7 +147,7 @@ namespace GestorEventos.Services
         {
             try
             {
-                // Obtener el token del usuario actual
+ 
                 var token = _httpContextAccessor.HttpContext.User.FindFirst("AccessToken")?.Value;
                 
                 if (string.IsNullOrEmpty(token))
@@ -158,18 +158,18 @@ namespace GestorEventos.Services
 
                 _logger.LogInformation("Actualizando cliente: {Id}", clienteId);
                 
-                // Configurar el header de autenticación
+ 
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-                // Crear el contenido de la petición
+ 
                 var jsonContent = JsonSerializer.Serialize(cliente);
                 _logger.LogDebug("Enviando datos al API: {JsonContent}", jsonContent);
                 var content = new StringContent(jsonContent, System.Text.Encoding.UTF8, "application/json");
 
-                // Realizar la petición PUT al API
+ 
                 var response = await _httpClient.PutAsync($"{_apiSettings.BaseUrl}/api/clientes/{clienteId}", content);
                 
-                // Verificar si la respuesta fue exitosa
+ 
                 if (!response.IsSuccessStatusCode)
                 {
                     var errorContent = await response.Content.ReadAsStringAsync();
@@ -192,7 +192,7 @@ namespace GestorEventos.Services
         {
             try
             {
-                // Obtener el token del usuario actual
+ 
                 var token = _httpContextAccessor.HttpContext.User.FindFirst("AccessToken")?.Value;
                 
                 if (string.IsNullOrEmpty(token))
@@ -203,13 +203,13 @@ namespace GestorEventos.Services
 
                 _logger.LogInformation("Eliminando cliente: {Id}", clienteId);
                 
-                // Configurar el header de autenticación
+ 
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-                // Realizar la petición DELETE al API
+ 
                 var response = await _httpClient.DeleteAsync($"{_apiSettings.BaseUrl}/api/clientes/{clienteId}");
                 
-                // Verificar si la respuesta fue exitosa
+ 
                 if (!response.IsSuccessStatusCode)
                 {
                     var errorContent = await response.Content.ReadAsStringAsync();

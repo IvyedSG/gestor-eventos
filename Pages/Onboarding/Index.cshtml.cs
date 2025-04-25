@@ -7,8 +7,8 @@ namespace gestor_eventos.Pages
     {
         public void OnGet()
         {
-            // Esta página se muestra a los nuevos usuarios
-            // No requiere lógica especial para la carga inicial
+ 
+ 
         }
     }
 }

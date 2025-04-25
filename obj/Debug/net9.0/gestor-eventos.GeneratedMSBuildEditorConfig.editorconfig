@@ -9,153 +9,153 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = gestor_eventos
 build_property.RootNamespace = gestor_eventos
-build_property.ProjectDir = /Users/sagox16/Documents/proyectos_u/gestor-eventos/
+build_property.ProjectDir = C:\Users\AUTONOMA\Documents\gestor-eventos\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = /Users/sagox16/Documents/proyectos_u/gestor-eventos
+build_property.MSBuildProjectDirectory = C:\Users\AUTONOMA\Documents\gestor-eventos
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 9.0
 build_property.EnableCodeStyleSeverity = 
 
-[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Auth/AccessDenied.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQXV0aC9BY2Nlc3NEZW5pZWQuY3NodG1s
+[C:/Users/AUTONOMA/Documents/gestor-eventos/Pages/Auth/AccessDenied.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aFxBY2Nlc3NEZW5pZWQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Auth/ExternalLogin.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQXV0aC9FeHRlcm5hbExvZ2luLmNzaHRtbA==
+[C:/Users/AUTONOMA/Documents/gestor-eventos/Pages/Auth/ExternalLogin.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aFxFeHRlcm5hbExvZ2luLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Auth/ExternalLoginCallback.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQXV0aC9FeHRlcm5hbExvZ2luQ2FsbGJhY2suY3NodG1s
+[C:/Users/AUTONOMA/Documents/gestor-eventos/Pages/Auth/ExternalLoginCallback.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aFxFeHRlcm5hbExvZ2luQ2FsbGJhY2suY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Auth/Login.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQXV0aC9Mb2dpbi5jc2h0bWw=
+[C:/Users/AUTONOMA/Documents/gestor-eventos/Pages/Auth/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Auth/Logout.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQXV0aC9Mb2dvdXQuY3NodG1s
+[C:/Users/AUTONOMA/Documents/gestor-eventos/Pages/Auth/Logout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aFxMb2dvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Auth/Register.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQXV0aC9SZWdpc3Rlci5jc2h0bWw=
+[C:/Users/AUTONOMA/Documents/gestor-eventos/Pages/Auth/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aFxSZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Clientes/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQ2xpZW50ZXMvSW5kZXguY3NodG1s
+[C:/Users/AUTONOMA/Documents/gestor-eventos/Pages/Clientes/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2xpZW50ZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Dashboard/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRGFzaGJvYXJkL0luZGV4LmNzaHRtbA==
+[C:/Users/AUTONOMA/Documents/gestor-eventos/Pages/Dashboard/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGFzaGJvYXJkXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Error.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRXJyb3IuY3NodG1s
+[C:/Users/AUTONOMA/Documents/gestor-eventos/Pages/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvSW5kZXguY3NodG1s
+[C:/Users/AUTONOMA/Documents/gestor-eventos/Pages/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Inventario/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvSW52ZW50YXJpby9JbmRleC5jc2h0bWw=
+[C:/Users/AUTONOMA/Documents/gestor-eventos/Pages/Inventario/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW52ZW50YXJpb1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Onboarding/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvT25ib2FyZGluZy9JbmRleC5jc2h0bWw=
+[C:/Users/AUTONOMA/Documents/gestor-eventos/Pages/Onboarding/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT25ib2FyZGluZ1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Privacy.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvUHJpdmFjeS5jc2h0bWw=
+[C:/Users/AUTONOMA/Documents/gestor-eventos/Pages/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJpdmFjeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Reservas/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvUmVzZXJ2YXMvSW5kZXguY3NodG1s
+[C:/Users/AUTONOMA/Documents/gestor-eventos/Pages/Reservas/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVzZXJ2YXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Reservas/_EditReservationModal.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvUmVzZXJ2YXMvX0VkaXRSZXNlcnZhdGlvbk1vZGFsLmNzaHRtbA==
+[C:/Users/AUTONOMA/Documents/gestor-eventos/Pages/Reservas/_EditReservationModal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVzZXJ2YXNcX0VkaXRSZXNlcnZhdGlvbk1vZGFsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Reservas/_NewReservationModal.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvUmVzZXJ2YXMvX05ld1Jlc2VydmF0aW9uTW9kYWwuY3NodG1s
+[C:/Users/AUTONOMA/Documents/gestor-eventos/Pages/Reservas/_NewReservationModal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVzZXJ2YXNcX05ld1Jlc2VydmF0aW9uTW9kYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Reservas/_PrintReservationModal.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvUmVzZXJ2YXMvX1ByaW50UmVzZXJ2YXRpb25Nb2RhbC5jc2h0bWw=
+[C:/Users/AUTONOMA/Documents/gestor-eventos/Pages/Reservas/_PrintReservationModal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVzZXJ2YXNcX1ByaW50UmVzZXJ2YXRpb25Nb2RhbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Reservas/_ReservasFilters.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvUmVzZXJ2YXMvX1Jlc2VydmFzRmlsdGVycy5jc2h0bWw=
+[C:/Users/AUTONOMA/Documents/gestor-eventos/Pages/Reservas/_ReservasFilters.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVzZXJ2YXNcX1Jlc2VydmFzRmlsdGVycy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Reservas/_ReservasTable.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvUmVzZXJ2YXMvX1Jlc2VydmFzVGFibGUuY3NodG1s
+[C:/Users/AUTONOMA/Documents/gestor-eventos/Pages/Reservas/_ReservasTable.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVzZXJ2YXNcX1Jlc2VydmFzVGFibGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Reservas/_SelectServiceModal.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvUmVzZXJ2YXMvX1NlbGVjdFNlcnZpY2VNb2RhbC5jc2h0bWw=
+[C:/Users/AUTONOMA/Documents/gestor-eventos/Pages/Reservas/_SelectServiceModal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVzZXJ2YXNcX1NlbGVjdFNlcnZpY2VNb2RhbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Reservas/_ViewReservationModal.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvUmVzZXJ2YXMvX1ZpZXdSZXNlcnZhdGlvbk1vZGFsLmNzaHRtbA==
+[C:/Users/AUTONOMA/Documents/gestor-eventos/Pages/Reservas/_ViewReservationModal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVzZXJ2YXNcX1ZpZXdSZXNlcnZhdGlvbk1vZGFsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Servicios/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2VydmljaW9zL0luZGV4LmNzaHRtbA==
+[C:/Users/AUTONOMA/Documents/gestor-eventos/Pages/Servicios/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2VydmljaW9zXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Servicios/_DeleteServiceModal.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2VydmljaW9zL19EZWxldGVTZXJ2aWNlTW9kYWwuY3NodG1s
+[C:/Users/AUTONOMA/Documents/gestor-eventos/Pages/Servicios/_DeleteServiceModal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2VydmljaW9zXF9EZWxldGVTZXJ2aWNlTW9kYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Servicios/_EditServiceModal.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2VydmljaW9zL19FZGl0U2VydmljZU1vZGFsLmNzaHRtbA==
+[C:/Users/AUTONOMA/Documents/gestor-eventos/Pages/Servicios/_EditServiceModal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2VydmljaW9zXF9FZGl0U2VydmljZU1vZGFsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Servicios/_FilterBar.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2VydmljaW9zL19GaWx0ZXJCYXIuY3NodG1s
+[C:/Users/AUTONOMA/Documents/gestor-eventos/Pages/Servicios/_FilterBar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2VydmljaW9zXF9GaWx0ZXJCYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Servicios/_NewServiceModal.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2VydmljaW9zL19OZXdTZXJ2aWNlTW9kYWwuY3NodG1s
+[C:/Users/AUTONOMA/Documents/gestor-eventos/Pages/Servicios/_NewServiceModal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2VydmljaW9zXF9OZXdTZXJ2aWNlTW9kYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Servicios/_ServiceScripts.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2VydmljaW9zL19TZXJ2aWNlU2NyaXB0cy5jc2h0bWw=
+[C:/Users/AUTONOMA/Documents/gestor-eventos/Pages/Servicios/_ServiceScripts.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2VydmljaW9zXF9TZXJ2aWNlU2NyaXB0cy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Servicios/_ServicesGrid.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2VydmljaW9zL19TZXJ2aWNlc0dyaWQuY3NodG1s
+[C:/Users/AUTONOMA/Documents/gestor-eventos/Pages/Servicios/_ServicesGrid.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2VydmljaW9zXF9TZXJ2aWNlc0dyaWQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Servicios/_ServiceStyles.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2VydmljaW9zL19TZXJ2aWNlU3R5bGVzLmNzaHRtbA==
+[C:/Users/AUTONOMA/Documents/gestor-eventos/Pages/Servicios/_ServiceStyles.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2VydmljaW9zXF9TZXJ2aWNlU3R5bGVzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Servicios/_ViewServiceModal.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2VydmljaW9zL19WaWV3U2VydmljZU1vZGFsLmNzaHRtbA==
+[C:/Users/AUTONOMA/Documents/gestor-eventos/Pages/Servicios/_ViewServiceModal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2VydmljaW9zXF9WaWV3U2VydmljZU1vZGFsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Shared/_ValidationScriptsPartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+[C:/Users/AUTONOMA/Documents/gestor-eventos/Pages/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Usuario/Perfil.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvVXN1YXJpby9QZXJmaWwuY3NodG1s
+[C:/Users/AUTONOMA/Documents/gestor-eventos/Pages/Usuario/Perfil.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXN1YXJpb1xQZXJmaWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/_ViewImports.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+[C:/Users/AUTONOMA/Documents/gestor-eventos/Pages/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/_ViewStart.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvX1ZpZXdTdGFydC5jc2h0bWw=
+[C:/Users/AUTONOMA/Documents/gestor-eventos/Pages/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/sagox16/Documents/proyectos_u/gestor-eventos/Pages/Shared/_Layout.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2hhcmVkL19MYXlvdXQuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = b-6si79ta11f
+[C:/Users/AUTONOMA/Documents/gestor-eventos/Pages/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-1jznp7jqgt

@@ -376,7 +376,7 @@
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Toggle para tipo de cliente (Individual/Empresa)
+ 
             const individualClient = document.getElementById('individualClient');
             const companyClient = document.getElementById('companyClient');
             
@@ -392,7 +392,7 @@
                 });
             }
             
-            // Toggle para edición de tipo de cliente
+ 
             const editIndividualClient = document.getElementById('editIndividualClient');
             const editCompanyClient = document.getElementById('editCompanyClient');
             
@@ -408,7 +408,7 @@
                 });
             }
 
-            // Botones de la tabla para ver cliente
+ 
             document.querySelectorAll('.view-client-btn').forEach(button => {
                 button.addEventListener('click', function() {
                     const clientId = this.dataset.clientId;
@@ -416,44 +416,44 @@
                 });
             });
 
-            // Función para cargar datos del cliente
+ 
             function loadClientDetails(clientId) {
-                // Buscar el cliente en el modelo de datos
+ 
                 const clientRow = document.querySelector(`[data-client-id="${clientId}"]`);
                 
                 if (!clientRow) return;
                 
                 const row = clientRow.closest('tr');
                 
-                // Obtener los datos básicos de la fila
+ 
                 const name = row.querySelector('td:nth-child(1)').textContent.trim();
                 const email = row.querySelector('td:nth-child(2)').textContent.trim();
                 const phone = row.querySelector('td:nth-child(3)').textContent.trim();
                 const address = row.querySelector('td:nth-child(4)').textContent.trim();
                 const type = row.querySelector('td:nth-child(5)').textContent.trim();
                 
-                // Actualizar el modal con los datos disponibles
+ 
                 document.getElementById('viewClientName').textContent = name;
                 document.getElementById('viewClientEmail').textContent = email;
                 document.getElementById('viewClientPhone').textContent = phone;
                 document.getElementById('viewClientAddress').textContent = address || "No disponible";
                 
-                // Fecha de registro (obtener del atributo data del row)
+ 
                 const registrationDate = row.hasAttribute('data-registration-date') 
                     ? row.getAttribute('data-registration-date') 
                     : "No disponible";
                 document.getElementById('viewClientSince').textContent = registrationDate;
                 
-                // Total de eventos
+ 
                 const eventCount = row.querySelector('td:nth-child(6)').textContent.trim();
                 document.getElementById('viewTotalEvents').textContent = eventCount;
                 
-                // Última reserva
+ 
                 const lastReservation = row.querySelector('td:nth-child(7)').textContent.trim();
                 document.getElementById('viewLastReservation').textContent = lastReservation;
             }
 
-            // Funcionalidad para limpiar filtros
+ 
             const clearFiltersBtn = document.getElementById('clearFilters');
             if (clearFiltersBtn) {
                 clearFiltersBtn.addEventListener('click', function() {
@@ -467,15 +467,15 @@
                 });
             }
 
-            // Manejar el guardado de un nuevo cliente
+ 
             const saveNewClientBtn = document.getElementById('saveNewClient');
             if (saveNewClientBtn) {
                 saveNewClientBtn.addEventListener('click', async function() {
                     try {
-                        // Obtener los datos del formulario
+ 
                         const clientType = document.querySelector('input[name="clientType"]:checked')?.value;
                         
-                        // Verificar si se ha seleccionado un tipo de cliente
+ 
                         if (!clientType) {
                             alert('Por favor selecciona el tipo de cliente (Individual o Empresa)');
                             return;
@@ -486,13 +486,13 @@
                         const clientPhone = document.getElementById('clientPhone')?.value;
                         const clientAddress = document.getElementById('clientAddress')?.value;
                         
-                        // Validar campos requeridos
+ 
                         if (!clientName || !clientEmail || !clientPhone) {
                             alert('Por favor complete todos los campos obligatorios');
                             return;
                         }
                         
-                        // Preparar los datos para enviar
+ 
                         const clientData = {
                             tipoCliente: clientType === 'Individual' ? 'INDIVIDUAL' : 'EMPRESA',
                             nombre: clientName,
@@ -501,18 +501,18 @@
                             direccion: clientAddress || ''
                         };
                         
-                        // Deshabilitar el botón y mostrar indicador de carga
+ 
                         saveNewClientBtn.disabled = true;
                         saveNewClientBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Guardando...';
                         
-                        // Obtener el token antifalsificación
+ 
                         const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
                         
                         if (!token) {
                             throw new Error('Token de verificación no encontrado');
                         }
                         
-                        // Realizar la petición POST
+ 
                         const response = await fetch('/Clientes?handler=CreateCliente', {
                             method: 'POST',
                             headers: {
@@ -522,20 +522,20 @@
                             body: JSON.stringify(clientData)
                         });
                         
-                        // Verificar si la respuesta fue exitosa
+ 
                         if (!response.ok) {
                             throw new Error(`Error al crear cliente: ${response.statusText}`);
                         }
                         
-                        // Procesar la respuesta
+ 
                         const result = await response.json();
                         
                         if (result.success) {
-                            // Cerrar el modal
+ 
                             const modal = bootstrap.Modal.getInstance(document.getElementById('newClientModal'));
                             modal.hide();
                             
-                            // Mostrar mensaje de éxito
+ 
                             const alertDiv = document.createElement('div');
                             alertDiv.className = 'alert alert-success alert-dismissible fade show';
                             alertDiv.setAttribute('role', 'alert');
@@ -545,13 +545,13 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             `;
                             
-                            // Agregar el mensaje después del primer card
+ 
                             const firstCard = document.querySelector('.card.border-0.shadow-sm');
                             if (firstCard && firstCard.parentNode) {
                                 firstCard.parentNode.insertBefore(alertDiv, firstCard.nextSibling);
                             }
                             
-                            // Recargar la página después de un breve retraso
+ 
                             setTimeout(() => {
                                 window.location.reload();
                             }, 1500);
@@ -562,14 +562,14 @@
                         console.error('Error:', error);
                         alert('Ha ocurrido un error al procesar la solicitud');
                     } finally {
-                        // Restaurar el botón
+ 
                         saveNewClientBtn.disabled = false;
                         saveNewClientBtn.innerHTML = 'Guardar Cliente';
                     }
                 });
             }
 
-            // Botones de la tabla para editar cliente
+ 
             document.querySelectorAll('.edit-client-btn').forEach(button => {
                 button.addEventListener('click', function() {
                     const clientId = this.dataset.clientId;
@@ -577,32 +577,32 @@
                 });
             });
 
-            // Función para cargar datos del cliente para edición
+ 
             function loadClientForEdit(clientId) {
-                // Buscar el cliente en la tabla
+ 
                 const clientRow = document.querySelector(`[data-client-id="${clientId}"]`);
                 
                 if (!clientRow) return;
                 
                 const row = clientRow.closest('tr');
                 
-                // Obtener los datos básicos de la fila
+ 
                 const name = row.querySelector('td:nth-child(1)').textContent.trim();
                 const email = row.querySelector('td:nth-child(2)').textContent.trim();
                 const phone = row.querySelector('td:nth-child(3)').textContent.trim();
                 const address = row.querySelector('td:nth-child(4)').textContent.trim();
                 const type = row.querySelector('td:nth-child(5)').querySelector('.badge').textContent.trim();
                 
-                // Establecer el ID del cliente a editar
+ 
                 document.getElementById('editClientId').value = clientId;
                 
-                // Completar el formulario con los datos del cliente
+ 
                 document.getElementById('editClientName').value = name;
                 document.getElementById('editClientEmail').value = email;
                 document.getElementById('editClientPhone').value = phone;
                 document.getElementById('editClientAddress').value = address;
                 
-                // Seleccionar el tipo de cliente correcto
+ 
                 if (type === 'Individual') {
                     document.getElementById('editIndividualClient').checked = true;
                     document.getElementById('editNameLabel').textContent = 'Nombre completo';
@@ -612,16 +612,16 @@
                 }
             }
 
-            // Manejar el guardado de un cliente editado
+ 
             const saveEditClientBtn = document.getElementById('saveEditClient');
             if (saveEditClientBtn) {
                 saveEditClientBtn.addEventListener('click', async function() {
                     try {
-                        // Obtener los datos del formulario
+ 
                         const clientId = document.getElementById('editClientId').value;
                         const clientType = document.querySelector('input[name="editClientType"]:checked')?.value;
                         
-                        // Verificar si se ha seleccionado un tipo de cliente
+ 
                         if (!clientType) {
                             alert('Por favor selecciona el tipo de cliente (Individual o Empresa)');
                             return;
@@ -632,13 +632,13 @@
                         const clientPhone = document.getElementById('editClientPhone')?.value;
                         const clientAddress = document.getElementById('editClientAddress')?.value;
                         
-                        // Validar campos requeridos
+ 
                         if (!clientName || !clientEmail || !clientPhone) {
                             alert('Por favor complete todos los campos obligatorios');
                             return;
                         }
                         
-                        // Preparar los datos para enviar
+ 
                         const clientData = {
                             id: clientId,
                             tipoCliente: clientType === 'Individual' ? 'INDIVIDUAL' : 'EMPRESA',
@@ -648,18 +648,18 @@
                             direccion: clientAddress || ''
                         };
                         
-                        // Deshabilitar el botón y mostrar indicador de carga
+ 
                         saveEditClientBtn.disabled = true;
                         saveEditClientBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Guardando...';
                         
-                        // Obtener el token antifalsificación
+ 
                         const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
                         
                         if (!token) {
                             throw new Error('Token de verificación no encontrado');
                         }
                         
-                        // Realizar la petición POST para actualizar
+ 
                         const response = await fetch('/Clientes?handler=UpdateCliente', {
                             method: 'POST',
                             headers: {
@@ -669,20 +669,20 @@
                             body: JSON.stringify(clientData)
                         });
                         
-                        // Verificar si la respuesta fue exitosa
+ 
                         if (!response.ok) {
                             throw new Error(`Error al actualizar cliente: ${response.statusText}`);
                         }
                         
-                        // Procesar la respuesta
+ 
                         const result = await response.json();
                         
                         if (result.success) {
-                            // Cerrar el modal
+ 
                             const modal = bootstrap.Modal.getInstance(document.getElementById('editClientModal'));
                             modal.hide();
                             
-                            // Mostrar mensaje de éxito
+ 
                             const alertDiv = document.createElement('div');
                             alertDiv.className = 'alert alert-success alert-dismissible fade show';
                             alertDiv.setAttribute('role', 'alert');
@@ -692,13 +692,13 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             `;
                             
-                            // Agregar el mensaje después del primer card
+ 
                             const firstCard = document.querySelector('.card.border-0.shadow-sm');
                             if (firstCard && firstCard.parentNode) {
                                 firstCard.parentNode.insertBefore(alertDiv, firstCard.nextSibling);
                             }
                             
-                            // Recargar la página después de un breve retraso
+ 
                             setTimeout(() => {
                                 window.location.reload();
                             }, 1500);
@@ -709,14 +709,14 @@
                         console.error('Error:', error);
                         alert('Ha ocurrido un error al procesar la solicitud');
                     } finally {
-                        // Restaurar el botón
+ 
                         saveEditClientBtn.disabled = false;
                         saveEditClientBtn.innerHTML = 'Guardar Cambios';
                     }
                 });
             }
 
-            // Agregar manejador para botones de eliminar cliente
+ 
             document.querySelectorAll('.delete-client-btn').forEach(button => {
                 button.addEventListener('click', function() {
                     const clientId = this.dataset.clientId;
@@ -727,43 +727,43 @@
                     const row = clientRow.closest('tr');
                     const clientName = row.querySelector('td:nth-child(1)').textContent.trim();
                     
-                    // Configurar el modal de eliminación
+ 
                     document.getElementById('deleteClientId').value = clientId;
                     document.getElementById('deleteClientName').textContent = clientName;
                     
-                    // Mostrar el modal
+ 
                     const deleteModal = new bootstrap.Modal(document.getElementById('deleteClientModal'));
                     deleteModal.show();
                 });
             });
             
-            // Manejar la confirmación de eliminación desde el modal
+ 
             const confirmDeleteBtn = document.getElementById('confirmDeleteClient');
             if (confirmDeleteBtn) {
                 confirmDeleteBtn.addEventListener('click', function() {
                     const clientId = document.getElementById('deleteClientId').value;
                     const clientName = document.getElementById('deleteClientName').textContent;
                     
-                    // Deshabilitar el botón y mostrar indicador de carga
+ 
                     confirmDeleteBtn.disabled = true;
                     confirmDeleteBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Eliminando...';
                     
-                    // Llamar a la función de eliminación
+ 
                     deleteClient(clientId, clientName);
                 });
             }
             
-            // Función para eliminar cliente
+ 
             async function deleteClient(clientId, clientName) {
                 try {
-                    // Obtener el token antifalsificación
+ 
                     const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value;
                     
                     if (!token) {
                         throw new Error('Token de verificación no encontrado');
                     }
                     
-                    // Realizar la petición POST para eliminar
+ 
                     const response = await fetch('/Clientes?handler=DeleteCliente', {
                         method: 'POST',
                         headers: {
@@ -773,20 +773,20 @@
                         body: JSON.stringify({ id: clientId })
                     });
                     
-                    // Verificar si la respuesta fue exitosa
+ 
                     if (!response.ok) {
                         throw new Error(`Error al eliminar cliente: ${response.statusText}`);
                     }
                     
-                    // Procesar la respuesta
+ 
                     const result = await response.json();
                     
                     if (result.success) {
-                        // Cerrar el modal
+ 
                         const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteClientModal'));
                         deleteModal.hide();
                         
-                        // Mostrar mensaje de éxito
+ 
                         const alertDiv = document.createElement('div');
                         alertDiv.className = 'alert alert-success alert-dismissible fade show';
                         alertDiv.setAttribute('role', 'alert');
@@ -796,19 +796,19 @@
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         `;
                         
-                        // Agregar el mensaje después del primer card
+ 
                         const firstCard = document.querySelector('.card.border-0.shadow-sm');
                         if (firstCard && firstCard.parentNode) {
                             firstCard.parentNode.insertBefore(alertDiv, firstCard.nextSibling);
                         }
                         
-                        // Eliminar la fila del cliente de la tabla
+ 
                         const clientRow = document.querySelector(`tr[data-client-id="${clientId}"]`);
                         if (clientRow) {
                             clientRow.remove();
                         }
                         
-                        // Si no quedan clientes, recargar para mostrar el estado vacío
+ 
                         const remainingRows = document.querySelectorAll('tbody tr.client-row');
                         if (remainingRows.length === 0) {
                             setTimeout(() => {
@@ -822,7 +822,7 @@
                     console.error('Error:', error);
                     alert('Ha ocurrido un error al procesar la solicitud');
                 } finally {
-                    // Restaurar el botón
+ 
                     const confirmDeleteBtn = document.getElementById('confirmDeleteClient');
                     if (confirmDeleteBtn) {
                         confirmDeleteBtn.disabled = false;

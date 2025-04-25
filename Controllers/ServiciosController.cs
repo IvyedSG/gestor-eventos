@@ -59,7 +59,6 @@ namespace gestor_eventos.Controllers
                     return BadRequest("El correo es requerido");
                 }
 
-                // Llamada al servicio para actualizar el servicio
                 var result = await _servicioService.UpdateServicioAsync(correo, model);
                 
                 if (result)
@@ -93,7 +92,6 @@ namespace gestor_eventos.Controllers
                     return BadRequest(new { success = false, message = "El ID del servicio es requerido" });
                 }
 
-                // Llamada al servicio para actualizar el servicio con el nuevo modelo
                 var result = await _servicioService.UpdateServicioDetailedAsync(correo, id, model);
                 
                 if (result)
@@ -127,7 +125,6 @@ namespace gestor_eventos.Controllers
                     return BadRequest(new { success = false, message = "El ID del servicio es requerido" });
                 }
 
-                // Llamada al servicio para eliminar el servicio
                 var result = await _servicioService.DeleteServicioAsync(correo, id);
                 
                 if (result)

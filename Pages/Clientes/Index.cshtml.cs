@@ -37,10 +37,10 @@ namespace gestor_eventos.Pages.Clientes
         {
             try
             {
-                // Obtener el correo del usuario actual desde las claims
+ 
                 var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
                 
-                // Verificar si tenemos token
+ 
                 HasToken = User.FindFirst("AccessToken") != null;
                 
                 if (string.IsNullOrEmpty(userEmail))
@@ -57,7 +57,7 @@ namespace gestor_eventos.Pages.Clientes
                     return;
                 }
 
-                // Obtener los clientes de la API
+ 
                 var apiClients = await _clienteService.GetClientesByUsuarioAsync(userEmail);
                 
                 if (apiClients.Count == 0)
@@ -65,7 +65,7 @@ namespace gestor_eventos.Pages.Clientes
                     _logger.LogInformation("No se encontraron clientes para el usuario {Email}", userEmail);
                 }
                 
-                // Convertir los clientes de la API al modelo local
+ 
                 Clients = apiClients.Select(c => new Client
                 {
                     Id = c.Id,
@@ -79,7 +79,7 @@ namespace gestor_eventos.Pages.Clientes
                     RegistrationDate = c.FechaRegistro
                 }).ToList();
 
-                // Aplicar filtros si existen
+ 
                 if (!string.IsNullOrEmpty(SearchTerm))
                 {
                     Clients = Clients.Where(c => 
@@ -118,14 +118,14 @@ namespace gestor_eventos.Pages.Clientes
         {
             try
             {
-                // Validar el modelo recibido
+ 
                 if (request == null)
                 {
                     _logger.LogWarning("Request body es nulo");
                     return new JsonResult(new { success = false, message = "No se recibió información del cliente" });
                 }
 
-                // Obtener el correo del usuario actual desde las claims
+ 
                 var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
                 
                 if (string.IsNullOrEmpty(userEmail))
@@ -134,21 +134,21 @@ namespace gestor_eventos.Pages.Clientes
                     return new JsonResult(new { success = false, message = "No se pudo determinar el usuario actual" });
                 }
 
-                // Verificar si tenemos token
+ 
                 if (User.FindFirst("AccessToken") == null)
                 {
                     _logger.LogWarning("Token no encontrado para el usuario {Email}", userEmail);
                     return new JsonResult(new { success = false, message = "No se ha podido autenticar con el API. Por favor, vuelve a iniciar sesión." });
                 }
 
-                // Validar campos obligatorios
+ 
                 if (string.IsNullOrEmpty(request.Nombre) || string.IsNullOrEmpty(request.CorreoElectronico) || 
                     string.IsNullOrEmpty(request.Telefono) || string.IsNullOrEmpty(request.TipoCliente))
                 {
                     return new JsonResult(new { success = false, message = "Los campos obligatorios no pueden estar vacíos" });
                 }
 
-                // Crear el DTO para enviar a la API
+ 
                 var clienteDto = new GestorEventos.Models.ApiModels.ClienteCreateDto
                 {
                     TipoCliente = request.TipoCliente,
@@ -158,7 +158,7 @@ namespace gestor_eventos.Pages.Clientes
                     Direccion = request.Direccion ?? string.Empty
                 };
 
-                // Llamar al servicio para crear el cliente
+ 
                 _logger.LogInformation("Llamando al servicio para crear cliente: {@ClienteDto}", clienteDto);
                 var result = await _clienteService.CreateClienteAsync(userEmail, clienteDto);
                 
@@ -196,14 +196,14 @@ namespace gestor_eventos.Pages.Clientes
         {
             try
             {
-                // Validar el modelo recibido
+ 
                 if (request == null || string.IsNullOrEmpty(request.Id))
                 {
                     _logger.LogWarning("Request body es nulo o no contiene ID");
                     return new JsonResult(new { success = false, message = "No se recibió información válida del cliente" });
                 }
 
-                // Obtener el correo del usuario actual desde las claims
+ 
                 var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
                 
                 if (string.IsNullOrEmpty(userEmail))
@@ -212,21 +212,21 @@ namespace gestor_eventos.Pages.Clientes
                     return new JsonResult(new { success = false, message = "No se pudo determinar el usuario actual" });
                 }
 
-                // Verificar si tenemos token
+ 
                 if (User.FindFirst("AccessToken") == null)
                 {
                     _logger.LogWarning("Token no encontrado para el usuario {Email}", userEmail);
                     return new JsonResult(new { success = false, message = "No se ha podido autenticar con el API. Por favor, vuelve a iniciar sesión." });
                 }
 
-                // Validar campos obligatorios
+ 
                 if (string.IsNullOrEmpty(request.Nombre) || string.IsNullOrEmpty(request.CorreoElectronico) || 
                     string.IsNullOrEmpty(request.Telefono) || string.IsNullOrEmpty(request.TipoCliente))
                 {
                     return new JsonResult(new { success = false, message = "Los campos obligatorios no pueden estar vacíos" });
                 }
 
-                // Crear el DTO para enviar a la API
+ 
                 var clienteDto = new GestorEventos.Models.ApiModels.ClienteCreateDto
                 {
                     TipoCliente = request.TipoCliente,
@@ -236,7 +236,7 @@ namespace gestor_eventos.Pages.Clientes
                     Direccion = request.Direccion ?? string.Empty
                 };
 
-                // Llamar al servicio para actualizar el cliente
+ 
                 _logger.LogInformation("Llamando al servicio para actualizar cliente {Id}: {@ClienteDto}", request.Id, clienteDto);
                 var result = await _clienteService.UpdateClienteAsync(request.Id, clienteDto);
                 
@@ -269,14 +269,14 @@ namespace gestor_eventos.Pages.Clientes
         {
             try
             {
-                // Validar el modelo recibido
+ 
                 if (request == null || string.IsNullOrEmpty(request.Id))
                 {
                     _logger.LogWarning("Request body es nulo o no contiene ID");
                     return new JsonResult(new { success = false, message = "No se recibió información válida del cliente" });
                 }
 
-                // Obtener el correo del usuario actual desde las claims
+ 
                 var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
                 
                 if (string.IsNullOrEmpty(userEmail))
@@ -285,14 +285,14 @@ namespace gestor_eventos.Pages.Clientes
                     return new JsonResult(new { success = false, message = "No se pudo determinar el usuario actual" });
                 }
 
-                // Verificar si tenemos token
+ 
                 if (User.FindFirst("AccessToken") == null)
                 {
                     _logger.LogWarning("Token no encontrado para el usuario {Email}", userEmail);
                     return new JsonResult(new { success = false, message = "No se ha podido autenticar con el API. Por favor, vuelve a iniciar sesión." });
                 }
 
-                // Llamar al servicio para eliminar el cliente
+ 
                 _logger.LogInformation("Llamando al servicio para eliminar cliente {Id}", request.Id);
                 var result = await _clienteService.DeleteClienteAsync(request.Id);
                 

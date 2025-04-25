@@ -737,7 +737,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Manejo del dropdown del perfil
+ 
         const userProfile = document.getElementById('userProfile');
         const profileDropdown = document.getElementById('profileDropdown');
         
@@ -748,7 +748,7 @@
             notificationsDropdown.classList.remove('show');
         });
         
-        // Manejo del dropdown de notificaciones
+ 
         const notificationsToggle = document.getElementById('notificationsToggle');
         const notificationsDropdown = document.getElementById('notificationsDropdown');
         
@@ -759,7 +759,7 @@
             profileDropdown.classList.remove('show');
         });
         
-        // Cerrar dropdowns al hacer clic fuera
+ 
         document.addEventListener('click', function(e) {
             if (!userProfile.contains(e.target) && !profileDropdown.contains(e.target)) {
                 profileDropdown.classList.remove('show');
@@ -770,7 +770,7 @@
             }
         });
         
-        // Manejo del toggle móvil
+ 
         const mobileToggle = document.getElementById('mobileToggle');
         const sidebar = document.getElementById('sidebar');
         
@@ -778,7 +778,7 @@
             sidebar.classList.toggle('show');
         });
         
-        // Cerrar sidebar en móvil al hacer clic fuera
+ 
         document.addEventListener('click', function(e) {
             if (window.innerWidth < 992) {
                 if (!sidebar.contains(e.target) && !mobileToggle.contains(e.target) && sidebar.classList.contains('show')) {
@@ -787,7 +787,7 @@
             }
         });
         
-        // Establecer el título dinámico en el header
+ 
         if (document.title) {
             const pageTitle = document.querySelector('.page-title');
             if (pageTitle) {

@@ -31,11 +31,11 @@ namespace GestorEventos.Pages.Auth
         [TempData]
         public string SuccessMessage { get; set; }
         
-        // Flag para señalar que necesitamos mostrar el alert de éxito
+
         [TempData]
         public bool ShowSuccessAlert { get; set; }
         
-        // Ruta de redirección después del login exitoso
+
         [TempData]
         public string RedirectPath { get; set; }
 
@@ -54,25 +54,19 @@ namespace GestorEventos.Pages.Auth
 
         public IActionResult OnGet()
         {
-            // Si el usuario ya está autenticado, redirigir al dashboard
+
             if (User.Identity.IsAuthenticated)
             {
                 return RedirectToPage("/Index");
             }
 
-            // Si venimos de un login exitoso con el flag ShowSuccessAlert,
-            // permitir mostrar la página con el flag activo para que el alert se muestre
             if (ShowSuccessAlert && !string.IsNullOrEmpty(RedirectPath))
             {
-                // Preparamos la ruta de redirección
+               
                 var redirectPath = RedirectPath;
                 
-                // Limpiamos las variables TempData para la próxima visita
                 RedirectPath = null;
-                
-                // Mantenemos ShowSuccessAlert para que la vista pueda leerlo
-                // Se limpiará automáticamente después de que la vista lo lea
-                
+
                 return Page();
             }
 
@@ -89,11 +83,11 @@ namespace GestorEventos.Pages.Auth
 
             try 
             {
-                // Crear el cliente HTTP
+              
                 var client = _httpClientFactory.CreateClient();
                 var apiUrl = $"{_configuration["ApiSettings:BaseUrl"]}/api/auth/login";
 
-                // Crear el contenido de la solicitud
+               
                 var loginData = new
                 {
                     Email = Input.Email,
@@ -105,13 +99,13 @@ namespace GestorEventos.Pages.Auth
                     Encoding.UTF8,
                     "application/json");
 
-                // Enviar la solicitud al API
+              
                 var response = await client.PostAsync(apiUrl, content);
 
-                // Verificar si la respuesta fue exitosa
+              
                 if (response.IsSuccessStatusCode)
                 {
-                    // Leer y deserializar la respuesta
+                    
                     var responseContent = await response.Content.ReadAsStringAsync();
                     var options = new JsonSerializerOptions
                     {
@@ -120,13 +114,13 @@ namespace GestorEventos.Pages.Auth
                     
                     var authResponse = JsonSerializer.Deserialize<AuthResponse>(responseContent, options);
 
-                    // Crear los claims para la autenticación
+                   
                     var claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Name, $"{authResponse.Nombre} {authResponse.Apellido}"),
                         new Claim(ClaimTypes.Email, authResponse.Email),
                         new Claim("UserId", authResponse.UserId),
-                        // Almacenar el token en las claims
+                       
                         new Claim("AccessToken", authResponse.Token)
                     };
 
@@ -144,11 +138,11 @@ namespace GestorEventos.Pages.Auth
                         principal,
                         authProperties);
 
-                    // Configurar el mensaje de éxito y activar el flag para mostrar alert
+       
                     SuccessMessage = $"¡Bienvenid@ {authResponse.Nombre}!";
                     ShowSuccessAlert = true;
                     
-                    // En lugar de redireccionar inmediatamente, mostramos primero el mensaje de éxito
+         
                     return Page();
                 }
                 else

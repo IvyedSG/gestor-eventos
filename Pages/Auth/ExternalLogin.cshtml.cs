@@ -16,7 +16,7 @@ namespace GestorEventos.Pages.Auth
 
         public IActionResult OnGet()
         {
-            // Redirigir al usuario al proveedor de autenticación externo
+
             var properties = new AuthenticationProperties 
             { 
                 RedirectUri = Url.Page("/Auth/ExternalLoginCallback"),

@@ -48,28 +48,28 @@ namespace gestor_eventos.Pages.Inventario
         
         public async Task OnGetAsync()
         {
-            // Ensure we're at least on page 1
+ 
             if (CurrentPage < 1)
             {
                 CurrentPage = 1;
             }
             
-            // Call the API to get inventory items
+ 
             await FetchInventoryItemsFromApi();
             
-            // Apply filters locally (ideally this should be done on the API side)
+ 
             ApplyFilters();
             
-            // Count total items for pagination after filtering
+ 
             TotalItems = InventoryItems.Count;
             
-            // Apply pagination
+ 
             InventoryItems = InventoryItems
                 .Skip((CurrentPage - 1) * PageSize)
                 .Take(PageSize)
                 .ToList();
             
-            // Check if there are items with low stock (for example, less than 10)
+ 
             HasLowStockItems = InventoryItems.Any(i => i.Stock < 10);
         }
         
@@ -77,7 +77,7 @@ namespace gestor_eventos.Pages.Inventario
         {
             try
             {
-                // Obtener el userId desde las claims de la sesión del usuario
+ 
                 string userId = User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
                 
                 if (string.IsNullOrEmpty(userId))
@@ -87,23 +87,23 @@ namespace gestor_eventos.Pages.Inventario
                     return;
                 }
 
-                // Crear HTTP client
+ 
                 var client = _clientFactory.CreateClient();
                 
-                // Obtener el token de autenticación
+ 
                 string token = User.Claims.FirstOrDefault(c => c.Type == "AccessToken")?.Value;
                 if (!string.IsNullOrEmpty(token))
                 {
                     client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
                 }
                 
-                // Get the base URL from configuration
+ 
                 string baseUrl = _configuration["ApiSettings:BaseUrl"] ?? "https://api.example.com";
                 
-                // Log de la llamada a la API
+ 
                 _logger.LogInformation($"Llamando a la API: {baseUrl}/api/inventario/usuario/{userId}");
                 
-                // Make the API call
+ 
                 var response = await client.GetAsync($"{baseUrl}/api/inventario/usuario/{userId}");
                 
                 if (response.IsSuccessStatusCode)
@@ -137,11 +137,11 @@ namespace gestor_eventos.Pages.Inventario
         
         private void ApplyFilters()
         {
-            // Apply filters if InventoryItems is not null
+ 
             if (InventoryItems == null)
                 return;
                 
-            // Apply search term filter
+ 
             if (!string.IsNullOrWhiteSpace(SearchTerm))
             {
                 InventoryItems = InventoryItems.Where(i => 
@@ -150,13 +150,13 @@ namespace gestor_eventos.Pages.Inventario
                 ).ToList();
             }
             
-            // Apply category filter
+ 
             if (!string.IsNullOrWhiteSpace(CategoryFilter))
             {
                 InventoryItems = InventoryItems.Where(i => i.Categoria == CategoryFilter).ToList();
             }
             
-            // Apply status filter
+ 
             if (!string.IsNullOrWhiteSpace(StatusFilter))
             {
                 if (StatusFilter == "Normal")
@@ -174,7 +174,7 @@ namespace gestor_eventos.Pages.Inventario
             }
         }
 
-        // Actions
+ 
         public async Task<IActionResult> OnPostSaveItemAsync([FromBody] InventarioItemApi newItem)
         {
             try
@@ -184,7 +184,7 @@ namespace gestor_eventos.Pages.Inventario
                     return new JsonResult(new { success = false, message = "Datos de ítem inválidos" });
                 }
 
-                // Validaciones básicas
+ 
                 if (string.IsNullOrWhiteSpace(newItem.Nombre))
                 {
                     return new JsonResult(new { success = false, message = "El nombre del ítem es obligatorio" });
@@ -200,7 +200,7 @@ namespace gestor_eventos.Pages.Inventario
                     return new JsonResult(new { success = false, message = "El stock no puede ser negativo" });
                 }
 
-                // Obtener el correo del usuario desde las claims
+ 
                 string userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
                 
                 if (string.IsNullOrEmpty(userEmail))
@@ -209,24 +209,24 @@ namespace gestor_eventos.Pages.Inventario
                     return new JsonResult(new { success = false, message = "No se pudo identificar al usuario" });
                 }
 
-                // Crear HTTP client
+ 
                 var client = _clientFactory.CreateClient();
                 
-                // Obtener el token de autenticación
+ 
                 string token = User.Claims.FirstOrDefault(c => c.Type == "AccessToken")?.Value;
                 if (!string.IsNullOrEmpty(token))
                 {
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 }
                 
-                // Get the base URL from configuration
+ 
                 string baseUrl = _configuration["ApiSettings:BaseUrl"];
                 
-                // Llamada a la API para crear el ítem
+ 
                 _logger.LogInformation($"Enviando solicitud a: {baseUrl}/api/inventario/{userEmail}");
                 _logger.LogInformation($"Datos del ítem: {System.Text.Json.JsonSerializer.Serialize(newItem)}");
 
-                // Hacer la solicitud POST a la API
+ 
                 var content = new StringContent(
                     System.Text.Json.JsonSerializer.Serialize(newItem),
                     System.Text.Encoding.UTF8,
@@ -266,7 +266,7 @@ namespace gestor_eventos.Pages.Inventario
                     return new JsonResult(new { success = false, message = "Datos de ítem inválidos o ID no proporcionado" });
                 }
 
-                // Validaciones básicas
+ 
                 if (string.IsNullOrWhiteSpace(updatedItem.Nombre))
                 {
                     return new JsonResult(new { success = false, message = "El nombre del ítem es obligatorio" });
@@ -282,7 +282,7 @@ namespace gestor_eventos.Pages.Inventario
                     return new JsonResult(new { success = false, message = "El stock no puede ser negativo" });
                 }
 
-                // Obtener el correo del usuario desde las claims
+ 
                 string userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
                 
                 if (string.IsNullOrEmpty(userEmail))
@@ -291,24 +291,24 @@ namespace gestor_eventos.Pages.Inventario
                     return new JsonResult(new { success = false, message = "No se pudo identificar al usuario" });
                 }
 
-                // Crear HTTP client
+ 
                 var client = _clientFactory.CreateClient();
                 
-                // Obtener el token de autenticación
+ 
                 string token = User.Claims.FirstOrDefault(c => c.Type == "AccessToken")?.Value;
                 if (!string.IsNullOrEmpty(token))
                 {
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 }
                 
-                // Get the base URL from configuration
+ 
                 string baseUrl = _configuration["ApiSettings:BaseUrl"];
                 
-                // Llamada a la API para actualizar el ítem
+ 
                 _logger.LogInformation($"Enviando solicitud PUT a: {baseUrl}/api/inventario/{userEmail}/{id}");
                 _logger.LogInformation($"Datos de actualización: {JsonSerializer.Serialize(updatedItem)}");
 
-                // Hacer la solicitud PUT a la API
+ 
                 var content = new StringContent(
                     JsonSerializer.Serialize(updatedItem),
                     System.Text.Encoding.UTF8,
@@ -341,10 +341,10 @@ namespace gestor_eventos.Pages.Inventario
         
         public async Task<IActionResult> OnPostUpdateStockAsync(string id, int newStock)
         {
-            // In a real application, this would update via API
+ 
             _logger.LogInformation($"Updating stock for item {id} to {newStock}");
             
-            // Simulate successful update
+ 
             await Task.Delay(100);
             
             return new JsonResult(new { success = true, message = "Stock actualizado correctamente" });
@@ -359,7 +359,7 @@ namespace gestor_eventos.Pages.Inventario
                     return new JsonResult(new { success = false, message = "ID de ítem no proporcionado" });
                 }
 
-                // Obtener el correo del usuario desde las claims
+ 
                 string userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
                 
                 if (string.IsNullOrEmpty(userEmail))
@@ -368,23 +368,23 @@ namespace gestor_eventos.Pages.Inventario
                     return new JsonResult(new { success = false, message = "No se pudo identificar al usuario" });
                 }
 
-                // Crear HTTP client
+ 
                 var client = _clientFactory.CreateClient();
                 
-                // Obtener el token de autenticación
+ 
                 string token = User.Claims.FirstOrDefault(c => c.Type == "AccessToken")?.Value;
                 if (!string.IsNullOrEmpty(token))
                 {
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 }
                 
-                // Get the base URL from configuration
+ 
                 string baseUrl = _configuration["ApiSettings:BaseUrl"];
                 
-                // Llamada a la API para eliminar el ítem
+ 
                 _logger.LogInformation($"Enviando solicitud DELETE a: {baseUrl}/api/inventario/{userEmail}/{id}");
 
-                // Hacer la solicitud DELETE a la API
+ 
                 var response = await client.DeleteAsync($"{baseUrl}/api/inventario/{userEmail}/{id}");
                 
                 if (response.IsSuccessStatusCode)
@@ -414,20 +414,20 @@ namespace gestor_eventos.Pages.Inventario
         {
             try
             {
-                // Crear HTTP client
+ 
                 var client = _clientFactory.CreateClient();
                 
-                // Obtener el token de autenticación
+ 
                 string token = User.Claims.FirstOrDefault(c => c.Type == "AccessToken")?.Value;
                 if (!string.IsNullOrEmpty(token))
                 {
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 }
                 
-                // Get the base URL from configuration
+ 
                 string baseUrl = _configuration["ApiSettings:BaseUrl"];
                 
-                // Llamada a la API para obtener detalles del ítem específico
+ 
                 var response = await client.GetAsync($"{baseUrl}/api/inventario/item/{id}");
                 
                 if (response.IsSuccessStatusCode)

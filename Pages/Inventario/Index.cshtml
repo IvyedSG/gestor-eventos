@@ -582,7 +582,7 @@
 </style>
 
 <script>
-    // Funcionalidad para mostrar alertas dinámicas
+ 
     function showAlert(message, type = 'info') {
         const alertContainer = document.getElementById('alertContainer');
         const alertDiv = document.createElement('div');
@@ -593,16 +593,16 @@
         `;
         alertContainer.appendChild(alertDiv);
         
-        // Auto dismiss after 5 seconds
+ 
         setTimeout(() => {
             const alert = bootstrap.Alert.getOrCreateInstance(alertDiv);
             alert.close();
         }, 5000);
     }
     
-    // Configurar manejadores de eventos para los botones de acción
+ 
     document.addEventListener('DOMContentLoaded', function() {
-        // Evento para guardar nuevo ítem
+ 
         document.getElementById('saveNewItem').addEventListener('click', function() {
             const form = document.getElementById('newItemForm');
             
@@ -611,7 +611,7 @@
                 return;
             }
             
-            // Recopilar datos del formulario
+ 
             const itemData = {
                 nombre: document.getElementById('itemName').value,
                 categoria: document.getElementById('itemCategory').value,
@@ -620,14 +620,14 @@
                 fechaRegistro: new Date().toISOString()
             };
             
-            // Obtener el token CSRF
+ 
             const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
             
-            // Mostrar indicador de carga
+ 
             this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Guardando...';
             this.disabled = true;
             
-            // Enviar solicitud al servidor
+ 
             fetch('?handler=SaveItem', {
                 method: 'POST',
                 headers: {
@@ -638,18 +638,18 @@
             })
             .then(response => response.json())
             .then(data => {
-                // Restaurar el botón
+ 
                 this.innerHTML = '<i class="bi bi-save me-1"></i>Guardar Ítem';
                 this.disabled = false;
                 
                 if (data.success) {
-                    // Cerrar modal
+ 
                     bootstrap.Modal.getInstance(document.getElementById('newItemModal')).hide();
                     
-                    // Mostrar mensaje de éxito
+ 
                     showAlert('Ítem creado correctamente', 'success');
                     
-                    // Recargar la página para mostrar el nuevo ítem
+ 
                     setTimeout(() => {
                         window.location.reload();
                     }, 1000);
@@ -665,43 +665,43 @@
             });
         });
         
-        // CORRECCIÓN: Configurar eventos para botones de edición
+ 
         document.querySelectorAll('.edit-item-btn').forEach(button => {
             button.addEventListener('click', function() {
                 const itemId = this.dataset.id;
                 
-                // Mostrar spinner en el botón mientras se procesan los datos
+ 
                 const originalHTML = this.innerHTML;
                 this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
                 this.disabled = true;
                 
                 try {
-                    // Encontrar la fila que contiene este botón
+ 
                     const row = this.closest('tr');
                     if (!row) throw new Error('No se pudo encontrar la fila del ítem');
                     
-                    // Extraer los datos de la fila
+ 
                     const nombre = row.querySelector('[data-nombre]')?.getAttribute('data-nombre') || '';
                     const descripcion = row.querySelector('[data-descripcion]')?.getAttribute('data-descripcion') || '';
                     const stock = parseInt(row.querySelector('[data-stock]')?.getAttribute('data-stock') || '0');
                     const categoria = row.querySelector('[data-categoria]')?.getAttribute('data-categoria') || '';
                     
-                    // Restaurar el botón
+ 
                     this.innerHTML = originalHTML;
                     this.disabled = false;
                     
-                    // Rellenar el formulario con los datos del ítem
+ 
                     document.getElementById('editItemId').value = itemId;
                     document.getElementById('editItemName').value = nombre;
                     document.getElementById('editItemCategory').value = categoria;
                     document.getElementById('editCurrentStock').value = stock;
                     document.getElementById('editItemNotes').value = descripcion;
                     
-                    // Mostrar el modal
+ 
                     const editModal = new bootstrap.Modal(document.getElementById('editItemModal'));
                     editModal.show();
                 } catch (error) {
-                    // Restaurar el botón en caso de error
+ 
                     this.innerHTML = originalHTML;
                     this.disabled = false;
                     console.error('Error:', error);
@@ -710,49 +710,49 @@
             });
         });
         
-        // CORRECCIÓN: Configurar eventos para botones de ver detalles
+ 
         document.querySelectorAll('.view-details-btn').forEach(button => {
             button.addEventListener('click', function() {
                 const itemId = this.dataset.id;
                 
-                // Mostrar spinner en el botón mientras se procesan los datos
+ 
                 const originalHTML = this.innerHTML;
                 this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
                 this.disabled = true;
                 
                 try {
-                    // Encontrar la fila que contiene este botón
+ 
                     const row = this.closest('tr');
                     if (!row) throw new Error('No se pudo encontrar la fila del ítem');
                     
-                    // Extraer los datos de la fila
+ 
                     const nombre = row.querySelector('[data-nombre]')?.getAttribute('data-nombre') || '';
                     const descripcion = row.querySelector('[data-descripcion]')?.getAttribute('data-descripcion') || '';
                     const stock = parseInt(row.querySelector('[data-stock]')?.getAttribute('data-stock') || '0');
                     const categoria = row.querySelector('[data-categoria]')?.getAttribute('data-categoria') || '';
                     const fechaRegistro = row.querySelector('[data-fecha]')?.getAttribute('data-fecha') || '';
                     
-                    // Restaurar el botón
+ 
                     this.innerHTML = originalHTML;
                     this.disabled = false;
                     
-                    // Rellenar el modal con los datos del ítem
+ 
                     document.getElementById('detailItemName').textContent = nombre;
                     document.getElementById('detailItemCategory').textContent = categoria;
                     document.getElementById('detailItemStock').textContent = `${stock} unidades`;
                     
-                    // Formatear la fecha correctamente
+ 
                     const fecha = new Date(fechaRegistro);
                     const fechaFormateada = fecha.toLocaleDateString();
                     document.getElementById('detailItemDate').textContent = fechaFormateada;
                     
                     document.getElementById('detailItemDescription').textContent = descripcion || 'Sin descripción disponible.';
                     
-                    // Mostrar el modal
+ 
                     const detailsModal = new bootstrap.Modal(document.getElementById('itemDetailsModal'));
                     detailsModal.show();
                 } catch (error) {
-                    // Restaurar el botón en caso de error
+ 
                     this.innerHTML = originalHTML;
                     this.disabled = false;
                     console.error('Error:', error);
@@ -761,7 +761,7 @@
             });
         });
         
-        // Los eventos para eliminar se mantienen igual ya que funcionan correctamente
+ 
         document.querySelectorAll('.delete-item-btn').forEach(button => {
             button.addEventListener('click', function() {
                 const itemId = this.dataset.id;
@@ -771,12 +771,12 @@
                 const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
                 deleteModal.show();
                 
-                // Configurar el botón de confirmación con el ID del ítem
+ 
                 document.getElementById('confirmDelete').dataset.id = itemId;
             });
         });
         
-        // Configuración para guardar ediciones de ítems
+ 
         document.getElementById('saveEditItem').addEventListener('click', function() {
             const form = document.getElementById('editItemForm');
             
@@ -787,7 +787,7 @@
             
             const itemId = document.getElementById('editItemId').value;
             
-            // Recopilar datos del formulario
+ 
             const itemData = {
                 id: itemId,
                 nombre: document.getElementById('editItemName').value,
@@ -796,14 +796,14 @@
                 descripcion: document.getElementById('editItemNotes').value
             };
             
-            // Obtener el token CSRF
+ 
             const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
             
-            // Mostrar indicador de carga
+ 
             this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Guardando...';
             this.disabled = true;
             
-            // Enviar solicitud al servidor
+ 
             fetch(`?handler=UpdateItem&id=${itemId}`, {
                 method: 'POST',
                 headers: {
@@ -814,18 +814,18 @@
             })
             .then(response => response.json())
             .then(data => {
-                // Restaurar el botón
+ 
                 this.innerHTML = '<i class="bi bi-save me-1"></i>Guardar Cambios';
                 this.disabled = false;
                 
                 if (data.success) {
-                    // Cerrar modal
+ 
                     bootstrap.Modal.getInstance(document.getElementById('editItemModal')).hide();
                     
-                    // Mostrar mensaje de éxito
+ 
                     showAlert('Ítem actualizado correctamente', 'success');
                     
-                    // Recargar la página para mostrar los cambios
+ 
                     setTimeout(() => {
                         window.location.reload();
                     }, 1000);
@@ -841,28 +841,28 @@
             });
         });
         
-        // Limpiar filtros
+ 
         document.getElementById('clearFilters').addEventListener('click', function() {
             document.getElementById('filterForm').reset();
             document.getElementById('filterForm').submit();
         });
     });
     
-    // Configurar el botón de confirmación de eliminación
+ 
     document.getElementById('confirmDelete').addEventListener('click', async function() {
-        // Obtener el ID del ítem a eliminar (que se guardó en el dataset cuando se abrió el modal)
+ 
         const itemId = this.dataset.id;
         
-        // Mostrar indicador de carga en el botón
+ 
         const originalHTML = this.innerHTML;
         this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Eliminando...';
         this.disabled = true;
         
         try {
-            // Obtener el token CSRF
+ 
             const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
             
-            // Enviar solicitud al servidor
+ 
             const response = await fetch(`?handler=DeleteItem&id=${itemId}`, {
                 method: 'POST',
                 headers: {
@@ -873,18 +873,18 @@
             
             const data = await response.json();
             
-            // Restaurar el botón
+ 
             this.innerHTML = originalHTML;
             this.disabled = false;
             
-            // Cerrar el modal de confirmación
+ 
             bootstrap.Modal.getInstance(document.getElementById('deleteConfirmModal')).hide();
             
             if (data.success) {
-                // Mostrar mensaje de éxito
+ 
                 showAlert('Ítem eliminado correctamente', 'success');
                 
-                // Recargar la página para mostrar los cambios
+ 
                 setTimeout(() => {
                     window.location.reload();
                 }, 1000);

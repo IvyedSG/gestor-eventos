@@ -6,7 +6,7 @@ namespace GestorEventos.Pages.Auth
     {
         public void OnGet()
         {
-            // No se necesita lógica adicional
+
         }
     }
 }

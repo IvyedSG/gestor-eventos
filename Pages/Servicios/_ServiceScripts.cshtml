@@ -1,10 +1,10 @@
 <script>
-    // Función auxiliar para mostrar alertas con Bootstrap - Movida al inicio para que esté disponible globalmente
+ 
     function showAlert(type, message) {
-        // Crear un ID único para la alerta
+ 
         const alertId = 'alert_' + Date.now();
         
-        // Mapear el tipo de alerta a clase de Bootstrap
+ 
         let alertClass = 'alert-info';
         let icon = 'info-circle-fill';
         
@@ -23,7 +23,7 @@
                 break;
         }
         
-        // Crear el elemento de alerta
+ 
         const alertHtml = `
             <div id="${alertId}" class="alert ${alertClass} alert-dismissible fade show" role="alert">
                 <i class="bi bi-${icon} me-2"></i>
@@ -32,47 +32,47 @@
             </div>
         `;
         
-        // Verificar si existe el contenedor de alertas, sino crearlo
+ 
         let alertContainer = $('#alertContainer');
         if (alertContainer.length === 0) {
             $('body').prepend('<div id="alertContainer" style="position: fixed; top: 20px; right: 20px; z-index: 9999; max-width: 350px;"></div>');
             alertContainer = $('#alertContainer');
         }
         
-        // Agregar la alerta al contenedor
+ 
         alertContainer.append(alertHtml);
         
-        // Eliminar automáticamente después de unos segundos
+ 
         setTimeout(() => {
             $(`#${alertId}`).alert('close');
         }, 5000);
     }
 
-    // IMPORTANTE: Declaramos las variables globales una ÚNICA vez
+ 
     let selectedItems = [];
     let editSelectedItems = [];
     let uploadedImages = [];
     let editUploadedImages = [];
 
     $(document).ready(function() {
-        // Filtrado por tipo de evento sin recargar la página
+ 
         $('#eventTypeFilter').on('change', function() {
             filterServices();
         });
 
-        // Búsqueda sin recargar la página
+ 
         $('#searchForm').on('submit', function(e) {
             e.preventDefault();
             filterServices();
         });
 
-        // Limpiar búsqueda
+ 
         $('#clearSearchBtn').on('click', function() {
             $('#searchInput').val('');
             filterServices();
         });
 
-        // Función para filtrar servicios
+ 
         function filterServices() {
             const searchTerm = $('#searchInput').val().toLowerCase();
             const eventType = $('#eventTypeFilter').val();
@@ -83,7 +83,7 @@
                 const serviceDescription = card.data('service-description').toLowerCase();
                 const serviceEventType = card.data('service-eventtype').toLowerCase();
                 
-                // Comprobar si el servicio coincide con los filtros
+ 
                 const matchesSearch = searchTerm === '' || 
                     serviceName.includes(searchTerm) || 
                     serviceDescription.includes(searchTerm);
@@ -91,7 +91,7 @@
                 const matchesEventType = eventType === '' || 
                     serviceEventType.toLowerCase().includes(eventType.toLowerCase());
                 
-                // Mostrar u ocultar la tarjeta según los filtros
+ 
                 if (matchesSearch && matchesEventType) {
                     card.parent().show();
                 } else {
@@ -99,7 +99,7 @@
                 }
             });
 
-            // Actualizar contador de resultados si existe
+ 
             updateResultsCounter();
         }
 
@@ -112,7 +112,7 @@
             }
         }
 
-        // Establecer el valor inicial del filtro de tipo de evento según el parámetro URL
+ 
         const urlParams = new URLSearchParams(window.location.search);
         const eventTypeParam = urlParams.get('EventTypeFilter');
         if (eventTypeParam) {
@@ -120,12 +120,12 @@
             filterServices(); // Aplicar filtro inicial
         }
 
-        // Resto de tu JavaScript existente para los modales y otras funciones...
-        // Al abrir el modal de edición, llena los campos con la información del servicio
+ 
+ 
         $('.edit-service-btn').click(function() {
             const card = $(this).closest('.service-card');
             
-            // Usar getAttribute para evitar problemas de case sensitivity con jQuery data()
+ 
             const serviceId = card.attr('data-service-id');
             const serviceName = card.attr('data-service-name');
             const serviceDescription = card.attr('data-service-description');
@@ -142,7 +142,7 @@
                 image: serviceImage
             });
 
-            // Llenar los campos del formulario
+ 
             $('#editServiceId').val(serviceId);
             $('#editServiceName').val(serviceName);
             $('#editServiceDescription').val(serviceDescription);
@@ -150,10 +150,10 @@
             $('#editServiceEventType').val(serviceEventType);
             $('#editServiceImageUrl').val(serviceImage).trigger('input'); // Esto activará la previsualización
             
-            // Cargar los ítems del servicio
-            // (resto del código para cargar ítems)
+ 
+ 
             
-            // Obtener los items del servicio del atributo data
+ 
             let serviceItems = [];
             try {
                 const itemsJson = $(this).closest('.service-card').find('.service-items-data').text().trim();
@@ -168,7 +168,7 @@
                 serviceItems = [];
             }
             
-            // Reiniciar los arreglos y limpiar el formulario
+ 
             editUploadedImages = [];
             editSelectedItems = [];
             $('#editImagePreviewContainer').empty();
@@ -176,24 +176,24 @@
             $('#editNoItemsRow').show();
             $('#editServiceForm')[0].reset();
             
-            // Cargar los datos básicos
+ 
             $('#editServiceId').val(serviceId);
             $('#editServiceName').val(serviceName);
             $('#editServiceDescription').val(serviceDescription);
             $('#editServicePrice').val(servicePrice);
             $('#editServiceEventType').val(serviceEventType);
             
-            // Cargar los items del servicio
+ 
             if (serviceItems && serviceItems.length > 0) {
                 console.log('Cargando', serviceItems.length, 'items al editor');
                 
-                // Limpiar los items existentes antes de agregar los nuevos
+ 
                 editSelectedItems = [];
                 
                 serviceItems.forEach(item => {
                     console.log('Processing item for editSelectedItems:', item);
                     
-                    // Create item with default values in case some properties are undefined
+ 
                     const processedItem = {
                         id: item.inventarioId || item.InventarioId,
                         nombre: item.nombreItem || item.NombreItem || 'Sin nombre',
@@ -207,20 +207,20 @@
                     editSelectedItems.push(processedItem);
                 });
                 
-                // Actualizar el contador del badge directamente
+ 
                 $('#editItemsCountBadge').text(`${editSelectedItems.length} ítems`);
                 
-                // Mostrar los items en la tabla
+ 
                 updateEditItemsTable();
                 console.log('Items cargados en la tabla:', editSelectedItems.length);
             }
             
-            // Actualizar el resto de la interfaz
+ 
             updateEditSaveButtonState();
             $('#editServiceModal').modal('show');
         });
         
-        // Manejar la carga de nuevas imágenes en el modal de edición
+ 
         const editImageDropzone = $('#editImageDropzone');
         const editImageInput = $('#editServiceImages');
         
@@ -254,7 +254,7 @@
         function handleEditImages(files) {
             if (!files || files.length === 0) return;
             
-            // Limitar a 5 imágenes en total (existentes + nuevas)
+ 
             const totalImages = editUploadedImages.length + files.length;
             if (totalImages > 5) {
                 showAlert('warning', 'Solo se permiten hasta 5 imágenes por servicio');
@@ -262,18 +262,18 @@
             }
             
             Array.from(files).forEach(file => {
-                // Validar que sea una imagen
+ 
                 if (!file.type.match('image.*')) {
                     showAlert('warning', 'Solo se permiten archivos de imagen');
                     return;
                 }
                 
-                // Crear un ID único para la imagen
+ 
                 const imageId = 'img_' + Date.now() + '_' + Math.random().toString(36).substring(2, 15);
                 
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    // Agregar la imagen al array
+ 
                     editUploadedImages.push({
                         id: imageId,
                         file: file,
@@ -281,7 +281,7 @@
                         isExisting: false
                     });
                     
-                    // Crear la vista previa
+ 
                     const imagePreview = $(`
                         <div class="position-relative" id="wrapper_${imageId}" style="width: 100px; height: 100px; overflow: hidden; border-radius: 4px;">
                             <img src="${e.target.result}" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover;">
@@ -292,7 +292,7 @@
                     
                     $('#editImagePreviewContainer').append(imagePreview);
                     
-                    // Eliminar imagen al hacer clic en el botón de cierre
+ 
                     imagePreview.find('.btn-close').on('click', function() {
                         const deleteImageId = $(this).data('image-id');
                         $(`#wrapper_${deleteImageId}`).remove();
@@ -304,7 +304,7 @@
             });
         }
         
-        // Agregar un ítem a la lista de ítems del servicio en edición
+ 
         $('#addEditSelectedItemBtn').on('click', function() {
             const itemSelect = $('#editItemSelect');
             const selectedOption = itemSelect.find('option:selected');
@@ -321,22 +321,22 @@
                 return;
             }
             
-            // Verificar que no supere el stock disponible
+ 
             const itemStock = parseInt(selectedOption.data('stock'));
             if (itemQuantity > itemStock) {
                 showAlert('warning', `La cantidad no puede superar el stock disponible (${itemStock})`);
                 return;
             }
             
-            // Verificar si el ítem ya está en la lista
+ 
             const existingItemIndex = editSelectedItems.findIndex(item => item.id === itemId);
             
             if (existingItemIndex >= 0) {
-                // El ítem ya está en la lista, actualizar cantidad
+ 
                 showAlert('info', 'Este ítem ya está en la lista. Se ha actualizado la cantidad.');
                 editSelectedItems[existingItemIndex].cantidad = itemQuantity;
             } else {
-                // Añadir el nuevo ítem
+ 
                 editSelectedItems.push({
                     id: itemId,
                     nombre: selectedOption.data('nombre'),
@@ -346,16 +346,16 @@
                 });
             }
             
-            // Actualizar la tabla de ítems
+ 
             updateEditItemsTable();
             updateEditSaveButtonState();
             
-            // Limpiar la selección
+ 
             itemSelect.val('');
             $('#editItemQuantity').val(1);
         });
         
-        // Función para actualizar la tabla de ítems
+ 
         function updateEditItemsTable() {
             const itemsTableBody = $('#editItemsTableBody');
             const noItemsRow = $('#editNoItemsRow');
@@ -363,15 +363,15 @@
             console.log('Actualizando tabla con', editSelectedItems.length, 'items');
             
             if (editSelectedItems && editSelectedItems.length > 0) {
-                // Limpiar la tabla antes de agregar nuevos elementos
+ 
                 itemsTableBody.empty();
                 noItemsRow.hide();
                 
-                // Agregar cada item a la tabla
+ 
                 editSelectedItems.forEach(function(item, index) {
                     console.log('Agregando item a la tabla:', item);
                     
-                    // Crear la fila para cada item
+ 
                     const row = $(`
                         <tr data-item-id="${item.id}">
                             <td>${item.nombre}</td>
@@ -389,10 +389,10 @@
                         </tr>
                     `);
                     
-                    // Añadir la fila a la tabla
+ 
                     itemsTableBody.append(row);
                     
-                    // Configurar el evento para cambiar la cantidad
+ 
                     row.find('.edit-item-quantity').on('change', function() {
                         const newQuantity = parseInt($(this).val());
                         if (newQuantity > 0 && newQuantity <= item.stock) {
@@ -403,7 +403,7 @@
                         }
                     });
                     
-                    // Configurar el evento para eliminar el item
+ 
                     row.find('.remove-edit-item').on('click', function() {
                         const itemIndex = $(this).data('index');
                         editSelectedItems.splice(itemIndex, 1);
@@ -413,10 +413,10 @@
                     });
                 });
                 
-                // Actualizar contador de ítems
+ 
                 $('#editItemsCountBadge').text(`${editSelectedItems.length} ítems`);
             } else {
-                // Si no hay items, mostrar la fila con el mensaje
+ 
                 itemsTableBody.empty();
                 noItemsRow.show();
                 itemsTableBody.append(`
@@ -430,7 +430,7 @@
             }
         }
         
-        // Función para validar el formulario de edición
+ 
         function validateEditServiceForm() {
             const serviceName = $('#editServiceName').val().trim();
             const serviceDescription = $('#editServiceDescription').val().trim();
@@ -441,7 +441,7 @@
             let isValid = true;
             let errorMessage = '';
             
-            // Validar nombre
+ 
             if (!serviceName) {
                 $('#editServiceName').addClass('is-invalid');
                 isValid = false;
@@ -450,7 +450,7 @@
                 $('#editServiceName').removeClass('is-invalid');
             }
             
-            // Validar descripción
+ 
             if (!serviceDescription) {
                 $('#editServiceDescription').addClass('is-invalid');
                 isValid = false;
@@ -459,7 +459,7 @@
                 $('#editServiceDescription').removeClass('is-invalid');
             }
             
-            // Validar precio
+ 
             if (!servicePrice || isNaN(servicePrice) || parseFloat(servicePrice) <= 0) {
                 $('#editServicePrice').addClass('is-invalid');
                 isValid = false;
@@ -468,7 +468,7 @@
                 $('#editServicePrice').removeClass('is-invalid');
             }
             
-            // Validar tipo de evento
+ 
             if (!serviceEventType) {
                 $('#editServiceEventType').addClass('is-invalid');
                 isValid = false;
@@ -477,7 +477,7 @@
                 $('#editServiceEventType').removeClass('is-invalid');
             }
             
-            // Validar URL de imagen
+ 
             if (!serviceImageUrl) {
                 $('#editServiceImageUrl').addClass('is-invalid');
                 isValid = false;
@@ -486,7 +486,7 @@
                 $('#editServiceImageUrl').removeClass('is-invalid');
             }
             
-            // Validar que haya al menos un ítem
+ 
             if (editSelectedItems.length === 0) {
                 isValid = false;
                 errorMessage += '- Al menos un ítem del inventario<br>';
@@ -514,15 +514,15 @@
             };
         }
         
-        // Validación en tiempo real para los campos
+ 
         $('#editServiceName, #editServiceDescription, #editServicePrice, #editServiceEventType').on('input change', function() {
             $(this).toggleClass('is-invalid', !$(this).val().trim());
             
-            // Habilitar/deshabilitar el botón guardar según la validez del formulario
+ 
             updateEditSaveButtonState();
         });
         
-        // Función para verificar si el botón de guardar debe estar habilitado
+ 
         function updateEditSaveButtonState() {
             const formWithoutItems = $('#editServiceName').val().trim() && 
                                     $('#editServiceDescription').val().trim() && 
@@ -533,7 +533,7 @@
             
             $('#saveEditServiceBtn').prop('disabled', !(formWithoutItems && hasItems));
             
-            // Marcar visualmente la tabla de ítems si está vacía
+ 
             if (formWithoutItems && !hasItems) {
                 $('#editItemsTable').addClass('border border-danger');
                 $('#editItemsHelp').removeClass('d-none').addClass('text-danger');
@@ -543,11 +543,11 @@
             }
         }
         
-        // Guardar cambios del servicio
+ 
         $('#saveEditServiceBtn').on('click', async function() {
             console.log("Botón actualizar servicio clickeado");
             
-            // Validar el formulario
+ 
             const validation = validateEditServiceForm();
             
             if (!validation.isValid) {
@@ -556,7 +556,7 @@
             }
             
             try {
-                // Mostrar indicador de carga
+ 
                 const button = $(this);
                 const originalText = button.html();
                 button.html('<i class="spinner-border spinner-border-sm"></i> Guardando...');
@@ -572,7 +572,7 @@
                     throw new Error('No se pudo identificar al usuario o el servicio');
                 }
                 
-                // Preparar los ítems a agregar
+ 
                 const itemsToAdd = [];
                 editSelectedItems.filter(item => !item.originalItemId).forEach(item => {
                     itemsToAdd.push({
@@ -581,15 +581,15 @@
                     });
                 });
                 
-                // Preparar los ítems a eliminar
+ 
                 const itemsToRemove = [];
                 
-                // Obtener los IDs originales de la tarjeta del servicio
+ 
                 const card = $(`.service-card[data-service-id="${serviceId}"]`);
                 console.log("Tarjeta encontrada:", card.length > 0);
                 
                 try {
-                    // Obtener los items del servicio en formato JSON
+ 
                     const itemsData = card.find('.service-items-data');
                     const itemsText = itemsData.text().trim();
                     console.log("JSON de items:", itemsText);
@@ -598,17 +598,17 @@
                         const items = JSON.parse(itemsText);
                         console.log("Items parseados:", items.length);
                         
-                        // Obtener los IDs originales
+ 
                         const originalItemIds = items.map(item => item.Id || item.id);
                         console.log("IDs originales:", originalItemIds);
                         
-                        // Obtener IDs actuales (que se mantienen)
+ 
                         const currentItemIds = editSelectedItems
                             .filter(item => item.originalItemId)
                             .map(item => item.originalItemId);
                         console.log("IDs actuales:", currentItemIds);
                         
-                        // Los ítems a eliminar son los que estaban originalmente pero ya no están en la selección actual
+ 
                         originalItemIds.forEach(itemId => {
                             if (!currentItemIds.includes(itemId)) {
                                 itemsToRemove.push(itemId);
@@ -622,7 +622,7 @@
                 console.log("Items a agregar:", itemsToAdd);
                 console.log("Items a eliminar:", itemsToRemove);
                 
-                // Preparar el objeto con los datos del servicio
+ 
                 const serviceData = {
                     nombreServicio: validation.formData.serviceName,
                     descripcion: validation.formData.serviceDescription,
@@ -635,7 +635,7 @@
                 
                 console.log("Datos a enviar:", serviceData);
 
-                // Enviar la petición utilizando fetch directamente al controlador
+ 
                 const response = await fetch(`/api/servicios/${encodeURIComponent(userEmail)}/${encodeURIComponent(serviceId)}`, {
                     method: 'PUT', 
                     headers: {
@@ -657,10 +657,10 @@
                     }
                 }
 
-                // Servicio actualizado exitosamente
+ 
                 showAlert('success', 'Servicio actualizado exitosamente');
                 
-                // Cerrar el modal y recargar la página
+ 
                 $('#editServiceModal').modal('hide');
                 setTimeout(() => {
                     location.reload();
@@ -670,19 +670,19 @@
                 console.error('Error al actualizar el servicio:', error);
                 showAlert('error', error.message || 'Ocurrió un error al actualizar el servicio');
             } finally {
-                // Restaurar el botón
+ 
                 const button = $('#saveEditServiceBtn');
                 button.html('<i class="bi bi-check-circle"></i> Actualizar Servicio');
                 button.prop('disabled', false);
             }
         });
         
-        // Inicializar el botón de guardar
+ 
         $('#editServiceModal').on('shown.bs.modal', function() {
             updateEditSaveButtonState();
         });
 
-        // Delete service functionality
+ 
         $('.delete-service-btn').on('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
@@ -691,21 +691,21 @@
             const serviceId = card.attr('data-service-id');
             const serviceName = card.attr('data-service-name');
             
-            // Set the service ID and name in the modal
+ 
             $('#deleteServiceId').val(serviceId);
             $('#deleteServiceName').text(serviceName);
             
-            // Show the modal
+ 
             $('#deleteServiceModal').modal('show');
         });
 
-        // Handle the delete confirmation
+ 
         $('#confirmDeleteServiceBtn').on('click', async function() {
             try {
                 const button = $(this);
                 const originalText = button.text();
                 
-                // Show loading state
+ 
                 button.html('<i class="spinner-border spinner-border-sm"></i> Eliminando...');
                 button.prop('disabled', true);
                 
@@ -717,7 +717,7 @@
                     return;
                 }
                 
-                // Call the API to delete the service
+ 
                 const response = await fetch(`/api/servicios/${encodeURIComponent(userEmail)}/${encodeURIComponent(serviceId)}`, {
                     method: 'DELETE',
                     headers: {
@@ -730,10 +730,10 @@
                     throw new Error(errorData.message || 'Error al eliminar el servicio');
                 }
                 
-                // Service deleted successfully
+ 
                 showAlert('success', 'Servicio eliminado exitosamente');
                 
-                // Close the modal and reload the page
+ 
                 $('#deleteServiceModal').modal('hide');
                 setTimeout(() => {
                     location.reload();
@@ -743,14 +743,14 @@
                 console.error('Error al eliminar el servicio:', error);
                 showAlert('error', error.message || 'Ocurrió un error al eliminar el servicio');
             } finally {
-                // Restore the button
+ 
                 const button = $('#confirmDeleteServiceBtn');
                 button.text('Eliminar');
                 button.prop('disabled', false);
             }
         });
 
-        // Manejo de ítems para el nuevo servicio
+ 
         $('#addSelectedItemBtn').on('click', function() {
             console.log('Botón Agregar clickeado');
             
@@ -769,21 +769,21 @@
                 return;
             }
             
-            // Verificar que no supere el stock disponible
+ 
             const itemStock = parseInt(selectedOption.data('stock'));
             if (itemQuantity > itemStock) {
                 showAlert('warning', `Solo hay ${itemStock} unidades disponibles`);
                 return;
             }
             
-            // Verificar si el ítem ya está en la lista
+ 
             const existingItem = selectedItems.find(item => item.id === itemId);
             if (existingItem) {
                 showAlert('warning', 'Este ítem ya ha sido agregado');
                 return;
             }
             
-            // Agregar el ítem a la lista
+ 
             const item = {
                 id: itemId,
                 nombre: selectedOption.data('nombre'),
@@ -794,22 +794,22 @@
             
             selectedItems.push(item);
             
-            // Actualizar tabla
+ 
             updateItemsTable();
             updateSaveButtonState();
             
-            // Limpiar la selección
+ 
             itemSelect.val('');
             $('#itemQuantity').val(1);
             
             showAlert('success', 'Ítem agregado al servicio');
             
-            // Eliminar el resaltado de error en la tabla si existía
+ 
             $('#itemsTable').removeClass('border border-danger');
             $('#itemsHelp').addClass('d-none');
         });
         
-        // DEFINIMOS LA FUNCIÓN updateItemsTable UNA ÚNICA VEZ
+ 
         function updateItemsTable() {
             const itemsTableBody = $('#itemsTableBody');
             const noItemsRow = $('#noItemsRow');
@@ -838,7 +838,7 @@
                     
                     itemsTableBody.append(row);
                     
-                    // Actualizar cantidad al cambiar el input
+ 
                     row.find('.item-quantity').on('change', function() {
                         const newQuantity = parseInt($(this).val());
                         if (newQuantity > 0 && newQuantity <= item.stock) {
@@ -849,7 +849,7 @@
                         }
                     });
                     
-                    // Eliminar ítem
+ 
                     row.find('.remove-item').on('click', function() {
                         const itemIndex = $(this).data('index');
                         selectedItems.splice(itemIndex, 1);
@@ -859,7 +859,7 @@
                     });
                 });
                 
-                // Actualizar contador de ítems
+ 
                 itemsCountBadge.text(`${selectedItems.length} ítems`);
             } else {
                 itemsTableBody.empty();
@@ -868,10 +868,10 @@
             }
         }
 
-        // Agregar este código después de la declaración de las variables globales, 
-        // dentro de la función $(document).ready(function() {...})
+ 
+ 
 
-        // Manejo del modal de detalles del servicio
+ 
         $(document).on('click', '.service-card-view, .view-service-btn', function(e) {
             e.preventDefault();
             
@@ -887,43 +887,43 @@
             const serviceEventType = card.attr('data-service-eventtype');
             const serviceImage = card.attr('data-service-images'); // Ahora es una sola imagen
             
-            // Actualizar el modal con los datos del servicio
+ 
             $('#viewServiceTitle').text(serviceName);
             $('#viewServiceDescription').text(serviceDescription);
             $('#viewServicePrice').text(`S/ ${servicePrice}`);
             $('#viewServiceEventType').text(serviceEventType);
             
-            // Cargar imagen principal
+ 
             $('#viewServiceImage').attr('src', serviceImage || '/assets/img/placeholder-img.png');
             
-            // Cargar ítems del servicio
-            // (resto del código para cargar ítems)
+ 
+ 
             
             console.log('Abriendo detalles del servicio:', serviceName);
             
-            // Limpiar el contenido anterior
+ 
             $('#viewServiceImages').empty();
             $('#viewServiceItems').empty();
             
-            // Establecer la información del servicio
+ 
             $('#viewServiceTitle').text(serviceName);
             $('#viewServiceDescription').text(serviceDescription);
             $('#viewServicePrice').text(`S/ ${parseFloat(servicePrice).toFixed(2)}`);
             $('#viewServiceEventType').text(serviceEventType);
             
-            // Cargar imágenes en el carrusel
+ 
             if (serviceImages && serviceImages.length > 0) {
-                // Reiniciar indicadores del carrusel
+ 
                 $('.carousel-indicators').empty();
                 
                 serviceImages.forEach((image, index) => {
-                    // Crear indicador
+ 
                     $('.carousel-indicators').append(`
                         <button type="button" data-bs-target="#serviceImageCarousel" 
                             data-bs-slide-to="${index}" ${index === 0 ? 'class="active"' : ''}></button>
                     `);
                     
-                    // Crear item del carrusel
+ 
                     $('#viewServiceImages').append(`
                         <div class="carousel-item ${index === 0 ? 'active' : ''}">
                             <img src="${image}" class="d-block w-100" alt="Imagen del servicio">
@@ -931,7 +931,7 @@
                     `);
                 });
             } else {
-                // Si no hay imágenes, mostrar una por defecto
+ 
                 $('#viewServiceImages').append(`
                     <div class="carousel-item active">
                         <img src="/assets/img/placeholder-img.png" class="d-block w-100" alt="Sin imagen">
@@ -939,14 +939,14 @@
                 `);
             }
             
-            // Cargar items del servicio
+ 
             try {
                 const itemsJson = card.find('.service-items-data').text().trim();
                 if (itemsJson) {
                     const items = JSON.parse(itemsJson);
                     
                     if (items && items.length > 0) {
-                        // Crear tabla de items
+ 
                         const itemsTable = $(`
                             <table class="table table-sm">
                                 <thead>
@@ -960,7 +960,7 @@
                             </table>
                         `);
                         
-                        // Agregar filas a la tabla
+ 
                         items.forEach(item => {
                             itemsTable.find('tbody').append(`
                                 <tr>
@@ -983,16 +983,16 @@
                 $('#viewServiceItems').html('<p class="text-muted">Error al cargar los ítems.</p>');
             }
             
-            // Mostrar el modal
+ 
             $('#viewServiceModal').modal('show');
         });
         
-        // Función auxiliar para mostrar alertas con Bootstrap
+ 
         function showAlert(type, message) {
-            // Crear un ID único para la alerta
+ 
             const alertId = 'alert_' + Date.now();
             
-            // Mapear el tipo de alerta a clase de Bootstrap
+ 
             let alertClass = 'alert-info';
             let icon = 'info-circle-fill';
             
@@ -1011,7 +1011,7 @@
                     break;
             }
             
-            // Crear el elemento de alerta
+ 
             const alertHtml = `
                 <div id="${alertId}" class="alert ${alertClass} alert-dismissible fade show" role="alert">
                     <i class="bi bi-${icon} me-2"></i>
@@ -1020,23 +1020,23 @@
                 </div>
             `;
             
-            // Verificar si existe el contenedor de alertas, sino crearlo
+ 
             let alertContainer = $('#alertContainer');
             if (alertContainer.length === 0) {
                 $('body').prepend('<div id="alertContainer" style="position: fixed; top: 20px; right: 20px; z-index: 9999; max-width: 350px;"></div>');
                 alertContainer = $('#alertContainer');
             }
             
-            // Agregar la alerta al contenedor
+ 
             alertContainer.append(alertHtml);
             
-            // Eliminar automáticamente después de unos segundos
+ 
             setTimeout(() => {
                 $(`#${alertId}`).alert('close');
             }, 5000);
         }
 
-        // Validar formulario antes de guardar (función auxiliar)
+ 
         function validateServiceForm() {
             const serviceName = $('#newServiceName').val().trim();
             const serviceDescription = $('#newServiceDescription').val().trim();
@@ -1047,7 +1047,7 @@
             let isValid = true;
             let errorMessage = '';
             
-            // Validar nombre
+ 
             if (!serviceName) {
                 $('#newServiceName').addClass('is-invalid');
                 isValid = false;
@@ -1056,7 +1056,7 @@
                 $('#newServiceName').removeClass('is-invalid');
             }
             
-            // Validar descripción
+ 
             if (!serviceDescription) {
                 $('#newServiceDescription').addClass('is-invalid');
                 isValid = false;
@@ -1065,7 +1065,7 @@
                 $('#newServiceDescription').removeClass('is-invalid');
             }
             
-            // Validar precio
+ 
             if (!servicePrice || isNaN(servicePrice) || parseFloat(servicePrice) <= 0) {
                 $('#newServicePrice').addClass('is-invalid');
                 isValid = false;
@@ -1074,7 +1074,7 @@
                 $('#newServicePrice').removeClass('is-invalid');
             }
             
-            // Validar tipo de evento
+ 
             if (!serviceEventType) {
                 $('#newServiceEventType').addClass('is-invalid');
                 isValid = false;
@@ -1083,7 +1083,7 @@
                 $('#newServiceEventType').removeClass('is-invalid');
             }
             
-            // Validar URL de imagen
+ 
             if (!serviceImageUrl) {
                 $('#newServiceImageUrl').addClass('is-invalid');
                 isValid = false;
@@ -1098,7 +1098,7 @@
             };
         }
         
-        // También agregar una función similar para edición
+ 
         function validateEditServiceForm() {
             const serviceName = $('#editServiceName').val().trim();
             const serviceDescription = $('#editServiceDescription').val().trim();
@@ -1109,7 +1109,7 @@
             let isValid = true;
             let errorMessage = '';
             
-            // Validar nombre
+ 
             if (!serviceName) {
                 $('#editServiceName').addClass('is-invalid');
                 isValid = false;
@@ -1118,7 +1118,7 @@
                 $('#editServiceName').removeClass('is-invalid');
             }
             
-            // Validar descripción
+ 
             if (!serviceDescription) {
                 $('#editServiceDescription').addClass('is-invalid');
                 isValid = false;
@@ -1127,7 +1127,7 @@
                 $('#editServiceDescription').removeClass('is-invalid');
             }
             
-            // Validar precio
+ 
             if (!servicePrice || isNaN(servicePrice) || parseFloat(servicePrice) <= 0) {
                 $('#editServicePrice').addClass('is-invalid');
                 isValid = false;
@@ -1136,7 +1136,7 @@
                 $('#editServicePrice').removeClass('is-invalid');
             }
             
-            // Validar tipo de evento
+ 
             if (!serviceEventType) {
                 $('#editServiceEventType').addClass('is-invalid');
                 isValid = false;
@@ -1145,7 +1145,7 @@
                 $('#editServiceEventType').removeClass('is-invalid');
             }
             
-            // Validar URL de imagen
+ 
             if (!serviceImageUrl) {
                 $('#editServiceImageUrl').addClass('is-invalid');
                 isValid = false;
@@ -1160,15 +1160,15 @@
             };
         }
 
-        // Validación en tiempo real para los campos
+ 
         $('#newServiceName, #newServiceDescription, #newServicePrice, #newServiceEventType').on('input change', function() {
             $(this).toggleClass('is-invalid', !$(this).val().trim());
             
-            // Habilitar/deshabilitar el botón guardar según la validez del formulario
+ 
             updateSaveButtonState();
         });
 
-        // Función para verificar si el botón de guardar debe estar habilitado
+ 
         function updateSaveButtonState() {
             const formWithoutItems = $('#newServiceName').val().trim() && 
                                     $('#newServiceDescription').val().trim() && 
@@ -1179,7 +1179,7 @@
             
             $('#saveNewServiceBtn').prop('disabled', !(formWithoutItems && hasItems));
             
-            // Marcar visualmente la tabla de ítems si está vacía
+ 
             if (formWithoutItems && !hasItems) {
                 $('#itemsTable').addClass('border border-danger');
                 $('#itemsHelp').removeClass('d-none').addClass('text-danger');
@@ -1189,17 +1189,17 @@
             }
         }
 
-        // Actualizar updateItemsTable para que también actualice el estado del botón guardar
+ 
         const originalUpdateItemsTable = updateItemsTable;
         updateItemsTable = function() {
             originalUpdateItemsTable();
             updateSaveButtonState();
         };
 
-        // Actualizar la función de guardar nuevo servicio (reemplazar la sección relevante)
+ 
         
         $('#saveNewServiceBtn').on('click', async function() {
-            // Validar el formulario
+ 
             const validation = validateServiceForm();
             if (!validation.isValid) {
                 showAlert('warning', `Por favor completa los siguientes campos:<br>${validation.errorMessage}`);
@@ -1213,14 +1213,14 @@
                 button.html('<i class="spinner-border spinner-border-sm"></i> Guardando...');
                 button.prop('disabled', true);
                 
-                // Obtener URL de la imagen
+ 
                 const imageUrl = $('#newServiceImageUrl').val().trim();
                 if (!imageUrl) {
                     showAlert('warning', 'Por favor ingresa la URL de una imagen');
                     return;
                 }
                 
-                // Crear el objeto de datos del servicio
+ 
                 const serviceData = {
                     nombreServicio: $('#newServiceName').val().trim(),
                     descripcion: $('#newServiceDescription').val().trim(),
@@ -1233,7 +1233,7 @@
                     }))
                 };
                 
-                // Obtener el correo del usuario del campo oculto
+ 
                 const userEmail = $('#userEmail').val();
 
                 if (!userEmail) {
@@ -1241,7 +1241,7 @@
                     return;
                 }
                 
-                // Enviar la solicitud al servidor
+ 
                 const response = await fetch(`/api/servicios/create?correo=${encodeURIComponent(userEmail)}`, {
                     method: 'POST',
                     headers: {
@@ -1255,10 +1255,10 @@
                     throw new Error(errorData.message || 'Error al crear el servicio');
                 }
                 
-                // Servicio creado exitosamente
+ 
                 showAlert('success', 'Servicio creado exitosamente');
                 
-                // Cerrar el modal y recargar la página
+ 
                 $('#newServiceModal').modal('hide');
                 setTimeout(() => {
                     location.reload();
@@ -1268,39 +1268,39 @@
                 console.error('Error al crear el servicio:', error);
                 showAlert('error', error.message || 'Ocurrió un error al crear el servicio');
             } finally {
-                // Restaurar el botón
+ 
                 button.html(originalText);
                 button.prop('disabled', false);
             }
         });
 
-        // Desactivar el botón de guardar inicialmente
+ 
         $('#saveNewServiceBtn').prop('disabled', true);
 
-        // Al abrir el modal
+ 
         $('#newServiceModal').on('shown.bs.modal', function() {
-            // Establecer enfoque en el primer campo
+ 
             $('#newServiceName').focus();
             
-            // Asegurarse de que el botón está correctamente desactivado
+ 
             $('#saveNewServiceBtn').prop('disabled', true);
         });
 
-        // Limpiar formulario al cerrar el modal
+ 
         $('#newServiceModal').on('hidden.bs.modal', function() {
-            // Limpiar campos del formulario
+ 
             $('#newServiceForm')[0].reset();
             
-            // Limpiar imágenes
+ 
             imagePreviewContainer.empty();
             uploadedImages = [];
             
-            // Limpiar ítems
+ 
             selectedItems = [];
             updateItemsTable();
         });
 
-        // Funcionalidad para la previsualización de imágenes por URL
+ 
         $('#newServiceImageUrl').on('input', function() {
             const imageUrl = $(this).val().trim();
             const previewContainer = $('#imagePreview');
@@ -1319,13 +1319,13 @@
             }
         });
         
-        // Botón para limpiar imagen
+ 
         $('#clearImageBtn').on('click', function() {
             $('#newServiceImageUrl').val('').trigger('input');
             $('#imagePreview').addClass('d-none');
         });
         
-        // Edición - Previsualización de imagen por URL
+ 
         $('#editServiceImageUrl').on('input', function() {
             const imageUrl = $(this).val().trim();
             const previewContainer = $('#editImagePreview');
@@ -1344,7 +1344,7 @@
             }
         });
         
-        // Botón para limpiar imagen en modo edición
+ 
         $('#clearEditImageBtn').on('click', function() {
             $('#editServiceImageUrl').val('').trigger('input');
             $('#editImagePreview').addClass('d-none');

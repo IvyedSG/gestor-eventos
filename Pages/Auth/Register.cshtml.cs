@@ -24,7 +24,7 @@ namespace GestorEventos.Pages.Auth
 
         public string ErrorMessage { get; set; }
         
-        // Mensaje de éxito para mostrar en la página de login
+ 
         [TempData]
         public string SuccessMessage { get; set; }
 
@@ -80,7 +80,7 @@ namespace GestorEventos.Pages.Auth
 
         public IActionResult OnGet()
         {
-            // Si el usuario ya está autenticado, redirigir al dashboard
+ 
             if (User.Identity.IsAuthenticated)
             {
                 return RedirectToPage("/Index");
@@ -97,10 +97,10 @@ namespace GestorEventos.Pages.Auth
             }
 
             try {
-                // Crear cliente HTTP
+ 
                 var client = _httpClientFactory.CreateClient();
                 
-                // Preparar la solicitud de registro
+ 
                 var registerRequest = new RegisterRequest
                 {
                     Email = Input.Email,
@@ -110,27 +110,27 @@ namespace GestorEventos.Pages.Auth
                     Telefono = Input.PhoneNumber
                 };
                 
-                // Convertir a JSON
+ 
                 var content = new StringContent(
                     JsonSerializer.Serialize(registerRequest),
                     Encoding.UTF8,
                     "application/json");
                 
-                // Realizar la petición POST al endpoint de registro
+ 
                 var response = await client.PostAsync($"{_apiSettings.BaseUrl}/api/auth/register", content);
                 
                 if (response.IsSuccessStatusCode)
                 {
-                    // Set flag to show success message
+ 
                     TempData["ShowSuccessAlert"] = true;
                     SuccessMessage = "¡Registro exitoso! Por favor, inicia sesión con tus nuevas credenciales.";
                     
-                    // Redirect to login page
+ 
                     return RedirectToPage("/Auth/Login");
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
                 {
-                    // Si el servidor devuelve un error de validación
+ 
                     var responseContent = await response.Content.ReadAsStringAsync();
                     try
                     {
@@ -149,20 +149,20 @@ namespace GestorEventos.Pages.Auth
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
                 {
-                    // Si el usuario ya existe
+ 
                     ErrorMessage = "El correo electrónico ya está registrado.";
                     return Page();
                 }
                 else
                 {
-                    // Otros errores
+ 
                     ErrorMessage = "Error en el servidor al procesar la solicitud.";
                     return Page();
                 }
             }
             catch (Exception ex)
             {
-                // Capturar errores de conexión u otros
+ 
                 ErrorMessage = $"Error al conectar con el servidor: {ex.Message}";
                 return Page();
             }

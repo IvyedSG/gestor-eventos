@@ -37,14 +37,14 @@ namespace gestor_eventos.Services
         {
             try
             {
-                // Obtener el token del usuario actual
+ 
                 var token = _httpContextAccessor.HttpContext.User.FindFirst("AccessToken")?.Value;
                 
                 if (string.IsNullOrEmpty(token))
                 {
                     _logger.LogWarning("Token no encontrado en las claims del usuario: {Email}", correo);
                     
-                    // Intentar obtener el token de las cookies
+ 
                     token = _httpContextAccessor.HttpContext.Request.Cookies["AuthToken"];
                     
                     if (string.IsNullOrEmpty(token))
@@ -56,13 +56,13 @@ namespace gestor_eventos.Services
 
                 _logger.LogInformation("Obteniendo reservaciones para el usuario: {Email}", correo);
                 
-                // Configurar el header de autenticación
+ 
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-                // Realizar la petición al API
+ 
                 var response = await _httpClient.GetAsync($"api/reservas/{correo}");
                 
-                // Verificar si la respuesta fue exitosa
+ 
                 if (!response.IsSuccessStatusCode)
                 {
                     _logger.LogWarning("Error al obtener reservaciones. Código: {StatusCode}, Mensaje: {Message}", 
@@ -71,7 +71,7 @@ namespace gestor_eventos.Services
                     return new List<ReservacionApi>();
                 }
 
-                // Leer y deserializar la respuesta
+ 
                 var content = await response.Content.ReadAsStringAsync();
                 _logger.LogDebug("Respuesta del API: {Response}", content);
                 
@@ -109,33 +109,33 @@ namespace gestor_eventos.Services
                     return false;
                 }
                 
-                // Asegurarse de que las listas nunca sean nulas
+ 
                 if (updateModel.itemsToAdd == null)
                     updateModel.itemsToAdd = new List<ReservacionUpdateModel.ItemToAdd>();
                     
                 if (updateModel.itemsToRemove == null)
                     updateModel.itemsToRemove = new List<string>();
                     
-                // Validar el estado
+ 
                 if (!new[] { "PENDIENTE", "CONFIRMADO", "CANCELADO", "FINALIZADO" }.Contains(updateModel.estado?.ToUpper()))
                 {
                     updateModel.estado = "PENDIENTE";
                 }
 
-                // Preparar la URL correcta - Usa _apiSettings.BaseUrl en lugar de _baseUrl
+ 
                 var apiUrl = $"{_apiSettings.BaseUrl}/api/reservas/{Uri.EscapeDataString(userEmail)}/{reservaId}";
                 
-                // Registrar la solicitud que se va a enviar
+ 
                 _logger.LogInformation("Actualizando reserva. URL: {Url}, Datos: {@UpdateModel}", apiUrl, updateModel);
                 
-                // Usar el _httpClient que ya está inyectado en lugar de crear uno nuevo
+ 
                 
-                // Obtener el token del usuario actual
+ 
                 var token = _httpContextAccessor.HttpContext.User.FindFirst("AccessToken")?.Value;
                 
                 if (string.IsNullOrEmpty(token))
                 {
-                    // Intentar obtener el token de las cookies
+ 
                     token = _httpContextAccessor.HttpContext.Request.Cookies["AuthToken"];
                     
                     if (string.IsNullOrEmpty(token))
@@ -145,18 +145,18 @@ namespace gestor_eventos.Services
                     }
                 }
                 
-                // Configurar la autorización para esta solicitud específica
+ 
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 
-                // Enviar la solicitud PUT con el modelo de actualización
+ 
                 var response = await _httpClient.PutAsJsonAsync(apiUrl, updateModel);
                 
-                // Registrar la respuesta
+ 
                 var responseContent = await response.Content.ReadAsStringAsync();
                 _logger.LogInformation("Respuesta de actualización: {StatusCode}, Contenido: {Content}", 
                                       response.StatusCode, responseContent);
                 
-                // Verificar si la solicitud fue exitosa
+ 
                 if (!response.IsSuccessStatusCode)
                 {
                     _logger.LogError("Error al actualizar la reservación {Id}. Código: {StatusCode}. Detalle: {Error}",
@@ -183,18 +183,18 @@ namespace gestor_eventos.Services
                     return (false, "Los datos de la reserva no son válidos");
                 }
                 
-                // Preparar la URL correcta
+ 
                 var apiUrl = $"{_apiSettings.BaseUrl}/api/reservas/{Uri.EscapeDataString(userEmail)}";
                 
-                // Registrar la solicitud que se va a enviar
+ 
                 _logger.LogInformation("Creando reserva. URL: {Url}, Datos: {@CreateModel}", apiUrl, createModel);
                 
-                // Obtener el token del usuario actual
+ 
                 var token = _httpContextAccessor.HttpContext.User.FindFirst("AccessToken")?.Value;
                 
                 if (string.IsNullOrEmpty(token))
                 {
-                    // Intentar obtener el token de las cookies
+ 
                     token = _httpContextAccessor.HttpContext.Request.Cookies["AuthToken"];
                     
                     if (string.IsNullOrEmpty(token))
@@ -204,18 +204,18 @@ namespace gestor_eventos.Services
                     }
                 }
                 
-                // Configurar la autorización para esta solicitud específica
+ 
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 
-                // Enviar la solicitud POST con el modelo de creación
+ 
                 var response = await _httpClient.PostAsJsonAsync(apiUrl, createModel);
                 
-                // Registrar la respuesta
+ 
                 var responseContent = await response.Content.ReadAsStringAsync();
                 _logger.LogInformation("Respuesta de creación: {StatusCode}, Contenido: {Content}", 
                                       response.StatusCode, responseContent);
                 
-                // Verificar si la solicitud fue exitosa
+ 
                 if (!response.IsSuccessStatusCode)
                 {
                     _logger.LogError("Error al crear la reservación. Código: {StatusCode}. Detalle: {Error}",
@@ -236,14 +236,14 @@ namespace gestor_eventos.Services
         {
             try
             {
-                // Obtener el token del usuario actual
+ 
                 var token = _httpContextAccessor.HttpContext.User.FindFirst("AccessToken")?.Value;
                 
                 if (string.IsNullOrEmpty(token))
                 {
                     _logger.LogWarning("Token no encontrado al intentar eliminar reservación: {Id}", reservacionId);
                     
-                    // Intentar obtener el token de las cookies
+ 
                     token = _httpContextAccessor.HttpContext.Request.Cookies["AuthToken"];
                     
                     if (string.IsNullOrEmpty(token))
@@ -255,13 +255,13 @@ namespace gestor_eventos.Services
 
                 _logger.LogInformation("Eliminando reservación: {Id} para usuario {Email}", reservacionId, correo);
                 
-                // Configurar el header de autenticación
+ 
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-                // Realizar la petición DELETE al API
+ 
                 var response = await _httpClient.DeleteAsync($"{_apiSettings.BaseUrl}/api/reservas/{correo}/{reservacionId}");
                 
-                // Verificar si la respuesta fue exitosa
+ 
                 if (!response.IsSuccessStatusCode)
                 {
                     var errorContent = await response.Content.ReadAsStringAsync();
@@ -281,6 +281,6 @@ namespace gestor_eventos.Services
             }
         }
         
-        // Agregar aquí métodos adicionales para crear, actualizar o eliminar reservaciones
+ 
     }
 }

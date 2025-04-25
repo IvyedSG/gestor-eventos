@@ -27,10 +27,10 @@ namespace gestor_eventos.Pages.Servicios
 
         public List<ServiceModel> Services { get; set; } = new List<ServiceModel>();
 
-        // Add this property to store inventory items
+ 
         public List<InventoryItem> InventoryItems { get; set; } = new List<InventoryItem>();
 
-        // Update the constructor to inject the InventoryService
+ 
         public IndexModel(
             ServicioService servicioService, 
             InventoryService inventoryService,
@@ -45,7 +45,7 @@ namespace gestor_eventos.Pages.Servicios
         {
             try
             {
-                // Get the current user's email and ID
+ 
                 var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
                 var userId = User.FindFirst("UserId")?.Value;
 
@@ -55,11 +55,11 @@ namespace gestor_eventos.Pages.Servicios
                     return;
                 }
 
-                // Load services for the user
+ 
                 var serviciosApi = await _servicioService.GetServiciosByCorreoAsync(userEmail);
                 Services = ConvertToServiceModels(serviciosApi);
 
-                // Apply filters if they exist
+ 
                 if (!string.IsNullOrEmpty(SearchTerm))
                 {
                     Services = Services.Where(s => 
@@ -75,7 +75,7 @@ namespace gestor_eventos.Pages.Servicios
                     ).ToList();
                 }
 
-                // Load inventory items for the user
+ 
                 InventoryItems = await _inventoryService.GetInventoryItemsByUserIdAsync(userId);
                 _logger.LogInformation("Loaded {ItemCount} inventory items for user", InventoryItems.Count);
             }
@@ -91,7 +91,7 @@ namespace gestor_eventos.Pages.Servicios
 
             foreach (var servicio in serviciosApi)
             {
-                // Convertir cada servicio del API a ServiceModel
+ 
                 var serviceModel = new ServiceModel
                 {
                     Id = servicio.Id.ToString(),
@@ -100,7 +100,7 @@ namespace gestor_eventos.Pages.Servicios
                     BasePrice = servicio.PrecioBase,
                     EventTypes = servicio.TipoEvento,
                     
-                    // Procesar las imágenes si existen, o usar una imagen por defecto
+ 
                     MainImage = !string.IsNullOrEmpty(servicio.Imagenes) ? 
                         servicio.Imagenes.Split(',').First() : 
                         "/assets/img/placeholder-img.png",
@@ -109,7 +109,7 @@ namespace gestor_eventos.Pages.Servicios
                         servicio.Imagenes.Split(',').ToList() : 
                         new List<string> { "/assets/img/placeholder-img.png" },
                         
-                    // Mapear los items
+ 
                     Items = servicio.Items?.Select(item => new ServiceItemModel
                     {
                         Id = item.Id.ToString(),

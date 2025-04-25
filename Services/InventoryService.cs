@@ -34,7 +34,7 @@ namespace gestor_eventos.Services
         {
             try
             {
-                // Obtain the token from the current user
+ 
                 var token = _httpContextAccessor.HttpContext.User.FindFirst("AccessToken")?.Value;
                 
                 if (string.IsNullOrEmpty(token))
@@ -45,10 +45,10 @@ namespace gestor_eventos.Services
 
                 _logger.LogInformation("Getting inventory items for user ID: {UserId}", userId);
                 
-                // Set authentication header
+ 
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-                // Make the API request
+ 
                 var response = await _httpClient.GetAsync($"{_apiSettings.BaseUrl}/api/inventario/usuario/{userId}");
                 
                 if (!response.IsSuccessStatusCode)
@@ -58,7 +58,7 @@ namespace gestor_eventos.Services
                     return new List<InventoryItem>();
                 }
 
-                // Read and deserialize the response
+ 
                 var content = await response.Content.ReadAsStringAsync();
                 _logger.LogDebug("API Response: {Response}", content);
                 

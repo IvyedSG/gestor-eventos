@@ -264,7 +264,7 @@
     <partial name="_ValidationScriptsPartial" />
     <script>
         $(document).ready(function() {
-            // Cambiar entre modo vista y modo edición
+ 
             $("#btnEditarPerfil").click(function() {
                 $("#viewMode").hide();
                 $("#editMode").show();
@@ -272,7 +272,7 @@
                 $("#btnCancelarEdicion").show();
             });
             
-            // Cancelar edición
+ 
             $("#btnCancelarEdicion").click(function() {
                 $("#editMode").hide();
                 $("#viewMode").show();
@@ -280,14 +280,14 @@
                 $("#btnEditarPerfil").show();
             });
             
-            // Mostrar spinner durante el envío del formulario
+ 
             $("#editMode").on("submit", function() {
                 if ($(this).valid()) {
                     console.log("Enviando formulario con handler Update...");
                     $("#btnSubmitForm").attr("disabled", true);
                     $("#loadingSpinner").removeClass("d-none");
                     
-                    // Capturar los valores actualizados para actualizar el header después del envío exitoso
+ 
                     localStorage.setItem('nuevoNombre', $("#Input_Nombre").val());
                     localStorage.setItem('nuevoApellido', $("#Input_Apellido").val());
                     
@@ -296,30 +296,30 @@
                 return false;
             });
             
-            // Verificar si venimos de una actualización exitosa y actualizar el header si es necesario
+ 
             if (@(!string.IsNullOrEmpty(Model.StatusMessage) ? "true" : "false")) {
                 const nombre = "@Model.Input.Nombre";
                 const apellido = "@Model.Input.Apellido";
                 const iniciales = nombre.charAt(0) + apellido.charAt(0);
                 
-                // Actualizar el avatar y el nombre en el header
+ 
                 updateHeaderUserInfo(nombre, apellido, iniciales.toUpperCase());
                 
-                // Limpiar localStorage
+ 
                 localStorage.removeItem('nuevoNombre');
                 localStorage.removeItem('nuevoApellido');
             }
         });
 
-        // Función para actualizar la información del usuario en el header
+ 
         function updateHeaderUserInfo(nombre, apellido, iniciales) {
-            // Actualizar el avatar en el header
+ 
             const userAvatar = document.querySelector('.header .user-avatar');
             if (userAvatar) {
                 userAvatar.textContent = iniciales;
             }
             
-            // Actualizar el nombre en el header
+ 
             const userName = document.querySelector('.header .user-name');
             if (userName) {
                 userName.textContent = nombre + ' ' + apellido;
@@ -328,7 +328,7 @@
             console.log("Header actualizado con nombre: " + nombre + " " + apellido);
         }
 
-        // Función de validación adicional
+ 
         function validateForm() {
             var nombre = $("#Input_Nombre").val();
             var apellido = $("#Input_Apellido").val();
@@ -355,7 +355,7 @@
                 return false;
             }
             
-            // Mostramos spinner y deshabilitamos botón antes de enviar
+ 
             $("#btnSubmitForm").attr("disabled", true);
             $("#loadingSpinner").removeClass("d-none");
             console.log("Formulario validado, enviando...");

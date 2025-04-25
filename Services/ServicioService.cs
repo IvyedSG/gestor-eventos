@@ -36,14 +36,14 @@ namespace gestor_eventos.Services
         {
             try
             {
-                // Obtener el token del usuario actual
+ 
                 var token = _httpContextAccessor.HttpContext.User.FindFirst("AccessToken")?.Value;
                 
                 if (string.IsNullOrEmpty(token))
                 {
                     _logger.LogWarning("Token no encontrado en las claims del usuario: {Email}", correo);
                     
-                    // Intentar obtener el token de las cookies
+ 
                     token = _httpContextAccessor.HttpContext.Request.Cookies["AuthToken"];
                     
                     if (string.IsNullOrEmpty(token))
@@ -55,13 +55,13 @@ namespace gestor_eventos.Services
 
                 _logger.LogInformation("Obteniendo servicios para el usuario: {Email}", correo);
                 
-                // Configurar el header de autenticación
+ 
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-                // Realizar la petición al API
+ 
                 var response = await _httpClient.GetAsync($"{_apiSettings.BaseUrl}/api/servicios/{correo}");
                 
-                // Verificar si la respuesta fue exitosa
+ 
                 if (!response.IsSuccessStatusCode)
                 {
                     _logger.LogWarning("Error al obtener servicios. Código: {StatusCode}, Mensaje: {Message}", 
@@ -70,7 +70,7 @@ namespace gestor_eventos.Services
                     return new List<ServicioApi>();
                 }
 
-                // Leer y deserializar la respuesta
+ 
                 var content = await response.Content.ReadAsStringAsync();
                 _logger.LogDebug("Respuesta del API: {Response}", content);
                 
@@ -102,14 +102,14 @@ namespace gestor_eventos.Services
         {
             try
             {
-                // Obtener el token del usuario actual
+ 
                 var token = _httpContextAccessor.HttpContext.User.FindFirst("AccessToken")?.Value;
                 
                 if (string.IsNullOrEmpty(token))
                 {
                     _logger.LogWarning("Token no encontrado en las claims del usuario: {Email}", correo);
                     
-                    // Intentar obtener el token de las cookies
+ 
                     token = _httpContextAccessor.HttpContext.Request.Cookies["AuthToken"];
                     
                     if (string.IsNullOrEmpty(token))
@@ -121,19 +121,19 @@ namespace gestor_eventos.Services
 
                 _logger.LogInformation("Creando nuevo servicio para el usuario: {Email}", correo);
                 
-                // Configurar el header de autenticación
+ 
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-                // Serializar el modelo a JSON
+ 
                 var content = new StringContent(
                     JsonSerializer.Serialize(servicioModel), 
                     System.Text.Encoding.UTF8, 
                     "application/json");
 
-                // Realizar la petición al API
+ 
                 var response = await _httpClient.PostAsync($"{_apiSettings.BaseUrl}/api/servicios/{correo}", content);
                 
-                // Verificar si la respuesta fue exitosa
+ 
                 if (!response.IsSuccessStatusCode)
                 {
                     var errorContent = await response.Content.ReadAsStringAsync();
@@ -157,14 +157,14 @@ namespace gestor_eventos.Services
         {
             try
             {
-                // Obtener el token del usuario actual
+ 
                 var token = _httpContextAccessor.HttpContext.User.FindFirst("AccessToken")?.Value;
                 
                 if (string.IsNullOrEmpty(token))
                 {
                     _logger.LogWarning("Token no encontrado en las claims del usuario: {Email}", correo);
                     
-                    // Intentar obtener el token de las cookies
+ 
                     token = _httpContextAccessor.HttpContext.Request.Cookies["AuthToken"];
                     
                     if (string.IsNullOrEmpty(token))
@@ -176,19 +176,19 @@ namespace gestor_eventos.Services
 
                 _logger.LogInformation("Actualizando servicio para el usuario: {Email}", correo);
                 
-                // Configurar el header de autenticación
+ 
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-                // Serializar el modelo a JSON
+ 
                 var content = new StringContent(
                     JsonSerializer.Serialize(servicioModel), 
                     System.Text.Encoding.UTF8, 
                     "application/json");
 
-                // Realizar la petición al API
+ 
                 var response = await _httpClient.PutAsync($"{_apiSettings.BaseUrl}/api/servicios/{correo}", content);
                 
-                // Verificar si la respuesta fue exitosa
+ 
                 if (!response.IsSuccessStatusCode)
                 {
                     var errorContent = await response.Content.ReadAsStringAsync();
@@ -212,14 +212,14 @@ namespace gestor_eventos.Services
         {
             try
             {
-                // Obtener el token del usuario actual
+ 
                 var token = _httpContextAccessor.HttpContext.User.FindFirst("AccessToken")?.Value;
                 
                 if (string.IsNullOrEmpty(token))
                 {
                     _logger.LogWarning("Token no encontrado en las claims del usuario: {Email}", correo);
                     
-                    // Intentar obtener el token de las cookies
+ 
                     token = _httpContextAccessor.HttpContext.Request.Cookies["AuthToken"];
                     
                     if (string.IsNullOrEmpty(token))
@@ -232,19 +232,19 @@ namespace gestor_eventos.Services
                 _logger.LogInformation("Actualizando servicio con ID {Id} para el usuario: {Email}", servicioId, correo);
                 _logger.LogInformation("Datos de actualización: {Data}", JsonSerializer.Serialize(model));
                 
-                // Configurar el header de autenticación
+ 
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-                // Serializar el modelo a JSON
+ 
                 var content = new StringContent(
                     JsonSerializer.Serialize(model), 
                     System.Text.Encoding.UTF8, 
                     "application/json");
 
-                // Realizar la petición al API con el nuevo endpoint
+ 
                 var response = await _httpClient.PutAsync($"{_apiSettings.BaseUrl}/api/servicios/{correo}/{servicioId}", content);
                 
-                // Verificar si la respuesta fue exitosa
+ 
                 if (!response.IsSuccessStatusCode)
                 {
                     var errorContent = await response.Content.ReadAsStringAsync();
@@ -268,14 +268,14 @@ namespace gestor_eventos.Services
         {
             try
             {
-                // Obtener el token del usuario actual
+ 
                 var token = _httpContextAccessor.HttpContext.User.FindFirst("AccessToken")?.Value;
                 
                 if (string.IsNullOrEmpty(token))
                 {
                     _logger.LogWarning("Token no encontrado en las claims del usuario: {Email}", correo);
                     
-                    // Intentar obtener el token de las cookies
+ 
                     token = _httpContextAccessor.HttpContext.Request.Cookies["AuthToken"];
                     
                     if (string.IsNullOrEmpty(token))
@@ -287,13 +287,13 @@ namespace gestor_eventos.Services
 
                 _logger.LogInformation("Eliminando servicio con ID {Id} para el usuario: {Email}", servicioId, correo);
                 
-                // Configurar el header de autenticación
+ 
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-                // Realizar la petición al API
+ 
                 var response = await _httpClient.DeleteAsync($"{_apiSettings.BaseUrl}/api/servicios/{correo}/{servicioId}");
                 
-                // Verificar si la respuesta fue exitosa
+ 
                 if (!response.IsSuccessStatusCode)
                 {
                     var errorContent = await response.Content.ReadAsStringAsync();

@@ -52,26 +52,26 @@ namespace gestor_eventos.Pages.Reservas
 
         public List<ReservacionApi> Reservaciones { get; set; }
 
-        // Para compatibilidad con el código existente mientras hacemos la transición
+ 
         public List<Reservation> Reservations { get; set; }
 
-        // Add this property
+ 
         public List<ServicioApi> ServiciosDisponibles { get; set; }
 
         public async Task OnGetAsync()
         {
             try
             {
-                // Obtener correo del usuario de los claims (forma más confiable)
+ 
                 var userEmail = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")?.Value;
                 
-                // Si no hay email en los claims, buscar en los claims con formato estándar
+ 
                 if (string.IsNullOrEmpty(userEmail))
                 {
                     userEmail = HttpContext.User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Email)?.Value;
                 }
                 
-                // Validar que tenemos un correo electrónico
+ 
                 if (string.IsNullOrEmpty(userEmail))
                 {
                     _logger.LogWarning("No se pudo obtener el correo electrónico del usuario autenticado");
@@ -83,17 +83,17 @@ namespace gestor_eventos.Pages.Reservas
                 
                 _logger.LogInformation($"Obteniendo reservaciones para el usuario: {userEmail}");
                 
-                // Obtener servicios disponibles usando el nuevo método
+ 
                 ServiciosDisponibles = await _servicioService.GetServiciosByCorreoAsync(userEmail);
                 
-                // Obtener reservaciones del API
+ 
                 var apiReservaciones = await _reservacionService.GetReservacionesByCorreoAsync(userEmail);
                 Reservaciones = apiReservaciones.ToList();
                 
-                // Aplicar filtros a las reservaciones
+ 
                 AplicarFiltros();
                 
-                // Convertir ReservacionApi a Reservation para mantener compatibilidad con la vista existente
+ 
                 Reservations = Reservaciones.Select(ConvertirAReservation).ToList();
             }
             catch (Exception ex)
@@ -107,7 +107,7 @@ namespace gestor_eventos.Pages.Reservas
 
         private void AplicarFiltros()
         {
-            // Filtrar reservaciones según los criterios
+ 
             if (!string.IsNullOrEmpty(SearchTerm))
             {
                 Reservaciones = Reservaciones.Where(r => 
@@ -193,7 +193,7 @@ namespace gestor_eventos.Pages.Reservas
         {
             try
             {
-                // Validar entrada
+ 
                 if (request == null || string.IsNullOrEmpty(request.id) || request.updateModel == null)
                 {
                     return BadRequest("Datos de actualización inválidos");
@@ -204,10 +204,10 @@ namespace gestor_eventos.Pages.Reservas
                     return BadRequest("El ID de reserva proporcionado no es válido");
                 }
 
-                // Obtener correo del usuario autenticado
+ 
                 var userEmail = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")?.Value;
                 
-                // Alternativa usando el tipo de claim estándar
+ 
                 if (string.IsNullOrEmpty(userEmail))
                 {
                     userEmail = HttpContext.User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Email)?.Value;
@@ -219,21 +219,21 @@ namespace gestor_eventos.Pages.Reservas
                     return BadRequest("No se pudo identificar el usuario");
                 }
 
-                // Normalizar el estado antes de enviarlo a la API
+ 
                 request.updateModel.estado = NormalizarEstado(request.updateModel.estado);
 
-                // Asegurar que itemsToRemove sea una lista inicializada y válida
+ 
                 if (request.updateModel.itemsToRemove == null)
                 {
                     request.updateModel.itemsToRemove = new List<string>();
                 }
                 
-                // Eliminar cualquier string vacío de itemsToRemove
+ 
                 request.updateModel.itemsToRemove = request.updateModel.itemsToRemove
                     .Where(id => !string.IsNullOrWhiteSpace(id))
                     .ToList();
 
-                // Llamar al servicio para actualizar la reservación
+ 
                 var resultado = await _reservacionService.UpdateReservacionAsync(userEmail, reservaId, request.updateModel);
                 
                 if (!resultado)
@@ -251,14 +251,14 @@ namespace gestor_eventos.Pages.Reservas
             }
         }
 
-        // Clase para recibir los datos de la solicitud JSON
+ 
         public class ReservationUpdateRequest
         {
             public string id { get; set; }
             public ReservacionUpdateModel updateModel { get; set; }
         }
 
-        // Método auxiliar para normalizar el estado según los valores permitidos
+ 
         private string NormalizarEstado(string estado)
         {
             if (string.IsNullOrEmpty(estado)) return "PENDIENTE";
@@ -269,7 +269,7 @@ namespace gestor_eventos.Pages.Reservas
             if (estadoUpper.Contains("CANCEL")) return "CANCELADO";
             if (estadoUpper.Contains("FINAL") || estadoUpper.Contains("COMPLET")) return "FINALIZADO";
             
-            // Por defecto
+ 
             return "PENDIENTE";
         }
 
@@ -278,7 +278,7 @@ namespace gestor_eventos.Pages.Reservas
         {
             try
             {
-                // Get user email from claims
+ 
                 var userEmail = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")?.Value;
                 
                 if (string.IsNullOrEmpty(userEmail))
@@ -308,16 +308,16 @@ namespace gestor_eventos.Pages.Reservas
         {
             try
             {
-                // Validar entrada
+ 
                 if (model == null)
                 {
                     return BadRequest("Datos de creación inválidos");
                 }
 
-                // Obtener correo del usuario autenticado
+ 
                 var userEmail = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")?.Value;
                 
-                // Alternativa usando el tipo de claim estándar
+ 
                 if (string.IsNullOrEmpty(userEmail))
                 {
                     userEmail = HttpContext.User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Email)?.Value;
@@ -329,21 +329,21 @@ namespace gestor_eventos.Pages.Reservas
                     return BadRequest("No se pudo identificar el usuario");
                 }
 
-                // Normalizar el estado antes de enviarlo a la API
+ 
                 model.estado = NormalizarEstado(model.estado);
 
-                // Asegurar que servicios sea una lista inicializada y válida
+ 
                 if (model.servicios == null)
                 {
                     model.servicios = new List<string>();
                 }
                 
-                // Eliminar cualquier string vacío de servicios
+ 
                 model.servicios = model.servicios
                     .Where(id => !string.IsNullOrWhiteSpace(id))
                     .ToList();
 
-                // Llamar al servicio para crear la reservación
+ 
                 var (success, message) = await _reservacionService.CreateReservacionAsync(userEmail, model);
                 
                 if (!success)
@@ -366,22 +366,22 @@ namespace gestor_eventos.Pages.Reservas
         {
             try
             {
-                // Validar entrada
+ 
                 if (string.IsNullOrEmpty(id))
                 {
                     return BadRequest("ID de reserva inválido");
                 }
 
-                // Verificar si el ID es un GUID válido
+ 
                 if (!Guid.TryParse(id, out Guid reservaId))
                 {
                     return BadRequest("El ID de reserva proporcionado no es válido");
                 }
 
-                // Obtener correo del usuario autenticado
+ 
                 var userEmail = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Email")?.Value;
                 
-                // Alternativa usando el tipo de claim estándar
+ 
                 if (string.IsNullOrEmpty(userEmail))
                 {
                     userEmail = HttpContext.User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Email)?.Value;
@@ -393,7 +393,7 @@ namespace gestor_eventos.Pages.Reservas
                     return BadRequest("No se pudo identificar el usuario");
                 }
 
-                // Llamar al servicio para eliminar la reservación
+ 
                 var result = await _reservacionService.DeleteReservacionAsync(userEmail, reservaId);
                 
                 if (!result)

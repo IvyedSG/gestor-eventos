@@ -18,7 +18,6 @@ namespace GestorEventos.Pages.Auth
             if (externalUser == null)
                 return RedirectToPage("/Auth/Login");
                 
-            // Extraer la información del usuario desde Google
             var userIdClaim = externalUser.FindFirst(ClaimTypes.NameIdentifier);
             var emailClaim = externalUser.FindFirst(ClaimTypes.Email);
             var nameClaim = externalUser.FindFirst(ClaimTypes.Name);
@@ -26,15 +25,12 @@ namespace GestorEventos.Pages.Auth
             if (userIdClaim == null || emailClaim == null)
                 return RedirectToPage("/Auth/Login");
             
-            // Aquí deberías validar si el usuario existe en tu base de datos
-            // o crearlo si es la primera vez que inicia sesión
-            // Para este ejemplo, simplemente creamos un nuevo ClaimsPrincipal
             
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, nameClaim?.Value ?? "Usuario de Google"),
                 new Claim(ClaimTypes.Email, emailClaim.Value),
-                new Claim(ClaimTypes.Role, "Usuario") // Asignar un rol predeterminado
+                new Claim(ClaimTypes.Role, "Usuario")
             };
             
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

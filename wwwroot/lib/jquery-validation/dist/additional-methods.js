@@ -20,10 +20,10 @@
 
 	function stripHtml( value ) {
 
-		// Remove html tags and space chars
+ 
 		return value.replace( /<.[^<>]*?>/g, " " ).replace( /&nbsp;|&#160;/gi, " " )
 
-		// Remove punctuation
+ 
 		.replace( /[.(),;:!?%#$'\"_+=\/\-“”’]*/g, "" );
 	}
 
@@ -54,20 +54,20 @@ $.validator.addMethod( "abaRoutingNumber", function( value ) {
 	var tokens = value.split( "" );
 	var length = tokens.length;
 
-	// Length Check
+ 
 	if ( length !== 9 ) {
 		return false;
 	}
 
-	// Calc the checksum
-	// https://en.wikipedia.org/wiki/ABA_routing_transit_number
+ 
+ 
 	for ( var i = 0; i < length; i += 3 ) {
 		checksum +=	parseInt( tokens[ i ], 10 )     * 3 +
 					parseInt( tokens[ i + 1 ], 10 ) * 7 +
 					parseInt( tokens[ i + 2 ], 10 );
 	}
 
-	// If not zero and divisible by 10 then valid
+ 
 	if ( checksum !== 0 && checksum % 10 === 0 ) {
 		return true;
 	}
@@ -75,36 +75,36 @@ $.validator.addMethod( "abaRoutingNumber", function( value ) {
 	return false;
 }, "Please enter a valid routing number." );
 
-// Accept a value from a file input based on a required mimetype
+ 
 $.validator.addMethod( "accept", function( value, element, param ) {
 
-	// Split mime on commas in case we have multiple types we can accept
+ 
 	var typeParam = typeof param === "string" ? param.replace( /\s/g, "" ) : "image/*",
 		optionalValue = this.optional( element ),
 		i, file, regex;
 
-	// Element is optional
+ 
 	if ( optionalValue ) {
 		return optionalValue;
 	}
 
 	if ( $( element ).attr( "type" ) === "file" ) {
 
-		// Escape string to be used in the regex
-		// see: https://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
-		// Escape also "/*" as "/.*" as a wildcard
+ 
+ 
+ 
 		typeParam = typeParam
 				.replace( /[\-\[\]\/\{\}\(\)\+\?\.\\\^\$\|]/g, "\\$&" )
 				.replace( /,/g, "|" )
 				.replace( /\/\*/g, "/.*" );
 
-		// Check if the element has a FileList before checking each file
+ 
 		if ( element.files && element.files.length ) {
 			regex = new RegExp( ".?(" + typeParam + ")$", "i" );
 			for ( i = 0; i < element.files.length; i++ ) {
 				file = element.files[ i ];
 
-				// Grab the mimetype from the loaded file, verify it matches
+ 
 				if ( !file.type.match( regex ) ) {
 					return false;
 				}
@@ -112,8 +112,8 @@ $.validator.addMethod( "accept", function( value, element, param ) {
 		}
 	}
 
-	// Either return true because we've validated each file, or because the
-	// browser does not support element.files and the FileList feature
+ 
+ 
 	return true;
 }, $.validator.format( "Please enter a value with a valid mimetype." ) );
 
@@ -135,7 +135,7 @@ $.validator.addMethod( "bankaccountNL", function( value, element ) {
 		return false;
 	}
 
-	// Now '11 check'
+ 
 	var account = value.replace( / /g, "" ), // Remove spaces
 		sum = 0,
 		len = account.length,
@@ -245,7 +245,7 @@ $.validator.addMethod( "cifES", function( value, element ) {
 		return n % 2 === 0;
 	}
 
-	// Quick format test
+ 
 	if ( value.length !== 9 || !cifRegEx.test( value ) ) {
 		return false;
 	}
@@ -253,17 +253,17 @@ $.validator.addMethod( "cifES", function( value, element ) {
 	for ( i = 0; i < number.length; i++ ) {
 		n = parseInt( number[ i ], 10 );
 
-		// Odd positions
+ 
 		if ( isOdd( i ) ) {
 
-			// Odd positions are multiplied first.
+ 
 			n *= 2;
 
-			// If the multiplication is bigger than 10 we need to adjust
+ 
 			odd_sum += n < 10 ? n : n - 9;
 
-		// Even positions
-		// Just sum them
+ 
+ 
 		} else {
 			even_sum += n;
 		}
@@ -274,16 +274,16 @@ $.validator.addMethod( "cifES", function( value, element ) {
 	control_digit = parseInt( control_digit, 10 ) > 9 ? "0" : control_digit;
 	control_letter = "JABCDEFGHI".substr( control_digit, 1 ).toString();
 
-	// Control must be a digit
+ 
 	if ( letter.match( /[ABEH]/ ) ) {
 		return control === control_digit;
 
-	// Control must be a letter
+ 
 	} else if ( letter.match( /[KPQS]/ ) ) {
 		return control === control_letter;
 	}
 
-	// Can be either
+ 
 	return control === control_digit || control === control_letter;
 
 }, "Please specify a valid CIF number." );
@@ -294,10 +294,10 @@ $.validator.addMethod( "cifES", function( value, element ) {
  */
 $.validator.addMethod( "cnhBR", function( value ) {
 
-  // Removing special characters from value
+ 
   value = value.replace( /([~!@#$%^&*()_+=`{}\[\]\-|\\:;'<>,.\/? ])+/g, "" );
 
-  // Checking value to have 11 digits only
+ 
   if ( value.length !== 11 ) {
     return false;
   }
@@ -311,7 +311,7 @@ $.validator.addMethod( "cnhBR", function( value ) {
     return false;
   }
 
-  // Step 1 - using first Check Number:
+ 
   for ( i = 0, j = 9, v = 0; i < 9; ++i, --j ) {
     sum += +( value.charAt( i ) * j );
   }
@@ -349,15 +349,15 @@ $.validator.addMethod( "cnpjBR", function( value, element ) {
 		return true;
 	}
 
-	// Removing no number
+ 
 	value = value.replace( /[^\d]+/g, "" );
 
-	// Checking value to have 14 digits only
+ 
 	if ( value.length !== 14 ) {
 		return false;
 	}
 
-	// Elimina values invalidos conhecidos
+ 
 	if ( value === "00000000000000" ||
 		value === "11111111111111" ||
 		value === "22222222222222" ||
@@ -371,7 +371,7 @@ $.validator.addMethod( "cnpjBR", function( value, element ) {
 		return false;
 	}
 
-	// Valida DVs
+ 
 	var tamanho = ( value.length - 2 );
 	var numeros = value.substring( 0, tamanho );
 	var digitos = value.substring( tamanho );
@@ -424,10 +424,10 @@ $.validator.addMethod( "cpfBR", function( value, element ) {
 		return true;
 	}
 
-	// Removing special characters from value
+ 
 	value = value.replace( /([~!@#$%^&*()_+=`{}\[\]\-|\\:;'<>,.\/? ])+/g, "" );
 
-	// Checking value to have 11 digits only
+ 
 	if ( value.length !== 11 ) {
 		return false;
 	}
@@ -446,7 +446,7 @@ $.validator.addMethod( "cpfBR", function( value, element ) {
 		return ( result === cn );
 	};
 
-	// Checking for dump data
+ 
 	if ( value === "" ||
 		value === "00000000000" ||
 		value === "11111111111" ||
@@ -462,12 +462,12 @@ $.validator.addMethod( "cpfBR", function( value, element ) {
 		return false;
 	}
 
-	// Step 1 - using first Check Number:
+ 
 	for ( i = 1; i <= 9; i++ ) {
 		sum = sum + parseInt( value.substring( i - 1, i ), 10 ) * ( 11 - i );
 	}
 
-	// If first Check Number (CN) is valid, move to Step 2 - using second Check Number:
+ 
 	if ( checkResult( sum, firstCN ) ) {
 		sum = 0;
 		for ( i = 1; i <= 10; i++ ) {
@@ -479,14 +479,14 @@ $.validator.addMethod( "cpfBR", function( value, element ) {
 
 }, "Please specify a valid CPF number." );
 
-// https://jqueryvalidation.org/creditcard-method/
-// based on https://en.wikipedia.org/wiki/Luhn_algorithm
+ 
+ 
 $.validator.addMethod( "creditcard", function( value, element ) {
 	if ( this.optional( element ) ) {
 		return "dependency-mismatch";
 	}
 
-	// Accept only spaces, digits and dashes
+ 
 	if ( /[^0-9 \-]+/.test( value ) ) {
 		return false;
 	}
@@ -498,8 +498,8 @@ $.validator.addMethod( "creditcard", function( value, element ) {
 
 	value = value.replace( /\D/g, "" );
 
-	// Basing min and max length on
-	// https://dev.ean.com/general-info/valid-card-types/
+ 
+ 
 	if ( value.length < 13 || value.length > 19 ) {
 		return false;
 	}
@@ -680,7 +680,7 @@ $.validator.addMethod( "dateNL", function( value, element ) {
 	return this.optional( element ) || /^(0?[1-9]|[12]\d|3[01])[\.\/\-](0?[1-9]|1[012])[\.\/\-]([12]\d)?(\d\d)$/.test( value );
 }, $.validator.messages.date );
 
-// Older "accept" file extension method. Old docs: http://docs.jquery.com/Plugins/Validation/Methods/accept
+ 
 $.validator.addMethod( "extension", function( value, element, param ) {
 	param = typeof param === "string" ? param.replace( /,/g, "|" ) : "png|jpe?g|gif";
 	return this.optional( element ) || value.match( new RegExp( "\\.(" + param + ")$", "i" ) );
@@ -725,12 +725,12 @@ $.validator.addMethod( "greaterThanEqual", function( value, element, param ) {
  */
 $.validator.addMethod( "iban", function( value, element ) {
 
-	// Some quick simple tests to prevent needless work
+ 
 	if ( this.optional( element ) ) {
 		return true;
 	}
 
-	// Remove spaces and to upper case
+ 
 	var iban = value.replace( / /g, "" ).toUpperCase(),
 		ibancheckdigits = "",
 		leadingZeroes = true,
@@ -738,17 +738,17 @@ $.validator.addMethod( "iban", function( value, element ) {
 		cOperator = "",
 		countrycode, ibancheck, charAt, cChar, bbanpattern, bbancountrypatterns, ibanregexp, i, p;
 
-	// Check for IBAN code length.
-	// It contains:
-	// country code ISO 3166-1 - two letters,
-	// two check digits,
-	// Basic Bank Account Number (BBAN) - up to 30 chars
+ 
+ 
+ 
+ 
+ 
 	var minimalIBANlength = 5;
 	if ( iban.length < minimalIBANlength ) {
 		return false;
 	}
 
-	// Check the country code and find the country specific format
+ 
 	countrycode = iban.substring( 0, 2 );
 	bbancountrypatterns = {
 		"AL": "\\d{8}[\\dA-Z]{16}",
@@ -819,13 +819,13 @@ $.validator.addMethod( "iban", function( value, element ) {
 
 	bbanpattern = bbancountrypatterns[ countrycode ];
 
-	// As new countries will start using IBAN in the
-	// future, we only check if the countrycode is known.
-	// This prevents false negatives, while almost all
-	// false positives introduced by this, will be caught
-	// by the checksum validation below anyway.
-	// Strict checking should return FALSE for unknown
-	// countries.
+ 
+ 
+ 
+ 
+ 
+ 
+ 
 	if ( typeof bbanpattern !== "undefined" ) {
 		ibanregexp = new RegExp( "^[A-Z]{2}\\d{2}" + bbanpattern + "$", "" );
 		if ( !( ibanregexp.test( iban ) ) ) {
@@ -833,7 +833,7 @@ $.validator.addMethod( "iban", function( value, element ) {
 		}
 	}
 
-	// Now check the checksum, first convert to digits
+ 
 	ibancheck = iban.substring( 4, iban.length ) + iban.substring( 0, 4 );
 	for ( i = 0; i < ibancheck.length; i++ ) {
 		charAt = ibancheck.charAt( i );
@@ -845,7 +845,7 @@ $.validator.addMethod( "iban", function( value, element ) {
 		}
 	}
 
-	// Calculate the result of: ibancheckdigits % 97
+ 
 	for ( p = 0; p < ibancheckdigits.length; p++ ) {
 		cChar = ibancheckdigits.charAt( p );
 		cOperator = "" + cRest + "" + cChar;
@@ -898,7 +898,7 @@ $.validator.addMethod( "letterswithbasicpunc", function( value, element ) {
 	return this.optional( element ) || /^[a-z\-.,()'"\s]+$/i.test( value );
 }, "Letters or punctuation only please." );
 
-// Limit the number of files in a FileList.
+ 
 $.validator.addMethod( "maxfiles", function( value, element, param ) {
 	if ( this.optional( element ) ) {
 		return true;
@@ -913,7 +913,7 @@ $.validator.addMethod( "maxfiles", function( value, element, param ) {
 	return true;
 }, $.validator.format( "Please select no more than {0} files." ) );
 
-// Limit the size of each individual file in a FileList.
+ 
 $.validator.addMethod( "maxsize", function( value, element, param ) {
 	if ( this.optional( element ) ) {
 		return true;
@@ -932,7 +932,7 @@ $.validator.addMethod( "maxsize", function( value, element, param ) {
 	return true;
 }, $.validator.format( "File size must not exceed {0} bytes each." ) );
 
-// Limit the size of all files in a FileList.
+ 
 $.validator.addMethod( "maxsizetotal", function( value, element, param ) {
 	if ( this.optional( element ) ) {
 		return true;
@@ -1004,14 +1004,14 @@ $.validator.addMethod( "nieES", function( value, element ) {
 
 	value = value.toString().toUpperCase();
 
-	// Quick format test
+ 
 	if ( value.length > 10 || value.length < 9 || !nieRegEx.test( value ) ) {
 		return false;
 	}
 
-	// X means same number
-	// Y means number + 10000000
-	// Z means number + 20000000
+ 
+ 
+ 
 	value = value.replace( /^[X]/, "0" )
 		.replace( /^[Y]/, "1" )
 		.replace( /^[Z]/, "2" );
@@ -1034,17 +1034,17 @@ $.validator.addMethod( "nifES", function( value, element ) {
 
 	value = value.toUpperCase();
 
-	// Basic format test
+ 
 	if ( !value.match( "((^[A-Z]{1}[0-9]{7}[A-Z0-9]{1}$|^[T]{1}[A-Z0-9]{8}$)|^[0-9]{8}[A-Z]{1}$)" ) ) {
 		return false;
 	}
 
-	// Test NIF
+ 
 	if ( /^[0-9]{8}[A-Z]{1}$/.test( value ) ) {
 		return ( "TRWAGMYFPDXBNJZSQVHLCKE".charAt( value.substring( 8, 0 ) % 23 ) === value.charAt( 8 ) );
 	}
 
-	// Test specials NIF (starts with K, L or M)
+ 
 	if ( /^[KLM]{1}/.test( value ) ) {
 		return ( value[ 8 ] === "TRWAGMYFPDXBNJZSQVHLCKE".charAt( value.substring( 8, 1 ) % 23 ) );
 	}
@@ -1094,18 +1094,18 @@ $.validator.addMethod( "nisBR", function( value ) {
 	var count;
 	var multiplier;
 
-	// Removing special characters from value
+ 
 	value = value.replace( /([~!@#$%^&*()_+=`{}\[\]\-|\\:;'<>,.\/? ])+/g, "" );
 
-	// Checking value to have 11 digits only
+ 
 	if ( value.length !== 11 ) {
 		return false;
 	}
 
-	//Get check number of value
+ 
 	cn = parseInt( value.substring( 10, 11 ), 10 );
 
-	//Get number with 10 digits of the value
+ 
 	number = parseInt( value.substring( 0, 10 ), 10 );
 
 	for ( count = 2; count < 12; count++ ) {
@@ -1205,7 +1205,7 @@ $.validator.addMethod( "phonePL", function( phone_number, element ) {
  * http://www.aa-asterisk.org.uk/index.php/Regular_Expressions_for_Validating_and_Formatting_GB_Telephone_Numbers
  */
 
-// Matches UK landline + mobile, accepting only 01-3 for landline or 07 for mobile to exclude many premium numbers
+ 
 $.validator.addMethod( "phonesUK", function( phone_number, element ) {
 	phone_number = phone_number.replace( /\(|\)|\s+|-/g, "" );
 	return this.optional( element ) || phone_number.length > 9 &&
@@ -1286,7 +1286,7 @@ $.validator.addMethod( "postalcodeNL", function( value, element ) {
 	return this.optional( element ) || /^[1-9][0-9]{3}\s?[a-zA-Z]{2}$/.test( value );
 }, "Please specify a valid postal code." );
 
-// Matches UK postcode. Does not match to UK Channel Islands that have their own postcodes (non standard UK)
+ 
 $.validator.addMethod( "postcodeUK", function( value, element ) {
 	return this.optional( element ) || /^((([A-PR-UWYZ][0-9])|([A-PR-UWYZ][0-9][0-9])|([A-PR-UWYZ][A-HK-Y][0-9])|([A-PR-UWYZ][A-HK-Y][0-9][0-9])|([A-PR-UWYZ][0-9][A-HJKSTUW])|([A-PR-UWYZ][A-HK-Y][0-9][ABEHMNPRVWXY]))\s?([0-9][ABD-HJLNP-UW-Z]{2})|(GIR)\s?(0AA))$/i.test( value );
 }, "Please specify a valid UK postcode." );
@@ -1315,10 +1315,10 @@ $.validator.addMethod( "require_from_group", function( value, element, options )
 			return validator.elementValue( this );
 		} ).length >= options[ 0 ];
 
-	// Store the cloned validator for future validation
+ 
 	$fieldsFirst.data( "valid_req_grp", validator );
 
-	// If element isn't being validated, run each require_from_group field's validation rules
+ 
 	if ( !$( element ).data( "being_validated" ) ) {
 		$fields.data( "being_validated", true );
 		$fields.each( function() {
@@ -1359,10 +1359,10 @@ $.validator.addMethod( "skip_or_fill_minimum", function( value, element, options
 		} ).length,
 		isValid = numberFilled === 0 || numberFilled >= options[ 0 ];
 
-	// Store the cloned validator for future validation
+ 
 	$fieldsFirst.data( "valid_skip", validator );
 
-	// If element isn't being validated, run each skip_or_fill_minimum field's validation rules
+ 
 	if ( !$( element ).data( "being_validated" ) ) {
 		$fields.data( "being_validated", true );
 		$fields.each( function() {
@@ -1428,7 +1428,7 @@ $.validator.addMethod( "stateUS", function( value, element, options ) {
 	return this.optional( element ) || regex.test( value );
 }, "Please specify a valid state." );
 
-// TODO check if value starts with <, otherwise don't try stripping anything
+ 
 $.validator.addMethod( "strippedminlength", function( value, element, param ) {
 	return $( value ).text().length >= param;
 }, $.validator.format( "Please enter at least {0} characters." ) );
@@ -1441,7 +1441,7 @@ $.validator.addMethod( "time12h", function( value, element ) {
 	return this.optional( element ) || /^((0?[1-9]|1[012])(:[0-5]\d){1,2}(\ ?[AP]M))$/i.test( value );
 }, "Please enter a valid time in 12-hour am/pm format." );
 
-// Same as url, but TLD is optional
+ 
 $.validator.addMethod( "url2", function( value, element ) {
 	return this.optional( element ) || /^(?:(?:(?:https?|ftp):)?\/\/)(?:(?:[^\]\[?\/<~#`!@$^&*()+=}|:";',>{ ]|%[0-9A-Fa-f]{2})+(?::(?:[^\]\[?\/<~#`!@$^&*()+=}|:";',>{ ]|%[0-9A-Fa-f]{2})*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z0-9\u00a1-\uffff][a-z0-9\u00a1-\uffff_-]{0,62})?[a-z0-9\u00a1-\uffff]\.)+(?:[a-z\u00a1-\uffff]{2,}\.?)|(?:(?:[a-z0-9\u00a1-\uffff][a-z0-9\u00a1-\uffff_-]{0,62})?[a-z0-9\u00a1-\uffff])|(?:(?:[a-z0-9\u00a1-\uffff][a-z0-9\u00a1-\uffff_-]{0,62}\.)))(?::\d{2,5})?(?:[/?#]\S*)?$/i.test( value );
 }, $.validator.messages.url );

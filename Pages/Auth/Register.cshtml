@@ -661,7 +661,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script>
-        // Toggle password visibility
+ 
         function togglePassword(inputId) {
             const passwordInput = document.getElementById(inputId);
             const icon = event.currentTarget.querySelector('i');
@@ -677,19 +677,19 @@
             }
         }
         
-        // Mejorado: Password strength indicator
+
         document.addEventListener('DOMContentLoaded', function() {
             const passwordInput = document.getElementById('password');
             const strengthBar = document.getElementById('passwordStrengthBar');
             const strengthText = document.getElementById('passwordStrengthText');
             
-            // Deshabilitar autocompletado
+
             const allInputs = document.querySelectorAll('input');
             allInputs.forEach(input => {
                 input.setAttribute('autocomplete', 'off');
             });
             
-            // Verificar coincidencia de contraseñas
+   
             const confirmInput = document.getElementById('confirmPassword');
             function checkPasswordMatch() {
                 if(confirmInput.value && passwordInput.value !== confirmInput.value) {
@@ -702,31 +702,30 @@
             passwordInput.addEventListener('input', checkPasswordMatch);
             confirmInput.addEventListener('input', checkPasswordMatch);
             
-            // Evaluar la fortaleza de la contraseña
+
             passwordInput.addEventListener('input', function() {
                 const password = this.value;
                 let strength = 0;
                 
-                // Comprueba la longitud
+
                 if (password.length >= 8) strength += 1;
                 
-                // Comprueba si tiene mayúsculas
+
                 if (password.match(/[A-Z]/)) strength += 1;
                 
-                // Comprueba si tiene minúsculas
+
                 if (password.match(/[a-z]/)) strength += 1;
                 
-                // Comprueba si tiene números
+
                 if (password.match(/\d/)) strength += 1;
                 
-                // Comprueba si tiene caracteres especiales
+
                 if (password.match(/[^A-Za-z0-9]/)) strength += 1;
                 
-                // Comprueba la complejidad (variedad de caracteres)
                 const uniqueChars = [...new Set(password)].length;
                 if (uniqueChars > 5) strength += 0.5;
                 
-                // Actualiza el indicador de fortaleza
+
                 strengthBar.className = 'password-strength-bar';
                 
                 if (password.length === 0) {
@@ -753,7 +752,6 @@
                
             });
             
-            // Asegurar que el checkbox funcione correctamente
             const checkbox = document.getElementById('agreeTerms');
             checkbox.addEventListener('change', function() {
                 if(this.checked) {
@@ -763,7 +761,6 @@
                 }
             });
             
-            // Evitar el autocompletado del formulario
             document.querySelector('form').setAttribute('autocomplete', 'off');
         });
 

@@ -29,15 +29,15 @@ namespace GestorEventos.Models.ApiModels
     public class ReservaResumen
     {
         public string Id { get; set; }
-        public string NombreEvento { get; set; } // Cambio de Nombre a NombreEvento
-        public string FechaEvento { get; set; }  // Cambio de DateTime Fecha a string FechaEvento
-        public string HoraEvento { get; set; }   // Cambio de TimeSpan a string HoraEvento
+        public string NombreEvento { get; set; } 
+        public string FechaEvento { get; set; } 
+        public string HoraEvento { get; set; }  
         public string Descripcion { get; set; }
         
-        // Propiedades calculadas para mantener compatibilidad con el código existente
+ 
         public DateTime Fecha => DateTime.TryParse(FechaEvento, out var date) ? date : DateTime.Now;
         public TimeSpan HoraInicio => TimeSpan.TryParse(HoraEvento, out var time) ? time : TimeSpan.Zero;
-        public TimeSpan HoraFin => HoraInicio.Add(TimeSpan.FromHours(2)); // Estimamos 2 horas por defecto
+        public TimeSpan HoraFin => HoraInicio.Add(TimeSpan.FromHours(2));
         public string Nombre => NombreEvento;
     }
 

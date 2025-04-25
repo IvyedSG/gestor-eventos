@@ -38,16 +38,16 @@ namespace gestor_eventos.Pages.Usuario
         {
             try
             {
-                // Obtener el correo del usuario actual (debe ser el email, no el nombre)
+ 
                 var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
                 
-                // Obtener el token de autenticación
+ 
                 var token = User.FindFirst("AccessToken")?.Value;
 
                 if (string.IsNullOrEmpty(token) || string.IsNullOrEmpty(userEmail))
                 {
                     _logger.LogWarning("Token o email de usuario no disponible");
-                    // Mantener el comportamiento actual para datos básicos
+ 
                     Input.Nombre = User.Claims.FirstOrDefault(c => c.Type == "Nombre")?.Value;
                     Input.Apellido = User.Claims.FirstOrDefault(c => c.Type == "Apellido")?.Value;
                     Input.Telefono = User.Claims.FirstOrDefault(c => c.Type == "Telefono")?.Value;
@@ -57,10 +57,10 @@ namespace gestor_eventos.Pages.Usuario
 
                 _logger.LogInformation("Obteniendo datos del usuario con email: {Email}", userEmail);
 
-                // Configurar la solicitud HTTP con el token
+ 
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-                // Realizar la solicitud al API
+ 
                 var apiBaseUrl = _configuration["ApiSettings:BaseUrl"];
                 var response = await _httpClient.GetAsync($"{apiBaseUrl}/api/usuarios/{userEmail}");
 
@@ -76,7 +76,7 @@ namespace gestor_eventos.Pages.Usuario
                     
                     var usuario = JsonSerializer.Deserialize<UsuarioResponse>(content, options);
                     
-                    // Actualizar el modelo con los datos del API
+ 
                     Input.Nombre = usuario.Nombre;
                     Input.Apellido = usuario.Apellido;
                     Input.Telefono = usuario.Telefono;
@@ -88,7 +88,7 @@ namespace gestor_eventos.Pages.Usuario
                         (int)response.StatusCode, 
                         $"{apiBaseUrl}/api/usuarios/{userEmail}");
                         
-                    // Usar los datos disponibles en claims como respaldo
+ 
                     Input.Nombre = User.Claims.FirstOrDefault(c => c.Type == "Nombre")?.Value;
                     Input.Apellido = User.Claims.FirstOrDefault(c => c.Type == "Apellido")?.Value;
                     Input.Telefono = User.Claims.FirstOrDefault(c => c.Type == "Telefono")?.Value;
@@ -98,7 +98,7 @@ namespace gestor_eventos.Pages.Usuario
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error al obtener datos del usuario");
-                // Usar los datos disponibles en claims como respaldo
+ 
                 Input.Nombre = User.Claims.FirstOrDefault(c => c.Type == "Nombre")?.Value;
                 Input.Apellido = User.Claims.FirstOrDefault(c => c.Type == "Apellido")?.Value;
                 Input.Telefono = User.Claims.FirstOrDefault(c => c.Type == "Telefono")?.Value;
@@ -122,10 +122,10 @@ namespace gestor_eventos.Pages.Usuario
 
             try
             {
-                // Obtener el correo del usuario actual desde las claims
+ 
                 var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
                         
-                // Obtener el token de autenticación
+ 
                 var token = User.FindFirst("AccessToken")?.Value;
 
                 if (string.IsNullOrEmpty(token) || string.IsNullOrEmpty(userEmail))
@@ -137,7 +137,7 @@ namespace gestor_eventos.Pages.Usuario
 
                 _logger.LogInformation("Actualizando perfil para usuario con email: {Email}", userEmail);
 
-                // Crear el objeto de actualización exactamente como lo espera la API
+ 
                 var updateData = new
                 {
                     nombre = Input.Nombre,
@@ -146,29 +146,29 @@ namespace gestor_eventos.Pages.Usuario
                     verificado = true  // Campo requerido por la API
                 };
 
-                // Configurar el HttpClient con los headers necesarios
+ 
                 _httpClient.DefaultRequestHeaders.Clear();
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 _httpClient.DefaultRequestHeaders.Accept.Clear();
                 _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                // Serializar los datos exactamente como en el ejemplo del Swagger
+ 
                 var jsonContent = JsonSerializer.Serialize(updateData);
                 _logger.LogDebug("Datos JSON a enviar: {JsonContent}", jsonContent);
                 
                 var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
-                // Construir la URL correctamente
+ 
                 var apiBaseUrl = _configuration["ApiSettings:BaseUrl"];
                 var encodedEmail = Uri.EscapeDataString(userEmail);
                 var requestUrl = $"{apiBaseUrl}/api/usuarios/{encodedEmail}";
                 
                 _logger.LogDebug("Enviando solicitud PUT a: {Url}", requestUrl);
                 
-                // Realizar la solicitud PUT
+ 
                 var response = await _httpClient.PutAsync(requestUrl, content);
                 
-                // Leer la respuesta completa para registro y depuración
+ 
                 var responseContent = await response.Content.ReadAsStringAsync();
                 _logger.LogDebug("Respuesta recibida: {Response}", responseContent);
 
@@ -183,12 +183,12 @@ namespace gestor_eventos.Pages.Usuario
                     };
                     var usuario = JsonSerializer.Deserialize<UsuarioResponse>(responseContent, options);
                     
-                    // Actualizar el modelo con los datos actualizados
+ 
                     Input.Nombre = usuario.Nombre;
                     Input.Apellido = usuario.Apellido;
                     Input.Telefono = usuario.Telefono;
                     
-                    // Actualizar las claims del usuario
+ 
                     await UpdateUserClaimsAsync(usuario);
                 }
                 else
@@ -230,7 +230,7 @@ namespace gestor_eventos.Pages.Usuario
             public string Email { get; set; }
         }
 
-        // Clase para deserializar la respuesta del API
+ 
         private class UsuarioResponse
         {
             public string Id { get; set; }
@@ -241,20 +241,20 @@ namespace gestor_eventos.Pages.Usuario
             public DateTime FechaRegistro { get; set; }
         }
 
-        // Método para actualizar las claims del usuario
+ 
         private async Task UpdateUserClaimsAsync(UsuarioResponse usuario)
         {
             try
             {
-                // Obtener el ClaimsPrincipal actual
+ 
                 var identity = (ClaimsIdentity)User.Identity;
                 
-                // Actualizar los claims existentes o añadir nuevos
+ 
                 UpdateOrAddClaim(identity, "Nombre", usuario.Nombre);
                 UpdateOrAddClaim(identity, "Apellido", usuario.Apellido);
                 UpdateOrAddClaim(identity, "Telefono", usuario.Telefono);
                 
-                // Si usamos la autenticación de cookies, actualizamos la cookie
+ 
                 var authenticationManager = HttpContext.RequestServices
                     .GetRequiredService<Microsoft.AspNetCore.Authentication.IAuthenticationService>();
                     
@@ -271,7 +271,7 @@ namespace gestor_eventos.Pages.Usuario
             }
         }
 
-        // Método auxiliar para actualizar o añadir claims
+ 
         private void UpdateOrAddClaim(ClaimsIdentity identity, string claimType, string claimValue)
         {
             var claim = identity.FindFirst(claimType);

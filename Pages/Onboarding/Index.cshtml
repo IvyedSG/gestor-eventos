@@ -768,86 +768,86 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         $(document).ready(function() {
-            // Código existente para navegación
+ 
             $('.btn-next').click(function() {
                 var currentStep = $(this).closest('.onboarding-step').attr('id');
                 var nextStep = $(this).data('target');
                 
-                // Ocultar paso actual y mostrar el siguiente
+ 
                 $('#' + currentStep).hide();
                 $('#' + nextStep).show();
                 
-                // Actualizar indicador de progreso
+ 
                 $('.progress-dot').removeClass('active');
                 $('.progress-dot[data-step="' + nextStep + '"]').addClass('active');
 
-                // Si estamos yendo al paso 4, transferimos los datos del servicio
+ 
                 if (nextStep === 'step4') {
-                    // Capturar datos del servicio creado en el paso 2
+ 
                     $('#selectedServiceName').text($('#serviceName').val() || 'Paquete de boda premium');
                     $('#selectedServiceCategory').text($('#serviceCategory option:selected').text() || 'Bodas');
                     $('#selectedServicePrice').text('$' + ($('#servicePrice').val() || '2,500.00'));
                     $('#selectedServiceDescription').text($('#serviceDescription').val() || 'Servicio completo para bodas de hasta 100 invitados');
                 }
 
-                // Scroll al inicio del contenedor
+ 
                 $('html, body').animate({
                     scrollTop: $('.onboarding-container').offset().top - 20
                 }, 300);
             });
             
-            // Código existente para botón anterior
+ 
             $('.btn-prev').click(function() {
                 var currentStep = $(this).closest('.onboarding-step').attr('id');
                 var prevStep = $(this).data('target');
                 
-                // Ocultar paso actual y mostrar el anterior
+ 
                 $('#' + currentStep).hide();
                 $('#' + prevStep).show();
                 
-                // Actualizar indicador de progreso
+ 
                 $('.progress-dot').removeClass('active');
                 $('.progress-dot[data-step="' + prevStep + '"]').addClass('active');
 
-                // Scroll al inicio del contenedor
+ 
                 $('html, body').animate({
                     scrollTop: $('.onboarding-container').offset().top - 20
                 }, 300);
             });
             
-            // Código existente para los puntos de progreso
+ 
             $('.progress-dot').click(function() {
                 var targetStep = $(this).data('step');
                 
-                // Ocultar todos los pasos y mostrar el seleccionado
+ 
                 $('.onboarding-step').hide();
                 $('#' + targetStep).show();
                 
-                // Actualizar indicador de progreso
+ 
                 $('.progress-dot').removeClass('active');
                 $(this).addClass('active');
 
-                // Scroll al inicio del contenedor
+ 
                 $('html, body').animate({
                     scrollTop: $('.onboarding-container').offset().top - 20
                 }, 300);
             });
 
-            // Código existente para tarjetas de acción
+ 
             $('.action-card').click(function() {
                 window.location.href = '/Dashboard';
             });
 
-            // NUEVAS FUNCIONES PARA LOS FORMULARIOS INTERACTIVOS
+ 
             
-            // Agregar más ítems de inventario
+ 
             $('#addMoreItems').click(function() {
                 var newItem = $('.inventory-item').first().clone();
                 newItem.find('input, textarea, select').val(''); // Limpiar valores
                 $('#inventoryItemsContainer').append(newItem);
             });
 
-            // Manejar la selección de ítems en el paso 4
+ 
             $(document).on('change', '.item-selection', function() {
                 var detailsContainer = $(this).closest('.item-assignment').find('.item-details');
                 if ($(this).val() !== null) {
@@ -857,7 +857,7 @@
                 }
             });
 
-            // Agregar más asignaciones de ítems
+ 
             $('#addMoreAssignments').click(function() {
                 var newAssignment = $('.item-assignment').first().clone();
                 newAssignment.find('input').val('');
@@ -866,7 +866,7 @@
                 $('#itemAssignmentContainer').append(newAssignment);
             });
 
-            // Remover un ítem asignado
+ 
             $(document).on('click', '.remove-item', function() {
                 var container = $('#itemAssignmentContainer');
                 if (container.find('.item-assignment').length > 1) {
