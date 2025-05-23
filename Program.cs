@@ -32,6 +32,7 @@ builder.Services.AddHttpClient<ReservacionService>();
 builder.Services.AddHttpClient<ServicioService>();
 builder.Services.AddHttpClient<InventoryService>();
 builder.Services.AddScoped<DashboardService>();
+builder.Services.AddScoped<PagoService>();
 
 builder.Services.AddAuthentication(options => 
 {

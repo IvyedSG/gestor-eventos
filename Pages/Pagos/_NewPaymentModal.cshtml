@@ -1,0 +1,59 @@
+@model gestor_eventos.Pages.Pagos.IndexModel
+
+<div class="modal fade" id="newPaymentModal" tabindex="-1" aria-labelledby="newPaymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title" id="newPaymentModalLabel">
+                    <i class="bi bi-plus-circle me-2 text-success"></i>Registrar Nuevo Pago
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="newPaymentForm">
+                    <div class="mb-4">
+                        <label for="reservationSelect" class="form-label">Reserva <span class="text-danger">*</span></label>
+                        <select class="form-select" id="reservationSelect" required>
+                            <option value="0" selected disabled>Seleccionar reserva</option>
+                            <!-- Las reservas se cargarán dinámicamente mediante JavaScript -->
+                        </select>
+                        <div class="form-text">Seleccione la reserva a la que pertenece este pago</div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="paymentType" class="form-label">Tipo de Pago <span class="text-danger">*</span></label>
+                        <select class="form-select" id="tipoPago" required>
+                            <option value="">Seleccionar tipo de pago</option>
+                            @foreach (var tipoPago in Model.TiposPago)
+                            {
+                                <option value="@tipoPago.Id">@tipoPago.Nombre</option>
+                            }
+                        </select>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="amount" class="form-label">Monto <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <span class="input-group-text">S/</span>
+                            <input type="number" class="form-control" id="amount" min="0.01" step="0.01" required placeholder="0.00">
+                        </div>
+                        <div class="form-text">Ingrese el monto del pago en soles</div>
+                    </div>
+                </form>
+                
+                <div class="alert alert-info d-flex align-items-center mt-3">
+                    <i class="bi bi-info-circle-fill me-2"></i>
+                    <div>
+                        Los pagos son registrados con la fecha actual del sistema.
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-success" id="saveNewPayment">
+                    <i class="bi bi-save me-1"></i>Guardar Pago
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

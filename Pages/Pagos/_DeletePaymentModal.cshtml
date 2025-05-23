@@ -1,0 +1,23 @@
+<div class="modal fade" id="deletePaymentModal" tabindex="-1" aria-labelledby="deletePaymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="deletePaymentModalLabel">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>Confirmar Eliminación
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="deletePaymentId">
+                <p>¿Está seguro que desea eliminar el pago asociado a la reserva <strong id="deletePaymentReservation"></strong>?</p>
+                <p class="mb-0 text-danger"><i class="bi bi-exclamation-circle me-2"></i>Esta acción no se puede deshacer.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="confirmDeletePayment">
+                    <i class="bi bi-trash me-1"></i>Eliminar Pago
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -59,9 +59,10 @@
                     <tr>
                         <th scope="col" class="ps-4">Nombre</th>
                         <th scope="col">Correo</th>
-                        <th scope="col">Teléfono</th>
                         <th scope="col">Dirección</th>
                         <th scope="col">Tipo</th>
+                        <th scope="col">RUC</th>
+                        <th scope="col">Razón Social</th>
                         <th scope="col">Total Eventos</th>
                         <th scope="col">Última Reserva</th>
                         <th scope="col" class="text-center">Acciones</th>
@@ -72,10 +73,9 @@
                     {
                         @foreach (var client in Model.Clients)
                         {
-                            <tr class="client-row" data-client-id="@client.Id" data-registration-date="@client.RegistrationDate.ToString("dd/MM/yyyy")">
+                            <tr class="client-row" data-client-id="@client.Id">
                                 <td class="ps-4 fw-medium">@client.Name</td>
                                 <td>@client.Email</td>
-                                <td>@client.Phone</td>
                                 <td>@client.Address</td>
                                 <td>
                                     @if (client.Type == "Individual")
@@ -87,6 +87,8 @@
                                         <span class="badge bg-info bg-opacity-10 text-info px-2 py-1">Empresa</span>
                                     }
                                 </td>
+                                <td>@(string.IsNullOrEmpty(client.Ruc) ? "-" : client.Ruc)</td>
+                                <td>@(string.IsNullOrEmpty(client.RazonSocial) ? "-" : client.RazonSocial)</td>
                                 <td>@client.EventCount</td>
                                 <td>
                                     @if (client.LastReservation.HasValue)
@@ -219,6 +221,16 @@
                             <label for="clientAddress" class="form-label">Dirección</label>
                             <input type="text" class="form-control" id="clientAddress">
                         </div>
+                        
+                        <div class="col-md-6 company-field" style="display: none;">
+                            <label for="clientRuc" class="form-label">RUC</label>
+                            <input type="text" class="form-control" id="clientRuc">
+                        </div>
+                        
+                        <div class="col-md-6 company-field" style="display: none;">
+                            <label for="clientRazonSocial" class="form-label">Razón Social</label>
+                            <input type="text" class="form-control" id="clientRazonSocial">
+                        </div>
                     </div>
                 </form>
             </div>
@@ -276,6 +288,16 @@
                             <label for="editClientAddress" class="form-label">Dirección</label>
                             <input type="text" class="form-control" id="editClientAddress">
                         </div>
+                        
+                        <div class="col-md-6 edit-company-field" style="display: none;">
+                            <label for="editClientRuc" class="form-label">RUC</label>
+                            <input type="text" class="form-control" id="editClientRuc">
+                        </div>
+                        
+                        <div class="col-md-6 edit-company-field" style="display: none;">
+                            <label for="editClientRazonSocial" class="form-label">Razón Social</label>
+                            <input type="text" class="form-control" id="editClientRazonSocial">
+                        </div>
                     </div>
                 </form>
             </div>
@@ -298,28 +320,28 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="card border-0 shadow-sm">
-                    <div class="card-body">
-                        <h6 class="card-title fw-bold mb-3">Información de Contacto</h6>
+                <div class="row">
+                    <div class="col-md-12">
                         <div class="mb-3">
-                            <i class="bi bi-envelope text-primary me-2"></i>
-                            <span id="viewClientEmail">correo@ejemplo.com</span>
-                        </div>
-                        <div class="mb-3">
-                            <i class="bi bi-telephone text-primary me-2"></i>
-                            <span id="viewClientPhone">123-456-7890</span>
-                        </div>
-                        <div class="mb-3">
-                            <i class="bi bi-geo-alt text-primary me-2"></i>
-                            <span id="viewClientAddress">Dirección del cliente</span>
+                            <label class="text-muted">Correo electrónico:</label>
+                            <div id="viewClientEmail" class="fw-medium"></div>
                         </div>
                         
-                        <h6 class="card-title fw-bold mb-3 mt-4">Información Adicional</h6>
                         <div class="mb-3">
-                            <span class="text-muted">Cliente desde:</span>
-                            <span id="viewClientSince" class="ms-1">01/01/2025</span>
+                            <label class="text-muted">Dirección:</label>
+                            <div id="viewClientAddress"></div>
                         </div>
                         
+                        <div class="mb-3">
+                            <label class="text-muted">RUC:</label>
+                            <div id="viewClientRuc"></div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="text-muted">Razón Social:</label>
+                            <div id="viewClientRazonSocial"></div>
+                        </div>
+
                         <div class="mb-3">
                             <span class="text-muted">Total eventos:</span>
                             <span id="viewTotalEvents" class="ms-1 fw-bold">3</span>
@@ -379,32 +401,39 @@
  
             const individualClient = document.getElementById('individualClient');
             const companyClient = document.getElementById('companyClient');
-            
+            const companyFields = document.querySelectorAll('.company-field');
+
             if (individualClient) {
                 individualClient.addEventListener('change', function() {
                     document.getElementById('nameLabel').textContent = 'Nombre completo';
+                    companyFields.forEach(field => field.style.display = 'none');
                 });
             }
             
             if (companyClient) {
                 companyClient.addEventListener('change', function() {
                     document.getElementById('nameLabel').textContent = 'Nombre de la empresa';
+                    companyFields.forEach(field => field.style.display = 'block');
                 });
             }
             
  
+            // Agregar los campos de empresa al formulario de edición
             const editIndividualClient = document.getElementById('editIndividualClient');
             const editCompanyClient = document.getElementById('editCompanyClient');
-            
+            const editCompanyFields = document.querySelectorAll('.edit-company-field');
+
             if (editIndividualClient) {
                 editIndividualClient.addEventListener('change', function() {
                     document.getElementById('editNameLabel').textContent = 'Nombre completo';
+                    editCompanyFields.forEach(field => field.style.display = 'none');
                 });
             }
             
             if (editCompanyClient) {
                 editCompanyClient.addEventListener('change', function() {
                     document.getElementById('editNameLabel').textContent = 'Nombre de la empresa';
+                    editCompanyFields.forEach(field => field.style.display = 'block');
                 });
             }
 
@@ -412,44 +441,32 @@
             document.querySelectorAll('.view-client-btn').forEach(button => {
                 button.addEventListener('click', function() {
                     const clientId = this.dataset.clientId;
-                    loadClientDetails(clientId);
+                    loadClientForView(clientId);
                 });
             });
 
  
-            function loadClientDetails(clientId) {
- 
+            function loadClientForView(clientId) {
                 const clientRow = document.querySelector(`[data-client-id="${clientId}"]`);
                 
                 if (!clientRow) return;
                 
                 const row = clientRow.closest('tr');
                 
- 
                 const name = row.querySelector('td:nth-child(1)').textContent.trim();
                 const email = row.querySelector('td:nth-child(2)').textContent.trim();
-                const phone = row.querySelector('td:nth-child(3)').textContent.trim();
-                const address = row.querySelector('td:nth-child(4)').textContent.trim();
-                const type = row.querySelector('td:nth-child(5)').textContent.trim();
+                const address = row.querySelector('td:nth-child(3)').textContent.trim();
+                const ruc = row.querySelector('td:nth-child(5)').textContent.trim();
+                const razonSocial = row.querySelector('td:nth-child(6)').textContent.trim();
+                const eventCount = row.querySelector('td:nth-child(7)').textContent.trim();
+                const lastReservation = row.querySelector('td:nth-child(8)').textContent.trim();
                 
- 
                 document.getElementById('viewClientName').textContent = name;
                 document.getElementById('viewClientEmail').textContent = email;
-                document.getElementById('viewClientPhone').textContent = phone;
                 document.getElementById('viewClientAddress').textContent = address || "No disponible";
-                
- 
-                const registrationDate = row.hasAttribute('data-registration-date') 
-                    ? row.getAttribute('data-registration-date') 
-                    : "No disponible";
-                document.getElementById('viewClientSince').textContent = registrationDate;
-                
- 
-                const eventCount = row.querySelector('td:nth-child(6)').textContent.trim();
+                document.getElementById('viewClientRuc').textContent = ruc || "No disponible";
+                document.getElementById('viewClientRazonSocial').textContent = razonSocial || "No disponible";
                 document.getElementById('viewTotalEvents').textContent = eventCount;
-                
- 
-                const lastReservation = row.querySelector('td:nth-child(7)').textContent.trim();
                 document.getElementById('viewLastReservation').textContent = lastReservation;
             }
 
@@ -486,19 +503,14 @@
                         const clientPhone = document.getElementById('clientPhone')?.value;
                         const clientAddress = document.getElementById('clientAddress')?.value;
                         
- 
-                        if (!clientName || !clientEmail || !clientPhone) {
-                            alert('Por favor complete todos los campos obligatorios');
-                            return;
-                        }
-                        
- 
                         const clientData = {
                             tipoCliente: clientType === 'Individual' ? 'INDIVIDUAL' : 'EMPRESA',
                             nombre: clientName,
                             correoElectronico: clientEmail,
                             telefono: clientPhone,
-                            direccion: clientAddress || ''
+                            direccion: clientAddress || '',
+                            ruc: clientType === 'Empresa' ? document.getElementById('clientRuc')?.value || '' : '',
+                            razonSocial: clientType === 'Empresa' ? document.getElementById('clientRazonSocial')?.value || '' : ''
                         };
                         
  
@@ -578,37 +590,38 @@
             });
 
  
+            // Modificar la función loadClientForEdit para cargar los campos RUC y Razón Social
             function loadClientForEdit(clientId) {
- 
                 const clientRow = document.querySelector(`[data-client-id="${clientId}"]`);
                 
                 if (!clientRow) return;
                 
                 const row = clientRow.closest('tr');
                 
- 
                 const name = row.querySelector('td:nth-child(1)').textContent.trim();
                 const email = row.querySelector('td:nth-child(2)').textContent.trim();
-                const phone = row.querySelector('td:nth-child(3)').textContent.trim();
-                const address = row.querySelector('td:nth-child(4)').textContent.trim();
-                const type = row.querySelector('td:nth-child(5)').querySelector('.badge').textContent.trim();
+                const address = row.querySelector('td:nth-child(3)').textContent.trim();
+                const type = row.querySelector('td:nth-child(4) span').textContent.trim();
+                const ruc = row.querySelector('td:nth-child(5)').textContent.trim();
+                const razonSocial = row.querySelector('td:nth-child(6)').textContent.trim();
                 
- 
                 document.getElementById('editClientId').value = clientId;
-                
- 
                 document.getElementById('editClientName').value = name;
                 document.getElementById('editClientEmail').value = email;
-                document.getElementById('editClientPhone').value = phone;
+                document.getElementById('editClientPhone').value = document.getElementById('editClientPhone')?.value || '';
                 document.getElementById('editClientAddress').value = address;
+                document.getElementById('editClientRuc').value = ruc !== "-" ? ruc : "";
+                document.getElementById('editClientRazonSocial').value = razonSocial !== "-" ? razonSocial : "";
                 
- 
+                // Establecer el tipo de cliente
                 if (type === 'Individual') {
                     document.getElementById('editIndividualClient').checked = true;
                     document.getElementById('editNameLabel').textContent = 'Nombre completo';
+                    editCompanyFields.forEach(field => field.style.display = 'none');
                 } else {
                     document.getElementById('editCompanyClient').checked = true;
                     document.getElementById('editNameLabel').textContent = 'Nombre de la empresa';
+                    editCompanyFields.forEach(field => field.style.display = 'block');
                 }
             }
 
@@ -645,7 +658,9 @@
                             nombre: clientName,
                             correoElectronico: clientEmail,
                             telefono: clientPhone,
-                            direccion: clientAddress || ''
+                            direccion: clientAddress || '',
+                            ruc: clientType === 'Empresa' ? document.getElementById('editClientRuc')?.value || '' : '',
+                            razonSocial: clientType === 'Empresa' ? document.getElementById('editClientRazonSocial')?.value || '' : ''
                         };
                         
  

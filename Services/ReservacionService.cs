@@ -1,15 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Net.Http.Json;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using gestor_eventos.Models.ApiModels;
-using Microsoft.Extensions.Options;
-using GestorEventos.Services;
-using Microsoft.AspNetCore.Http;
 using System.Text.Json;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using System.Net.Http.Json; // Add this for PostAsJsonAsync and PutAsJsonAsync
+using System.Linq;
+
+// Add these using directives to resolve missing types
+using gestor_eventos.Models.ApiModels; // For ReservacionApi, ReservacionUpdateModel, ReservacionCreateModel
+using GestorEventos.Services; // For ApiSettings
 
 namespace gestor_eventos.Services
 {
@@ -281,6 +284,56 @@ namespace gestor_eventos.Services
             }
         }
         
- 
+        public async Task<ReservacionApi> GetReservacionAsync(string id)
+        {
+            try
+            {
+                var token = _httpContextAccessor.HttpContext.User.FindFirst("AccessToken")?.Value;
+                
+                if (string.IsNullOrEmpty(token))
+                {
+                    _logger.LogWarning("Token no encontrado al intentar obtener reservación: {Id}", id);
+                    return null;
+                }
+
+                _logger.LogInformation("Obteniendo reservación: {Id}", id);
+                
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                var response = await _httpClient.GetAsync($"{_apiSettings.BaseUrl}/api/reservaciones/{id}");
+                
+                if (!response.IsSuccessStatusCode)
+                {
+                    _logger.LogWarning("Error al obtener reservación. Código: {StatusCode}, Mensaje: {Message}", 
+                        (int)response.StatusCode, response.ReasonPhrase);
+                    return null;
+                }
+
+                var content = await response.Content.ReadAsStringAsync();
+                _logger.LogDebug("Respuesta del API: {Response}", content);
+                
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+                
+                return JsonSerializer.Deserialize<ReservacionApi>(content, options);
+            }
+            catch (HttpRequestException ex)
+            {
+                _logger.LogError(ex, "Error de conexión al obtener la reservación: {Message}", ex.Message);
+                return null;
+            }
+            catch (JsonException ex)
+            {
+                _logger.LogError(ex, "Error al procesar la respuesta del servidor: {Message}", ex.Message);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error inesperado: {Message}", ex.Message);
+                return null;
+            }
+        }
     }
 }

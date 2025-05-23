@@ -24,9 +24,6 @@ namespace gestor_eventos.Pages.Inventario
         public string SearchTerm { get; set; }
         
         [BindProperty(SupportsGet = true)]
-        public string CategoryFilter { get; set; }
-        
-        [BindProperty(SupportsGet = true)]
         public string StatusFilter { get; set; }
         
         [BindProperty(SupportsGet = true)]
@@ -77,34 +74,22 @@ namespace gestor_eventos.Pages.Inventario
         {
             try
             {
- 
-                string userId = User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
-                
-                if (string.IsNullOrEmpty(userId))
-                {
-                    _logger.LogError("No se pudo obtener el ID de usuario de las claims");
-                    InventoryItems = new List<InventarioItemApi>();
-                    return;
-                }
-
- 
+                // Ya no necesitamos obtener el ID de usuario
                 var client = _clientFactory.CreateClient();
                 
- 
+                // Obtenemos el token de autenticación como antes
                 string token = User.Claims.FirstOrDefault(c => c.Type == "AccessToken")?.Value;
                 if (!string.IsNullOrEmpty(token))
                 {
                     client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
                 }
                 
- 
                 string baseUrl = _configuration["ApiSettings:BaseUrl"] ?? "https://api.example.com";
                 
- 
-                _logger.LogInformation($"Llamando a la API: {baseUrl}/api/inventario/usuario/{userId}");
+                // Utilizamos el nuevo endpoint que no requiere el ID de usuario
+                _logger.LogInformation($"Llamando a la API: {baseUrl}/api/items");
                 
- 
-                var response = await client.GetAsync($"{baseUrl}/api/inventario/usuario/{userId}");
+                var response = await client.GetAsync($"{baseUrl}/api/items");
                 
                 if (response.IsSuccessStatusCode)
                 {
@@ -151,12 +136,6 @@ namespace gestor_eventos.Pages.Inventario
             }
             
  
-            if (!string.IsNullOrWhiteSpace(CategoryFilter))
-            {
-                InventoryItems = InventoryItems.Where(i => i.Categoria == CategoryFilter).ToList();
-            }
-            
- 
             if (!string.IsNullOrWhiteSpace(StatusFilter))
             {
                 if (StatusFilter == "Normal")
@@ -179,74 +158,63 @@ namespace gestor_eventos.Pages.Inventario
         {
             try
             {
+                _logger.LogInformation($"Recibidos datos para nuevo ítem: {JsonSerializer.Serialize(newItem)}");
+                
                 if (newItem == null)
                 {
+                    _logger.LogWarning("Datos de ítem recibidos como nulos");
                     return new JsonResult(new { success = false, message = "Datos de ítem inválidos" });
                 }
 
- 
                 if (string.IsNullOrWhiteSpace(newItem.Nombre))
                 {
                     return new JsonResult(new { success = false, message = "El nombre del ítem es obligatorio" });
                 }
 
-                if (string.IsNullOrWhiteSpace(newItem.Categoria))
-                {
-                    return new JsonResult(new { success = false, message = "La categoría es obligatoria" });
-                }
-
-                if (newItem.Stock < 0)
-                {
-                    return new JsonResult(new { success = false, message = "El stock no puede ser negativo" });
-                }
-
- 
-                string userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
-                
-                if (string.IsNullOrEmpty(userEmail))
-                {
-                    _logger.LogError("No se pudo obtener el correo de usuario de las claims");
-                    return new JsonResult(new { success = false, message = "No se pudo identificar al usuario" });
-                }
-
- 
                 var client = _clientFactory.CreateClient();
                 
- 
                 string token = User.Claims.FirstOrDefault(c => c.Type == "AccessToken")?.Value;
                 if (!string.IsNullOrEmpty(token))
                 {
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 }
                 
- 
                 string baseUrl = _configuration["ApiSettings:BaseUrl"];
                 
- 
-                _logger.LogInformation($"Enviando solicitud a: {baseUrl}/api/inventario/{userEmail}");
-                _logger.LogInformation($"Datos del ítem: {System.Text.Json.JsonSerializer.Serialize(newItem)}");
+                _logger.LogInformation($"Enviando solicitud POST a: {baseUrl}/api/items");
 
- 
+                // Asegúrate de que estos nombres coincidan exactamente con lo que la API espera
+                var itemRequest = new
+                {
+                    nombre = newItem.Nombre,
+                    descripcion = newItem.Descripcion ?? string.Empty,
+                    stock = newItem.Stock,
+                    preciobase = newItem.PrecioBase ?? "0"
+                };
+
+                _logger.LogInformation($"Datos a enviar: {JsonSerializer.Serialize(itemRequest)}");
+
                 var content = new StringContent(
-                    System.Text.Json.JsonSerializer.Serialize(newItem),
+                    JsonSerializer.Serialize(itemRequest),
                     System.Text.Encoding.UTF8,
                     "application/json");
-                    
-                var response = await client.PostAsync($"{baseUrl}/api/inventario/{userEmail}", content);
-                
+            
+                var response = await client.PostAsync($"{baseUrl}/api/items", content);
+        
+                var responseContent = await response.Content.ReadAsStringAsync();
+                _logger.LogInformation($"Respuesta API: {response.StatusCode} - {responseContent}");
+        
                 if (response.IsSuccessStatusCode)
                 {
-                    _logger.LogInformation("Ítem creado correctamente");
                     return new JsonResult(new { success = true, message = "Ítem creado correctamente" });
                 }
                 else
                 {
-                    var errorContent = await response.Content.ReadAsStringAsync();
-                    _logger.LogError($"Error al crear el ítem. API devolvió {response.StatusCode}: {errorContent}");
+                    _logger.LogWarning($"Error en API: {response.StatusCode} - {responseContent}");
                     return new JsonResult(new { 
                         success = false, 
                         message = $"Error al crear el ítem. Código: {response.StatusCode}", 
-                        details = errorContent 
+                        details = responseContent 
                     });
                 }
             }
@@ -266,15 +234,9 @@ namespace gestor_eventos.Pages.Inventario
                     return new JsonResult(new { success = false, message = "Datos de ítem inválidos o ID no proporcionado" });
                 }
 
- 
                 if (string.IsNullOrWhiteSpace(updatedItem.Nombre))
                 {
                     return new JsonResult(new { success = false, message = "El nombre del ítem es obligatorio" });
-                }
-
-                if (string.IsNullOrWhiteSpace(updatedItem.Categoria))
-                {
-                    return new JsonResult(new { success = false, message = "La categoría es obligatoria" });
                 }
 
                 if (updatedItem.Stock < 0)
@@ -282,39 +244,34 @@ namespace gestor_eventos.Pages.Inventario
                     return new JsonResult(new { success = false, message = "El stock no puede ser negativo" });
                 }
 
- 
-                string userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
-                
-                if (string.IsNullOrEmpty(userEmail))
-                {
-                    _logger.LogError("No se pudo obtener el correo de usuario de las claims");
-                    return new JsonResult(new { success = false, message = "No se pudo identificar al usuario" });
-                }
-
- 
                 var client = _clientFactory.CreateClient();
                 
- 
                 string token = User.Claims.FirstOrDefault(c => c.Type == "AccessToken")?.Value;
                 if (!string.IsNullOrEmpty(token))
                 {
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 }
                 
- 
                 string baseUrl = _configuration["ApiSettings:BaseUrl"];
                 
- 
-                _logger.LogInformation($"Enviando solicitud PUT a: {baseUrl}/api/inventario/{userEmail}/{id}");
+                _logger.LogInformation($"Enviando solicitud PUT a: {baseUrl}/api/items/{id}");
                 _logger.LogInformation($"Datos de actualización: {JsonSerializer.Serialize(updatedItem)}");
 
- 
+                // Crear el objeto con el formato exacto que la API espera
+                var itemRequest = new
+                {
+                    nombre = updatedItem.Nombre,
+                    descripcion = updatedItem.Descripcion ?? string.Empty,
+                    stock = updatedItem.Stock,
+                    preciobase = updatedItem.PrecioBase ?? "0"
+                };
+
                 var content = new StringContent(
-                    JsonSerializer.Serialize(updatedItem),
+                    JsonSerializer.Serialize(itemRequest),
                     System.Text.Encoding.UTF8,
                     "application/json");
-                    
-                var response = await client.PutAsync($"{baseUrl}/api/inventario/{userEmail}/{id}", content);
+            
+                var response = await client.PutAsync($"{baseUrl}/api/items/{id}", content);
                 
                 if (response.IsSuccessStatusCode)
                 {

@@ -624,7 +624,13 @@
                         <span class="nav-text">Inventario</span>
                     </a>
                 </li>
-                <li class="nav-item"></li>
+                <li class="nav-item">
+                    <a href="/Pagos" class="nav-link @(ViewContext.RouteData.Values["Page"]?.ToString() == "/Pagos/Index" ? "active" : "")">
+                        <i class="bi bi-cash-coin"></i>
+                        <span class="nav-text">Pagos</span>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="/Usuario/Perfil" class="nav-link @(ViewContext.RouteData.Values["Page"]?.ToString() == "/Usuario/Perfil" ? "active" : "")">
                         <i class="bi bi-person-circle"></i>
                         <span class="nav-text">Perfil</span>

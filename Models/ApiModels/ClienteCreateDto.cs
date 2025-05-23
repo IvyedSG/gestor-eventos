@@ -7,5 +7,7 @@ namespace GestorEventos.Models.ApiModels
         public string CorreoElectronico { get; set; }
         public string Telefono { get; set; }
         public string Direccion { get; set; }
+        public string Ruc { get; set; }
+        public string RazonSocial { get; set; }
     }
 }

@@ -32,18 +32,17 @@ namespace GestorEventos.Services
             _logger = logger;
         }
 
+        // Método actualizado para obtener clientes sin necesidad del parámetro de correo
         public async Task<List<ClienteApi>> GetClientesByUsuarioAsync(string correo)
         {
             try
             {
- 
                 var token = _httpContextAccessor.HttpContext.User.FindFirst("AccessToken")?.Value;
                 
                 if (string.IsNullOrEmpty(token))
                 {
                     _logger.LogWarning("Token no encontrado en las claims del usuario: {Email}", correo);
                     
- 
                     token = _httpContextAccessor.HttpContext.Request.Cookies["AuthToken"];
                     
                     if (string.IsNullOrEmpty(token))
@@ -53,15 +52,13 @@ namespace GestorEventos.Services
                     }
                 }
 
-                _logger.LogInformation("Obteniendo clientes para el usuario: {Email}", correo);
+                _logger.LogInformation("Obteniendo todos los clientes");
                 
- 
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
- 
-                var response = await _httpClient.GetAsync($"{_apiSettings.BaseUrl}/api/clientes/usuario/{correo}");
+                // Usar el nuevo endpoint sin el correo
+                var response = await _httpClient.GetAsync($"{_apiSettings.BaseUrl}/api/clientes");
                 
- 
                 if (!response.IsSuccessStatusCode)
                 {
                     _logger.LogWarning("Error al obtener clientes. Código: {StatusCode}, Mensaje: {Message}", 
@@ -70,7 +67,6 @@ namespace GestorEventos.Services
                     return new List<ClienteApi>();
                 }
 
- 
                 var content = await response.Content.ReadAsStringAsync();
                 _logger.LogDebug("Respuesta del API: {Response}", content);
                 
@@ -102,7 +98,6 @@ namespace GestorEventos.Services
         {
             try
             {
- 
                 var token = _httpContextAccessor.HttpContext.User.FindFirst("AccessToken")?.Value;
                 
                 if (string.IsNullOrEmpty(token))
@@ -111,20 +106,17 @@ namespace GestorEventos.Services
                     return false;
                 }
 
-                _logger.LogInformation("Creando cliente para el usuario: {Email}", userEmail);
+                _logger.LogInformation("Creando cliente");
                 
- 
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
- 
                 var jsonContent = JsonSerializer.Serialize(cliente);
                 _logger.LogDebug("Enviando datos al API: {JsonContent}", jsonContent);
                 var content = new StringContent(jsonContent, System.Text.Encoding.UTF8, "application/json");
 
- 
-                var response = await _httpClient.PostAsync($"{_apiSettings.BaseUrl}/api/clientes/{userEmail}", content);
+                // Usar la nueva ruta sin el correo del usuario
+                var response = await _httpClient.PostAsync($"{_apiSettings.BaseUrl}/api/clientes", content);
                 
- 
                 if (!response.IsSuccessStatusCode)
                 {
                     var errorContent = await response.Content.ReadAsStringAsync();
@@ -147,7 +139,6 @@ namespace GestorEventos.Services
         {
             try
             {
- 
                 var token = _httpContextAccessor.HttpContext.User.FindFirst("AccessToken")?.Value;
                 
                 if (string.IsNullOrEmpty(token))
@@ -158,18 +149,15 @@ namespace GestorEventos.Services
 
                 _logger.LogInformation("Actualizando cliente: {Id}", clienteId);
                 
- 
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
- 
                 var jsonContent = JsonSerializer.Serialize(cliente);
                 _logger.LogDebug("Enviando datos al API: {JsonContent}", jsonContent);
                 var content = new StringContent(jsonContent, System.Text.Encoding.UTF8, "application/json");
 
- 
+                // Usar la nueva ruta con el ID del cliente
                 var response = await _httpClient.PutAsync($"{_apiSettings.BaseUrl}/api/clientes/{clienteId}", content);
                 
- 
                 if (!response.IsSuccessStatusCode)
                 {
                     var errorContent = await response.Content.ReadAsStringAsync();
@@ -192,24 +180,32 @@ namespace GestorEventos.Services
         {
             try
             {
- 
-                var token = _httpContextAccessor.HttpContext.User.FindFirst("AccessToken")?.Value;
+                // Get the authentication token
+                var token = _httpContextAccessor.HttpContext?.User?.FindFirst("AccessToken")?.Value;
                 
                 if (string.IsNullOrEmpty(token))
                 {
                     _logger.LogWarning("Token no encontrado al intentar eliminar cliente: {Id}", clienteId);
-                    return false;
+                    
+                    // Try getting token from cookies as fallback
+                    token = _httpContextAccessor.HttpContext?.Request.Cookies["AuthToken"];
+                    
+                    if (string.IsNullOrEmpty(token))
+                    {
+                        _logger.LogWarning("Token no encontrado en las cookies al intentar eliminar cliente: {Id}", clienteId);
+                        return false;
+                    }
                 }
 
                 _logger.LogInformation("Eliminando cliente: {Id}", clienteId);
                 
- 
+                // Set authorization header
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
- 
+                // Call the updated API endpoint (removed email parameter)
                 var response = await _httpClient.DeleteAsync($"{_apiSettings.BaseUrl}/api/clientes/{clienteId}");
                 
- 
+                // Check response
                 if (!response.IsSuccessStatusCode)
                 {
                     var errorContent = await response.Content.ReadAsStringAsync();

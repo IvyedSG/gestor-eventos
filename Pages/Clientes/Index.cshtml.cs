@@ -37,7 +37,6 @@ namespace gestor_eventos.Pages.Clientes
         {
             try
             {
- 
                 var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
                 
  
@@ -65,18 +64,18 @@ namespace gestor_eventos.Pages.Clientes
                     _logger.LogInformation("No se encontraron clientes para el usuario {Email}", userEmail);
                 }
                 
- 
                 Clients = apiClients.Select(c => new Client
                 {
                     Id = c.Id,
-                    Name = c.Nombre,
-                    Email = c.CorreoElectronico,
-                    Phone = c.Telefono,
+                    Name = c.NombreUsuario,
+                    Email = c.CorreoUsuario, 
                     Address = c.Direccion,
                     Type = c.TipoCliente == "INDIVIDUAL" ? "Individual" : "Empresa",
-                    EventCount = c.TotalReservas, // Usar el valor de la API
-                    LastReservation = c.UltimaFechaReserva, // Usar el valor de la API
-                    RegistrationDate = c.FechaRegistro
+                    Ruc = c.Ruc,
+                    RazonSocial = c.RazonSocial,
+                    Phone = "", // Como ClienteApi no tiene teléfono, asignamos cadena vacía
+                    EventCount = c.TotalReservas,
+                    LastReservation = c.UltimaFechaReserva
                 }).ToList();
 
  
@@ -84,8 +83,7 @@ namespace gestor_eventos.Pages.Clientes
                 {
                     Clients = Clients.Where(c => 
                         c.Name.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) || 
-                        c.Email.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) || 
-                        c.Phone.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ||
+                        c.Email.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ||
                         (c.Address != null && c.Address.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase))
                     ).ToList();
                 }
@@ -110,6 +108,8 @@ namespace gestor_eventos.Pages.Clientes
             public string CorreoElectronico { get; set; }
             public string Telefono { get; set; }
             public string Direccion { get; set; }
+            public string Ruc { get; set; }
+            public string RazonSocial { get; set; }
         }
 
         [HttpPost]
@@ -118,14 +118,12 @@ namespace gestor_eventos.Pages.Clientes
         {
             try
             {
- 
                 if (request == null)
                 {
                     _logger.LogWarning("Request body es nulo");
                     return new JsonResult(new { success = false, message = "No se recibió información del cliente" });
                 }
 
- 
                 var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
                 
                 if (string.IsNullOrEmpty(userEmail))
@@ -134,31 +132,29 @@ namespace gestor_eventos.Pages.Clientes
                     return new JsonResult(new { success = false, message = "No se pudo determinar el usuario actual" });
                 }
 
- 
                 if (User.FindFirst("AccessToken") == null)
                 {
                     _logger.LogWarning("Token no encontrado para el usuario {Email}", userEmail);
                     return new JsonResult(new { success = false, message = "No se ha podido autenticar con el API. Por favor, vuelve a iniciar sesión." });
                 }
 
- 
                 if (string.IsNullOrEmpty(request.Nombre) || string.IsNullOrEmpty(request.CorreoElectronico) || 
                     string.IsNullOrEmpty(request.Telefono) || string.IsNullOrEmpty(request.TipoCliente))
                 {
                     return new JsonResult(new { success = false, message = "Los campos obligatorios no pueden estar vacíos" });
                 }
 
- 
                 var clienteDto = new GestorEventos.Models.ApiModels.ClienteCreateDto
                 {
                     TipoCliente = request.TipoCliente,
                     Nombre = request.Nombre,
                     CorreoElectronico = request.CorreoElectronico,
                     Telefono = request.Telefono,
-                    Direccion = request.Direccion ?? string.Empty
+                    Direccion = request.Direccion ?? string.Empty,
+                    Ruc = request.Ruc ?? string.Empty,
+                    RazonSocial = request.RazonSocial ?? string.Empty
                 };
 
- 
                 _logger.LogInformation("Llamando al servicio para crear cliente: {@ClienteDto}", clienteDto);
                 var result = await _clienteService.CreateClienteAsync(userEmail, clienteDto);
                 
@@ -188,6 +184,8 @@ namespace gestor_eventos.Pages.Clientes
             public string CorreoElectronico { get; set; }
             public string Telefono { get; set; }
             public string Direccion { get; set; }
+            public string Ruc { get; set; }
+            public string RazonSocial { get; set; }
         }
 
         [HttpPost]
@@ -196,14 +194,12 @@ namespace gestor_eventos.Pages.Clientes
         {
             try
             {
- 
                 if (request == null || string.IsNullOrEmpty(request.Id))
                 {
                     _logger.LogWarning("Request body es nulo o no contiene ID");
                     return new JsonResult(new { success = false, message = "No se recibió información válida del cliente" });
                 }
 
- 
                 var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
                 
                 if (string.IsNullOrEmpty(userEmail))
@@ -212,31 +208,29 @@ namespace gestor_eventos.Pages.Clientes
                     return new JsonResult(new { success = false, message = "No se pudo determinar el usuario actual" });
                 }
 
- 
                 if (User.FindFirst("AccessToken") == null)
                 {
                     _logger.LogWarning("Token no encontrado para el usuario {Email}", userEmail);
                     return new JsonResult(new { success = false, message = "No se ha podido autenticar con el API. Por favor, vuelve a iniciar sesión." });
                 }
 
- 
                 if (string.IsNullOrEmpty(request.Nombre) || string.IsNullOrEmpty(request.CorreoElectronico) || 
                     string.IsNullOrEmpty(request.Telefono) || string.IsNullOrEmpty(request.TipoCliente))
                 {
                     return new JsonResult(new { success = false, message = "Los campos obligatorios no pueden estar vacíos" });
                 }
 
- 
                 var clienteDto = new GestorEventos.Models.ApiModels.ClienteCreateDto
                 {
                     TipoCliente = request.TipoCliente,
                     Nombre = request.Nombre,
                     CorreoElectronico = request.CorreoElectronico,
                     Telefono = request.Telefono,
-                    Direccion = request.Direccion ?? string.Empty
+                    Direccion = request.Direccion ?? string.Empty,
+                    Ruc = request.Ruc ?? string.Empty,
+                    RazonSocial = request.RazonSocial ?? string.Empty
                 };
 
- 
                 _logger.LogInformation("Llamando al servicio para actualizar cliente {Id}: {@ClienteDto}", request.Id, clienteDto);
                 var result = await _clienteService.UpdateClienteAsync(request.Id, clienteDto);
                 
@@ -320,11 +314,12 @@ namespace gestor_eventos.Pages.Clientes
         public string Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
-        public string Phone { get; set; }
-        public string Address { get; set; }
         public string Type { get; set; }
+        public string Address { get; set; }
+        public string Ruc { get; set; }
+        public string RazonSocial { get; set; }
+        public string Phone { get; set; } // Agregamos esta propiedad
         public int EventCount { get; set; }
         public DateTime? LastReservation { get; set; }
-        public DateTime RegistrationDate { get; set; }
     }
 }

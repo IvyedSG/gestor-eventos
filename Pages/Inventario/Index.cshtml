@@ -11,7 +11,7 @@
 
 <!-- Header con estadísticas -->
 <div class="row g-3 mb-4">
-    <div class="col-xl-3 col-md-6">
+    <div class="col-xl-4 col-md-6">
         <div class="card border-0 shadow-sm h-100">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-2">
@@ -25,7 +25,7 @@
             </div>
         </div>
     </div>
-    <div class="col-xl-3 col-md-6">
+    <div class="col-xl-4 col-md-6">
         <div class="card border-0 shadow-sm h-100">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-2">
@@ -39,7 +39,7 @@
             </div>
         </div>
     </div>
-    <div class="col-xl-3 col-md-6">
+    <div class="col-xl-4 col-md-6">
         <div class="card border-0 shadow-sm h-100">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-2">
@@ -53,20 +53,6 @@
             </div>
         </div>
     </div>
-    <div class="col-xl-3 col-md-6">
-        <div class="card border-0 shadow-sm h-100">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <div class="icon-container bg-info bg-opacity-10">
-                        <i class="bi bi-tag text-info"></i>
-                    </div>
-                    <span class="badge bg-info bg-opacity-10 text-info px-2 py-1">Categorías</span>
-                </div>
-                <h5 class="fw-bold mb-1">@Model.InventoryItems.Select(i => i.Categoria).Distinct().Count() tipos</h5>
-                <p class="text-muted mb-0 small">de items diferentes</p>
-            </div>
-        </div>
-    </div>
 </div>
 
 <!-- Filtros y búsqueda -->
@@ -74,7 +60,7 @@
     <div class="card-body p-3">
         <form method="get" id="filterForm">
             <div class="row g-2 align-items-center">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="input-group">
                         <span class="input-group-text bg-light border-light">
                             <i class="bi bi-search"></i>
@@ -85,19 +71,7 @@
                     </div>
                 </div>
                 
-                <div class="col-md-3">
-                    <select class="form-select border-light bg-light" asp-for="CategoryFilter">
-                        <option value="">Todas las categorías</option>
-                        <option value="Mobiliario">Mobiliario</option>
-                        <option value="Decoración">Decoración</option>
-                        <option value="Audio y Video">Audio y Video</option>
-                        <option value="Vajilla">Vajilla y Cristalería</option>
-                        <option value="Mantelería">Mantelería</option>
-                        <option value="Iluminación">Iluminación</option>
-                    </select>
-                </div>
-                
-                <div class="col-md-1">
+                <div class="col-md-2">
                     <button type="button" id="clearFilters" class="btn btn-secondary w-100" title="Limpiar filtros">
                         <i class="bi bi-arrow-counterclockwise"></i>
                     </button>
@@ -129,7 +103,6 @@
                         <th class="ps-4">Nombre</th>
                         <th>Descripción</th>
                         <th class="text-center">Stock</th>
-                        <th class="text-center">Categoría</th>
                         <th class="text-center">Fecha Registro</th>
                         <th class="text-end pe-4">Acciones</th>
                     </tr>
@@ -173,12 +146,6 @@
                                           data-stock="@item.Stock">@item.Stock</span>
                                 </td>
                                 <td class="text-center">
-                                    <span class="badge rounded-pill px-3 py-2 bg-opacity-10 text-dark"
-                                          data-categoria="@item.Categoria">
-                                        @item.Categoria
-                                    </span>
-                                </td>
-                                <td class="text-center">
                                     <span data-fecha="@item.FechaRegistro.ToString("yyyy-MM-dd")">
                                         @item.FechaRegistro.ToString("dd/MM/yyyy")
                                     </span>
@@ -213,7 +180,7 @@
                     else
                     {
                         <tr>
-                            <td colspan="6" class="text-center py-5">
+                            <td colspan="5" class="text-center py-5">
                                 <div class="d-flex flex-column align-items-center py-5">
                                     <i class="bi bi-box-seam text-muted" style="font-size: 3rem;"></i>
                                     <h5 class="mt-3">No se encontraron ítems</h5>
@@ -231,7 +198,7 @@
     </div>
 </div>
 
-<!-- Paginación -->
+<!-- Paginación (versión corregida) -->
 @if (Model.InventoryItems != null && Model.InventoryItems.Any())
 {
     <div class="d-flex justify-content-between align-items-center mt-4">
@@ -241,18 +208,18 @@
         <nav aria-label="Page navigation">
             <ul class="pagination mb-0">
                 <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
-                    <a class="page-link" href="?page=@(Model.CurrentPage-1)&searchTerm=@Model.SearchTerm&categoryFilter=@Model.CategoryFilter&statusFilter=@Model.StatusFilter" aria-label="Previous">
+                    <a class="page-link" href="?page=@(Model.CurrentPage-1)&searchTerm=@Model.SearchTerm&statusFilter=@Model.StatusFilter" aria-label="Previous">
                         <span aria-hidden="true">«</span>
                     </a>
                 </li>
                 @for (int i = Math.Max(1, Model.CurrentPage - 2); i <= Math.Min(Model.TotalPages, Model.CurrentPage + 2); i++)
                 {
                     <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                        <a class="page-link" href="?page=@i&searchTerm=@Model.SearchTerm&categoryFilter=@Model.CategoryFilter&statusFilter=@Model.StatusFilter">@i</a>
+                        <a class="page-link" href="?page=@i&searchTerm=@Model.SearchTerm&statusFilter=@Model.StatusFilter">@i</a>
                     </li>
                 }
                 <li class="page-item @(Model.CurrentPage >= Model.TotalPages ? "disabled" : "")">
-                    <a class="page-link" href="?page=@(Model.CurrentPage+1)&searchTerm=@Model.SearchTerm&categoryFilter=@Model.CategoryFilter&statusFilter=@Model.StatusFilter" aria-label="Next">
+                    <a class="page-link" href="?page=@(Model.CurrentPage+1)&searchTerm=@Model.SearchTerm&statusFilter=@Model.StatusFilter" aria-label="Next">
                         <span aria-hidden="true">»</span>
                     </a>
                 </li>
@@ -278,22 +245,17 @@
                             <label for="itemName" class="form-label">Nombre del ítem <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="itemName" required>
                         </div>
-                        <div class="col-12">
-                            <label for="itemCategory" class="form-label">Categoría <span class="text-danger">*</span></label>
-                            <select class="form-select" id="itemCategory" required>
-                                <option value="">Seleccionar categoría</option>
-                                <option value="Mobiliario">Mobiliario</option>
-                                <option value="Decoración">Decoración</option>
-                                <option value="Audio y Video">Audio y Video</option>
-                                <option value="Vajilla">Vajilla y Cristalería</option>
-                                <option value="Mantelería">Mantelería</option>
-                                <option value="Iluminación">Iluminación</option>
-                                <option value="Otro">Otro</option>
-                            </select>
-                        </div>
+                        <!-- Eliminar el select de categoría -->
                         <div class="col-12">
                             <label for="itemStock" class="form-label">Stock inicial <span class="text-danger">*</span></label>
                             <input type="number" class="form-control" id="itemStock" min="0" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="itemPrice" class="form-label">Precio base <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+                                <input type="number" class="form-control" id="itemPrice" min="0" step="0.01" required>
+                            </div>
                         </div>
                         <div class="col-12">
                             <label for="itemDescription" class="form-label">Descripción</label>
@@ -330,22 +292,17 @@
                             <label for="editItemName" class="form-label">Nombre del ítem <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="editItemName" required>
                         </div>
-                        <div class="col-12">
-                            <label for="editItemCategory" class="form-label">Categoría <span class="text-danger">*</span></label>
-                            <select class="form-select" id="editItemCategory" required>
-                                <option value="">Seleccionar categoría</option>
-                                <option value="Mobiliario">Mobiliario</option>
-                                <option value="Decoración">Decoración</option>
-                                <option value="Audio y Video">Audio y Video</option>
-                                <option value="Vajilla">Vajilla y Cristalería</option>
-                                <option value="Mantelería">Mantelería</option>
-                                <option value="Iluminación">Iluminación</option>
-                                <option value="Otro">Otro</option>
-                            </select>
-                        </div>
+                        <!-- Eliminar el select de categoría -->
                         <div class="col-12">
                             <label for="editCurrentStock" class="form-label">Stock <span class="text-danger">*</span></label>
                             <input type="number" class="form-control" id="editCurrentStock" min="0" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="editItemPrice" class="form-label">Precio base <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+                                <input type="number" class="form-control" id="editItemPrice" min="0" step="0.01" required>
+                            </div>
                         </div>
                         <div class="col-12">
                             <label for="editItemNotes" class="form-label">Descripción</label>
@@ -476,15 +433,7 @@
                         <h4 class="mb-3 fw-bold" id="detailItemName">Nombre del Ítem</h4>
                         
                         <div class="mb-4">
-                            <div class="d-flex align-items-center mb-2">
-                                <div class="icon-container bg-primary bg-opacity-10 me-3">
-                                    <i class="bi bi-tag text-primary"></i>
-                                </div>
-                                <div>
-                                    <small class="text-muted d-block">Categoría</small>
-                                    <span class="fw-medium" id="detailItemCategory">Mobiliario</span>
-                                </div>
-                            </div>
+                            <!-- Eliminar div de categoría -->
                             <div class="d-flex align-items-center mb-2">
                                 <div class="icon-container bg-success bg-opacity-10 me-3">
                                     <i class="bi bi-box-seam text-success"></i>
@@ -611,23 +560,27 @@
                 return;
             }
             
- 
+            // Capturar los datos correctamente
+            const nombre = document.getElementById('itemName').value;
+            const categoria = document.getElementById('itemCategory').value;
+            const stock = parseInt(document.getElementById('itemStock').value) || 0;
+            const preciobase = document.getElementById('itemPrice').value || "0";
+            const descripcion = document.getElementById('itemDescription').value || "";
+            
+            // Crear el objeto con el formato EXACTO que espera la API
             const itemData = {
-                nombre: document.getElementById('itemName').value,
-                categoria: document.getElementById('itemCategory').value,
-                stock: parseInt(document.getElementById('itemStock').value),
-                descripcion: document.getElementById('itemDescription').value,
-                fechaRegistro: new Date().toISOString()
+                nombre: nombre,
+                descripcion: descripcion,
+                stock: stock,
+                preciobase: preciobase,
+                categoria: categoria
             };
             
- 
             const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
             
- 
             this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Guardando...';
             this.disabled = true;
             
- 
             fetch('?handler=SaveItem', {
                 method: 'POST',
                 headers: {
@@ -636,32 +589,29 @@
                 },
                 body: JSON.stringify(itemData)
             })
-            .then(response => response.json())
-            .then(data => {
- 
-                this.innerHTML = '<i class="bi bi-save me-1"></i>Guardar Ítem';
-                this.disabled = false;
-                
-                if (data.success) {
- 
-                    bootstrap.Modal.getInstance(document.getElementById('newItemModal')).hide();
-                    
- 
-                    showAlert('Ítem creado correctamente', 'success');
-                    
- 
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 1000);
-                } else {
-                    showAlert('Error al crear el ítem: ' + data.message, 'danger');
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
+                return response.json();
+            })
+            .then data => {
+                if (data.success) {
+                    showAlert('Ítem creado correctamente', 'success');
+                    document.getElementById('newItemModal').querySelector('.btn-close').click();
+                    setTimeout(() => window.location.reload(), 1000);
+                } else {
+                    showAlert('Error: ' + data.message, 'danger');
+                }
+                
+                this.innerHTML = 'Guardar';
+                this.disabled = false;
             })
             .catch(error => {
                 console.error('Error:', error);
-                this.innerHTML = '<i class="bi bi-save me-1"></i>Guardar Ítem';
+                showAlert('Error al procesar la solicitud: ' + error.message, 'danger');
+                this.innerHTML = 'Guardar';
                 this.disabled = false;
-                showAlert('Error al procesar la solicitud', 'danger');
             });
         });
         
@@ -685,6 +635,7 @@
                     const descripcion = row.querySelector('[data-descripcion]')?.getAttribute('data-descripcion') || '';
                     const stock = parseInt(row.querySelector('[data-stock]')?.getAttribute('data-stock') || '0');
                     const categoria = row.querySelector('[data-categoria]')?.getAttribute('data-categoria') || '';
+                    const precio = parseFloat(row.querySelector('[data-precio]')?.getAttribute('data-precio') || '0');
                     
  
                     this.innerHTML = originalHTML;
@@ -695,6 +646,7 @@
                     document.getElementById('editItemName').value = nombre;
                     document.getElementById('editItemCategory').value = categoria;
                     document.getElementById('editCurrentStock').value = stock;
+                    document.getElementById('editItemPrice').value = precio;
                     document.getElementById('editItemNotes').value = descripcion;
                     
  
@@ -793,6 +745,7 @@
                 nombre: document.getElementById('editItemName').value,
                 categoria: document.getElementById('editItemCategory').value,
                 stock: parseInt(document.getElementById('editCurrentStock').value),
+                precio: parseFloat(document.getElementById('editItemPrice').value),
                 descripcion: document.getElementById('editItemNotes').value
             };
             

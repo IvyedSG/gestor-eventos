@@ -8,7 +8,8 @@ namespace gestor_eventos.Models
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
         public int Stock { get; set; }
-        public string Categoria { get; set; }
+        public string PrecioBase { get; set; }
         public DateTime FechaRegistro { get; set; }
+        // Propiedad Categoria eliminada
     }
 }
