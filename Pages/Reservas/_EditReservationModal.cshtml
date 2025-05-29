@@ -1,185 +1,154 @@
 @model gestor_eventos.Pages.Reservas.IndexModel
-<div class="modal fade" id="editReservationModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered">
+
+<!-- Modal para editar reserva -->
+<div class="modal fade" id="editReservationModal" tabindex="-1" aria-labelledby="editReservationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
-            <div class="modal-header bg-light">
-                <h5 class="modal-title">
-                    <i class="bi bi-pencil-square me-2"></i>Editar Reserva #<span id="editReservationId">1234</span>
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="editReservationModalLabel">
+                    <i class="bi bi-pencil-square me-2"></i>
+                    Editar Reserva
                 </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-8">
-                        <form id="editReservationForm">
-                            <!-- Cabecera con info básica -->
-                            <div class="card border-0 shadow-sm mb-4">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-8 mb-3">
-                                            <label class="form-label">Nombre del evento</label>
-                                            <input type="text" class="form-control" id="editEventName" value="Boda de Carlos y María">
-                                        </div>
-                                        <div class="col-md-4 mb-3">
-                                            <label class="form-label">Tipo de evento</label>
-                                            <select class="form-select" id="editEventType">
-                                                <option value="Boda">Boda</option>
-                                                <option value="Cumpleaños">Cumpleaños</option>
-                                                <option value="Aniversario">Aniversario</option>
-                                                <option value="Bautizo">Bautizo</option>
-                                                <option value="Primera comunión">Primera comunión</option>
-                                                <option value="Baby shower">Baby shower</option>
-                                                <option value="Despedida de soltero/a">Despedida de soltero/a</option>
-                                                <option value="Fiesta de graduación">Fiesta de graduación</option>
-                                                <option value="Reunión familiar">Reunión familiar</option>
-                                                <option value="Fiesta temática">Fiesta temática</option>
-                                                <option value="Otro">Otro</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Información del cliente -->
-                            <div class="card border-0 shadow-sm mb-4">
-                                <div class="card-header bg-white pt-3 pb-2 border-0">
-                                    <h6 class="fw-bold"><i class="bi bi-person me-2"></i>Información del Cliente</h6>
-                                </div>
-                                <div class="card-body pt-0">
-                                    <div class="row">
-                                        <div class="col-md-12 mb-3">
-                                            <label class="form-label">Nombre del cliente</label>
-                                            <input type="text" class="form-control" id="editClientName" value="Carlos Rodríguez">
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Email</label>
-                                            <input type="email" class="form-control" id="editClientEmail" value="carlos@ejemplo.com">
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Teléfono</label>
-                                            <input type="tel" class="form-control" id="editClientPhone" value="+56 9 1234 5678">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Detalles del evento -->
-                            <div class="card border-0 shadow-sm mb-4">
-                                <div class="card-header bg-white pt-3 pb-2 border-0">
-                                    <h6 class="fw-bold"><i class="bi bi-calendar-event me-2"></i>Detalles del Evento</h6>
-                                </div>
-                                <div class="card-body pt-0">
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Fecha</label>
-                                            <input type="date" class="form-control" id="editEventDate" value="2025-04-18">
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Hora</label>
-                                            <input type="time" class="form-control" id="editEventTime" value="16:00">
-                                        </div>
-                                        <div class="col-md-12 mb-3">
-                                            <label class="form-label">Descripción</label>
-                                            <textarea class="form-control" id="editEventDescription" rows="3">Boda para 150 personas en Salón Diamante. El novio solicita decoración en tonos azules y plateados. Se requiere estacionamiento para al menos 30 vehículos.</textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Servicios contratados -->
-                            <div class="card border-0 shadow-sm">
-                                <div class="card-header bg-white pt-3 pb-2 border-0">
-                                    <h6 class="fw-bold"><i class="bi bi-basket me-2"></i>Servicios</h6>
-                                </div>
-                                <div class="card-body pt-0">
-                                    <div class="row mb-3">
-                                        <div class="col-md-12">
-                                            <select id="editServiceSelect" class="form-select">
-                                                <option selected disabled>Seleccionar servicio para añadir</option>
-                                                <option value="1">Salón Principal - $250,000</option>
-                                                <option value="2">Catering Premium - $15,000 por persona</option>
-                                                <option value="3">DJ - $120,000</option>
-                                                <option value="4">Decoración Básica - $80,000</option>
-                                                <option value="5">Fotografía - $150,000</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="table-responsive">
-                                        <table class="table table-sm" id="editServicesTable">
-                                            <thead>
-                                                <tr>
-                                                    <th>Servicio</th>
-                                                    <th>Cantidad (Items)</th>
-                                                    <th>Precio</th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr data-service-id="1">
-                                                    <td>Salón Principal</td>
-                                                    <td>1</td>
-                                                    <td>$250,000</td>
-                                                    <td class="text-end"><button class="btn btn-sm btn-link text-danger delete-service"><i class="bi bi-trash"></i></button></td>
-                                                </tr>
-                                                <tr data-service-id="2">
-                                                    <td>Catering Premium</td>
-                                                    <td>50</td>
-                                                    <td>$750,000</td>
-                                                    <td class="text-end"><button class="btn btn-sm btn-link text-danger delete-service"><i class="bi bi-trash"></i></button></td>
-                                                </tr>
-                                                <tr data-service-id="3">
-                                                    <td>DJ</td>
-                                                    <td>1</td>
-                                                    <td>$120,000</td>
-                                                    <td class="text-end"><button class="btn btn-sm btn-link text-danger delete-service"><i class="bi bi-trash"></i></button></td>
-                                                </tr>
-                                                <tr class="fw-bold bg-light">
-                                                    <td colspan="2" class="text-end">Total:</td>
-                                                    <td id="editServicesTotalAmount">$1,120,000</td>
-                                                    <td></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+                <!-- Loading Spinner -->
+                <div id="editReservationLoading" class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Cargando...</span>
                     </div>
+                    <p class="mt-3 text-muted">Cargando datos de la reserva...</p>
+                </div>
+                
+                <!-- Error Message -->
+                <div id="editReservationError" class="alert alert-danger" style="display: none;">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    <span id="editReservationErrorMessage">Error al cargar la información</span>
+                </div>
+                
+                <!-- Form -->
+                <form id="editReservationForm" style="display: none;">
+                    <input type="hidden" id="editReservationId" name="id" />
                     
-                    <!-- Estado y opciones de la reserva -->
-                    <div class="col-md-4">
-                        <div class="card border-0 shadow-sm mb-4">
-                            <div class="card-header bg-white pt-3 pb-2 border-0">
-                                <h6 class="fw-bold"><i class="bi bi-info-circle me-2"></i>Estado de la Reserva</h6>
+                    <div class="mb-4">
+                        <h5 class="border-bottom pb-2">Información del Evento</h5>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="editEventName" class="form-label">Nombre del Evento<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="editEventName" name="nombreEvento" required>
+                                <div class="invalid-feedback">
+                                    Este campo es obligatorio.
+                                </div>
                             </div>
-                            <div class="card-body pt-0">
-                                <div class="mb-3">
-                                    <label class="form-label">Estado</label>
-                                    <select class="form-select" id="editEventStatus">
-                                        <option value="Pendiente">Pendiente</option>
-                                        <option value="Confirmada" selected>Confirmado</option>
-                                        <option value="Cancelada">Cancelado</option>
-                                        <option value="Finalizada">Finalizado</option>
-                                    </select>
+                            <div class="col-md-6">
+                                <label for="editEventDate" class="form-label">Fecha y Hora<span class="text-danger">*</span></label>
+                                <input type="datetime-local" class="form-control" id="editEventDate" name="fechaEjecucion" required>
+                                <div class="invalid-feedback">
+                                    Debe seleccionar una fecha y hora válidas.
                                 </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Precio total</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text">S/</span>
-                                        <input type="number" id="editTotalPrice" class="form-control" value="1120000">
-                                    </div>
-                                    <small class="text-muted">El precio total se actualiza automáticamente según los servicios seleccionados, pero puede ser modificado manualmente.</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="editEventType" class="form-label">Tipo de Evento<span class="text-danger">*</span></label>
+                                <select class="form-select" id="editEventType" name="tipoEventoNombre" required>
+                                    <option value="" disabled selected>Seleccione un tipo...</option>
+                                    <option value="Boda">Boda</option>
+                                    <option value="Cumpleaños">Cumpleaños</option>
+                                    <option value="Aniversario">Aniversario</option>
+                                    <option value="Corporativo">Corporativo</option>
+                                    <option value="Otro">Otro</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Debe seleccionar un tipo de evento.
                                 </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="editEventStatus" class="form-label">Estado<span class="text-danger">*</span></label>
+                                <select class="form-select" id="editEventStatus" name="estado" required>
+                                    <option value="Pendiente">Pendiente</option>
+                                    <option value="Confirmado">Confirmado</option>
+                                    <option value="Cancelado">Cancelado</option>
+                                    <option value="Finalizado">Finalizado</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label for="editEventDescription" class="form-label">Descripción</label>
+                                <textarea class="form-control" id="editEventDescription" name="descripcion" rows="3"></textarea>
                             </div>
                         </div>
                     </div>
-                </div>
+                    
+                    <div class="mb-4">
+                        <h5 class="border-bottom pb-2">Servicios</h5>
+                        <div class="mb-3">
+                            <label for="editServiceSelect" class="form-label">Servicio Asociado</label>
+                            <select class="form-select" id="editServiceSelect">
+                                <option value="" selected disabled>Seleccione un servicio...</option>
+                                <!-- Options will be loaded dynamically -->
+                            </select>
+                            <div id="editServicesHelp" class="form-text text-danger d-none">
+                                <i class="bi bi-exclamation-circle me-1"></i>
+                                Debe seleccionar al menos un servicio.
+                            </div>
+                        </div>
+                        
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Servicio</th>
+                                        <th>Precio</th>
+                                        <th class="text-end">Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="editServicesTableBody">
+                                    <!-- Services will be loaded dynamically -->
+                                </tbody>
+                                <tfoot>
+                                    <tr class="fw-bold">
+                                        <td>Total:</td>
+                                        <td id="editServicesTotalAmount">S/0.00</td>
+                                        <td></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="editTotalPrice" class="form-label">Precio Total (S/)<span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text">S/</span>
+                                <input type="number" class="form-control" id="editTotalPrice" name="precioTotal" step="0.01" min="0" required>
+                                <button class="btn btn-outline-secondary" type="button" id="editResetTotalPrice">
+                                    <i class="bi bi-arrow-counterclockwise"></i>
+                                </button>
+                            </div>
+                            <div class="form-text">
+                                <i class="bi bi-info-circle me-1"></i>
+                                Este valor se actualiza automáticamente según los servicios seleccionados, pero también puede modificarse manualmente.
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="editAdvancePrice" class="form-label">Adelanto (S/)</label>
+                            <div class="input-group">
+                                <span class="input-group-text">S/</span>
+                                <input type="number" class="form-control" id="editAdvancePrice" name="precioAdelanto" step="0.01" min="0" value="0">
+                            </div>
+                            <div class="form-text">
+                                <i class="bi bi-info-circle me-1"></i>
+                                Monto que el cliente pagó por adelantado.
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" id="saveEditReservation">
-                    <i class="bi bi-save me-1"></i>Guardar Cambios
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle me-2"></i>Cancelar
+                </button>
+                <button type="button" class="btn btn-primary" id="updateReservationBtn">
+                    <i class="bi bi-save me-2"></i>Guardar Cambios
                 </button>
             </div>
         </div>

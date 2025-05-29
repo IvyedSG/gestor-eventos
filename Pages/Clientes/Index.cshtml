@@ -59,6 +59,7 @@
                     <tr>
                         <th scope="col" class="ps-4">Nombre</th>
                         <th scope="col">Correo</th>
+                        <th scope="col">Teléfono</th>
                         <th scope="col">Dirección</th>
                         <th scope="col">Tipo</th>
                         <th scope="col">RUC</th>
@@ -76,6 +77,7 @@
                             <tr class="client-row" data-client-id="@client.Id">
                                 <td class="ps-4 fw-medium">@client.Name</td>
                                 <td>@client.Email</td>
+                                <td>@client.Phone</td>
                                 <td>@client.Address</td>
                                 <td>
                                     @if (client.Type == "Individual")
@@ -455,14 +457,16 @@
                 
                 const name = row.querySelector('td:nth-child(1)').textContent.trim();
                 const email = row.querySelector('td:nth-child(2)').textContent.trim();
-                const address = row.querySelector('td:nth-child(3)').textContent.trim();
-                const ruc = row.querySelector('td:nth-child(5)').textContent.trim();
-                const razonSocial = row.querySelector('td:nth-child(6)').textContent.trim();
-                const eventCount = row.querySelector('td:nth-child(7)').textContent.trim();
-                const lastReservation = row.querySelector('td:nth-child(8)').textContent.trim();
+                const phone = row.querySelector('td:nth-child(3)').textContent.trim();
+                const address = row.querySelector('td:nth-child(4)').textContent.trim();
+                const ruc = row.querySelector('td:nth-child(6)').textContent.trim();
+                const razonSocial = row.querySelector('td:nth-child(7)').textContent.trim();
+                const eventCount = row.querySelector('td:nth-child(8)').textContent.trim();
+                const lastReservation = row.querySelector('td:nth-child(9)').textContent.trim();
                 
                 document.getElementById('viewClientName').textContent = name;
                 document.getElementById('viewClientEmail').textContent = email;
+                document.getElementById('viewClientPhone').textContent = phone || "No disponible";
                 document.getElementById('viewClientAddress').textContent = address || "No disponible";
                 document.getElementById('viewClientRuc').textContent = ruc || "No disponible";
                 document.getElementById('viewClientRazonSocial').textContent = razonSocial || "No disponible";
@@ -600,15 +604,16 @@
                 
                 const name = row.querySelector('td:nth-child(1)').textContent.trim();
                 const email = row.querySelector('td:nth-child(2)').textContent.trim();
-                const address = row.querySelector('td:nth-child(3)').textContent.trim();
-                const type = row.querySelector('td:nth-child(4) span').textContent.trim();
-                const ruc = row.querySelector('td:nth-child(5)').textContent.trim();
-                const razonSocial = row.querySelector('td:nth-child(6)').textContent.trim();
+                const phone = row.querySelector('td:nth-child(3)').textContent.trim();
+                const address = row.querySelector('td:nth-child(4)').textContent.trim();
+                const type = row.querySelector('td:nth-child(5) span').textContent.trim();
+                const ruc = row.querySelector('td:nth-child(6)').textContent.trim();
+                const razonSocial = row.querySelector('td:nth-child(7)').textContent.trim();
                 
                 document.getElementById('editClientId').value = clientId;
                 document.getElementById('editClientName').value = name;
                 document.getElementById('editClientEmail').value = email;
-                document.getElementById('editClientPhone').value = document.getElementById('editClientPhone')?.value || '';
+                document.getElementById('editClientPhone').value = phone;
                 document.getElementById('editClientAddress').value = address;
                 document.getElementById('editClientRuc').value = ruc !== "-" ? ruc : "";
                 document.getElementById('editClientRazonSocial').value = razonSocial !== "-" ? razonSocial : "";

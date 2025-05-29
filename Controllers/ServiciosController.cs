@@ -1,145 +1,106 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Logging;
 using gestor_eventos.Models.ApiModels;
 using gestor_eventos.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace gestor_eventos.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
     [Authorize]
+    [Route("Servicios")]
+    [ApiController]
     public class ServiciosController : ControllerBase
     {
-        private readonly ServicioService _servicioService;
         private readonly ILogger<ServiciosController> _logger;
+        private readonly ServicioService _servicioService;
 
-        public ServiciosController(ServicioService servicioService, ILogger<ServiciosController> logger)
+        public ServiciosController(
+            ILogger<ServiciosController> logger,
+            ServicioService servicioService)
         {
-            _servicioService = servicioService;
             _logger = logger;
+            _servicioService = servicioService;
         }
 
-        [HttpPost("create")]
-        public async Task<IActionResult> CreateServicio([FromQuery] string correo, [FromBody] ServicioCreateModel model)
+        [HttpPost("handler=Create")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([FromBody] ServicioCreateModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _logger.LogInformation("Recibida solicitud para crear servicio: {NombreServicio}", model.NombreServicio);
+            
+            var result = await _servicioService.CreateServicioAsync(model);
+            
+            if (result == null)
+            {
+                _logger.LogWarning("Error al crear servicio: {NombreServicio}", model.NombreServicio);
+                return StatusCode(500, new { message = "No se pudo crear el servicio" });
+            }
+
+            _logger.LogInformation("Servicio creado exitosamente: {Id}", result.Id);
+            return Ok(result);
+        }
+
+        [HttpPut("{id}")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(string id, [FromBody] ServicioEditModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _logger.LogInformation("Recibida solicitud para editar servicio: {Id}", id);
+            
+            var result = await _servicioService.UpdateServicioAsync(id, model);
+            
+            if (result == null)
+            {
+                _logger.LogWarning("Error al editar servicio: {Id}", id);
+                return StatusCode(500, new { message = "No se pudo editar el servicio" });
+            }
+
+            _logger.LogInformation("Servicio editado exitosamente: {Id}", result.Id);
+            return Ok(result);
+        }
+
+        [HttpDelete("{id}")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(string id)
+        {
+            _logger.LogInformation("Recibida solicitud para eliminar servicio: {Id}", id);
+            
+            var result = await _servicioService.DeleteServicioAsync(id);
+            
+            if (!result)
+            {
+                _logger.LogWarning("Error al eliminar servicio: {Id}", id);
+                return StatusCode(500, new { message = "No se pudo eliminar el servicio" });
+            }
+
+            _logger.LogInformation("Servicio eliminado exitosamente: {Id}", id);
+            return Ok(new { message = "Servicio eliminado correctamente" });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Get()
         {
             try
             {
-                if (string.IsNullOrEmpty(correo))
-                {
-                    return BadRequest("El correo es requerido");
-                }
-
-                var result = await _servicioService.CreateServicioAsync(correo, model);
-                if (result)
-                {
-                    return Ok(new { success = true, message = "Servicio creado exitosamente" });
-                }
-                else
-                {
-                    return BadRequest(new { success = false, message = "Error al crear el servicio" });
-                }
+                var servicios = await _servicioService.GetServiciosAsync();
+                return Ok(servicios);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al crear servicio: {Message}", ex.Message);
-                return StatusCode(500, new { success = false, message = "Error interno del servidor" });
-            }
-        }
-
-        [HttpPut("update")]
-        public async Task<IActionResult> UpdateServicio([FromQuery] string correo, [FromBody] ServicioUpdateModel model)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(correo))
-                {
-                    return BadRequest("El correo es requerido");
-                }
-
-                var result = await _servicioService.UpdateServicioAsync(correo, model);
-                
-                if (result)
-                {
-                    return Ok(new { success = true, message = "Servicio actualizado exitosamente" });
-                }
-                else
-                {
-                    return BadRequest(new { success = false, message = "Error al actualizar el servicio" });
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error al actualizar servicio: {Message}", ex.Message);
-                return StatusCode(500, new { success = false, message = "Error interno del servidor" });
-            }
-        }
-
-        [HttpPut("{correo}/{id}")]
-        public async Task<IActionResult> UpdateServicioDetailed(string correo, string id, [FromBody] ServicioUpdateRequestModel model)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(correo))
-                {
-                    return BadRequest(new { success = false, message = "El correo es requerido" });
-                }
-
-                if (string.IsNullOrEmpty(id))
-                {
-                    return BadRequest(new { success = false, message = "El ID del servicio es requerido" });
-                }
-
-                var result = await _servicioService.UpdateServicioDetailedAsync(correo, id, model);
-                
-                if (result)
-                {
-                    return Ok(new { success = true, message = "Servicio actualizado exitosamente" });
-                }
-                else
-                {
-                    return BadRequest(new { success = false, message = "Error al actualizar el servicio" });
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error al actualizar servicio detallado: {Message}", ex.Message);
-                return StatusCode(500, new { success = false, message = "Error interno del servidor" });
-            }
-        }
-
-        [HttpDelete("{correo}/{id}")]
-        public async Task<IActionResult> DeleteServicio(string correo, string id)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(correo))
-                {
-                    return BadRequest(new { success = false, message = "El correo es requerido" });
-                }
-
-                if (string.IsNullOrEmpty(id))
-                {
-                    return BadRequest(new { success = false, message = "El ID del servicio es requerido" });
-                }
-
-                var result = await _servicioService.DeleteServicioAsync(correo, id);
-                
-                if (result)
-                {
-                    return Ok(new { success = true, message = "Servicio eliminado exitosamente" });
-                }
-                else
-                {
-                    return BadRequest(new { success = false, message = "Error al eliminar el servicio" });
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error al eliminar servicio: {Message}", ex.Message);
-                return StatusCode(500, new { success = false, message = "Error interno del servidor" });
+                _logger.LogError(ex, "Error al obtener servicios");
+                return StatusCode(500, "Error al obtener la lista de servicios");
             }
         }
     }

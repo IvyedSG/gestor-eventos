@@ -1,0 +1,22 @@
+<div class="modal fade" id="deleteServiceModal" tabindex="-1" aria-labelledby="deleteServiceModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="deleteServiceModalLabel">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>Confirmar eliminación
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="deleteServiceMessage">¿Estás seguro de que deseas eliminar este servicio? Esta acción no se puede deshacer.</p>
+                <input type="hidden" id="deleteServiceId" value="" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteServiceBtn">
+                    <i class="bi bi-trash"></i> Eliminar servicio
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

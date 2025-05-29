@@ -12,6 +12,7 @@ namespace GestorEventos.Models.ApiModels
         public string UsuarioId { get; set; }
         public string NombreUsuario { get; set; }
         public string CorreoUsuario { get; set; }
+        public string Telefono { get; set; }
         public int TotalReservas { get; set; }
         public DateTime? UltimaFechaReserva { get; set; }
     }

@@ -73,7 +73,7 @@ namespace gestor_eventos.Pages.Clientes
                     Type = c.TipoCliente == "INDIVIDUAL" ? "Individual" : "Empresa",
                     Ruc = c.Ruc,
                     RazonSocial = c.RazonSocial,
-                    Phone = "", // Como ClienteApi no tiene teléfono, asignamos cadena vacía
+                    Phone = c.Telefono, // Updated to use the telefono property from API
                     EventCount = c.TotalReservas,
                     LastReservation = c.UltimaFechaReserva
                 }).ToList();

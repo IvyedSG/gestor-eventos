@@ -4,9 +4,9 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Logging;
+using gestor_eventos.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using GestorEventos.Services;
 
 namespace gestor_eventos.Services
@@ -15,73 +15,69 @@ namespace gestor_eventos.Services
     {
         private readonly HttpClient _httpClient;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly ApiSettings _apiSettings;
         private readonly ILogger<InventoryService> _logger;
+        private readonly ApiSettings _apiSettings;
 
         public InventoryService(
             HttpClient httpClient,
             IHttpContextAccessor httpContextAccessor,
-            IOptions<ApiSettings> apiSettings,
-            ILogger<InventoryService> logger)
+            ILogger<InventoryService> logger,
+            ApiSettings apiSettings)
         {
             _httpClient = httpClient;
             _httpContextAccessor = httpContextAccessor;
-            _apiSettings = apiSettings.Value;
             _logger = logger;
+            _apiSettings = apiSettings;
         }
 
-        public async Task<List<InventoryItem>> GetInventoryItemsByUserIdAsync(string userId)
+        public async Task<List<InventarioItemApi>> GetInventoryItemsAsync()
         {
             try
             {
- 
-                var token = _httpContextAccessor.HttpContext.User.FindFirst("AccessToken")?.Value;
+                _logger.LogInformation("Getting inventory items");
+                
+                var token = _httpContextAccessor.HttpContext?.User?.FindFirst("AccessToken")?.Value;
                 
                 if (string.IsNullOrEmpty(token))
                 {
-                    _logger.LogWarning("Token not found in user claims for user ID: {UserId}", userId);
-                    return new List<InventoryItem>();
+                    _logger.LogWarning("Token not found in user claims, trying in cookie");
+                    token = _httpContextAccessor.HttpContext?.Request.Cookies["AccessToken"];
+                    
+                    if (string.IsNullOrEmpty(token))
+                    {
+                        _logger.LogError("No authentication token found");
+                        return new List<InventarioItemApi>();
+                    }
                 }
-
-                _logger.LogInformation("Getting inventory items for user ID: {UserId}", userId);
                 
- 
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
- 
-                var response = await _httpClient.GetAsync($"{_apiSettings.BaseUrl}/api/inventario/usuario/{userId}");
+                
+                var response = await _httpClient.GetAsync($"{_apiSettings.BaseUrl}/api/items");
                 
                 if (!response.IsSuccessStatusCode)
                 {
                     _logger.LogWarning("Error getting inventory items. Status: {StatusCode}, Message: {Message}", 
                         (int)response.StatusCode, response.ReasonPhrase);
-                    return new List<InventoryItem>();
+                    return new List<InventarioItemApi>();
                 }
-
- 
+                
                 var content = await response.Content.ReadAsStringAsync();
-                _logger.LogDebug("API Response: {Response}", content);
                 
                 var options = new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true
                 };
                 
-                return JsonSerializer.Deserialize<List<InventoryItem>>(content, options) ?? new List<InventoryItem>();
+                var items = JsonSerializer.Deserialize<List<InventarioItemApi>>(content, options) ?? new List<InventarioItemApi>();
+                _logger.LogInformation("Successfully retrieved {Count} inventory items", items.Count);
+                
+                return items;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error getting inventory items: {Message}", ex.Message);
-                return new List<InventoryItem>();
+                _logger.LogError(ex, "Error in GetInventoryItemsAsync: {Message}", ex.Message);
+                return new List<InventarioItemApi>();
             }
         }
-    }
-
-    public class InventoryItem
-    {
-        public string Id { get; set; }
-        public string Nombre { get; set; }
-        public int Stock { get; set; }
-        public string Categoria { get; set; }
     }
 }

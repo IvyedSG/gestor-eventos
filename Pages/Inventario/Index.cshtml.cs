@@ -154,6 +154,8 @@ namespace gestor_eventos.Pages.Inventario
         }
 
  
+        // Add this attribute to ensure the method is properly routed
+        [HttpPost]
         public async Task<IActionResult> OnPostSaveItemAsync([FromBody] InventarioItemApi newItem)
         {
             try
@@ -183,7 +185,7 @@ namespace gestor_eventos.Pages.Inventario
                 
                 _logger.LogInformation($"Enviando solicitud POST a: {baseUrl}/api/items");
 
-                // Asegúrate de que estos nombres coincidan exactamente con lo que la API espera
+                // Crear el objeto con el formato exacto que espera la API
                 var itemRequest = new
                 {
                     nombre = newItem.Nombre,
@@ -198,15 +200,24 @@ namespace gestor_eventos.Pages.Inventario
                     JsonSerializer.Serialize(itemRequest),
                     System.Text.Encoding.UTF8,
                     "application/json");
-            
+    
                 var response = await client.PostAsync($"{baseUrl}/api/items", content);
-        
+
                 var responseContent = await response.Content.ReadAsStringAsync();
                 _logger.LogInformation($"Respuesta API: {response.StatusCode} - {responseContent}");
-        
+
                 if (response.IsSuccessStatusCode)
                 {
-                    return new JsonResult(new { success = true, message = "Ítem creado correctamente" });
+                    var createdItem = JsonSerializer.Deserialize<InventarioItemApi>(responseContent, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+                    
+                    return new JsonResult(new { 
+                        success = true, 
+                        message = "Ítem creado correctamente",
+                        item = createdItem
+                    });
                 }
                 else
                 {
@@ -225,6 +236,7 @@ namespace gestor_eventos.Pages.Inventario
             }
         }
         
+        [HttpPost]
         public async Task<IActionResult> OnPostUpdateItemAsync(string id, [FromBody] InventarioItemApi updatedItem)
         {
             try
@@ -239,11 +251,6 @@ namespace gestor_eventos.Pages.Inventario
                     return new JsonResult(new { success = false, message = "El nombre del ítem es obligatorio" });
                 }
 
-                if (updatedItem.Stock < 0)
-                {
-                    return new JsonResult(new { success = false, message = "El stock no puede ser negativo" });
-                }
-
                 var client = _clientFactory.CreateClient();
                 
                 string token = User.Claims.FirstOrDefault(c => c.Type == "AccessToken")?.Value;
@@ -255,9 +262,8 @@ namespace gestor_eventos.Pages.Inventario
                 string baseUrl = _configuration["ApiSettings:BaseUrl"];
                 
                 _logger.LogInformation($"Enviando solicitud PUT a: {baseUrl}/api/items/{id}");
-                _logger.LogInformation($"Datos de actualización: {JsonSerializer.Serialize(updatedItem)}");
 
-                // Crear el objeto con el formato exacto que la API espera
+                // Create the object with the EXACT format expected by the API
                 var itemRequest = new
                 {
                     nombre = updatedItem.Nombre,
@@ -266,17 +272,29 @@ namespace gestor_eventos.Pages.Inventario
                     preciobase = updatedItem.PrecioBase ?? "0"
                 };
 
+                _logger.LogInformation($"Datos a enviar: {JsonSerializer.Serialize(itemRequest)}");
+
                 var content = new StringContent(
                     JsonSerializer.Serialize(itemRequest),
                     System.Text.Encoding.UTF8,
                     "application/json");
-            
+    
                 var response = await client.PutAsync($"{baseUrl}/api/items/{id}", content);
                 
                 if (response.IsSuccessStatusCode)
                 {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    var updatedItemResponse = JsonSerializer.Deserialize<InventarioItemApi>(responseContent, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+                    
                     _logger.LogInformation("Ítem actualizado correctamente");
-                    return new JsonResult(new { success = true, message = "Ítem actualizado correctamente" });
+                    return new JsonResult(new { 
+                        success = true, 
+                        message = "Ítem actualizado correctamente",
+                        item = updatedItemResponse
+                    });
                 }
                 else
                 {
@@ -307,6 +325,7 @@ namespace gestor_eventos.Pages.Inventario
             return new JsonResult(new { success = true, message = "Stock actualizado correctamente" });
         }
         
+        [HttpPost]
         public async Task<IActionResult> OnPostDeleteItemAsync(string id)
         {
             try
@@ -316,33 +335,19 @@ namespace gestor_eventos.Pages.Inventario
                     return new JsonResult(new { success = false, message = "ID de ítem no proporcionado" });
                 }
 
- 
-                string userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
-                
-                if (string.IsNullOrEmpty(userEmail))
-                {
-                    _logger.LogError("No se pudo obtener el correo de usuario de las claims");
-                    return new JsonResult(new { success = false, message = "No se pudo identificar al usuario" });
-                }
-
- 
                 var client = _clientFactory.CreateClient();
                 
- 
                 string token = User.Claims.FirstOrDefault(c => c.Type == "AccessToken")?.Value;
                 if (!string.IsNullOrEmpty(token))
                 {
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 }
                 
- 
                 string baseUrl = _configuration["ApiSettings:BaseUrl"];
                 
- 
-                _logger.LogInformation($"Enviando solicitud DELETE a: {baseUrl}/api/inventario/{userEmail}/{id}");
+                _logger.LogInformation($"Enviando solicitud DELETE a: {baseUrl}/api/items/{id}");
 
- 
-                var response = await client.DeleteAsync($"{baseUrl}/api/inventario/{userEmail}/{id}");
+                var response = await client.DeleteAsync($"{baseUrl}/api/items/{id}");
                 
                 if (response.IsSuccessStatusCode)
                 {

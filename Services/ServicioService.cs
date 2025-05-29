@@ -4,12 +4,11 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Http;
-using GestorEventos.Services;
-using gestor_eventos.Models;
 using gestor_eventos.Models.ApiModels;
+using GestorEventos.Services;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace gestor_eventos.Services
 {
@@ -32,53 +31,46 @@ namespace gestor_eventos.Services
             _logger = logger;
         }
 
-        public async Task<List<ServicioApi>> GetServiciosByCorreoAsync(string correo)
+        public async Task<List<ServicioApi>> GetServiciosAsync()
         {
             try
             {
- 
-                var token = _httpContextAccessor.HttpContext.User.FindFirst("AccessToken")?.Value;
-                
+                _logger.LogInformation("Obteniendo lista de servicios");
+
+                var token = _httpContextAccessor.HttpContext?.User?.FindFirst("AccessToken")?.Value;
+
                 if (string.IsNullOrEmpty(token))
                 {
-                    _logger.LogWarning("Token no encontrado en las claims del usuario: {Email}", correo);
-                    
- 
-                    token = _httpContextAccessor.HttpContext.Request.Cookies["AuthToken"];
-                    
+                    _logger.LogWarning("Token no encontrado en las claims del usuario");
+
+                    token = _httpContextAccessor.HttpContext?.Request.Cookies["AuthToken"];
+
                     if (string.IsNullOrEmpty(token))
                     {
-                        _logger.LogWarning("Token no encontrado en las cookies para el usuario: {Email}", correo);
+                        _logger.LogWarning("Token no encontrado en las cookies");
                         return new List<ServicioApi>();
                     }
                 }
 
-                _logger.LogInformation("Obteniendo servicios para el usuario: {Email}", correo);
-                
- 
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
- 
-                var response = await _httpClient.GetAsync($"{_apiSettings.BaseUrl}/api/servicios/{correo}");
-                
- 
+                var response = await _httpClient.GetAsync($"{_apiSettings.BaseUrl}/api/servicios");
+
                 if (!response.IsSuccessStatusCode)
                 {
-                    _logger.LogWarning("Error al obtener servicios. Código: {StatusCode}, Mensaje: {Message}", 
+                    _logger.LogWarning("Error al obtener servicios. Código: {StatusCode}, Mensaje: {Message}",
                         (int)response.StatusCode, response.ReasonPhrase);
-                        
                     return new List<ServicioApi>();
                 }
 
- 
                 var content = await response.Content.ReadAsStringAsync();
                 _logger.LogDebug("Respuesta del API: {Response}", content);
-                
+
                 var options = new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true
                 };
-                
+
                 return JsonSerializer.Deserialize<List<ServicioApi>>(content, options) ?? new List<ServicioApi>();
             }
             catch (HttpRequestException ex)
@@ -98,218 +90,239 @@ namespace gestor_eventos.Services
             }
         }
 
-        public async Task<bool> CreateServicioAsync(string correo, ServicioCreateModel servicioModel)
+        public async Task<ServicioApi> CreateServicioAsync(ServicioCreateModel servicio)
         {
             try
             {
- 
-                var token = _httpContextAccessor.HttpContext.User.FindFirst("AccessToken")?.Value;
-                
+                _logger.LogInformation("Creando nuevo servicio: {NombreServicio}", servicio.NombreServicio);
+
+                // Get token from cookies or user claims
+                var token = _httpContextAccessor.HttpContext?.Request.Cookies["AuthToken"];
                 if (string.IsNullOrEmpty(token))
                 {
-                    _logger.LogWarning("Token no encontrado en las claims del usuario: {Email}", correo);
-                    
- 
-                    token = _httpContextAccessor.HttpContext.Request.Cookies["AuthToken"];
-                    
+                    token = _httpContextAccessor.HttpContext?.User?.FindFirst("AccessToken")?.Value;
                     if (string.IsNullOrEmpty(token))
                     {
-                        _logger.LogWarning("Token no encontrado en las cookies para el usuario: {Email}", correo);
-                        return false;
+                        _logger.LogWarning("Token no encontrado en las cookies ni en las claims");
+                        return null;
                     }
                 }
 
-                _logger.LogInformation("Creando nuevo servicio para el usuario: {Email}", correo);
-                
- 
+                // Set authorization header
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
- 
-                var content = new StringContent(
-                    JsonSerializer.Serialize(servicioModel), 
-                    System.Text.Encoding.UTF8, 
-                    "application/json");
+                // Ensure all precioActual values are strings
+                foreach (var item in servicio.Items)
+                {
+                    // If precioActual is not already a string, convert it
+                    if (item.PrecioActual != null && !item.PrecioActual.GetType().Equals(typeof(string)))
+                    {
+                        item.PrecioActual = item.PrecioActual.ToString();
+                    }
+                }
 
- 
-                var response = await _httpClient.PostAsync($"{_apiSettings.BaseUrl}/api/servicios/{correo}", content);
-                
- 
+                var jsonContent = JsonSerializer.Serialize(servicio);
+                _logger.LogDebug("Enviando datos al API: {JsonContent}", jsonContent);
+
+                var content = new StringContent(jsonContent, System.Text.Encoding.UTF8, "application/json");
+                var response = await _httpClient.PostAsync($"{_apiSettings.BaseUrl}/api/servicios", content);
+
+                _logger.LogDebug("Respuesta recibida: Status {StatusCode}", (int)response.StatusCode);
+
                 if (!response.IsSuccessStatusCode)
                 {
                     var errorContent = await response.Content.ReadAsStringAsync();
-                    _logger.LogWarning("Error al crear servicio. Código: {StatusCode}, Mensaje: {Message}, Detalles: {Details}", 
+                    _logger.LogWarning("Error al crear servicio. Código: {StatusCode}, Mensaje: {Message}, Detalle: {Detail}",
                         (int)response.StatusCode, response.ReasonPhrase, errorContent);
-                        
-                    return false;
+                    return null;
                 }
 
-                _logger.LogInformation("Servicio creado exitosamente para el usuario: {Email}", correo);
-                return true;
+                var responseContent = await response.Content.ReadAsStringAsync();
+                _logger.LogDebug("Respuesta del API: {Response}", responseContent);
+
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+
+                var nuevoServicio = JsonSerializer.Deserialize<ServicioApi>(responseContent, options);
+                _logger.LogInformation("Servicio creado exitosamente con ID: {Id}", nuevoServicio?.Id);
+
+                return nuevoServicio;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error al crear servicio: {Message}", ex.Message);
-                return false;
+                return null;
             }
         }
 
-        public async Task<bool> UpdateServicioAsync(string correo, ServicioUpdateModel servicioModel)
+        public async Task<ServicioApi> UpdateServicioAsync(string id, ServicioEditModel servicio)
         {
             try
             {
- 
-                var token = _httpContextAccessor.HttpContext.User.FindFirst("AccessToken")?.Value;
-                
+                _logger.LogInformation("Actualizando servicio con ID: {Id}", id);
+
+                // Get token from cookies or user claims
+                var token = _httpContextAccessor.HttpContext?.Request.Cookies["AuthToken"];
                 if (string.IsNullOrEmpty(token))
                 {
-                    _logger.LogWarning("Token no encontrado en las claims del usuario: {Email}", correo);
-                    
- 
-                    token = _httpContextAccessor.HttpContext.Request.Cookies["AuthToken"];
-                    
+                    token = _httpContextAccessor.HttpContext?.User?.FindFirst("AccessToken")?.Value;
                     if (string.IsNullOrEmpty(token))
                     {
-                        _logger.LogWarning("Token no encontrado en las cookies para el usuario: {Email}", correo);
-                        return false;
+                        _logger.LogWarning("Token no encontrado en las cookies ni en las claims");
+                        return null;
                     }
                 }
 
-                _logger.LogInformation("Actualizando servicio para el usuario: {Email}", correo);
-                
- 
+                // Set authorization header
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
- 
-                var content = new StringContent(
-                    JsonSerializer.Serialize(servicioModel), 
-                    System.Text.Encoding.UTF8, 
-                    "application/json");
+                // Ensure all precioActual values are strings
+                foreach (var item in servicio.ItemsToAdd)
+                {
+                    if (item.PrecioActual != null && !item.PrecioActual.GetType().Equals(typeof(string)))
+                    {
+                        item.PrecioActual = item.PrecioActual.ToString();
+                    }
+                }
 
- 
-                var response = await _httpClient.PutAsync($"{_apiSettings.BaseUrl}/api/servicios/{correo}", content);
-                
- 
+                var jsonContent = JsonSerializer.Serialize(servicio);
+                _logger.LogDebug("Enviando datos al API: {JsonContent}", jsonContent);
+
+                var content = new StringContent(jsonContent, System.Text.Encoding.UTF8, "application/json");
+                var response = await _httpClient.PutAsync($"{_apiSettings.BaseUrl}/api/servicios/{id}", content);
+
+                _logger.LogDebug("Respuesta recibida: Status {StatusCode}", (int)response.StatusCode);
+
                 if (!response.IsSuccessStatusCode)
                 {
                     var errorContent = await response.Content.ReadAsStringAsync();
-                    _logger.LogWarning("Error al actualizar servicio. Código: {StatusCode}, Mensaje: {Message}, Detalles: {Details}", 
+                    _logger.LogWarning("Error al actualizar servicio. Código: {StatusCode}, Mensaje: {Message}, Detalle: {Detail}",
                         (int)response.StatusCode, response.ReasonPhrase, errorContent);
-                        
-                    return false;
+                    return null;
                 }
 
-                _logger.LogInformation("Servicio actualizado exitosamente para el usuario: {Email}", correo);
-                return true;
+                var responseContent = await response.Content.ReadAsStringAsync();
+                _logger.LogDebug("Respuesta del API: {Response}", responseContent);
+
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+
+                var servicioActualizado = JsonSerializer.Deserialize<ServicioApi>(responseContent, options);
+                _logger.LogInformation("Servicio actualizado exitosamente con ID: {Id}", servicioActualizado?.Id);
+
+                return servicioActualizado;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error al actualizar servicio: {Message}", ex.Message);
-                return false;
+                return null;
             }
         }
 
-        public async Task<bool> UpdateServicioDetailedAsync(string correo, string servicioId, ServicioUpdateRequestModel model)
+        public async Task<ServicioApi> GetServicioByIdAsync(string id)
         {
             try
             {
- 
-                var token = _httpContextAccessor.HttpContext.User.FindFirst("AccessToken")?.Value;
-                
+                _logger.LogInformation("Obteniendo servicio con ID: {Id}", id);
+
+                var token = _httpContextAccessor.HttpContext?.Request.Cookies["AuthToken"];
                 if (string.IsNullOrEmpty(token))
                 {
-                    _logger.LogWarning("Token no encontrado en las claims del usuario: {Email}", correo);
-                    
- 
-                    token = _httpContextAccessor.HttpContext.Request.Cookies["AuthToken"];
-                    
+                    token = _httpContextAccessor.HttpContext?.User?.FindFirst("AccessToken")?.Value;
                     if (string.IsNullOrEmpty(token))
                     {
-                        _logger.LogWarning("Token no encontrado en las cookies para el usuario: {Email}", correo);
-                        return false;
+                        _logger.LogWarning("Token no encontrado en las cookies ni en las claims");
+                        return null;
                     }
                 }
 
-                _logger.LogInformation("Actualizando servicio con ID {Id} para el usuario: {Email}", servicioId, correo);
-                _logger.LogInformation("Datos de actualización: {Data}", JsonSerializer.Serialize(model));
-                
- 
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
- 
-                var content = new StringContent(
-                    JsonSerializer.Serialize(model), 
-                    System.Text.Encoding.UTF8, 
-                    "application/json");
+                var response = await _httpClient.GetAsync($"{_apiSettings.BaseUrl}/api/servicios/{id}");
 
- 
-                var response = await _httpClient.PutAsync($"{_apiSettings.BaseUrl}/api/servicios/{correo}/{servicioId}", content);
-                
- 
                 if (!response.IsSuccessStatusCode)
                 {
-                    var errorContent = await response.Content.ReadAsStringAsync();
-                    _logger.LogWarning("Error al actualizar servicio detallado. Código: {StatusCode}, Mensaje: {Message}, Detalles: {Details}", 
-                        (int)response.StatusCode, response.ReasonPhrase, errorContent);
-                        
-                    return false;
+                    _logger.LogWarning("Error al obtener servicio. Código: {StatusCode}, Mensaje: {Message}",
+                        (int)response.StatusCode, response.ReasonPhrase);
+                    return null;
                 }
 
-                _logger.LogInformation("Servicio actualizado detalladamente con éxito para el usuario: {Email}, ID: {Id}", correo, servicioId);
-                return true;
+                var content = await response.Content.ReadAsStringAsync();
+                _logger.LogDebug("Respuesta del API: {Response}", content);
+
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+
+                return JsonSerializer.Deserialize<ServicioApi>(content, options);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al actualizar servicio detallado: {Message}", ex.Message);
-                return false;
+                _logger.LogError(ex, "Error al obtener servicio por ID: {Message}", ex.Message);
+                return null;
             }
         }
 
-        public async Task<bool> DeleteServicioAsync(string correo, string servicioId)
+        public async Task<bool> DeleteServicioAsync(string id)
         {
             try
             {
- 
-                var token = _httpContextAccessor.HttpContext.User.FindFirst("AccessToken")?.Value;
-                
+                _logger.LogInformation("Eliminando servicio con ID: {Id}", id);
+
+                // Get token from cookies or user claims
+                var token = _httpContextAccessor.HttpContext?.Request.Cookies["AuthToken"];
                 if (string.IsNullOrEmpty(token))
                 {
-                    _logger.LogWarning("Token no encontrado en las claims del usuario: {Email}", correo);
-                    
- 
-                    token = _httpContextAccessor.HttpContext.Request.Cookies["AuthToken"];
-                    
+                    token = _httpContextAccessor.HttpContext?.User?.FindFirst("AccessToken")?.Value;
                     if (string.IsNullOrEmpty(token))
                     {
-                        _logger.LogWarning("Token no encontrado en las cookies para el usuario: {Email}", correo);
+                        _logger.LogWarning("Token no encontrado en las cookies ni en las claims");
                         return false;
                     }
                 }
 
-                _logger.LogInformation("Eliminando servicio con ID {Id} para el usuario: {Email}", servicioId, correo);
-                
- 
+                // Set authorization header
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
- 
-                var response = await _httpClient.DeleteAsync($"{_apiSettings.BaseUrl}/api/servicios/{correo}/{servicioId}");
-                
- 
+                // Send DELETE request
+                var response = await _httpClient.DeleteAsync($"{_apiSettings.BaseUrl}/api/servicios/{id}");
+
+                _logger.LogDebug("Respuesta recibida: Status {StatusCode}", (int)response.StatusCode);
+
                 if (!response.IsSuccessStatusCode)
                 {
                     var errorContent = await response.Content.ReadAsStringAsync();
-                    _logger.LogWarning("Error al eliminar servicio. Código: {StatusCode}, Mensaje: {Message}, Detalles: {Details}", 
+                    _logger.LogWarning("Error al eliminar servicio. Código: {StatusCode}, Mensaje: {Message}, Detalle: {Detail}",
                         (int)response.StatusCode, response.ReasonPhrase, errorContent);
-                        
                     return false;
                 }
 
-                _logger.LogInformation("Servicio eliminado exitosamente para el usuario: {Email}, ID: {Id}", correo, servicioId);
+                _logger.LogInformation("Servicio eliminado exitosamente: {Id}", id);
                 return true;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error al eliminar servicio: {Message}", ex.Message);
                 return false;
+            }
+        }
+
+        public async Task<List<ServicioApi>> GetAllServiciosAsync()
+        {
+            try
+            {
+                _logger.LogInformation("Obteniendo lista de servicios para selector");
+                return await GetServiciosAsync(); // Reuse your existing method
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al obtener todos los servicios: {Message}", ex.Message);
+                return new List<ServicioApi>();
             }
         }
     }

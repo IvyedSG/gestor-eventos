@@ -7,12 +7,10 @@ using System.Text.Json;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using System.Net.Http.Json; // Add this for PostAsJsonAsync and PutAsJsonAsync
+using System.Net.Http.Json;
 using System.Linq;
-
-// Add these using directives to resolve missing types
-using gestor_eventos.Models.ApiModels; // For ReservacionApi, ReservacionUpdateModel, ReservacionCreateModel
-using GestorEventos.Services; // For ApiSettings
+using gestor_eventos.Models.ApiModels;
+using GestorEventos.Services;
 
 namespace gestor_eventos.Services
 {
@@ -36,36 +34,31 @@ namespace gestor_eventos.Services
             _httpClient.BaseAddress = new Uri(_apiSettings.BaseUrl);
         }
 
-        public async Task<IEnumerable<ReservacionApi>> GetReservacionesByCorreoAsync(string correo)
+        public async Task<List<ReservacionApi>> GetAllReservacionesAsync()
         {
             try
             {
- 
-                var token = _httpContextAccessor.HttpContext.User.FindFirst("AccessToken")?.Value;
+                _logger.LogInformation("Obteniendo todas las reservaciones");
+
+                var token = _httpContextAccessor.HttpContext?.User?.FindFirst("AccessToken")?.Value;
                 
                 if (string.IsNullOrEmpty(token))
                 {
-                    _logger.LogWarning("Token no encontrado en las claims del usuario: {Email}", correo);
+                    _logger.LogWarning("Token no encontrado en las claims del usuario");
                     
- 
-                    token = _httpContextAccessor.HttpContext.Request.Cookies["AuthToken"];
+                    token = _httpContextAccessor.HttpContext?.Request.Cookies["AuthToken"];
                     
                     if (string.IsNullOrEmpty(token))
                     {
-                        _logger.LogWarning("Token no encontrado en las cookies para el usuario: {Email}", correo);
+                        _logger.LogWarning("Token no encontrado en las cookies");
                         return new List<ReservacionApi>();
                     }
                 }
-
-                _logger.LogInformation("Obteniendo reservaciones para el usuario: {Email}", correo);
                 
- 
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
- 
-                var response = await _httpClient.GetAsync($"api/reservas/{correo}");
                 
- 
+                var response = await _httpClient.GetAsync($"{_apiSettings.BaseUrl}/api/reservas");
+                
                 if (!response.IsSuccessStatusCode)
                 {
                     _logger.LogWarning("Error al obtener reservaciones. Código: {StatusCode}, Mensaje: {Message}", 
@@ -73,8 +66,7 @@ namespace gestor_eventos.Services
                         
                     return new List<ReservacionApi>();
                 }
-
- 
+                
                 var content = await response.Content.ReadAsStringAsync();
                 _logger.LogDebug("Respuesta del API: {Response}", content);
                 
@@ -83,11 +75,11 @@ namespace gestor_eventos.Services
                     PropertyNameCaseInsensitive = true
                 };
                 
-                return JsonSerializer.Deserialize<IEnumerable<ReservacionApi>>(content, options) ?? new List<ReservacionApi>();
+                return JsonSerializer.Deserialize<List<ReservacionApi>>(content, options) ?? new List<ReservacionApi>();
             }
             catch (HttpRequestException ex)
             {
-                _logger.LogError(ex, "Error de conexión al obtener reservaciones: {Message}", ex.Message);
+                _logger.LogError(ex, "Error de conexión al obtener todas las reservaciones: {Message}", ex.Message);
                 return new List<ReservacionApi>();
             }
             catch (JsonException ex)
@@ -101,206 +93,90 @@ namespace gestor_eventos.Services
                 return new List<ReservacionApi>();
             }
         }
-        
-        public async Task<bool> UpdateReservacionAsync(string userEmail, Guid reservaId, ReservacionUpdateModel updateModel)
+
+        public async Task<ReservacionApi> CreateReservacionAsync(ReservacionCreateModel reservacion)
         {
             try
             {
-                if (updateModel == null)
-                {
-                    _logger.LogError("El modelo de actualización es nulo");
-                    return false;
-                }
-                
- 
-                if (updateModel.itemsToAdd == null)
-                    updateModel.itemsToAdd = new List<ReservacionUpdateModel.ItemToAdd>();
-                    
-                if (updateModel.itemsToRemove == null)
-                    updateModel.itemsToRemove = new List<string>();
-                    
- 
-                if (!new[] { "PENDIENTE", "CONFIRMADO", "CANCELADO", "FINALIZADO" }.Contains(updateModel.estado?.ToUpper()))
-                {
-                    updateModel.estado = "PENDIENTE";
-                }
+                _logger.LogInformation("Creando nueva reservación: {NombreEvento}", reservacion.NombreEvento);
 
- 
-                var apiUrl = $"{_apiSettings.BaseUrl}/api/reservas/{Uri.EscapeDataString(userEmail)}/{reservaId}";
-                
- 
-                _logger.LogInformation("Actualizando reserva. URL: {Url}, Datos: {@UpdateModel}", apiUrl, updateModel);
-                
- 
-                
- 
-                var token = _httpContextAccessor.HttpContext.User.FindFirst("AccessToken")?.Value;
+                var token = _httpContextAccessor.HttpContext?.User?.FindFirst("AccessToken")?.Value;
                 
                 if (string.IsNullOrEmpty(token))
                 {
- 
-                    token = _httpContextAccessor.HttpContext.Request.Cookies["AuthToken"];
+                    token = _httpContextAccessor.HttpContext?.Request.Cookies["AuthToken"];
                     
                     if (string.IsNullOrEmpty(token))
                     {
-                        _logger.LogError("Token no encontrado para la autenticación");
-                        return false;
+                        _logger.LogWarning("Token no encontrado en las cookies ni en las claims");
+                        return null;
                     }
                 }
                 
- 
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 
- 
-                var response = await _httpClient.PutAsJsonAsync(apiUrl, updateModel);
+                // Log all data being sent to API
+                var jsonContent = JsonSerializer.Serialize(reservacion);
+                _logger.LogDebug("Enviando datos al API: {JsonContent}", jsonContent);
                 
- 
-                var responseContent = await response.Content.ReadAsStringAsync();
-                _logger.LogInformation("Respuesta de actualización: {StatusCode}, Contenido: {Content}", 
-                                      response.StatusCode, responseContent);
+                var content = new StringContent(jsonContent, System.Text.Encoding.UTF8, "application/json");
                 
- 
-                if (!response.IsSuccessStatusCode)
-                {
-                    _logger.LogError("Error al actualizar la reservación {Id}. Código: {StatusCode}. Detalle: {Error}",
-                                     reservaId, response.StatusCode, responseContent);
-                    return false;
-                }
+                // Log the full URL being called
+                var url = $"{_apiSettings.BaseUrl}/api/reservas";
+                _logger.LogInformation("Calling API URL: {Url}", url);
                 
-                return true;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error al actualizar la reservación {Id}: {Message}", reservaId, ex.Message);
-                return false;
-            }
-        }
-        
-        public async Task<(bool Success, string Message)> CreateReservacionAsync(string userEmail, ReservacionCreateModel createModel)
-        {
-            try
-            {
-                if (createModel == null)
-                {
-                    _logger.LogError("El modelo de creación es nulo");
-                    return (false, "Los datos de la reserva no son válidos");
-                }
+                var response = await _httpClient.PostAsync(url, content);
                 
- 
-                var apiUrl = $"{_apiSettings.BaseUrl}/api/reservas/{Uri.EscapeDataString(userEmail)}";
-                
- 
-                _logger.LogInformation("Creando reserva. URL: {Url}, Datos: {@CreateModel}", apiUrl, createModel);
-                
- 
-                var token = _httpContextAccessor.HttpContext.User.FindFirst("AccessToken")?.Value;
-                
-                if (string.IsNullOrEmpty(token))
-                {
- 
-                    token = _httpContextAccessor.HttpContext.Request.Cookies["AuthToken"];
-                    
-                    if (string.IsNullOrEmpty(token))
-                    {
-                        _logger.LogError("Token no encontrado para la autenticación");
-                        return (false, "No se pudo autenticar al usuario");
-                    }
-                }
-                
- 
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                
- 
-                var response = await _httpClient.PostAsJsonAsync(apiUrl, createModel);
-                
- 
-                var responseContent = await response.Content.ReadAsStringAsync();
-                _logger.LogInformation("Respuesta de creación: {StatusCode}, Contenido: {Content}", 
-                                      response.StatusCode, responseContent);
-                
- 
-                if (!response.IsSuccessStatusCode)
-                {
-                    _logger.LogError("Error al crear la reservación. Código: {StatusCode}. Detalle: {Error}",
-                                     response.StatusCode, responseContent);
-                    return (false, $"Error del servidor: {response.StatusCode}");
-                }
-                
-                return (true, "Reserva creada correctamente");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error al crear la reservación: {Message}", ex.Message);
-                return (false, $"Error: {ex.Message}");
-            }
-        }
-        
-        public async Task<bool> DeleteReservacionAsync(string correo, Guid reservacionId)
-        {
-            try
-            {
- 
-                var token = _httpContextAccessor.HttpContext.User.FindFirst("AccessToken")?.Value;
-                
-                if (string.IsNullOrEmpty(token))
-                {
-                    _logger.LogWarning("Token no encontrado al intentar eliminar reservación: {Id}", reservacionId);
-                    
- 
-                    token = _httpContextAccessor.HttpContext.Request.Cookies["AuthToken"];
-                    
-                    if (string.IsNullOrEmpty(token))
-                    {
-                        _logger.LogWarning("Token no encontrado en las cookies para el usuario: {Email}", correo);
-                        return false;
-                    }
-                }
-
-                _logger.LogInformation("Eliminando reservación: {Id} para usuario {Email}", reservacionId, correo);
-                
- 
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
- 
-                var response = await _httpClient.DeleteAsync($"{_apiSettings.BaseUrl}/api/reservas/{correo}/{reservacionId}");
-                
- 
                 if (!response.IsSuccessStatusCode)
                 {
                     var errorContent = await response.Content.ReadAsStringAsync();
-                    _logger.LogWarning("Error al eliminar reservación. Código: {StatusCode}, Mensaje: {Message}, Detalles: {Details}", 
+                    _logger.LogWarning("Error al crear reservación. Código: {StatusCode}, Mensaje: {Message}, Detalle: {Detail}", 
                         (int)response.StatusCode, response.ReasonPhrase, errorContent);
-                        
-                    return false;
+                    return null;
                 }
-
-                _logger.LogInformation("Reservación eliminada exitosamente: {Id}", reservacionId);
-                return true;
+                
+                var responseContent = await response.Content.ReadAsStringAsync();
+                _logger.LogDebug("Respuesta del API: {Response}", responseContent);
+                
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+                
+                var nuevaReservacion = JsonSerializer.Deserialize<ReservacionApi>(responseContent, options);
+                _logger.LogInformation("Reservación creada exitosamente con ID: {Id}", nuevaReservacion?.Id);
+                
+                return nuevaReservacion;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al eliminar reservación {Id}: {Message}", reservacionId, ex.Message);
-                return false;
+                _logger.LogError(ex, "Error al crear reservación: {Message}", ex.Message);
+                return null;
             }
         }
-        
-        public async Task<ReservacionApi> GetReservacionAsync(string id)
+
+        public async Task<ReservacionApi> GetReservacionByIdAsync(string id)
         {
             try
             {
-                var token = _httpContextAccessor.HttpContext.User.FindFirst("AccessToken")?.Value;
+                _logger.LogInformation("Obteniendo reservación con ID: {Id}", id);
+
+                var token = _httpContextAccessor.HttpContext?.User?.FindFirst("AccessToken")?.Value;
                 
                 if (string.IsNullOrEmpty(token))
                 {
-                    _logger.LogWarning("Token no encontrado al intentar obtener reservación: {Id}", id);
-                    return null;
+                    token = _httpContextAccessor.HttpContext?.Request.Cookies["AuthToken"];
+                    
+                    if (string.IsNullOrEmpty(token))
+                    {
+                        _logger.LogWarning("Token no encontrado en las cookies ni en las claims");
+                        return null;
+                    }
                 }
-
-                _logger.LogInformation("Obteniendo reservación: {Id}", id);
                 
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-                var response = await _httpClient.GetAsync($"{_apiSettings.BaseUrl}/api/reservaciones/{id}");
+                
+                var response = await _httpClient.GetAsync($"{_apiSettings.BaseUrl}/api/reservas/{id}");
                 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -308,7 +184,7 @@ namespace gestor_eventos.Services
                         (int)response.StatusCode, response.ReasonPhrase);
                     return null;
                 }
-
+                
                 var content = await response.Content.ReadAsStringAsync();
                 _logger.LogDebug("Respuesta del API: {Response}", content);
                 
@@ -319,19 +195,60 @@ namespace gestor_eventos.Services
                 
                 return JsonSerializer.Deserialize<ReservacionApi>(content, options);
             }
-            catch (HttpRequestException ex)
+            catch (Exception ex)
             {
-                _logger.LogError(ex, "Error de conexión al obtener la reservación: {Message}", ex.Message);
+                _logger.LogError(ex, "Error al obtener reservación por ID: {Message}", ex.Message);
                 return null;
             }
-            catch (JsonException ex)
+        }
+        
+        public async Task<ReservacionApi> UpdateReservacionAsync(string id, object rawData)
+        {
+            try
             {
-                _logger.LogError(ex, "Error al procesar la respuesta del servidor: {Message}", ex.Message);
-                return null;
+                _logger.LogInformation("Actualizando reservación con ID: {Id}", id);
+
+                var token = _httpContextAccessor.HttpContext?.Request.Cookies["AuthToken"];
+                if (string.IsNullOrEmpty(token))
+                {
+                    token = _httpContextAccessor.HttpContext?.User?.FindFirst("AccessToken")?.Value;
+                    if (string.IsNullOrEmpty(token))
+                    {
+                        _logger.LogWarning("Token no encontrado");
+                        return null;
+                    }
+                }
+                
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                
+                // Convertimos directamente a JSON sin modificar la estructura
+                var jsonContent = JsonSerializer.Serialize(rawData);
+                _logger.LogInformation("Payload enviado a la API: {JsonContent}", jsonContent);
+                
+                var content = new StringContent(jsonContent, System.Text.Encoding.UTF8, "application/json");
+                var url = $"{_apiSettings.BaseUrl}/api/reservas/{id}";
+                _logger.LogInformation("URL de la API: {Url}", url);
+                
+                var response = await _httpClient.PutAsync(url, content);
+                var responseContent = await response.Content.ReadAsStringAsync();
+                _logger.LogInformation("Respuesta de la API: Status {Status}, Contenido: {Content}", 
+                    (int)response.StatusCode, responseContent);
+                
+                if (!response.IsSuccessStatusCode)
+                {
+                    _logger.LogWarning("Error al actualizar reserva. Status: {Status}, Detalle: {Detail}", 
+                        (int)response.StatusCode, responseContent);
+                    return null;
+                }
+                
+                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                var result = JsonSerializer.Deserialize<ReservacionApi>(responseContent, options);
+                
+                return result;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error inesperado: {Message}", ex.Message);
+                _logger.LogError(ex, "Error al actualizar reservación: {Message}", ex.Message);
                 return null;
             }
         }

@@ -1,18 +1,21 @@
 @model gestor_eventos.Pages.Reservas.IndexModel
+
+<!-- Modal para crear nueva reserva -->
 <div class="modal fade" id="newReservationModal" tabindex="-1" aria-labelledby="newReservationModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
-            <div class="modal-header bg-light">
+            <div class="modal-header">
                 <h5 class="modal-title" id="newReservationModalLabel">
-                    <i class="bi bi-calendar-plus me-2"></i>Crear Nueva Reserva
+                    <i class="bi bi-calendar-plus me-2"></i>Nueva Reserva
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-8">
-                        <form id="newReservationForm">
-                            <!-- Cliente -->
+                <form id="createReservationForm">
+                    @Html.AntiForgeryToken()
+                    <div class="row">
+                        <!-- Cliente -->
+                        <div class="col-md-8">
                             <div class="card border-0 shadow-sm mb-3">
                                 <div class="card-header bg-white pt-3 pb-2 border-0">
                                     <h6 class="fw-bold"><i class="bi bi-person me-2"></i>Información del Cliente</h6>
@@ -34,8 +37,31 @@
                                         <div class="mb-3">
                                             <select class="form-select form-select-lg" id="clientSelect">
                                                 <option selected disabled>Seleccionar cliente</option>
-                                                <!-- Clients will be loaded dynamically -->
+                                                @foreach (var cliente in Model.Clientes)
+                                                {
+                                                    <option value="@cliente.Id" 
+                                                            data-nombre="@(cliente.NombreUsuario ?? "")" 
+                                                            data-email="@(cliente.CorreoUsuario ?? "")" 
+                                                            data-telefono="@(cliente.Telefono ?? "")">
+                                                        @cliente.NombreUsuario - @cliente.CorreoUsuario
+                                                    </option>
+                                                }
                                             </select>
+                                            <div class="invalid-feedback">Por favor selecciona un cliente</div>
+                                        </div>
+                                        
+                                        <div id="clientDetails" class="p-3 bg-light rounded mb-3" style="display: none;">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <p class="mb-1"><strong>Nombre:</strong> <span id="clientDetailName"></span></p>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <p class="mb-1"><strong>Email:</strong> <span id="clientDetailEmail"></span></p>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <p class="mb-1"><strong>Teléfono:</strong> <span id="clientDetailPhone"></span></p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     
@@ -45,14 +71,17 @@
                                             <div class="col-md-6 mb-3">
                                                 <label class="form-label">Nombre</label>
                                                 <input type="text" class="form-control" id="newClientName" placeholder="Nombre del cliente">
+                                                <div class="invalid-feedback">Por favor ingresa el nombre del cliente</div>
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label class="form-label">Email</label>
                                                 <input type="email" class="form-control" id="newClientEmail" placeholder="Correo electrónico">
+                                                <div class="invalid-feedback">Por favor ingresa un email válido</div>
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label class="form-label">Teléfono</label>
                                                 <input type="tel" class="form-control" id="newClientPhone" placeholder="Teléfono">
+                                                <div class="invalid-feedback">Por favor ingresa un teléfono válido</div>
                                             </div>
                                         </div>
                                     </div>
@@ -62,40 +91,35 @@
                             <!-- Evento -->
                             <div class="card border-0 shadow-sm mb-3">
                                 <div class="card-header bg-white pt-3 pb-2 border-0">
-                                    <h6 class="fw-bold"><i class="bi bi-calendar-event me-2"></i>Detalles del Evento</h6>
+                                    <h6 class="fw-bold"><i class="bi bi-calendar-event me-2"></i>Información del Evento</h6>
                                 </div>
                                 <div class="card-body pt-0">
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
-                                            <label class="form-label">Nombre del Evento</label>
+                                            <label class="form-label">Nombre del evento</label>
                                             <input type="text" class="form-control" id="newEventName" placeholder="Nombre del evento">
+                                            <div class="invalid-feedback">Por favor ingresa un nombre para el evento</div>
                                         </div>
                                         <div class="col-md-6 mb-3">
-                                            <label class="form-label">Tipo de Evento</label>
+                                            <label class="form-label">Tipo de evento</label>
                                             <select class="form-select" id="newEventType">
                                                 <option selected disabled>Seleccionar tipo</option>
+                                                <option value="Fiesta">Fiesta</option>
                                                 <option value="Boda">Boda</option>
                                                 <option value="Cumpleaños">Cumpleaños</option>
-                                                <option value="Evento Corporativo">Evento Corporativo</option>
-                                                <option value="Graduación">Graduación</option>
-                                                <option value="Bautizo">Bautizo</option>
-                                                <option value="Aniversario">Aniversario</option>
-                                                <option value="Primera comunión">Primera comunión</option>
-                                                <option value="Baby shower">Baby shower</option>
-                                                <option value="Despedida de soltero/a">Despedida de soltero/a</option>
+                                                <option value="Conferencia">Conferencia</option>
+                                                <option value="Reunión">Reunión</option>
                                                 <option value="Otro">Otro</option>
                                             </select>
+                                            <div class="invalid-feedback">Por favor selecciona un tipo de evento</div>
                                         </div>
                                         <div class="col-md-6 mb-3">
-                                            <label class="form-label">Fecha</label>
+                                            <label class="form-label">Fecha del evento</label>
                                             <input type="date" class="form-control" id="newEventDate">
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Hora</label>
-                                            <input type="time" class="form-control" id="newEventTime">
+                                            <div class="invalid-feedback">Por favor selecciona una fecha válida</div>
                                         </div>
                                         <div class="col-md-12 mb-3">
-                                            <label class="form-label">Descripción del Evento</label>
+                                            <label class="form-label">Descripción</label>
                                             <textarea class="form-control" id="newEventDescription" rows="3" placeholder="Detalles del evento..."></textarea>
                                         </div>
                                     </div>
@@ -112,7 +136,14 @@
                                         <div class="col-md-12">
                                             <select id="serviceSelect" class="form-select">
                                                 <option selected disabled>Seleccionar servicio para añadir</option>
-                                                <!-- Services will be loaded dynamically -->
+                                                @foreach (var servicio in Model.Servicios)
+                                                {
+                                                    <option value="@servicio.Id" 
+                                                            data-nombre="@servicio.NombreServicio" 
+                                                            data-precio="@servicio.PrecioBase">
+                                                        @servicio.NombreServicio - S/@servicio.PrecioBase.ToString("N2")
+                                                    </option>
+                                                }
                                             </select>
                                         </div>
                                     </div>
@@ -122,53 +153,70 @@
                                             <thead>
                                                 <tr>
                                                     <th>Servicio</th>
-                                                    <th>Cantidad (Items)</th>
                                                     <th>Precio</th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                                <!-- Empty table that will be filled dynamically -->
+                                            <tbody id="servicesTableBody">
+                                                <!-- La tabla se llenará dinámicamente con JavaScript -->
+                                            </tbody>
+                                            <tfoot>
                                                 <tr class="fw-bold bg-light">
-                                                    <td colspan="2" class="text-end">Total:</td>
-                                                    <td id="servicesTotalAmount">$0</td>
+                                                    <td class="text-end">Total:</td>
+                                                    <td id="servicesTotalAmount">S/0.00</td>
                                                     <td></td>
                                                 </tr>
-                                            </tbody>
+                                            </tfoot>
                                         </table>
                                     </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    
-                    <!-- Estado de reserva -->
-                    <div class="col-md-4">
-                        <div class="card border-0 shadow-sm">
-                            <div class="card-header bg-white pt-3 pb-2 border-0">
-                                <h6 class="fw-bold"><i class="bi bi-info-circle me-2"></i>Estado de la Reserva</h6>
-                            </div>
-                            <div class="card-body pt-0">
-                                <div class="mb-3">
-                                    <label class="form-label">Estado</label>
-                                    <select class="form-select" id="newEventStatus">
-                                        <option selected value="Pendiente">Pendiente</option>
-                                        <option value="Confirmada">Confirmada</option>
-                                        <option value="Cancelada">Cancelada</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Precio total</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text">S/</span>
-                                        <input type="number" id="totalPrice" class="form-control" value="0">
+                                    <div id="servicesHelp" class="small text-danger d-none mt-2">
+                                        <i class="bi bi-exclamation-circle"></i> Debes añadir al menos un servicio
                                     </div>
-                                    <small class="text-muted">El precio total se actualiza automáticamente según los servicios seleccionados, pero puede ser modificado manualmente.</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Estado de reserva -->
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm mb-3">
+                                <div class="card-header bg-white pt-3 pb-2 border-0">
+                                    <h6 class="fw-bold"><i class="bi bi-info-circle me-2"></i>Estado de la Reserva</h6>
+                                </div>
+                                <div class="card-body pt-0">
+                                    <div class="mb-3">
+                                        <label class="form-label">Estado</label>
+                                        <select class="form-select" id="newEventStatus">
+                                            <option selected value="Pendiente">Pendiente</option>
+                                            <option value="Confirmado">Confirmado</option>
+                                            <option value="Cancelado">Cancelado</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Precio adelanto</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">S/</span>
+                                            <input type="number" id="advancePrice" class="form-control" value="0">
+                                        </div>
+                                        <small class="text-muted">Monto inicial pagado por el cliente</small>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Precio Total (S/)</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">S/</span>
+                                            <input type="number" class="form-control" id="totalPrice" name="totalPrice" step="0.01" min="0" value="0">
+                                            <button class="btn btn-outline-secondary" type="button" id="resetTotalPrice" title="Restaurar precio calculado">
+                                                <i class="bi bi-arrow-repeat"></i>
+                                            </button>
+                                        </div>
+                                        <div class="form-text">
+                                            <i class="bi bi-info-circle me-1"></i>Este valor se actualiza automáticamente según los servicios seleccionados, pero también puede modificarse manualmente.
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>

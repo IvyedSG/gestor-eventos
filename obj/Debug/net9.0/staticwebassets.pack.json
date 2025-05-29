@@ -17,6 +17,10 @@
       "PackagePath": "staticwebassets/favicon.ico"
     },
     {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas.js",
+      "PackagePath": "staticwebassets/js/reservas.js"
+    },
+    {
       "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/site.js",
       "PackagePath": "staticwebassets/js/site.js"
     },

@@ -1,150 +1,131 @@
 @model gestor_eventos.Pages.Servicios.IndexModel
 
 <div class="modal fade" id="newServiceModal" tabindex="-1" aria-labelledby="newServiceModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="newServiceModalLabel">Crear Nuevo Servicio</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="newServiceModalLabel">
+                    <i class="bi bi-plus-circle me-2"></i> Crear Nuevo Servicio
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="newServiceForm">
-                    <!-- Información básica -->
+                <form id="newServiceForm" method="post" asp-page-handler="Create">
                     <div class="row mb-3">
-                        <div class="col-md-6">
+                        <div class="col-md-8">
                             <div class="mb-3">
-                                <label for="newServiceName" class="form-label">Nombre del servicio <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="newServiceName" required>
+                                <label for="serviceName" class="form-label">Nombre del Servicio <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="serviceName" name="NombreServicio" required
+                                       placeholder="Ej: Decoración de Cumpleaños Infantil">
+                                <div class="invalid-feedback">
+                                    Por favor ingresa un nombre para el servicio.
+                                </div>
                             </div>
                             
                             <div class="mb-3">
-                                <label for="newServicePrice" class="form-label">Precio base (S/) <span class="text-danger">*</span></label>
-                                <div class="input-group">
-                                    <span class="input-group-text">S/</span>
-                                    <input type="number" class="form-control" id="newServicePrice" min="0" step="0.01" required>
+                                <label for="serviceDescription" class="form-label">Descripción <span class="text-danger">*</span></label>
+                                <textarea class="form-control" id="serviceDescription" name="Descripcion" rows="3" required
+                                          placeholder="Describe los detalles del servicio..."></textarea>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa una descripción para el servicio.
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="mb-3">
-                                <label for="newServiceDescription" class="form-label">Descripción <span class="text-danger">*</span></label>
-                                <textarea class="form-control" id="newServiceDescription" rows="4" required></textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Tipo de evento -->
-                    <div class="row mb-3">
-                        <div class="col-12">
-                            <label for="newServiceEventType" class="form-label">Tipo de evento <span class="text-danger">*</span></label>
-                            <select class="form-select" id="newServiceEventType" required>
-                                <option value="">Seleccionar tipo de evento</option>
-                                <option value="Conferencia">Conferencia</option>
-                                <option value="Taller">Taller</option>
-                                <option value="Seminario">Seminario</option>
-                                <option value="Concierto">Concierto</option>
-                                <option value="Festival">Festival</option>
-                                <option value="Webinar">Webinar</option>
-                                <option value="Reunión de negocios">Reunión de negocios</option>
-                                <option value="Feria o Expo">Feria o Expo</option>
-                                <option value="Evento deportivo">Evento deportivo</option>
-                                <option value="Evento social">Evento social</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Imágenes -->
-                    <div class="row mb-3">
-                        <div class="col-12">
-                            <div class="mb-3">
-                                <label for="newServiceImageUrl" class="form-label">URL de la imagen <span class="text-danger">*</span></label>
+                                <label for="servicePrice" class="form-label">Precio Base (S/) <span class="text-danger">*</span></label>
                                 <div class="input-group">
-                                    <span class="input-group-text"><i class="bi bi-image"></i></span>
-                                    <input type="url" class="form-control" id="newServiceImageUrl" 
-                                           placeholder="https://ejemplo.com/imagen.jpg" required>
+                                    <span class="input-group-text">S/</span>
+                                    <input type="number" class="form-control" id="servicePrice" name="PrecioBase" min="1" step="0.01" required
+                                           placeholder="0.00">
+                                    <div class="invalid-feedback">
+                                        Por favor ingresa un precio válido.
+                                    </div>
                                 </div>
-                                <div class="form-text">Introduce la URL de la imagen principal para el servicio</div>
                             </div>
-                            <!-- Previsualización de la imagen -->
-                            <div class="mt-2" id="imagePreviewContainer">
-                                <div class="d-none" id="imagePreview">
-                                    <img src="" class="img-thumbnail" style="max-height: 150px;" alt="Vista previa">
-                                    <button type="button" class="btn btn-sm btn-outline-danger mt-1" id="clearImageBtn">
-                                        <i class="bi bi-x-circle"></i> Limpiar imagen
+                        </div>
+                    </div>
+                    
+                    <hr class="mb-4">
+                    
+                    <h5 class="mb-3">
+                        <i class="bi bi-box-seam me-2"></i> Ítems del Servicio
+                        <small class="text-danger">*</small>
+                    </h5>
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle-fill me-2"></i> Selecciona los ítems que se incluirán en este servicio.
+                    </div>
+                    
+                    <!-- Selector de ítems -->
+                    <div class="card mb-3 border-light shadow-sm">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label for="itemSelect" class="form-label">Seleccionar Ítem</label>
+                                    <select class="form-select" id="itemSelect">
+                                        <option value="" selected>-- Selecciona un ítem --</option>
+                                        @if(Model.InventarioItems != null)
+                                        {
+                                            foreach(var item in Model.InventarioItems.Where(i => i.StockDisponible > 0))
+                                            {
+                                                <option value="@item.Id" 
+                                                        data-nombre="@item.Nombre" 
+                                                        data-precio="@item.Preciobase" 
+                                                        data-stock="@item.StockDisponible">
+                                                    @item.Nombre (@item.StockDisponible disponibles)
+                                                </option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="itemQuantity" class="form-label">Cantidad</label>
+                                    <input type="number" class="form-control" id="itemQuantity" min="1" value="1">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="itemState" class="form-label">Estado</label>
+                                    <select class="form-select" id="itemState">
+                                        <option value="Nuevo" selected>Nuevo</option>
+                                        <option value="Dañado">Dañado</option>
+                                        <option value="Roto">Roto</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="d-block">&nbsp;</label>
+                                    <button type="button" class="btn btn-primary w-100" id="addSelectedItemBtn">
+                                        <i class="bi bi-plus-lg"></i> Agregar
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Selección de ítems integrada -->
-                    <div class="row mb-3">
-                        <div class="col-12">
-                            <h6 class="border-bottom pb-2 mb-3">Ítems del Servicio</h6>
-                            
-                            <!-- Selección de ítem integrada -->
-                            <div class="card mb-3 border-light bg-light">
-                                <div class="card-body">
-                                    <div class="row g-2 align-items-end">
-                                        <div class="col-md-6">
-                                            <label for="itemSelect" class="form-label">Seleccionar ítem</label>
-                                            
-                                            <select class="form-select" id="itemSelect">
-                                                <option value="" selected disabled>Seleccione un ítem</option>
-                                                @if (Model.InventoryItems != null && Model.InventoryItems.Any())
-                                                {
-                                                    @foreach (var item in Model.InventoryItems.Where(i => i.Stock > 0))
-                                                    {
-                                                        <option value="@item.Id" 
-                                                                data-nombre="@item.Nombre" 
-                                                                data-stock="@item.Stock" 
-                                                                data-categoria="@item.Categoria ?? "General"">
-                                                            @item.Nombre (@item.Stock disponibles)
-                                                        </option>
-                                                    }
-                                                }
-                                            </select>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label for="itemQuantity" class="form-label">Cantidad</label>
-                                            <input type="number" class="form-control" id="itemQuantity" min="1" value="1">
-                                        </div>
-                                        <div class="col-md-3">
-                                            <button type="button" class="btn btn-primary w-100" id="addSelectedItemBtn">
-                                                <i class="bi bi-plus-lg"></i> Agregar
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Contador de ítems -->
-                            <div class="d-flex justify-content-end mb-2">
-                                <span class="badge bg-primary" id="itemsCountBadge">0 ítems</span>
-                            </div>
-                            
-                            <!-- Tabla de ítems -->
-                            <div class="table-responsive">
-                                <table class="table table-sm table-hover" id="itemsTable">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>Ítem</th>
-                                            <th>Stock</th>
-                                            <th>Cantidad</th>
-                                            <th>Acciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="itemsTableBody">
-                                        <tr id="noItemsRow">
-                                            <td colspan="5" class="text-center text-muted py-3">
-                                                No hay ítems seleccionados
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                    
+                    <!-- Contador de ítems -->
+                    <div class="d-flex justify-content-end mb-2">
+                        <span class="badge bg-primary" id="itemsCountBadge">0 ítems</span>
+                    </div>
+                    
+                    <!-- Tabla de ítems -->
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover" id="itemsTable">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Ítem</th>
+                                    <th>Estado</th>
+                                    <th>Stock</th>
+                                    <th>Cantidad</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="itemsTableBody">
+                                <tr id="noItemsRow">
+                                    <td colspan="5" class="text-center text-muted py-3">
+                                        No hay ítems seleccionados
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                     <div id="itemsHelp" class="small text-danger d-none mt-2">
                         <i class="bi bi-exclamation-circle"></i> Debes agregar al menos un ítem para crear el servicio
@@ -153,8 +134,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-success" id="saveNewServiceBtn">
-                    <i class="bi bi-check-circle"></i> Guardar Servicio
+                <button type="button" class="btn btn-primary" id="saveServiceBtn">
+                    <i class="bi bi-save"></i> Guardar Servicio
                 </button>
             </div>
         </div>

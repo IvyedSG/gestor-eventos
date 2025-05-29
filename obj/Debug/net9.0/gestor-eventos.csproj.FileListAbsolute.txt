@@ -333,6 +333,7 @@ C:/Users/AUTONOMA/Documents/gestor-eventos/obj/Debug/net9.0/ref/gestor-eventos.d
 /Users/sagox16/Documents/Importants/gestor-eventos/obj/Debug/net9.0/scopedcss/projectbundle/gestor-eventos.bundle.scp.css
 /Users/sagox16/Documents/Importants/gestor-eventos/obj/Debug/net9.0/compressed/x2vzo1zlq5-b9sayid5wm.gz
 /Users/sagox16/Documents/Importants/gestor-eventos/obj/Debug/net9.0/compressed/taug5e4miv-61n19gt1b8.gz
+/Users/sagox16/Documents/Importants/gestor-eventos/obj/Debug/net9.0/compressed/9o3oe7ye3f-i3sna0o760.gz
 /Users/sagox16/Documents/Importants/gestor-eventos/obj/Debug/net9.0/compressed/9eky6v0uqp-2ut828sknb.gz
 /Users/sagox16/Documents/Importants/gestor-eventos/obj/Debug/net9.0/compressed/7cwb6098h5-bqjiyaj88i.gz
 /Users/sagox16/Documents/Importants/gestor-eventos/obj/Debug/net9.0/compressed/qwtkuc9vfz-c2jlpeoesf.gz

@@ -1,1444 +1,242 @@
 @page
 @model gestor_eventos.Pages.Reservas.IndexModel
 @{
-    ViewData["Title"] = "Gestionar Reservas";
+    ViewData["Title"] = "Gestión de Reservas";
 }
 
-<!-- Añadir el token de verificación al inicio de la página -->
-@Html.AntiForgeryToken()
-
-<!-- Contenedor para alertas -->
-<div id="alertsContainer" class="container mt-3"></div>
-
-<!-- Filtros y búsqueda -->
-<partial name="_ReservasFilters" />
-
-<!-- Tabla de reservas -->
-<partial name="_ReservasTable" />
-
-<!-- Modal para Nueva Reserva -->
-<partial name="_NewReservationModal" />
-
-<!-- Modal para Seleccionar Servicios -->
-<partial name="_SelectServiceModal" />
-
-<!-- Modal para Ver Detalle de Reserva -->
-<partial name="_ViewReservationModal" />
-
-<!-- Modal para Editar Reserva -->
-<partial name="_EditReservationModal" />
-
-<!-- Modal para Imprimir Reserva -->
-<partial name="_PrintReservationModal" />
-
-<!-- Modal for Delete Confirmation -->
-<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header bg-danger text-white">
-        <h5 class="modal-title" id="deleteConfirmationModalLabel"><i class="bi bi-exclamation-triangle-fill me-2"></i>Confirmar eliminación</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <p id="deleteConfirmationText">¿Está seguro que desea eliminar esta reserva? Esta acción no se puede deshacer.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-danger" id="confirmDeleteButton">
-          <i class="bi bi-trash me-1"></i>Eliminar
+<div class="container-fluid py-4">
+    <!-- Header with title and create button -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-0">Administra todas las reservas</h1>
+        </div>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newReservationModal">
+            <i class="bi bi-plus-circle me-2"></i>Nueva Reserva
         </button>
-      </div>
     </div>
-  </div>
+    
+    @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle me-2"></i>@Model.SuccessMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    
+    @if (Model.HasError)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle me-2"></i>@Model.ErrorMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    
+    <!-- Filtros -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form method="get" id="filterForm">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                            <input type="text" class="form-control border-start-0" 
+                                   placeholder="Buscar por nombre, cliente o ID..." 
+                                   name="SearchTerm" value="@Model.SearchTerm">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" name="StatusFilter">
+                            <option value="">Estado: Todos</option>
+                            <option value="Pendiente" selected="@(Model.StatusFilter == "Pendiente")">Pendiente</option>
+                            <option value="Confirmado" selected="@(Model.StatusFilter == "Confirmado")">Confirmado</option>
+                            <option value="Cancelado" selected="@(Model.StatusFilter == "Cancelado")">Cancelado</option>
+                            <option value="Finalizado" selected="@(Model.StatusFilter == "Finalizado")">Finalizado</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="date" class="form-control" name="DateFilter" value="@Model.DateFilter" placeholder="Filtrar por fecha">
+                    </div>
+                    <div class="col-md-2 d-flex">
+                        <button type="submit" class="btn btn-primary me-2 flex-grow-1">
+                            <i class="bi bi-funnel me-1"></i>Filtrar
+                        </button>
+                        <button type="button" id="clearFilters" class="btn btn-outline-secondary">
+                            <i class="bi bi-x-lg"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Tabla de Reservas -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="ps-4">ID</th>
+                            <th>Nombre del evento</th>
+                            <th>Nombre del cliente</th>
+                            <th>Tipo</th>
+                            <th>Fecha</th>
+                            <th>Precio total</th>
+                            <th>Estado</th>
+                            <th class="text-end pe-4">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Reservations != null && Model.Reservations.Any())
+                        {
+                            foreach (var reservation in Model.Reservations)
+                            {
+                                <tr>
+                                    <td class="ps-4">@reservation.Id</td>
+                                    <td class="fw-medium">@reservation.NombreEvento</td>
+                                    <td>@(reservation.NombreCliente ?? "Sin información")</td>
+                                    <td>@reservation.TipoEventoNombre</td>
+                                    <td>@reservation.FechaEjecucion.ToString("dd/MM/yyyy")</td>
+                                    <td>S/@reservation.PrecioTotal.ToString("N2")</td>
+                                    <td>
+                                        @{
+                                            var status = reservation.Estado?.ToUpper() ?? "PENDIENTE";
+                                            
+                                            if (status == "CONFIRMADO" || status == "CONFIRMED")
+                                            {
+                                                <span class="badge bg-success px-3 py-2 rounded-pill">
+                                                    <i class="bi bi-check-circle-fill me-1"></i>Confirmado
+                                                </span>
+                                            }
+                                            else if (status == "PENDIENTE" || status == "PENDING")
+                                            {
+                                                <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">
+                                                    <i class="bi bi-hourglass-split me-1"></i>Pendiente
+                                                </span>
+                                            }
+                                            else if (status == "CANCELADO" || status == "CANCELED" || status == "CANCELLED")
+                                            {
+                                                <span class="badge bg-danger px-3 py-2 rounded-pill">
+                                                    <i class="bi bi-x-octagon-fill me-1"></i>Cancelado
+                                                </span>
+                                            }
+                                            else if (status == "FINALIZADO" || status == "COMPLETED" || status == "FINISHED")
+                                            {
+                                                <span class="badge bg-info px-3 py-2 rounded-pill">
+                                                    <i class="bi bi-trophy-fill me-1"></i>Finalizado
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-secondary px-3 py-2 rounded-pill">
+                                                    <i class="bi bi-question-circle-fill me-1"></i>@reservation.Estado
+                                                </span>
+                                            }
+                                        }
+                                    </td>
+                                    <td class="text-end pe-4">
+                                        <div class="btn-group">
+                                            <button class="btn btn-sm btn-outline-primary view-reservation" data-id="@reservation.Id">
+                                                <i class="bi bi-eye"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-secondary edit-reservation" data-id="@reservation.Id">
+                                                <i class="bi bi-pencil"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="8" class="text-center py-5">
+                                    <div class="d-flex flex-column align-items-center">
+                                        <i class="bi bi-calendar-x text-muted" style="font-size: 3rem;"></i>
+                                        <h5 class="mt-3">No se encontraron reservas</h5>
+                                        <p class="text-muted mb-4">Prueba ajustando los filtros o crea una nueva reserva</p>
+                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newReservationModal">
+                                            <i class="bi bi-plus-circle me-2"></i>Nueva Reserva
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Paginación -->
+    @if (Model.Reservations != null && Model.Reservations.Any())
+    {
+        <div class="d-flex justify-content-between align-items-center mt-4">
+            <p class="text-muted">Mostrando <strong>@Model.Reservations.Count</strong> reservas</p>
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Siguiente</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    }
 </div>
 
+<partial name="_NewReservationModal" />
+<partial name="_ViewReservationModal" />
+<partial name="_EditReservationModal" />
+
 @section Scripts {
-    <!-- Scripts principales -->
+    <script src="~/js/reservas.js"></script>
     <script>
- 
         document.addEventListener('DOMContentLoaded', function() {
- 
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-                return new bootstrap.Tooltip(tooltipTriggerEl);
-            });
-
- 
-            window.reservationsData = @Html.Raw(Json.Serialize(Model.Reservations));
-            console.log("Datos de reservaciones cargados:", window.reservationsData);
+            console.log('DOM loaded, setting up listeners for reservation actions');
             
- 
-            window.serviciosDisponibles = @Html.Raw(Json.Serialize(Model.ServiciosDisponibles));
-            console.log("Servicios disponibles cargados:", window.serviciosDisponibles);
-            
- 
-            initServiceSelect();
-            
- 
-            setupClientToggle();
-            
- 
-            setupFilterClear();
-            
- 
-            setupViewReservationModal();
-            
- 
-            setupEditReservationModal();
-            
- 
-            loadClients();
-            
- 
-            initNewReservationServiceSelect();
-            
- 
-            const serviceSelect = document.getElementById('serviceSelect');
-            if (serviceSelect) {
-                serviceSelect.addEventListener('change', handleNewServiceChange);
-            }
-            
- 
-            initNewReservationDeleteButtons();
-
- 
-            const newEventDateInput = document.getElementById('newEventDate');
-            if (newEventDateInput) {
-                const today = new Date();
-                newEventDateInput.value = formatDateForInput(today);
-            }
-            
- 
-            const newReservationModal = document.getElementById('newReservationModal');
-            if (newReservationModal) {
-                newReservationModal.addEventListener('hidden.bs.modal', resetNewReservationForm);
-            }
-            
- 
-            if (editReservationModal) {
-                editReservationModal.addEventListener('show.bs.modal', function (event) {
-                    actualizarTotalEdicion();
-                });
-            }
-        });
-
- 
-        function initServiceSelect() {
-            const editServiceSelect = document.getElementById('editServiceSelect');
-            if (editServiceSelect) {
- 
-                while (editServiceSelect.options.length > 1) {
-                    editServiceSelect.remove(1);
-                }
-                
- 
-                if (window.serviciosDisponibles && window.serviciosDisponibles.length > 0) {
-                    window.serviciosDisponibles.forEach(servicio => {
-                        const option = document.createElement('option');
-                        option.value = servicio.id;
-                        option.textContent = servicio.nombreServicio;
-                        option.setAttribute('data-precio', servicio.precioBase);
-                        
- 
-                        const totalItems = servicio.totalItems || 1;
-                        option.setAttribute('data-cantidad', totalItems);
-                        
-                        editServiceSelect.appendChild(option);
-                    });
-                } else {
-                    console.warn('No se encontraron servicios disponibles');
-                }
-            }
-        }
-
- 
-        function setupClientToggle() {
-            document.getElementById('existingClient')?.addEventListener('change', function() {
-                if (this.checked) {
-                    document.getElementById('existingClientForm').style.display = 'block';
-                    document.getElementById('newClientForm').style.display = 'none';
-                }
-            });
-            
-            document.getElementById('newClient')?.addEventListener('change', function() {
-                if (this.checked) {
-                    document.getElementById('existingClientForm').style.display = 'none';
-                    document.getElementById('newClientForm').style.display = 'block';
-                }
-            });
-        }
-
- 
-        function setupFilterClear() {
-            document.getElementById('clearFilters')?.addEventListener('click', function() {
-                document.querySelector('[name="SearchTerm"]').value = '';
-                document.querySelector('[name="StatusFilter"]').value = '';
-                document.querySelector('[name="EventTypeFilter"]').value = '';
-                document.querySelector('[name="DateFilter"]').value = '';
-                
- 
-                document.getElementById('filterForm').submit();
-            });
-        }
-
- 
-        function setupViewReservationModal() {
-            const viewReservationModal = document.getElementById('viewReservationModal');
-            if (viewReservationModal) {
-                viewReservationModal.addEventListener('show.bs.modal', function (event) {
- 
-                    const button = event.relatedTarget;
-                    
- 
-                    const reservationId = button.getAttribute('data-reservation-id');
-                    
- 
-                    const reservation = window.reservationsData.find(r => r.id == reservationId);
-                    
-                    if (!reservation) {
-                        console.error('No se encontró la reserva con ID:', reservationId);
-                        return;
-                    }
-                    
-                    console.log("Cargando datos de reserva en modal de detalles:", reservation);
-                    
- 
-                    document.getElementById('viewReservationId').textContent = reservation.id;
-                    document.getElementById('viewEventName').textContent = reservation.eventName;
-                    document.getElementById('viewClientName').textContent = reservation.clientName;
-                    document.getElementById('viewClientEmail').textContent = reservation.clientEmail;
-                    document.getElementById('viewClientPhone').textContent = reservation.clientPhone || 'No disponible';
-                    document.getElementById('viewEventDate').textContent = new Date(reservation.date).toLocaleDateString('es-CL');
-                    document.getElementById('viewEventTime').textContent = reservation.time;
-                    document.getElementById('viewEventPrice').textContent = formatCurrency(reservation.amount);
-                    document.getElementById('viewEventDescription').textContent = reservation.description || 'Sin descripción';
-                    
- 
-                    const eventTypeEl = document.getElementById('viewEventType');
-                    eventTypeEl.innerHTML = `<i class="bi bi-bookmark me-1"></i>${reservation.eventType || 'No especificado'}`;
-                    
-                    const eventStatusEl = document.getElementById('viewEventStatus');
-                    updateStatusBadge(eventStatusEl, reservation.status);
-                    
- 
-                    const servicesTable = document.getElementById('viewServicesTable').querySelector('tbody');
- 
-                    const totalRow = servicesTable.querySelector('tr.fw-bold');
-                    while (servicesTable.firstChild && servicesTable.firstChild !== totalRow) {
-                        servicesTable.removeChild(servicesTable.firstChild);
-                    }
-                    
- 
-                    if (reservation.services && reservation.services.length > 0) {
-                        console.log("Cargando servicios reales:", reservation.services);
- 
-                        let totalAmount = 0;
-                        reservation.services.forEach(service => {
-                            const serviceAmount = service.price * service.quantity;
-                            totalAmount += serviceAmount;
-                            
-                            const row = document.createElement('tr');
-                            row.innerHTML = `
-                                <td>${service.name}</td>
-                                <td>${service.quantity}</td>
-                                <td class="text-end">${formatCurrency(serviceAmount)}</td>
-                            `;
-                            
-                            servicesTable.insertBefore(row, totalRow);
-                        });
-                        
- 
-                        document.getElementById('viewServicesTotalAmount').textContent = formatCurrency(totalAmount);
+            // Botones de ver detalle
+            document.querySelectorAll('.view-reservation').forEach(button => {
+                button.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    console.log('View button clicked for reservation:', id);
+                    if (window.openReservationDetailsModal) {
+                        window.openReservationDetailsModal(id);
                     } else {
- 
-                        console.log('No hay servicios disponibles para esta reserva, generando ejemplos');
-                        const exampleServices = generateExampleServices(reservation.amount);
-                        
-                        let totalAmount = 0;
-                        exampleServices.forEach(service => {
-                            const serviceAmount = service.price * service.quantity;
-                            totalAmount += serviceAmount;
-                            
-                            const row = document.createElement('tr');
-                            row.innerHTML = `
-                                <td>${service.name}</td>
-                                <td>${service.quantity}</td>
-                                <td class="text-end">${formatCurrency(serviceAmount)}</td>
-                            `;
-                            
-                            servicesTable.insertBefore(row, totalRow);
-                        });
-                        
- 
-                        document.getElementById('viewServicesTotalAmount').textContent = formatCurrency(totalAmount);
+                        console.error('Function openReservationDetailsModal not found');
                     }
                 });
-            }
-        }
-
- 
-        function setupEditReservationModal() {
-            const editReservationModal = document.getElementById('editReservationModal');
-            if (editReservationModal) {
-                editReservationModal.addEventListener('show.bs.modal', function (event) {
- 
-                    const button = event.relatedTarget;
-                    
- 
-                    const reservationId = button.getAttribute('data-reservation-id');
-                    
- 
-                    const reservation = window.reservationsData.find(r => r.id == reservationId);
-                    
-                    if (!reservation) {
-                        console.error('No se encontró la reserva con ID:', reservationId);
-                        return;
-                    }
-                    
-                    console.log("Cargando datos de reserva en modal de edición:", reservation);
-                    
- 
-                    document.getElementById('editReservationId').textContent = reservation.id;
-                    
- 
-                    document.getElementById('editEventName').value = reservation.eventName || '';
-                    
- 
-                    const editEventTypeSelect = document.getElementById('editEventType');
- 
-                    let tipoEncontrado = false;
-                    for (let i = 0; i < editEventTypeSelect.options.length; i++) {
-                        if (editEventTypeSelect.options[i].value.toUpperCase() === (reservation.eventType || '').toUpperCase()) {
-                            editEventTypeSelect.selectedIndex = i;
-                            tipoEncontrado = true;
-                            break;
-                        }
-                    }
- 
-                    if (!tipoEncontrado) {
- 
-                        let otroOption = Array.from(editEventTypeSelect.options).find(opt => opt.value === "Otro");
-                        if (otroOption) {
-                            otroOption.selected = true;
-                        } else {
-                            const newOption = document.createElement('option');
-                            newOption.value = reservation.eventType || '';
-                            newOption.textContent = reservation.eventType || 'Tipo no reconocido';
-                            newOption.selected = true;
-                            editEventTypeSelect.appendChild(newOption);
-                        }
-                    }
-                    
-                    document.getElementById('editEventDate').value = formatDateForInput(reservation.date);
-                    document.getElementById('editEventTime').value = reservation.time || '';
-                    document.getElementById('editClientName').value = reservation.clientName || '';
-                    document.getElementById('editClientEmail').value = reservation.clientEmail || '';
-                    document.getElementById('editClientPhone').value = reservation.clientPhone || '';
-                    document.getElementById('editEventDescription').value = reservation.description || '';
-                    
- 
-                    const estadoReserva = reservation.status || 'Pendiente';
-                    const editEventStatus = document.getElementById('editEventStatus');
-
- 
-                    let estadoSelect = 'Pendiente'; // valor predeterminado
-
-                    if (estadoReserva.toUpperCase().includes('CONFIRM')) {
-                        estadoSelect = 'Confirmada';
-                    } else if (estadoReserva.toUpperCase().includes('CANCEL')) {
-                        estadoSelect = 'Cancelada';
-                    } else if (estadoReserva.toUpperCase().includes('FINAL') || estadoReserva.toUpperCase().includes('COMPLET')) {
-                        estadoSelect = 'Finalizada';
-                    } else if (estadoReserva.toUpperCase().includes('PEND')) {
-                        estadoSelect = 'Pendiente';
-                    }
-
- 
-                    for (let i = 0; i < editEventStatus.options.length; i++) {
-                        if (editEventStatus.options[i].value === estadoSelect) {
-                            editEventStatus.selectedIndex = i;
-                            break;
-                        }
-                    }
-                    
- 
-                    document.getElementById('editTotalPrice').value = reservation.amount || 0;
-                    
- 
-                    const tbody = document.querySelector('#editServicesTable tbody');
-                    const totalRow = tbody.querySelector('tr.fw-bold');
-                    while (tbody.firstChild && tbody.firstChild !== totalRow) {
-                        tbody.removeChild(tbody.firstChild);
-                    }
-                    
- 
-                    if (reservation.services && reservation.services.length > 0) {
-                        console.log("Cargando servicios reales en editor:", reservation.services);
-                        
- 
-                        reservation.services.forEach(service => {
- 
-                            const newRow = document.createElement('tr');
-                            
- 
-                            newRow.setAttribute('data-service-id', service.serviceId);
-                            
- 
-                            const serviceAmount = service.price * service.quantity;
-                            
- 
-                            newRow.innerHTML = `
-                                <td>${service.name}</td>
-                                <td>${service.quantity}</td>
-                                <td>${formatCurrency(serviceAmount)}</td>
-                                <td class="text-end">
-                                    <button class="btn btn-sm btn-link text-danger delete-service">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            `;
-                            
- 
-                            tbody.insertBefore(newRow, totalRow);
-                        });
+            });
+            
+            // Botones de edición
+            document.querySelectorAll('.edit-reservation').forEach(button => {
+                button.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    console.log('Edit button clicked for reservation:', id);
+                    if (window.openEditReservationModal) {
+                        window.openEditReservationModal(id);
                     } else {
- 
-                        console.log('No hay servicios disponibles para esta reserva, generando ejemplos');
-                        const exampleServices = generateExampleServices(reservation.amount);
-                        
-                        exampleServices.forEach((service, index) => {
-                            const newRow = document.createElement('tr');
-                            newRow.setAttribute('data-service-id', 'example-' + index);
-                            
-                            const serviceAmount = service.price * service.quantity;
-                            
-                            newRow.innerHTML = `
-                                <td>${service.name}</td>
-                                <td>${service.quantity}</td>
-                                <td>${formatCurrency(serviceAmount)}</td>
-                                <td class="text-end">
-                                    <button class="btn btn-sm btn-link text-danger delete-service">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            `;
-                            
- 
-                            tbody.insertBefore(newRow, totalRow);
-                        });
-                    }
-                    
- 
-                    configurarBotonesEliminarServicio();
-                    
- 
-                    actualizarSelectServiciosEdicion();
-                    
- 
-                    const editServiceSelect = document.getElementById('editServiceSelect');
-                    if (editServiceSelect) {
- 
-                        editServiceSelect.removeEventListener('change', handleEditServiceChange);
-                        editServiceSelect.addEventListener('change', handleEditServiceChange);
-                    }
-                    
- 
-                    actualizarTotalEdicion();
-                });
-            }
-        }
-
- 
-        function actualizarSelectServiciosEdicion() {
-            const select = document.getElementById('editServiceSelect');
-            if (!select) return;
-            
-            const serviciosEnTabla = Array.from(document.querySelectorAll('#editServicesTable tr[data-service-id]'))
-                .map(row => row.getAttribute('data-service-id'));
-            
- 
-            Array.from(select.options).forEach((option, index) => {
-                if (index === 0) return; // Saltar la primera opción (placeholder)
-                option.style.display = '';
-            });
-            
- 
-            serviciosEnTabla.forEach(serviceId => {
-                const option = select.querySelector(`option[value="${serviceId}"]`);
-                if (option) {
-                    option.style.display = 'none';
-                }
-            });
-        }
-
- 
-        function handleEditServiceChange() {
-            const serviceId = this.value;
-            if (!serviceId || serviceId === 'Seleccionar servicio para añadir') return;
-            
- 
-            const option = this.options[this.selectedIndex];
-            const serviceName = option.textContent;
-            const precio = parseFloat(option.getAttribute('data-precio'));
-            const cantidad = parseInt(option.getAttribute('data-cantidad'));
-            
-            if (isNaN(precio) || isNaN(cantidad)) {
-                console.error('Datos inválidos para el servicio:', serviceId);
-                return;
-            }
-            
- 
-            const tbody = document.querySelector('#editServicesTable tbody');
-            const newRow = document.createElement('tr');
-            newRow.setAttribute('data-service-id', serviceId);
-            
-            const precioTotal = precio * cantidad;
-            
-            newRow.innerHTML = `
-                <td>${serviceName}</td>
-                <td>${cantidad}</td>
-                <td>${formatCurrency(precioTotal)}</td>
-                <td class="text-end">
-                    <button class="btn btn-sm btn-link text-danger delete-service">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                </td>
-            `;
-            
- 
-            const totalRow = tbody.querySelector('tr.fw-bold');
-            tbody.insertBefore(newRow, totalRow);
-            
- 
-            configurarBotonesEliminarServicio();
-            
- 
-            actualizarTotalEdicion();
-            
- 
-            actualizarSelectServiciosEdicion();
-            
- 
-            this.selectedIndex = 0;
-        }
-
- 
-        function actualizarTotalEdicion() {
-            let total = 0;
-            const filas = document.querySelectorAll('#editServicesTable tbody tr:not(.fw-bold)');
-            
-            filas.forEach(fila => {
-                const precioText = fila.cells[2].textContent;
-                const precio = parseInt(precioText.replace(/[^\d]/g, ''));
-                total += precio;
-            });
-            
-            document.getElementById('editServicesTotalAmount').textContent = formatCurrency(total);
-            document.getElementById('editTotalPrice').value = total;
-        }
-
- 
-        function formatCurrency(amount) {
-            return new Intl.NumberFormat('es-CL', { 
-                style: 'currency', 
-                currency: 'CLP', 
-                maximumFractionDigits: 0 
-            }).format(amount);
-        }
-
- 
-        function formatDateForInput(dateString) {
-            try {
-                const date = new Date(dateString);
-                if (isNaN(date.getTime())) {
-                    console.error('Fecha inválida:', dateString);
-                    return '';
-                }
-                return date.toISOString().split('T')[0];
-            } catch (error) {
-                console.error('Error al formatear fecha:', error);
-                return '';
-            }
-        }
-
- 
-        function updateStatusBadge(element, status) {
-            const statusUpper = status ? status.toUpperCase() : '';
-            
-            if (statusUpper.includes('CONFIRM')) {
-                element.className = "badge bg-success px-3 py-2 rounded-pill";
-                element.innerHTML = '<i class="bi bi-check-circle-fill me-1"></i>Confirmado';
-            } else if (statusUpper.includes('PENDIENTE') || statusUpper.includes('PENDING')) {
-                element.className = "badge bg-warning text-dark px-3 py-2 rounded-pill";
-                element.innerHTML = '<i class="bi bi-hourglass-split me-1"></i>Pendiente';
-            } else if (statusUpper.includes('CANCEL')) {
-                element.className = "badge bg-danger px-3 py-2 rounded-pill";
-                element.innerHTML = '<i class="bi bi-x-octagon-fill me-1"></i>Cancelado';
-            } else if (statusUpper.includes('FINAL') || statusUpper.includes('COMPLET') || statusUpper.includes('FINISH')) {
-                element.className = "badge bg-info px-3 py-2 rounded-pill";
-                element.innerHTML = '<i class="bi bi-trophy-fill me-1"></i>Finalizado';
-            } else {
-                element.className = "badge bg-secondary px-3 py-2 rounded-pill";
-                element.innerHTML = `<i class="bi bi-question-circle-fill me-1"></i>${status || 'Desconocido'}`;
-            }
-        }
-
- 
-        function generateExampleServices(totalAmount) {
-            const amount = parseFloat(totalAmount) || 0;
-            
-            if (amount <= 0) {
-                return [{ name: "Servicio básico", quantity: 1, price: 0 }];
-            }
-            
-            let services = [];
-            
- 
-            if (amount > 500000) {
- 
-                services = [
-                    { name: "Salón Principal", quantity: 1, price: Math.round(amount * 0.25) },
-                    { name: "Catering Premium", quantity: Math.floor(amount / 15000), price: 15000 },
-                    { name: "DJ", quantity: 1, price: 120000 },
-                    { name: "Decoración", quantity: 1, price: Math.round(amount * 0.1) }
-                ];
-            } else if (amount > 200000) {
- 
-                services = [
-                    { name: "Salón Mediano", quantity: 1, price: Math.round(amount * 0.3) },
-                    { name: "Catering Estándar", quantity: Math.floor(amount / 10000), price: 10000 },
-                    { name: "Música", quantity: 1, price: 70000 }
-                ];
-            } else {
- 
-                services = [
-                    { name: "Sala de Reuniones", quantity: 1, price: Math.round(amount * 0.5) },
-                    { name: "Coffee Break", quantity: Math.floor(amount / 5000), price: 5000 }
-                ];
-            }
-            
-            return services;
-        }
-
- 
-        async function loadClients() {
-            try {
-                const tokenElement = document.querySelector('input[name="__RequestVerificationToken"]');
-                if (!tokenElement) {
-                    throw new Error('Token de verificación no encontrado');
-                }
-                
-                const response = await fetch('/Reservas?handler=GetClients', {
-                    headers: {
-                        'RequestVerificationToken': tokenElement.value
+                        console.error('Function openEditReservationModal not found');
                     }
                 });
-                
-                if (!response.ok) {
-                    throw new Error('Error al cargar los clientes');
-                }
-                
-                const clients = await response.json();
-                
- 
-                window.clientsData = clients;
-                
-                const clientSelect = document.querySelector('#existingClientForm select');
-                if (clientSelect) {
- 
-                    while (clientSelect.options.length > 1) {
-                        clientSelect.remove(1);
-                    }
-                    
- 
-                    clients.forEach(client => {
-                        const option = document.createElement('option');
-                        option.value = client.id;
-                        option.textContent = client.nombre;
-                        option.setAttribute('data-email', client.correoElectronico);
-                        option.setAttribute('data-phone', client.telefono);
-                        clientSelect.appendChild(option);
-                    });
-                }
-            } catch (error) {
-                console.error('Error loading clients:', error);
-                mostrarAlerta('danger', `Error al cargar clientes: ${error.message}`);
-            }
-        }
-
- 
-        function initNewReservationServiceSelect() {
-            const serviceSelect = document.getElementById('serviceSelect');
-            if (serviceSelect && window.serviciosDisponibles) {
- 
-                while (serviceSelect.options.length > 1) {
-                    serviceSelect.remove(1);
-                }
-                
- 
-                window.serviciosDisponibles.forEach(servicio => {
-                    const option = document.createElement('option');
-                    option.value = servicio.id;
-                    option.textContent = servicio.nombreServicio;
-                    option.setAttribute('data-precio', servicio.precioBase);
-                    
- 
-                    const totalItems = servicio.totalItems || 1;
-                    option.setAttribute('data-cantidad', totalItems);
-                    
-                    serviceSelect.appendChild(option);
-                });
-            }
-        }
-
- 
-        function handleNewServiceChange() {
-            const serviceId = this.value;
-            if (!serviceId || serviceId === 'Seleccionar servicio para añadir') return;
-            
- 
-            const option = this.options[this.selectedIndex];
-            const serviceName = option.textContent;
-            const precio = parseFloat(option.getAttribute('data-precio'));
-            const cantidad = parseInt(option.getAttribute('data-cantidad'));
-            
-            if (isNaN(precio) || isNaN(cantidad)) {
-                console.error('Datos inválidos para el servicio:', serviceId);
-                return;
-            }
-            
- 
-            const tbody = document.querySelector('#servicesTable tbody');
-            const newRow = document.createElement('tr');
-            newRow.setAttribute('data-service-id', serviceId);
-            
-            const precioTotal = precio * cantidad;
-            
-            newRow.innerHTML = `
-                <td>${serviceName}</td>
-                <td>${cantidad}</td>
-                <td>${formatCurrency(precioTotal)}</td>
-                <td class="text-end">
-                    <button class="btn btn-sm btn-link text-danger delete-service">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                </td>
-            `;
-            
- 
-            const totalRow = tbody.querySelector('tr.fw-bold');
-            tbody.insertBefore(newRow, totalRow);
-            
- 
-            initNewReservationDeleteButtons();
-            
- 
-            updateNewReservationTotal();
-            
- 
-            updateNewReservationServiceSelect();
-            
- 
-            this.selectedIndex = 0;
-        }
-
- 
-        function updateNewReservationServiceSelect() {
-            const select = document.getElementById('serviceSelect');
-            if (!select) return;
-            
-            const serviciosEnTabla = Array.from(document.querySelectorAll('#servicesTable tr[data-service-id]'))
-                .map(row => row.getAttribute('data-service-id'));
-            
- 
-            Array.from(select.options).forEach((option, index) => {
-                if (index === 0) return; // Skip the first option (placeholder)
-                option.style.display = '';
             });
             
- 
-            serviciosEnTabla.forEach(serviceId => {
-                const option = select.querySelector(`option[value="${serviceId}"]`);
-                if (option) {
-                    option.style.display = 'none';
-                }
-            });
-        }
-
- 
-        function handleNewServiceDelete() {
-            const filas = document.querySelectorAll('#servicesTable tbody tr:not(.fw-bold)');
-            const row = this.closest('tr');
-            
-            if (filas.length > 1) {
-                row.remove();
-                updateNewReservationTotal();
-                updateNewReservationServiceSelect();
-            } else {
-                mostrarAlerta('warning', '<i class="bi bi-exclamation-triangle me-2"></i>Debe mantener al menos un servicio');
-            }
-        }
-
- 
-        function initNewReservationDeleteButtons() {
-            const deleteButtons = document.querySelectorAll('#servicesTable .delete-service');
-            deleteButtons.forEach(button => {
-                button.removeEventListener('click', handleNewServiceDelete);
-                button.addEventListener('click', handleNewServiceDelete);
-            });
-        }
-
- 
-        function updateNewReservationTotal() {
-            let total = 0;
-            const filas = document.querySelectorAll('#servicesTable tbody tr:not(.fw-bold)');
-            
-            filas.forEach(fila => {
-                const precioText = fila.cells[2].textContent;
-                const precio = parseInt(precioText.replace(/[^\d]/g, ''));
-                total += precio;
-            });
-            
-            document.getElementById('servicesTotalAmount').textContent = formatCurrency(total);
-            document.getElementById('totalPrice').value = total;
-        }
-
- 
-        function resetNewReservationForm() {
-            document.getElementById('newReservationForm').reset();
-            
- 
-            const tbody = document.querySelector('#servicesTable tbody');
-            const rows = tbody.querySelectorAll('tr:not(.fw-bold)');
-            rows.forEach(row => row.remove());
-            
- 
-            document.getElementById('servicesTotalAmount').textContent = formatCurrency(0);
-            document.getElementById('totalPrice').value = 0;
-            
- 
-            updateNewReservationServiceSelect();
-            
- 
-            const today = new Date();
-            document.getElementById('newEventDate').value = formatDateForInput(today);
-        }
-
- 
-        function mostrarAlerta(tipo, mensaje) {
-            const alertsContainer = document.getElementById('alertsContainer');
-            if (!alertsContainer) {
-                console.error('El contenedor de alertas no existe');
-                alert(mensaje); // Fallback si no hay contenedor
-                return;
-            }
-            
-            const alertElement = document.createElement('div');
-            alertElement.className = `alert alert-${tipo} alert-dismissible fade show`;
-            alertElement.innerHTML = `
-                ${mensaje}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            `;
-            
-            alertsContainer.appendChild(alertElement);
-            
- 
-            setTimeout(() => {
-                alertElement.classList.remove('show');
-                setTimeout(() => alertElement.remove(), 150);
-            }, 5000);
-        }
-
- 
-        function handleDeleteService() {
-            const filas = document.querySelectorAll('#editServicesTable tbody tr:not(.fw-bold)');
-            const row = this.closest('tr');
-            
-            if (filas.length > 1) {
-                row.remove();
-                actualizarTotalEdicion();
-                actualizarSelectServiciosEdicion();
-            } else {
- 
-                mostrarAlerta('warning', '<i class="bi bi-exclamation-triangle me-2"></i>Debe mantener al menos un servicio');
-            }
-        }
-
- 
-        function configurarBotonesEliminarServicio() {
-            const deleteButtons = document.querySelectorAll('#editServicesTable .delete-service');
-            deleteButtons.forEach(button => {
-                button.removeEventListener('click', handleDeleteService);
-                button.addEventListener('click', handleDeleteService);
-            });
-        }
-
- 
-        function confirmDeleteReservation(reservationId, eventName) {
- 
-            const reservation = window.reservationsData.find(r => r.id == reservationId);
-            
-            if (!reservation) {
-                mostrarAlerta('danger', 'No se pudo encontrar la reserva para eliminar');
-                return;
-            }
-            
-            const reservaId = reservation.originalId;
-            
- 
-            const confirmationText = document.getElementById('deleteConfirmationText');
-            confirmationText.innerHTML = `¿Está seguro que desea eliminar la reserva "<strong>${eventName}</strong>"?<br><small class="text-danger">Esta acción no se puede deshacer.</small>`;
-            
- 
-            document.getElementById('confirmDeleteButton').setAttribute('data-reservation-id', reservaId);
-            
- 
-            const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmationModal'));
-            deleteModal.show();
-        }
-
-        async function deleteReservation(reservaId) {
-            try {
- 
-                const tokenElement = document.querySelector('input[name="__RequestVerificationToken"]');
-                if (!tokenElement) {
-                    throw new Error('Token de verificación no encontrado');
-                }
-                
- 
-                const response = await fetch(`/Reservas?handler=DeleteReservation&id=${reservaId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'RequestVerificationToken': tokenElement.value
+            // Setup update button
+            const updateReservationBtn = document.getElementById('updateReservationBtn');
+            if (updateReservationBtn) {
+                updateReservationBtn.addEventListener('click', function() {
+                    if (window.updateReservation) {
+                        window.updateReservation();
+                    } else {
+                        console.error('Function updateReservation not found');
                     }
                 });
-                
- 
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(`Error del servidor: ${response.status} - ${errorText}`);
-                }
-                
- 
-                const result = await response.json();
-                
-                if (result.success) {
-                    mostrarAlerta('success', 'Reserva eliminada correctamente');
-                    
- 
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 1800);
-                } else {
-                    throw new Error(result.message || 'Error al eliminar la reserva');
-                }
-            } catch (error) {
-                console.error('Error al eliminar la reserva:', error);
-                mostrarAlerta('danger', `Error: ${error.message || 'Ha ocurrido un error al eliminar la reserva'}`);
             }
-        }
-
- 
-        document.getElementById('confirmDeleteButton')?.addEventListener('click', function() {
-            const reservaId = this.getAttribute('data-reservation-id');
-            if (reservaId) {
- 
-                const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteConfirmationModal'));
-                deleteModal.hide();
-                
- 
-                setTimeout(() => {
-                    deleteReservation(reservaId);
-                }, 300);
-            }
-        });
-    </script>
-    
-    <!-- Scripts para eventos de botones -->
-    <script>
- 
-        document.getElementById('saveEditReservation')?.addEventListener('click', async function() {
-            try {
- 
-                this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Guardando...';
-                this.disabled = true;
-                
- 
-                const displayId = document.getElementById('editReservationId').textContent;
-                
- 
-                const reservation = window.reservationsData.find(r => r.id == displayId);
-                
-                if (!reservation) {
-                    throw new Error(`No se encontró la reserva con ID visual: ${displayId}`);
-                }
-                
- 
-                const reservaId = reservation.originalId;
-                
-                console.log("ID de reserva numérico (display):", displayId);
-                console.log("ID de reserva GUID (original):", reservaId);
-                
-                if (!reservaId) {
-                    throw new Error('ID de reserva original no encontrado');
-                }
-                
- 
-                const estadoSeleccionado = document.getElementById('editEventStatus').value;
-                
- 
-                const serviciosActuales = Array.from(document.querySelectorAll('#editServicesTable tbody tr[data-service-id]:not([data-service-id^="example"])'))
-                    .map(row => row.getAttribute('data-service-id'));
-                
-                console.log("Servicios actuales en la tabla:", serviciosActuales);
-                
- 
-                const serviciosOriginales = reservation.services?.map(s => s.serviceId.toString()) || [];
-                console.log("Servicios originales de la reserva:", serviciosOriginales);
-                
- 
-                const serviciosToAdd = serviciosActuales
-                    .filter(id => !serviciosOriginales.includes(id))
-                    .map(servicioId => ({ servicioId }));
-                
-                console.log("Servicios a agregar:", serviciosToAdd);
-                
- 
-                const serviciosToRemove = serviciosOriginales
-                    .filter(id => !serviciosActuales.includes(id));
-                
-                console.log("Servicios a eliminar:", serviciosToRemove);
-                
- 
-                const updateModel = {
-                    nombreEvento: document.getElementById('editEventName').value,
-                    fechaEvento: document.getElementById('editEventDate').value,
-                    horaEvento: document.getElementById('editEventTime').value,
-                    tipoEvento: document.getElementById('editEventType').value,
-                    descripcion: document.getElementById('editEventDescription').value,
-                    estado: estadoSeleccionado.toUpperCase(), // Enviamos el estado en mayúsculas
-                    precioTotal: parseFloat(document.getElementById('editTotalPrice').value || 0),
-                    itemsToAdd: serviciosToAdd,
-                    itemsToRemove: serviciosToRemove
-                };
-                
-                console.log('Enviando datos de actualización:', updateModel);
-                
- 
-                const tokenElement = document.querySelector('input[name="__RequestVerificationToken"]');
-                if (!tokenElement) {
-                    throw new Error('Token de verificación no encontrado');
-                }
-                
- 
-                const response = await fetch(`/Reservas?handler=UpdateReservation`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'RequestVerificationToken': tokenElement.value
-                    },
-                    body: JSON.stringify({
-                        id: reservaId,
-                        updateModel: updateModel
-                    })
-                });
-                
- 
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(`Error del servidor: ${response.status} - ${errorText}`);
-                }
-                
- 
-                const result = await response.json();
-                
-                if (result.success) {
- 
-                    const modal = document.getElementById('editReservationModal');
-                    if (modal) {
-                        const bsModal = bootstrap.Modal.getInstance(modal);
-                        if (bsModal) bsModal.hide();
-                    }
-                    
- 
-                    setTimeout(() => {
-                        mostrarAlerta('success', 'Reserva actualizada correctamente');
-                    }, 300);
-                    
- 
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 1800);
-                } else {
-                    throw new Error(result.message || 'Error al actualizar la reserva');
-                }
-            } catch (error) {
-                console.error('Error al guardar los cambios:', error);
-                mostrarAlerta('danger', `Error: ${error.message || 'Ha ocurrido un error al actualizar la reserva'}`);
-            } finally {
- 
-                this.innerHTML = '<i class="bi bi-save me-1"></i>Guardar Cambios';
-                this.disabled = false;
-            }
-        });
-
- 
-        document.getElementById('createReservationBtn')?.addEventListener('click', async function() {
-            try {
- 
-                this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Creando...';
-                this.disabled = true;
-                
- 
-                const useExistingClient = document.getElementById('existingClient').checked;
-                let clienteId = null;
-                let nombreCliente = '';
-                let correoCliente = '';
-                let telefonoCliente = '';
-                
-                if (useExistingClient) {
- 
-                    const clientSelect = document.getElementById('clientSelect');
-                    if (!clientSelect.value || clientSelect.value === 'Seleccionar cliente') {
-                        throw new Error('Debe seleccionar un cliente');
-                    }
-                    
-                    clienteId = clientSelect.value;
-                    
- 
-                    const selectedOption = clientSelect.options[clientSelect.selectedIndex];
-                    nombreCliente = selectedOption.textContent;
-                    correoCliente = selectedOption.getAttribute('data-email') || '';
-                    telefonoCliente = selectedOption.getAttribute('data-phone') || '';
-                } else {
- 
-                    nombreCliente = document.getElementById('newClientName').value;
-                    correoCliente = document.getElementById('newClientEmail').value;
-                    telefonoCliente = document.getElementById('newClientPhone').value;
-                    
-                    if (!nombreCliente || !correoCliente) {
-                        throw new Error('El nombre y correo del cliente son obligatorios');
-                    }
-                }
-                
- 
-                const servicios = Array.from(document.querySelectorAll('#servicesTable tbody tr[data-service-id]:not(.fw-bold)'))
-                    .map(row => row.getAttribute('data-service-id'));
-                
-                if (servicios.length === 0) {
-                    throw new Error('Debe seleccionar al menos un servicio');
-                }
-                
- 
-                const createModel = {
-                    nombreEvento: document.getElementById('newEventName').value,
-                    fechaEvento: document.getElementById('newEventDate').value,
-                    horaEvento: document.getElementById('newEventTime').value,
-                    tipoEvento: document.getElementById('newEventType').value,
-                    descripcion: document.getElementById('newEventDescription').value,
-                    estado: document.getElementById('newEventStatus').value.toUpperCase(), // Enviamos el estado en mayúsculas
-                    precioTotal: parseFloat(document.getElementById('totalPrice').value || 0),
-                    clienteId: clienteId,
-                    nombreCliente: nombreCliente,
-                    correoCliente: correoCliente,
-                    telefonoCliente: telefonoCliente,
-                    servicios: servicios
-                };
-                
- 
-                if (!createModel.nombreEvento) {
-                    throw new Error('El nombre del evento es obligatorio');
-                }
-                
-                if (!createModel.fechaEvento) {
-                    throw new Error('La fecha del evento es obligatoria');
-                }
-                
-                if (!createModel.horaEvento) {
-                    throw new Error('La hora del evento es obligatoria');
-                }
-                
-                if (!createModel.tipoEvento || createModel.tipoEvento === 'Seleccionar tipo') {
-                    throw new Error('Debe seleccionar un tipo de evento');
-                }
-                
-                console.log('Enviando datos para crear reserva:', createModel);
-                
- 
-                const tokenElement = document.querySelector('input[name="__RequestVerificationToken"]');
-                if (!tokenElement) {
-                    throw new Error('Token de verificación no encontrado');
-                }
-                
- 
-                const response = await fetch(`/Reservas?handler=CreateReservation`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'RequestVerificationToken': tokenElement.value
-                    },
-                    body: JSON.stringify(createModel)
-                });
-                
- 
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(`Error del servidor: ${response.status} - ${errorText}`);
-                }
-                
- 
-                const result = await response.json();
-                
-                if (result.success) {
- 
-                    const modal = document.getElementById('newReservationModal');
-                    if (modal) {
-                        const bsModal = bootstrap.Modal.getInstance(modal);
-                        if (bsModal) bsModal.hide();
-                    }
-                    
- 
-                    setTimeout(() => {
-                        mostrarAlerta('success', 'Reserva creada correctamente');
-                    }, 300);
-                    
- 
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 1800);
-                } else {
-                    throw new Error(result.message || 'Error al crear la reserva');
-                }
-            } catch (error) {
-                console.error('Error al crear la reserva:', error);
-                mostrarAlerta('danger', `Error: ${error.message || 'Ha ocurrido un error al crear la reserva'}`);
-            } finally {
- 
-                this.innerHTML = '<i class="bi bi-save me-1"></i>Crear Reserva';
-                this.disabled = false;
-            }
-        });
-    </script>
-    
-    <!-- Scripts para impresión -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script>
- 
-        const printReservationModal = document.getElementById('printReservationModal');
-        if (printReservationModal) {
-            printReservationModal.addEventListener('show.bs.modal', function (event) {
- 
-                const button = event.relatedTarget;
-                
- 
-                const reservationId = button.getAttribute('data-reservation-id');
-                
- 
-                const reservation = window.reservationsData.find(r => r.id == reservationId);
-                
-                if (!reservation) {
-                    console.error('No se encontró la reserva con ID:', reservationId);
-                    return;
-                }
-                
- 
-                const currentDate = new Date();
-                const formattedDate = currentDate.toLocaleDateString('es-CL');
-                document.getElementById('printCurrentDate').textContent = formattedDate;
-                
- 
-                document.getElementById('printReservationId').textContent = reservation.id;
-                document.getElementById('printComprobantId').textContent = reservation.id;
-                document.getElementById('printEventName').textContent = reservation.eventName;
-                document.getElementById('printClientName').textContent = reservation.clientName;
-                document.getElementById('printClientEmail').textContent = reservation.clientEmail;
-                document.getElementById('printClientPhone').textContent = reservation.clientPhone || 'No disponible';
-                document.getElementById('printEventDate').textContent = new Date(reservation.date).toLocaleDateString('es-CL');
-                document.getElementById('printEventTime').textContent = reservation.time;
-                document.getElementById('printEventType').textContent = reservation.eventType;
-                document.getElementById('printEventDescription').textContent = reservation.description || 'Sin descripción';
-                
- 
-                const statusEl = document.getElementById('printReservationStatus');
-                statusEl.textContent = reservation.status;
-                
-                if (reservation.status.toUpperCase().includes('CONFIRM')) {
-                    statusEl.className = "badge bg-success";
-                } else if (reservation.status.toUpperCase().includes('PEND')) {
-                    statusEl.className = "badge bg-warning";
-                } else if (reservation.status.toUpperCase().includes('CANCEL')) {
-                    statusEl.className = "badge bg-danger";
-                } else if (reservation.status.toUpperCase().includes('FINAL')) {
-                    statusEl.className = "badge bg-secondary";
-                }
-                
- 
-                const servicesTableBody = document.querySelector('#printServicesTable tbody');
-                servicesTableBody.innerHTML = '';
-                
-                let totalAmount = 0;
-                
- 
-                if (reservation.services && reservation.services.length > 0) {
-                    reservation.services.forEach(service => {
-                        const serviceAmount = service.price * service.quantity;
-                        totalAmount += serviceAmount;
-                        
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${service.name}</td>
-                            <td class="text-center">${service.quantity}</td>
-                            <td class="text-center">${formatCurrency(service.price / service.quantity)}</td>
-                            <td class="text-end">${formatCurrency(serviceAmount)}</td>
-                        `;
-                        
-                        servicesTableBody.appendChild(row);
-                    });
-                } else {
- 
-                    const exampleServices = generateExampleServices(reservation.amount);
-                    
-                    exampleServices.forEach(service => {
-                        const serviceAmount = service.price * service.quantity;
-                        totalAmount += serviceAmount;
-                        
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${service.name}</td>
-                            <td class="text-center">${service.quantity}</td>
-                            <td class="text-center">${formatCurrency(service.price / service.quantity)}</td>
-                            <td class="text-end">${formatCurrency(serviceAmount)}</td>
-                        `;
-                        
-                        servicesTableBody.appendChild(row);
-                    });
-                }
-                
- 
-                document.getElementById('printServicesTotalAmount').textContent = formatCurrency(totalAmount);
-            });
-        }
-
- 
-        document.getElementById('printButton')?.addEventListener('click', function() {
-            const printContent = document.getElementById('printableArea');
-            printReservationDocument(printContent.innerHTML);
-        });
-
- 
-        function printReservationDocument(content) {
- 
-            const iframe = createHiddenIframe();
-            
- 
-            writeContentToIframe(iframe, content);
-            
- 
-            setTimeout(() => {
-                printAndCleanup(iframe);
-            }, 500);
-        }
-
- 
-        function createHiddenIframe() {
-            const iframe = document.createElement('iframe');
-            iframe.style.display = 'none';
-            document.body.appendChild(iframe);
-            return iframe;
-        }
-
- 
-        function writeContentToIframe(iframe, content) {
-            try {
-                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-                iframeDoc.open();
-                
-                const htmlContent = `
-                    <!DOCTYPE html>
-                    <html>
-                    <head>
-                        <title>Comprobante de Reserva</title>
-                        <style>
-                            body { font-family: Arial, sans-serif; margin: 20px; }
-                            .row { display: flex; flex-wrap: wrap; }
-                            .col-6 { width: 50%; }
-                            .col-12 { width: 100%; }
-                            .col-md-6 { width: 50%; }
-                            .text-end { text-align: right; }
-                            .text-center { text-align: center; }
-                            .border-top { border-top: 1px solid #dee2e6; }
-                            .mb-0, .mb-1, .mb-2, .mb-3, .mb-4 { margin-bottom: 0.25rem; }
-                            .mt-1, .mt-5 { margin-top: 0.25rem; }
-                            .p-2, .p-4, .pt-4 { padding: 0.5rem; }
-                            .bg-light { background-color: #f8f9fa; }
-                            .badge {
-                                padding: 0.25em 0.4em;
-                                font-size: 75%;
-                                font-weight: 700;
-                                border-radius: 0.25rem;
-                                color: white;
-                            }
-                            .bg-success { background-color: #28a745; }
-                            .bg-warning { background-color: #ffc107; color: black; }
-                            .bg-danger { background-color: #dc3545; }
-                            .bg-secondary { background-color: #6c757d; }
-                            .table {
-                                width: 100%;
-                                border-collapse: collapse;
-                                margin-bottom: 1rem;
-                            }
-                            .table th, .table td {
-                                padding: 0.75rem;
-                                border: 1px solid #dee2e6;
-                            }
-                            .table-striped tbody tr:nth-of-type(odd) {
-                                background-color: rgba(0, 0, 0, 0.05);
-                            }
-                            .fw-bold { font-weight: bold; }
-                            .small { font-size: 80%; }
-                            .text-muted { color: #6c757d; }
-                        </style>
-                    </head>
-                    <body>
-                        ${content}
-                    </body>
-                    </html>
-                `;
-                
-                iframeDoc.write(htmlContent);
-                iframeDoc.close();
-            } catch (error) {
-                console.error("Error writing to iframe:", error);
-            }
-        }
-
- 
-        function printAndCleanup(iframe) {
-            try {
-                iframe.contentWindow.focus();
-                iframe.contentWindow.print();
-                
- 
-                setTimeout(() => {
-                    document.body.removeChild(iframe);
-                }, 100);
-            } catch (error) {
-                console.error("Error printing:", error);
-            }
-        }
-
- 
-        document.getElementById('downloadPDF')?.addEventListener('click', function() {
-            const element = document.getElementById('printableArea');
-            const options = {
-                margin: 10,
-                filename: 'comprobante-reserva.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-            
-            html2pdf().from(element).set(options).save();
         });
     </script>
 }

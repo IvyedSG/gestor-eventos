@@ -26,13 +26,10 @@ builder.Services.Configure<ApiSettings>(builder.Configuration.GetSection("ApiSet
 builder.Services.AddSingleton(new ApiSettings { BaseUrl = "http://localhost:5280" });
 
 builder.Services.AddScoped<ClienteService>();
-
-builder.Services.AddHttpClient<ReservacionService>();
-
-builder.Services.AddHttpClient<ServicioService>();
+builder.Services.AddScoped<ServicioService>();
 builder.Services.AddHttpClient<InventoryService>();
 builder.Services.AddScoped<DashboardService>();
-builder.Services.AddScoped<PagoService>();
+builder.Services.AddScoped<ReservacionService>(); // Add ReservacionService
 
 builder.Services.AddAuthentication(options => 
 {
@@ -46,6 +43,10 @@ builder.Services.AddAuthentication(options =>
     options.AccessDeniedPath = "/Auth/AccessDenied";
     options.Cookie.HttpOnly = true;
     options.ExpireTimeSpan = TimeSpan.FromDays(7);
+});
+
+builder.Services.AddAntiforgery(options => {
+    options.HeaderName = "RequestVerificationToken";
 });
 
 var app = builder.Build();
