@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 namespace gestor_eventos.Controllers
 {
     [Authorize]
-    [Route("Servicios")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ServiciosController : ControllerBase
     {

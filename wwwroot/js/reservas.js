@@ -751,24 +751,17 @@ function closeReservationModal() {
 
 // Añade esta función para el formato de fecha correcto
 function formatDateForApi(dateStr) {
+    if (!dateStr) return null;
+    
     try {
-        // Si ya es formato ISO estándar, dejarlo como está
-        if (dateStr.includes('T') && dateStr.endsWith('Z')) {
-            return dateStr;
-        }
-        
-        // Convertir a objeto Date
         const date = new Date(dateStr);
-        if (isNaN(date.getTime())) {
-            console.warn('Fecha inválida:', dateStr);
-            return dateStr;
-        }
+        if (isNaN(date.getTime())) return null;
         
-        // Formato YYYY-MM-DD (sin tiempo) como lo espera la API
+        // Formato yyyy-MM-dd como lo espera el API
         return date.toISOString().split('T')[0];
-    } catch (error) {
-        console.error('Error formateando fecha:', error);
-        return dateStr;
+    } catch (e) {
+        console.error('Error formatting date:', e);
+        return null;
     }
 }
 
@@ -779,7 +772,7 @@ fechaEjecucion: formatDateForApi(document.getElementById('editEventDate').value)
 // Añadir estas funciones para gestionar la edición de reservas
 
 // Mejora de la función para abrir el modal de edición
-async function openEditReservationModal(reservationId) {
+window.openEditReservationModal = async function(reservationId) {
     console.log('Opening edit modal for reservation:', reservationId);
     
     try {
@@ -801,8 +794,17 @@ async function openEditReservationModal(reservationId) {
         if (errorElement) errorElement.style.display = 'none';
         
         // Initialize and show modal
-        const modal = new bootstrap.Modal(modalElement);
-        modal.show();
+        if (typeof bootstrap !== 'undefined') {
+            let modal = bootstrap.Modal.getInstance(modalElement);
+            if (!modal) {
+                modal = new bootstrap.Modal(modalElement);
+            }
+            modal.show();
+        } else {
+            console.error('Bootstrap is not defined. Please check that Bootstrap JS is loaded correctly.');
+            alert('Error: Bootstrap no está disponible');
+            return;
+        }
         
         // Now fetch the data
         console.log('Fetching reservation data...');
@@ -849,65 +851,52 @@ async function openEditReservationModal(reservationId) {
 // Variable separada para los servicios en el modal de edición
 let selectedServicesEdit = [];
 
-// Función para cargar servicios disponibles en el modal de edición
+// Función simplificada para cargar servicios disponibles
 async function loadAvailableServicesForEdit() {
     try {
         console.log('Cargando servicios disponibles para edición');
         const serviceSelect = document.getElementById('editServiceSelect');
         if (!serviceSelect) return;
         
-        // Eliminar cualquier event listener previo para evitar duplicación
-        const newSelect = serviceSelect.cloneNode(false);
-        serviceSelect.parentNode.replaceChild(newSelect, serviceSelect);
-        
         // Limpiar opciones existentes
-        newSelect.innerHTML = '<option value="" disabled selected>Seleccione un servicio...</option>';
+        serviceSelect.innerHTML = '<option value="" disabled selected>Seleccione un servicio...</option>';
         
-        // Usar la URL correcta del controlador
+        // Cargar servicios disponibles
         const response = await fetch('/Servicios');
-        
-        if (!response.ok) {
-            throw new Error(`Error al cargar los servicios disponibles: ${response.status}`);
+        if (response.ok) {
+            const services = await response.json();
+            
+            // Añadir opciones al select
+            services.forEach(service => {
+                const option = document.createElement('option');
+                option.value = service.id;
+                option.textContent = `${service.nombreServicio} - S/${service.precioBase.toFixed(2)}`;
+                option.setAttribute('data-price', service.precioBase);
+                option.setAttribute('data-name', service.nombreServicio);
+                serviceSelect.appendChild(option);
+            });
+            
+            // Configurar el evento change - una sola vez
+            serviceSelect.onchange = function() {
+                if (this.value) {
+                    const selectedOption = this.options[this.selectedIndex];
+                    const serviceId = this.value;
+                    const serviceName = selectedOption.getAttribute('data-name');
+                    const servicePrice = parseFloat(selectedOption.getAttribute('data-price'));
+                    
+                    selectedServicesEdit.push({
+                        id: serviceId,
+                        nombre: serviceName,
+                        precio: servicePrice
+                    });
+                    
+                    updateEditServicesTable();
+                    this.selectedIndex = 0;
+                }
+            };
         }
-        
-        const services = await response.json();
-        console.log('Servicios cargados:', services);
-        
-        // Añadir opciones al select
-        services.forEach(service => {
-            const option = document.createElement('option');
-            option.value = service.id;
-            option.textContent = `${service.nombreServicio} - S/${service.precioBase.toFixed(2)}`;
-            option.setAttribute('data-price', service.precioBase);
-            option.setAttribute('data-name', service.nombreServicio);
-            newSelect.appendChild(option);
-        });
-        
-        // Configurar el evento change - una sola vez en el nuevo elemento
-        newSelect.addEventListener('change', function() {
-            if (this.value) {
-                const selectedOption = this.options[this.selectedIndex];
-                const serviceId = this.value;
-                const serviceName = selectedOption.getAttribute('data-name');
-                const servicePrice = parseFloat(selectedOption.getAttribute('data-price'));
-                
-                // Añadir a la lista de servicios seleccionados
-                selectedServicesEdit.push({
-                    id: serviceId,
-                    nombre: serviceName,
-                    precio: servicePrice
-                });
-                
-                // Actualizar la tabla
-                updateEditServicesTable();
-                
-                // Reiniciar el select
-                this.selectedIndex = 0;
-            }
-        });
     } catch (error) {
         console.error('Error loading available services:', error);
-        alert('Error al cargar los servicios disponibles. Por favor, intente de nuevo.');
     }
 }
 
@@ -1127,36 +1116,54 @@ window.updateReservation = async function() {
         button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Guardando...';
         button.disabled = true;
         
-        // Prepare data for API
+        // Prepare data format exactly as API expects
         const updateData = {
-            nombreEvento: document.getElementById('editEventName').value,
-            fechaEjecucion: formatDateForApi(document.getElementById('editEventDate').value),
-            descripcion: document.getElementById('editEventDescription').value,
-            estado: document.getElementById('editEventStatus').value,
-            precioTotal: parseFloat(document.getElementById('editTotalPrice').value),
-            tipoEventoNombre: document.getElementById('editEventType').value,
-            precioAdelanto: parseFloat(document.getElementById('editAdvancePrice').value),
-            servicios: selectedServicesEdit.map(s => ({ id: s.id }))
+            nombreEvento: document.getElementById('editEventName').value || '',
+            fechaEjecucion: document.getElementById('editEventDate').value ? 
+                            new Date(document.getElementById('editEventDate').value).toISOString().split('T')[0] : 
+                            new Date().toISOString().split('T')[0],
+            descripcion: document.getElementById('editEventDescription').value || '',
+            estado: document.getElementById('editEventStatus').value || 'Pendiente',
+            precioTotal: parseFloat(document.getElementById('editTotalPrice').value || 0),
+            servicioId: selectedServicesEdit && selectedServicesEdit.length > 0 ? selectedServicesEdit[0].id : null,
+            precioAdelanto: parseFloat(document.getElementById('editAdvancePrice').value || 0),
+            tipoEventoNombre: document.getElementById('editEventType').value || 'Otro'  // Cambiado de tipoEventoId a tipoEventoNombre
         };
         
         console.log('Sending update data:', updateData);
         
-        // Send update request
+        // Obtener token CSRF para la solicitud
+        const tokenElement = document.querySelector('input[name="__RequestVerificationToken"]');
+        const token = tokenElement ? tokenElement.value : '';
+        
+        // Utilizar el handler de Razor Pages
         const response = await fetch(`/Reservas?handler=UpdateReservation&id=${reservationId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-Requested-With': 'XMLHttpRequest',
-                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value || ''
+                'RequestVerificationToken': token
             },
             body: JSON.stringify(updateData)
         });
         
-        if (!response.ok) {
-            throw new Error(`Error ${response.status}: ${response.statusText}`);
+        const responseText = await response.text();
+        console.log('Server response:', responseText);
+        
+        // También podemos inspeccionar el response.status
+        console.log('Response status:', response.status);
+        
+        let result;
+        try {
+            result = JSON.parse(responseText);
+        } catch (e) {
+            console.error('Error parsing JSON response:', e);
+            throw new Error(`Error en la respuesta del servidor: ${responseText.substring(0, 100)}...`);
         }
         
-        const result = await response.json();
+        if (!response.ok) {
+            throw new Error(`Error ${response.status}: ${result?.message || response.statusText}`);
+        }
         
         if (result && result.success) {
             // Show success message and close modal
@@ -1196,106 +1203,230 @@ window.updateReservation = async function() {
     }
 };
 
-// Asegurarse de que esta función esté definida
-if (typeof formatDateForApi !== 'function') {
-    function formatDateForApi(dateStr) {
-        if (!dateStr) return null;
-        const date = new Date(dateStr);
-        if (isNaN(date.getTime())) return null;
-        return date.toISOString();
-    }
-}
-
-// Modificamos la función global para manejar mejor el modal
-
-window.openEditReservationModal = async function(reservationId) {
-    console.log('Opening edit modal for reservation (global function):', reservationId);
+// Función para abrir el modal de confirmación de eliminación
+window.openDeleteReservationModal = function(id, name, fecha) {
+    console.log('Opening delete confirmation for reservation:', id);
     
     try {
-        // Reset modal state if it exists
-        const modalElement = document.getElementById('editReservationModal');
-        if (!modalElement) {
-            throw new Error('Modal element not found in DOM');
-        }
+        // Rellenar modal con los datos
+        const idField = document.getElementById('deleteReservationId');
+        const detailsField = document.getElementById('deleteReservationDetails');
         
-        // Asegurarse de que cualquier modal previo esté cerrado correctamente
-        const existingModal = bootstrap.Modal.getInstance(modalElement);
-        if (existingModal) {
-            existingModal.dispose();
-        }
+        if (idField) idField.value = id;
+        if (detailsField) detailsField.textContent = `${name} (${id}) - ${fecha}`;
         
-        // Eliminar cualquier backdrop residual
-        const backdrops = document.querySelectorAll('.modal-backdrop');
-        backdrops.forEach(backdrop => backdrop.remove());
-        document.body.classList.remove('modal-open');
-        document.body.style.overflow = '';
-        document.body.style.paddingRight = '';
-        
-        // Limpiar los servicios seleccionados para este modal
-        selectedServicesEdit = [];
-        
-        // Show loading state
-        const loadingElement = document.getElementById('editReservationLoading');
-        const formElement = document.getElementById('editReservationForm');
-        const errorElement = document.getElementById('editReservationError');
-        
-        if (loadingElement) loadingElement.style.display = 'block';
-        if (formElement) formElement.style.display = 'none';
-        if (errorElement) errorElement.style.display = 'none';
-        
-        // Crear nueva instancia del modal
-        const modal = new bootstrap.Modal(modalElement);
-        modal.show();
-        
-        // Cargar servicios disponibles para la selección
-        await loadAvailableServicesForEdit();
-        
-        // Ahora obtenemos los datos de la reserva
-        console.log('Fetching reservation data...');
-        const response = await fetch(`/Reservas?handler=ReservationDetails&id=${reservationId}`, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
+        // Mostrar el modal usando setTimeout para evitar retornar cualquier valor
+        setTimeout(() => {
+            const modalElement = document.getElementById('deleteReservationModal');
+            if (typeof bootstrap !== 'undefined' && modalElement) {
+                // Limpiar cualquier modal anterior
+                const oldBackdrop = document.querySelector('.modal-backdrop');
+                if (oldBackdrop) {
+                    oldBackdrop.remove();
+                }
+                
+                // Restablecer clases del body
+                document.body.classList.remove('modal-open');
+                document.body.style.paddingRight = '';
+                
+                // Crear y mostrar el modal
+                const modal = new bootstrap.Modal(modalElement);
+                modal.show();
             }
+        }, 0);
+    } catch (error) {
+        console.error('Error opening delete modal:', error);
+    }
+    
+    // No devolver ningún valor
+    // Esto es crucial: las funciones en JavaScript devuelven undefined si no
+    // se especifica un valor de retorno, pero algunas bibliotecas pueden convertir
+    // undefined a null, lo que podría ser nuestro problema
+};
+
+// Modificar la función existente
+
+window.deleteReservation = async function() {
+    try {
+        const id = document.getElementById('deleteReservationId').value;
+        
+        if (!id) {
+            console.error('No reservation ID found');
+            return;
+        }
+        
+        // Mostrar loading state en el botón
+        const button = document.getElementById('confirmDeleteBtn');
+        const originalHtml = button.innerHTML;
+        button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Eliminando...';
+        button.disabled = true;
+        
+        // Obtener token CSRF
+        const tokenElement = document.querySelector('input[name="__RequestVerificationToken"]');
+        const token = tokenElement ? tokenElement.value : '';
+        
+        // Enviar solicitud
+        const response = await fetch('/Reservas?handler=DeleteReservation', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'RequestVerificationToken': token
+            },
+            body: JSON.stringify({ id: id })
         });
         
-        if (!response.ok) {
-            throw new Error(`Error ${response.status}: ${response.statusText}`);
-        }
+        console.log('Response status:', response.status);
         
-        // Log the entire response for debugging
+        // Leer el texto de la respuesta primero
         const responseText = await response.text();
-        console.log('Raw response:', responseText);
+        console.log('Response text:', responseText);
         
-        let result;
-        try {
-            result = JSON.parse(responseText);
-        } catch (e) {
-            console.error('Failed to parse response as JSON:', e);
-            throw new Error('La respuesta del servidor no es un JSON válido');
+        // Solo intentar parsear como JSON si hay contenido
+        let result = null;
+        if (responseText && responseText.trim()) {
+            try {
+                result = JSON.parse(responseText);
+                console.log('Parsed result:', result);
+            } catch (e) {
+                console.warn('Response is not valid JSON:', e);
+                // No lanzar error aquí, seguir con el flujo
+            }
         }
         
-        // Fill form with reservation data if successful
-        if (result && result.success) {
-            console.log('Filling form with data:', result.data);
-            fillEditReservationForm(result.data);
+        // Consideramos exitoso si:
+        // 1. La respuesta tiene código 200-299 O
+        // 2. Tenemos un resultado con success=true
+        const isSuccess = response.ok || (result && result.success === true);
+        
+        if (isSuccess) {
+            console.log('Delete operation successful');
             
-            // Hide loading, show form
-            if (loadingElement) loadingElement.style.display = 'none';
-            if (formElement) formElement.style.display = 'block';
-        } else {
-            throw new Error(result?.message || 'Error desconocido al cargar los datos');
+            // Cerrar modal
+            const modalElement = document.getElementById('deleteReservationModal');
+            const modal = bootstrap.Modal.getInstance(modalElement);
+            if (modal) {
+                modal.hide();
+                
+                // Limpiar backdrop
+                setTimeout(() => {
+                    const backdrop = document.querySelector('.modal-backdrop');
+                    if (backdrop) backdrop.remove();
+                    document.body.classList.remove('modal-open');
+                    document.body.style.paddingRight = '';
+                }, 300);
+            }
+            
+            // Mostrar mensaje de éxito
+            showAlert('success', 'Reserva eliminada exitosamente');
+            
+            // Recargar página después de un breve delay
+            setTimeout(() => {
+                window.location.href = '/Reservas?success=true&action=delete';
+            }, 1500);
+            
+            return; // Importante: salir de la función aquí si todo fue exitoso
         }
+        
+        // Si llegamos aquí, hubo un problema
+        const errorMessage = (result && result.message) 
+            ? result.message 
+            : `Error ${response.status}: ${response.statusText || 'Error desconocido'}`;
+            
+        throw new Error(errorMessage);
         
     } catch (error) {
-        console.error('Error opening edit modal:', error);
+        console.error('Error deleting reservation:', error);
         
-        // Show error message
-        const loadingElement = document.getElementById('editReservationLoading');
-        const errorElement = document.getElementById('editReservationError');
-        const errorMessageElement = document.getElementById('editReservationErrorMessage');
-        
-        if (loadingElement) loadingElement.style.display = 'none';
-        if (errorElement) errorElement.style.display = 'block';
-        if (errorMessageElement) errorMessageElement.textContent = error.message || 'Error al cargar los datos de la reserva.';
+        // Mostrar mensaje de error de forma más suave (sin alert)
+        showAlert('danger', 'Error al eliminar la reserva: ' + (error.message || 'Error desconocido'));
+    } finally {
+        // Restaurar estado del botón
+        const button = document.getElementById('confirmDeleteBtn');
+        if (button) {
+            button.innerHTML = '<i class="bi bi-trash me-2"></i>Eliminar';
+            button.disabled = false;
+        }
     }
+};
+
+// Si no está ya definida, añade la función showAlert
+if (typeof window.showAlert !== 'function') {
+    window.showAlert = function(type, message) {
+        // Crear elemento de alerta
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-4`;
+        alertDiv.style.zIndex = '9999';
+        alertDiv.style.maxWidth = '80%';
+        
+        alertDiv.innerHTML = `
+            <i class="bi bi-${type === 'success' ? 'check-circle' : 'exclamation-triangle'} me-2"></i>
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        `;
+        
+        // Añadir al DOM
+        document.body.appendChild(alertDiv);
+        
+        // Auto-eliminar después de 5 segundos
+        setTimeout(() => {
+            alertDiv.classList.remove('show');
+            setTimeout(() => alertDiv.remove(), 150);
+        }, 5000);
+    };
+}
+
+// Añadir esta función para manejar correctamente el cierre del modal
+
+window.setupDeleteModal = function() {
+    // Obtener referencias a los elementos
+    const deleteModal = document.getElementById('deleteReservationModal');
+    const cancelButton = deleteModal.querySelector('button.btn-secondary');
+    const closeButton = deleteModal.querySelector('button.btn-close');
+    
+    // Función para asegurar que el backdrop se elimine correctamente
+    const cleanupModal = () => {
+        const backdrop = document.querySelector('.modal-backdrop');
+        if (backdrop) {
+            backdrop.remove();
+        }
+        document.body.classList.remove('modal-open');
+        document.body.style.paddingRight = '';
+    };
+    
+    // Manejar clic en el botón Cancelar
+    if (cancelButton) {
+        cancelButton.addEventListener('click', function(e) {
+            // Importante: prevenir comportamiento por defecto
+            e.preventDefault();
+            
+            const modal = bootstrap.Modal.getInstance(deleteModal);
+            if (modal) {
+                modal.hide();
+                // Dar tiempo para que el modal termine la animación y luego limpiar
+                setTimeout(cleanupModal, 300);
+            }
+            
+            // Importante: asegurarse de no devolver nada
+            return false;
+        });
+    }
+    
+    // También manejar el botón de cierre (X) con la misma lógica
+    if (closeButton) {
+        closeButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            const modal = bootstrap.Modal.getInstance(deleteModal);
+            if (modal) {
+                modal.hide();
+                setTimeout(cleanupModal, 300);
+            }
+            return false;
+        });
+    }
+    
+    // Manejar evento hidden.bs.modal
+    deleteModal.addEventListener('hidden.bs.modal', function(e) {
+        cleanupModal();
+    });
 };

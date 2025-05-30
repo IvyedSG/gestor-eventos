@@ -84,8 +84,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>i3sna0o760</Fingerprint>
-      <Integrity>Aog7B0ZHeqjyUfH7GK9AQuRXNM/nvmmx8FBASiBMKhM=</Integrity>
+      <Fingerprint>5l56qigh7a</Fingerprint>
+      <Integrity>N3wvv1237FeHu4tDy3UCf8zijyftqk3F/vC8blRpgZo=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\reservas.js'))</OriginalItemSpec>

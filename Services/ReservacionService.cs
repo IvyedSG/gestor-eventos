@@ -252,5 +252,44 @@ namespace gestor_eventos.Services
                 return null;
             }
         }
+
+        public async Task<bool> DeleteReservacionAsync(string id)
+        {
+            try
+            {
+                _logger.LogInformation("Eliminando reservación con ID: {Id}", id);
+
+                var token = _httpContextAccessor.HttpContext?.Request.Cookies["AuthToken"];
+                if (string.IsNullOrEmpty(token))
+                {
+                    token = _httpContextAccessor.HttpContext?.User?.FindFirst("AccessToken")?.Value;
+                    if (string.IsNullOrEmpty(token))
+                    {
+                        _logger.LogWarning("Token no encontrado en las cookies ni en las claims");
+                        return false;
+                    }
+                }
+                
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                
+                var response = await _httpClient.DeleteAsync($"{_apiSettings.BaseUrl}/api/reservas/{id}");
+                
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    _logger.LogWarning("Error al eliminar reservación. Código: {StatusCode}, Mensaje: {Message}, Detalle: {Detail}", 
+                        (int)response.StatusCode, response.ReasonPhrase, errorContent);
+                    return false;
+                }
+                
+                _logger.LogInformation("Reservación eliminada exitosamente con ID: {Id}", id);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al eliminar reservación: {Message}", ex.Message);
+                return false;
+            }
+        }
     }
 }

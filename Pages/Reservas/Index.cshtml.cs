@@ -157,13 +157,18 @@ namespace gestor_eventos.Pages.Reservas
                 // Log detallado para debugging
                 _logger.LogInformation("Datos recibidos para actualización: {@Model}", model);
 
-                // Formato de fecha
-                if (!string.IsNullOrEmpty(model.fechaEjecucion) && !model.fechaEjecucion.Contains("T"))
+                // No es necesario verificar tipoEventoId porque ahora usamos tipoEventoNombre
+                if (string.IsNullOrEmpty(model.tipoEventoNombre))
                 {
-                    // Si la fecha no tiene formato ISO, convertirla
-                    model.fechaEjecucion = DateTime.Parse(model.fechaEjecucion).ToString("yyyy-MM-ddTHH:mm:ss");
-                    _logger.LogInformation("Fecha formateada: {Fecha}", model.fechaEjecucion);
+                    _logger.LogWarning("tipoEventoNombre es null o vacío");
                 }
+                
+                if (string.IsNullOrEmpty(model.servicioId))
+                {
+                    _logger.LogWarning("servicioId es null o vacío");
+                }
+
+                // La fecha ya debe venir en el formato correcto desde el cliente
 
                 var result = await _reservacionService.UpdateReservacionAsync(id, model);
                 
@@ -179,8 +184,42 @@ namespace gestor_eventos.Pages.Reservas
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error al actualizar reserva: {Message}", ex.Message);
+                return StatusCode(500, new { success = false, message = $"Error detallado: {ex.Message}" });
+            }
+        }
+
+        public async Task<IActionResult> OnPostDeleteReservationAsync([FromBody] DeleteReservationRequest request)
+        {
+            if (string.IsNullOrEmpty(request?.Id))
+            {
+                return BadRequest(new { success = false, message = "ID de reserva no proporcionado" });
+            }
+
+            try
+            {
+                _logger.LogInformation("Eliminando reserva con ID: {Id}", request.Id);
+                
+                var result = await _reservacionService.DeleteReservacionAsync(request.Id);
+                
+                if (!result)
+                {
+                    _logger.LogWarning("Error al eliminar la reserva con ID: {Id}", request.Id);
+                    return StatusCode(500, new { success = false, message = "Error al eliminar la reserva" });
+                }
+                
+                _logger.LogInformation("Reserva eliminada exitosamente: {Id}", request.Id);
+                return new JsonResult(new { success = true, message = "Reserva eliminada exitosamente" });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al eliminar reserva: {Message}", ex.Message);
                 return StatusCode(500, new { success = false, message = $"Error: {ex.Message}" });
             }
+        }
+
+        public class DeleteReservationRequest
+        {
+            public string Id { get; set; }
         }
 
         private async Task LoadData()

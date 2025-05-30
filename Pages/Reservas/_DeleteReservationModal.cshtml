@@ -1,0 +1,38 @@
+@model gestor_eventos.Pages.Reservas.IndexModel
+
+<!-- Modal de confirmación de eliminación -->
+<div class="modal fade" id="deleteReservationModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    Eliminar Reserva
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>¿Está seguro que desea eliminar esta reserva? Esta acción no se puede deshacer.</p>
+                
+                <div class="alert alert-warning mt-3">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-info-circle-fill me-2 fs-5"></i>
+                        <div>
+                            <p class="mb-0">Se eliminará la siguiente reserva:</p>
+                            <p class="fw-bold mb-0" id="deleteReservationDetails"></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <input type="hidden" id="deleteReservationId">
+            </div>
+            <!-- Actualiza los botones en el modal -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="return false;">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn" onclick="setTimeout(function() { window.deleteReservation(); }, 0); return false;">
+                    <i class="bi bi-trash me-2"></i>Eliminar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -44,16 +44,13 @@ namespace gestor_eventos.Models.ApiModels
 
     public class ReservacionUpdateModel
     {
-        // IMPORTANTE: Los nombres deben coincidir exactamente con lo que espera la API
         public string nombreEvento { get; set; }
         public string fechaEjecucion { get; set; }
         public string descripcion { get; set; }
         public string estado { get; set; }
         public decimal precioTotal { get; set; }
-        public string tipoEventoId { get; set; }
         public string servicioId { get; set; }
         public decimal precioAdelanto { get; set; }
-        
-        // No incluir propiedades adicionales que no espera la API
+        public string tipoEventoNombre { get; set; }  // Cambiar tipoEventoId a tipoEventoNombre
     }
 }

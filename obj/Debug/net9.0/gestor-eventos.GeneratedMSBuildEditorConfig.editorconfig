@@ -76,6 +76,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvUmVzZXJ2YXMvSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/sagox16/Documents/Importants/gestor-eventos/Pages/Reservas/_DeleteReservationModal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvUmVzZXJ2YXMvX0RlbGV0ZVJlc2VydmF0aW9uTW9kYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/sagox16/Documents/Importants/gestor-eventos/Pages/Reservas/_EditReservationModal.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvUmVzZXJ2YXMvX0VkaXRSZXNlcnZhdGlvbk1vZGFsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

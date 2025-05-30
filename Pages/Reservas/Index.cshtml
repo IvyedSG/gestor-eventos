@@ -142,6 +142,12 @@
                                             <button class="btn btn-sm btn-outline-secondary edit-reservation" data-id="@reservation.Id">
                                                 <i class="bi bi-pencil"></i>
                                             </button>
+                                            <button class="btn btn-sm btn-outline-danger delete-reservation" 
+                                                    data-id="@reservation.Id" 
+                                                    data-name="@reservation.NombreEvento"
+                                                    data-fecha="@reservation.FechaEjecucion.ToString("dd/MM/yyyy")">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
@@ -193,50 +199,37 @@
 <partial name="_NewReservationModal" />
 <partial name="_ViewReservationModal" />
 <partial name="_EditReservationModal" />
+<partial name="_DeleteReservationModal" />
 
 @section Scripts {
     <script src="~/js/reservas.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM loaded, setting up listeners for reservation actions');
-            
-            // Botones de ver detalle
-            document.querySelectorAll('.view-reservation').forEach(button => {
-                button.addEventListener('click', function() {
+            // Reemplazar el código existente para los botones de eliminar con esta versión:
+            document.querySelectorAll('.delete-reservation').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    // Importante: prevenir el comportamiento por defecto
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
                     const id = this.getAttribute('data-id');
-                    console.log('View button clicked for reservation:', id);
-                    if (window.openReservationDetailsModal) {
-                        window.openReservationDetailsModal(id);
-                    } else {
-                        console.error('Function openReservationDetailsModal not found');
-                    }
+                    const name = this.getAttribute('data-name');
+                    const fecha = this.getAttribute('data-fecha');
+                    console.log('Delete button clicked for reservation:', id);
+                    
+                    // Usar setTimeout para desacoplar la ejecución del valor de retorno
+                    setTimeout(() => {
+                        if (typeof window.openDeleteReservationModal === 'function') {
+                            window.openDeleteReservationModal(id, name, fecha);
+                        } else {
+                            console.error('Function openDeleteReservationModal not defined');
+                        }
+                    }, 0);
+                    
+                    // Devolver false para evitar propagación
+                    return false;
                 });
             });
-            
-            // Botones de edición
-            document.querySelectorAll('.edit-reservation').forEach(button => {
-                button.addEventListener('click', function() {
-                    const id = this.getAttribute('data-id');
-                    console.log('Edit button clicked for reservation:', id);
-                    if (window.openEditReservationModal) {
-                        window.openEditReservationModal(id);
-                    } else {
-                        console.error('Function openEditReservationModal not found');
-                    }
-                });
-            });
-            
-            // Setup update button
-            const updateReservationBtn = document.getElementById('updateReservationBtn');
-            if (updateReservationBtn) {
-                updateReservationBtn.addEventListener('click', function() {
-                    if (window.updateReservation) {
-                        window.updateReservation();
-                    } else {
-                        console.error('Function updateReservation not found');
-                    }
-                });
-            }
         });
     </script>
 }
