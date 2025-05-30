@@ -1,7 +1,7 @@
 {
   "version": 3,
   "targets": {
-    "net9.0": {
+    "net8.0": {
       "DotNetEnv/3.1.1": {
         "type": "package",
         "dependencies": {
@@ -18,22 +18,6 @@
         "runtime": {
           "lib/netstandard1.3/DotNetEnv.dll": {}
         }
-      },
-      "Microsoft.AspNetCore.Authentication.Google/9.0.3": {
-        "type": "package",
-        "compile": {
-          "lib/net9.0/Microsoft.AspNetCore.Authentication.Google.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net9.0/Microsoft.AspNetCore.Authentication.Google.dll": {
-            "related": ".xml"
-          }
-        },
-        "frameworkReferences": [
-          "Microsoft.AspNetCore.App"
-        ]
       },
       "Microsoft.Extensions.Configuration/1.1.2": {
         "type": "package",
@@ -1427,21 +1411,6 @@
         "dotnetenv.3.1.1.nupkg.sha512",
         "dotnetenv.nuspec",
         "lib/netstandard1.3/DotNetEnv.dll"
-      ]
-    },
-    "Microsoft.AspNetCore.Authentication.Google/9.0.3": {
-      "sha512": "vh5+T1wgwwQoJUVmuzAsEJ3y9Kq2zDjjgbScGWdKcVFR/rbDJX7IVy5q6rSCYBBuPqVj5EYMzzuf7UToVkqO0Q==",
-      "type": "package",
-      "path": "microsoft.aspnetcore.authentication.google/9.0.3",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "THIRD-PARTY-NOTICES.TXT",
-        "lib/net9.0/Microsoft.AspNetCore.Authentication.Google.dll",
-        "lib/net9.0/Microsoft.AspNetCore.Authentication.Google.xml",
-        "microsoft.aspnetcore.authentication.google.9.0.3.nupkg.sha512",
-        "microsoft.aspnetcore.authentication.google.nuspec"
       ]
     },
     "Microsoft.Extensions.Configuration/1.1.2": {
@@ -4768,36 +4737,34 @@
     }
   },
   "projectFileDependencyGroups": {
-    "net9.0": [
-      "DotNetEnv >= 3.1.1",
-      "Microsoft.AspNetCore.Authentication.Google >= 9.0.3"
+    "net8.0": [
+      "DotNetEnv >= 3.1.1"
     ]
   },
   "packageFolders": {
-    "/Users/sagox16/.nuget/packages/": {}
+    "C:\\Users\\AUTONOMA\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/sagox16/Documents/Importants/gestor-eventos/gestor-eventos.csproj",
+      "projectUniqueName": "C:\\Users\\AUTONOMA\\Documents\\gestor-eventos\\gestor-eventos.csproj",
       "projectName": "gestor-eventos",
-      "projectPath": "/Users/sagox16/Documents/Importants/gestor-eventos/gestor-eventos.csproj",
-      "packagesPath": "/Users/sagox16/.nuget/packages/",
-      "outputPath": "/Users/sagox16/Documents/Importants/gestor-eventos/obj/",
+      "projectPath": "C:\\Users\\AUTONOMA\\Documents\\gestor-eventos\\gestor-eventos.csproj",
+      "packagesPath": "C:\\Users\\AUTONOMA\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\AUTONOMA\\Documents\\gestor-eventos\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/sagox16/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\AUTONOMA\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
-        "net9.0"
+        "net8.0"
       ],
       "sources": {
-        "/usr/local/share/dotnet/library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
-        "net9.0": {
-          "targetAlias": "net9.0",
+        "net8.0": {
+          "targetAlias": "net8.0",
           "projectReferences": {}
         }
       },
@@ -4810,20 +4777,15 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      },
-      "SdkAnalysisLevel": "9.0.200"
+      }
     },
     "frameworks": {
-      "net9.0": {
-        "targetAlias": "net9.0",
+      "net8.0": {
+        "targetAlias": "net8.0",
         "dependencies": {
           "DotNetEnv": {
             "target": "Package",
             "version": "[3.1.1, )"
-          },
-          "Microsoft.AspNetCore.Authentication.Google": {
-            "target": "Package",
-            "version": "[9.0.3, )"
           }
         },
         "imports": [
@@ -4845,7 +4807,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.202/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.302/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
