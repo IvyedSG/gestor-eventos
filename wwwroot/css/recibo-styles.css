@@ -1,0 +1,211 @@
+.recibo-container {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.recibo-header {
+    position: relative;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.recibo-logo {
+    max-height: 80px;
+    max-width: 200px;
+}
+
+.recibo-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #212529;
+    margin-bottom: 5px;
+}
+
+.recibo-subtitle {
+    font-size: 16px;
+    color: #6c757d;
+    margin-bottom: 0;
+}
+
+.recibo-number {
+    font-size: 14px;
+    color: #495057;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+}
+
+.recibo-date {
+    font-size: 14px;
+    color: #495057;
+    position: absolute;
+    right: 20px;
+    top: 40px;
+}
+
+.recibo-body {
+    padding: 20px;
+}
+
+.recibo-section {
+    margin-bottom: 25px;
+}
+
+.recibo-section-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #343a40;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.recibo-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.recibo-label {
+    font-weight: 500;
+    color: #495057;
+}
+
+.recibo-value {
+    color: #212529;
+}
+
+.recibo-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.recibo-table th {
+    background-color: #f8f9fa;
+    color: #343a40;
+    font-weight: 600;
+    text-align: left;
+    padding: 10px;
+    border: 1px solid #dee2e6;
+}
+
+.recibo-table td {
+    padding: 10px;
+    border: 1px solid #dee2e6;
+    color: #212529;
+}
+
+.recibo-total {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.recibo-footer {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+    font-size: 14px;
+    color: #6c757d;
+    text-align: center;
+}
+
+.recibo-qr {
+    text-align: center;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.recibo-qr img {
+    max-width: 100px;
+}
+
+.recibo-terms {
+    font-size: 12px;
+    color: #6c757d;
+    padding: 0 20px 20px;
+}
+
+.recibo-badge {
+    font-size: 13px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    color: white;
+    display: inline-block;
+}
+
+.recibo-badge-confirmado {
+    background-color: #28a745;
+}
+
+.recibo-badge-pendiente {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.recibo-badge-cancelado {
+    background-color: #dc3545;
+}
+
+/* Estilos para impresión */
+@media print {
+    /* Ocultar todo excepto el recibo */
+    body * {
+        visibility: hidden;
+    }
+    
+    /* Mostrar solo el recibo y su contenido */
+    #receiptContent, #receiptContent * {
+        visibility: visible;
+    }
+    
+    /* Estilos específicos para la presentación de impresión */
+    #receiptContent {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: auto;
+        overflow: visible;
+        page-break-inside: avoid;
+        margin: 0;
+        padding: 0;
+    }
+    
+    /* Ajustar el contenedor de la boleta para impresión */
+    .recibo-container {
+        box-shadow: none;
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+    }
+    
+    /* Garantizar que el contenido se ajuste a la página */
+    .recibo-body {
+        page-break-after: auto;
+    }
+    
+    /* No imprimir elementos innecesarios */
+    .no-print, .modal-header, .modal-footer {
+        display: none !important;
+    }
+    
+    /* Forzar fondo blanco en todo el documento */
+    .recibo-header, .recibo-footer, .recibo-section {
+        background-color: white !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    /* Asegurar que las tablas se ajusten correctamente */
+    .recibo-table {
+        width: 100% !important;
+        page-break-inside: avoid;
+    }
+}

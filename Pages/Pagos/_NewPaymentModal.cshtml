@@ -1,0 +1,66 @@
+@model gestor_eventos.Pages.Pagos.IndexModel
+
+<!-- Modal para crear nuevo pago -->
+<div class="modal fade" id="newPaymentModal" tabindex="-1" aria-labelledby="newPaymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="newPaymentModalLabel">
+                    <i class="bi bi-cash-coin me-2"></i>Nuevo Pago
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="createPaymentForm">
+                    @Html.AntiForgeryToken()
+                    
+                    <div class="mb-3">
+                        <label for="paymentReservation" class="form-label">Reserva</label>
+                        <select class="form-select" id="paymentReservation" required>
+                            <option value="" selected disabled>Selecciona una reserva</option>
+                            @foreach (var reserva in Model.Reservaciones)
+                            {
+                                <option value="@reserva.Id" data-nombre="@reserva.NombreEvento">
+                                    @reserva.NombreEvento (@reserva.Id)
+                                </option>
+                            }
+                        </select>
+                        <div class="form-text">La reserva a la que se asociará este pago.</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="paymentType" class="form-label">Método de Pago</label>
+                        <select class="form-select" id="paymentType" required>
+                            <option value="" selected disabled>Selecciona un método de pago</option>
+                            <option value="efectivo">Efectivo</option>
+                            <option value="yape">Yape</option>
+                            <option value="plin">Plin</option>
+                            <option value="transferencia">Transferencia bancaria</option>
+                            <option value="parcial">Pago parcial</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="paymentAmount" class="form-label">Monto (S/)</label>
+                        <div class="input-group">
+                            <span class="input-group-text">S/</span>
+                            <input type="number" class="form-control" id="paymentAmount" required step="0.01" min="0">
+                        </div>
+                    </div>
+
+                    <div id="paymentError" class="alert alert-danger d-none">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        <span id="paymentErrorMessage"></span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="createPaymentBtn">
+                    <i class="bi bi-save me-1"></i>Crear Pago
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

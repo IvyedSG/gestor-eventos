@@ -18,6 +18,7 @@ namespace gestor_eventos.Pages.Reservas
         private readonly ReservacionService _reservacionService;
         private readonly ClienteService _clienteService;
         private readonly ServicioService _servicioService;
+        private readonly PagoService _pagoService;
 
         public List<ReservacionApi> Reservations { get; set; } = new List<ReservacionApi>();
         public List<ClienteApi> Clientes { get; set; } = new List<ClienteApi>();
@@ -41,12 +42,14 @@ namespace gestor_eventos.Pages.Reservas
             ILogger<IndexModel> logger,
             ReservacionService reservacionService,
             ClienteService clienteService,
-            ServicioService servicioService)
+            ServicioService servicioService,
+            PagoService pagoService)
         {
             _logger = logger;
             _reservacionService = reservacionService;
             _clienteService = clienteService;
             _servicioService = servicioService;
+            _pagoService = pagoService;
         }
 
         public async Task OnGetAsync(string success = null)
@@ -257,6 +260,28 @@ namespace gestor_eventos.Pages.Reservas
             }
 
             Reservations = filteredReservations;
+        }
+
+        // Add this new handler method
+        public async Task<IActionResult> OnGetReservationPaymentsAsync(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest(new { success = false, message = "ID de reserva no proporcionado" });
+            }
+
+            try
+            {
+                _logger.LogInformation("Obteniendo pagos para la reserva con ID: {Id}", id);
+                var payments = await _pagoService.GetPagosForReservacionAsync(id);
+                
+                return new JsonResult(new { success = true, data = payments });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al obtener pagos de la reserva: {Message}", ex.Message);
+                return StatusCode(500, new { success = false, message = "Error al obtener los pagos de la reserva" });
+            }
         }
     }
 }

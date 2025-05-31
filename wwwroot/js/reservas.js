@@ -582,6 +582,35 @@ async function openReservationDetailsModal(reservationId) {
         // Populate the modal with reservation data
         fillReservationModal(result.data);
         
+        // After successfully getting reservation details and before showing them:
+        console.log('Fetching payment history for reservation:', reservationId);
+        
+        // Fetch payment history
+        const paymentsResponse = await fetch(`/Reservas?handler=ReservationPayments&id=${reservationId}`, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'RequestVerificationToken': token
+            }
+        });
+        
+        // Process payment data
+        if (paymentsResponse.ok) {
+            const paymentsText = await paymentsResponse.text();
+            let paymentsResult;
+            
+            try {
+                paymentsResult = JSON.parse(paymentsText);
+                if (paymentsResult.success) {
+                    // Fill the payments table
+                    fillPaymentsTable(paymentsResult.data);
+                }
+            } catch (error) {
+                console.error('Error parsing payments data:', error);
+            }
+        } else {
+            console.warn('Failed to fetch payment history:', paymentsResponse.status);
+        }
+        
         // Hide loading, show details
         if (loadingElement) loadingElement.style.display = 'none';
         if (detailsElement) detailsElement.style.display = 'block';
@@ -600,10 +629,14 @@ async function openReservationDetailsModal(reservationId) {
     }
 }
 
+// Modificar la función fillReservationModal para almacenar los datos
 function fillReservationModal(reservation) {
     console.log('Filling modal with reservation data:', reservation);
     
     try {
+        // Almacenar los datos de la reserva para uso en la generación de boleta
+        window.currentReservationData = reservation;
+        
         // Safely set text content to DOM elements with error handling
         const safeSetText = (id, value, defaultValue = '-') => {
             const element = document.getElementById(id);
@@ -711,41 +744,112 @@ function fillReservationModal(reservation) {
     }
 }
 
-function closeReservationModal() {
-    try {
-        const modalElement = document.getElementById('viewReservationModal');
-        if (modalElement) {
-            // Obtener la instancia del modal de Bootstrap
-            const modal = bootstrap.Modal.getInstance(modalElement);
-            if (modal) {
-                modal.hide(); // Ocultar el modal con API de Bootstrap
-            }
-            
-            // Limpiar manualmente el backdrop si permanece
-            setTimeout(() => {
-                // Remover cualquier backdrop que haya quedado
-                const backdrops = document.getElementsByClassName('modal-backdrop');
-                if (backdrops.length > 0) {
-                    for (let i = 0; i < backdrops.length; i++) {
-                        backdrops[i].classList.remove('show');
-                        backdrops[i].remove();
-                    }
-                }
-                
-                // Remover clases del body que Bootstrap añade
-                document.body.classList.remove('modal-open');
-                document.body.style.overflow = '';
-                document.body.style.paddingRight = '';
-            }, 200);
-        }
-    } catch (error) {
-        console.error('Error cerrando el modal:', error);
+// Modificar la función fillPaymentsTable para guardar los datos de pagos
+function fillPaymentsTable(payments) {
+    console.log('Filling payments table with data:', payments);
+    
+    // Guardar los datos de pagos para la boleta
+    window.reservationPayments = payments;
+    
+    const tableBody = document.getElementById('paymentTableBody');
+    const noPaymentsMessage = document.getElementById('noPaymentsMessage');
+    const paymentsTable = document.getElementById('paymentsTable');
+    const paymentsTotalElement = document.getElementById('paymentsTotal');
+    
+    if (!tableBody || !noPaymentsMessage || !paymentsTable) {
+        console.warn('Payment table elements not found in DOM');
+        return;
+    }
+    
+    // Clear previous content
+    tableBody.innerHTML = '';
+    
+    // Handle no payments case
+    if (!payments || payments.length === 0) {
+        paymentsTable.style.display = 'none';
+        noPaymentsMessage.style.display = 'block';
+        return;
+    }
+    
+    // We have payments
+    paymentsTable.style.display = 'table';
+    noPaymentsMessage.style.display = 'none';
+    
+    // Calculate total
+    let totalAmount = 0;
+    
+    // Add rows for each payment
+    payments.forEach(payment => {
+        const amount = parseFloat(payment.monto) || 0;
+        totalAmount += amount;
         
-        // Limpieza de emergencia si hay error
-        document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
-        document.body.classList.remove('modal-open');
-        document.body.style.overflow = '';
-        document.body.style.paddingRight = '';
+        // Format date using the new fechaPago field
+        let formattedDate = '-';
+        if (payment.fechaPago) {
+            try {
+                const date = new Date(payment.fechaPago);
+                formattedDate = date.toLocaleDateString('es-ES', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            } catch (error) {
+                console.warn('Error formatting payment date:', error);
+            }
+        }
+        
+        // Create payment row with badge for payment type
+        const row = document.createElement('tr');
+        
+        // Determine badge class based on payment type
+        const tipoPago = payment.tipoPagoNombre?.toLowerCase() || '';
+        let badgeClass = 'badge-otro';
+        let iconClass = 'bi-question-circle';
+        
+        switch(tipoPago) {
+            case 'efectivo':
+                badgeClass = 'badge-efectivo';
+                iconClass = 'bi-cash';
+                break;
+            case 'yape':
+                badgeClass = 'badge-yape';
+                iconClass = 'bi-phone';
+                break;
+            case 'plin':
+                badgeClass = 'badge-plin';
+                iconClass = 'bi-phone-fill';
+                break;
+            case 'transferencia':
+                badgeClass = 'badge-transferencia';
+                iconClass = 'bi-bank';
+                break;
+            case 'adelanto':
+                badgeClass = 'badge-adelanto';
+                iconClass = 'bi-credit-card-2-front';
+                break;
+            case 'parcial':
+                badgeClass = 'badge-parcial';
+                iconClass = 'bi-credit-card';
+                break;
+        }
+        
+        // Create a nice-looking badge for payment type
+        const badge = `<span class="badge rounded-pill ${badgeClass}"><i class="bi ${iconClass} me-1"></i>${payment.tipoPagoNombre || '-'}</span>`;
+        
+        row.innerHTML = `
+            <td>${payment.id}</td>
+            <td>${badge}</td>
+            <td>S/${amount.toFixed(2)}</td>
+            <td>${formattedDate}</td>
+        `;
+        tableBody.appendChild(row);
+    });
+    
+    // Update total
+    if (paymentsTotalElement) {
+        paymentsTotalElement.textContent = `S/${totalAmount.toFixed(2)}`;
     }
 }
 
@@ -1430,3 +1534,112 @@ window.setupDeleteModal = function() {
         cleanupModal();
     });
 };
+
+// Update this function to handle payments data with fechaPago
+function fillPaymentsTable(payments) {
+    console.log('Filling payments table with data:', payments);
+    
+    // Guardar los datos de pagos para la boleta
+    window.reservationPayments = payments;
+    
+    const tableBody = document.getElementById('paymentTableBody');
+    const noPaymentsMessage = document.getElementById('noPaymentsMessage');
+    const paymentsTable = document.getElementById('paymentsTable');
+    const paymentsTotalElement = document.getElementById('paymentsTotal');
+    
+    if (!tableBody || !noPaymentsMessage || !paymentsTable) {
+        console.warn('Payment table elements not found in DOM');
+        return;
+    }
+    
+    // Clear previous content
+    tableBody.innerHTML = '';
+    
+    // Handle no payments case
+    if (!payments || payments.length === 0) {
+        paymentsTable.style.display = 'none';
+        noPaymentsMessage.style.display = 'block';
+        return;
+    }
+    
+    // We have payments
+    paymentsTable.style.display = 'table';
+    noPaymentsMessage.style.display = 'none';
+    
+    // Calculate total
+    let totalAmount = 0;
+    
+    // Add rows for each payment
+    payments.forEach(payment => {
+        const amount = parseFloat(payment.monto) || 0;
+        totalAmount += amount;
+        
+        // Format date using the new fechaPago field
+        let formattedDate = '-';
+        if (payment.fechaPago) {
+            try {
+                const date = new Date(payment.fechaPago);
+                formattedDate = date.toLocaleDateString('es-ES', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            } catch (error) {
+                console.warn('Error formatting payment date:', error);
+            }
+        }
+        
+        // Create payment row with badge for payment type
+        const row = document.createElement('tr');
+        
+        // Determine badge class based on payment type
+        const tipoPago = payment.tipoPagoNombre?.toLowerCase() || '';
+        let badgeClass = 'badge-otro';
+        let iconClass = 'bi-question-circle';
+        
+        switch(tipoPago) {
+            case 'efectivo':
+                badgeClass = 'badge-efectivo';
+                iconClass = 'bi-cash';
+                break;
+            case 'yape':
+                badgeClass = 'badge-yape';
+                iconClass = 'bi-phone';
+                break;
+            case 'plin':
+                badgeClass = 'badge-plin';
+                iconClass = 'bi-phone-fill';
+                break;
+            case 'transferencia':
+                badgeClass = 'badge-transferencia';
+                iconClass = 'bi-bank';
+                break;
+            case 'adelanto':
+                badgeClass = 'badge-adelanto';
+                iconClass = 'bi-credit-card-2-front';
+                break;
+            case 'parcial':
+                badgeClass = 'badge-parcial';
+                iconClass = 'bi-credit-card';
+                break;
+        }
+        
+        // Create a nice-looking badge for payment type
+        const badge = `<span class="badge rounded-pill ${badgeClass}"><i class="bi ${iconClass} me-1"></i>${payment.tipoPagoNombre || '-'}</span>`;
+        
+        row.innerHTML = `
+            <td>${payment.id}</td>
+            <td>${badge}</td>
+            <td>S/${amount.toFixed(2)}</td>
+            <td>${formattedDate}</td>
+        `;
+        tableBody.appendChild(row);
+    });
+    
+    // Update total
+    if (paymentsTotalElement) {
+        paymentsTotalElement.textContent = `S/${totalAmount.toFixed(2)}`;
+    }
+}

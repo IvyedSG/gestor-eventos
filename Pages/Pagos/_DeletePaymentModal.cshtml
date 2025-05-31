@@ -1,0 +1,30 @@
+@model gestor_eventos.Pages.Pagos.IndexModel
+
+<!-- Modal para confirmar eliminación de pago -->
+<div class="modal fade" id="deletePaymentModal" tabindex="-1" aria-labelledby="deletePaymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deletePaymentModalLabel">Confirmar Eliminación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>¿Estás seguro que deseas eliminar este pago?</p>
+                <div class="card bg-light p-3 mb-3">
+                    <p class="mb-1"><strong>Tipo:</strong> <span id="deletePaymentType"></span></p>
+                    <p class="mb-1"><strong>Monto:</strong> S/<span id="deletePaymentAmount"></span></p>
+                    <p class="mb-0"><strong>Fecha:</strong> <span id="deletePaymentDate"></span></p> <!-- Nuevo campo -->
+                </div>
+                <div class="alert alert-danger d-none" id="deletePaymentError">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    <span id="deletePaymentErrorMessage"></span>
+                </div>
+                <input type="hidden" id="deletePaymentId">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="confirmDeletePaymentBtn">Eliminar Pago</button>
+            </div>
+        </div>
+    </div>
+</div>

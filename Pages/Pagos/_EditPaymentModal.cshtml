@@ -1,0 +1,64 @@
+@model gestor_eventos.Pages.Pagos.IndexModel
+
+<!-- Modal para editar pago -->
+<div class="modal fade" id="editPaymentModal" tabindex="-1" aria-labelledby="editPaymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editPaymentModalLabel">Editar Pago</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editPaymentForm">
+                    <input type="hidden" id="editPaymentId">
+                    
+                    <div class="mb-3">
+                        <label for="editPaymentReservation" class="form-label">Reserva</label>
+                        <input type="text" class="form-control" id="editPaymentReservation" disabled>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="editPaymentType" class="form-label">Tipo de pago</label>
+                        <select class="form-select" id="editPaymentType" required>
+                            <option value="">Selecciona un tipo de pago</option>
+                            <option value="efectivo">Efectivo</option>
+                            <option value="yape">Yape</option>
+                            <option value="plin">Plin</option>
+                            <option value="transferencia">Transferencia bancaria</option>
+                            <option value="parcial">Pago parcial</option>
+                            <option value="adelanto">Adelanto</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            Por favor selecciona un tipo de pago.
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="editPaymentAmount" class="form-label">Monto (S/)</label>
+                        <input type="number" class="form-control" id="editPaymentAmount" min="0" step="0.01" required>
+                        <div class="invalid-feedback">
+                            Por favor ingresa un monto válido.
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="editPaymentDate" class="form-label">Fecha de pago</label>
+                        <input type="text" class="form-control" id="editPaymentDate" disabled>
+                    </div>
+                    
+                    <div class="alert alert-danger d-none" id="editPaymentError">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        <span id="editPaymentErrorMessage"></span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="updatePaymentBtn">
+                    <i class="bi bi-save me-1"></i>Actualizar Pago
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

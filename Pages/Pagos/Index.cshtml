@@ -4,9 +4,724 @@
     ViewData["Title"] = "Gestión de Pagos";
 }
 
-<div class="container py-4">
-    <h1 class="mb-4">Gestión de Pagos</h1>
-    <div class="alert alert-info">
-        Vista de Pagos lista para ser implementada.
+<style>
+    /* Estilos para badges de tipos de pago */
+    .badge-efectivo {
+        background-color: #28a745;
+        color: white;
+    }
+    .badge-yape {
+        background-color: #8c44db;
+        color: white;
+    }
+    .badge-plin {
+        background-color: #0275d8;
+        color: white;
+    }
+    .badge-transferencia {
+        background-color: #17a2b8;
+        color: white;
+    }
+    .badge-adelanto {
+        background-color: #ffc107;
+        color: #212529;
+    }
+    .badge-parcial {
+        background-color: #fd7e14;
+        color: white;
+    }
+    .badge-otro {
+        background-color: #6c757d;
+        color: white;
+    }
+    .tipo-badge {
+        font-size: 0.85rem;
+        padding: 0.35em 0.65em;
+        border-radius: 50rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+</style>
+
+<div class="container-fluid py-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3">Administra los pagos de tus reservas</h1>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newPaymentModal">
+            <i class="bi bi-plus-circle me-2"></i>Nuevo Pago
+        </button>
     </div>
+
+    @if (Model.HasError)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle me-2"></i> @Model.ErrorMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle me-2"></i> @Model.SuccessMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <!-- Filtros -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form id="filterForm" method="get">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <input type="text" class="form-control" placeholder="Buscar por nombre..." name="SearchTerm" value="@Request.Query["SearchTerm"]">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" name="TypeFilter">
+                            <option value="" selected>Método de pago</option>
+                            <option value="efectivo">Efectivo</option>
+                            <option value="yape">Yape</option>
+                            <option value="plin">Plin</option>
+                            <option value="transferencia">Transferencia bancaria</option>
+                            <option value="parcial">Pago parcial</option>
+                            <option value="adelanto">Adelanto</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-calendar3"></i></span>
+                            <input type="date" class="form-control" name="DateFilter" value="@Request.Query["DateFilter"]">
+                        </div>
+                    </div>
+                    <div class="col-md-2 d-flex">
+                        <button type="submit" class="btn btn-primary flex-fill">
+                            <i class="bi bi-funnel me-2"></i>Filtrar
+                        </button>
+                        <button type="button" id="clearFilters" class="btn btn-outline-secondary ms-2">
+                            <i class="bi bi-x-circle"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tabla de Pagos -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="ps-4">ID</th>
+                            <th>Reserva</th>
+                            <th>Tipo de Pago</th>
+                            <th>Monto</th>
+                            <th>Fecha</th>
+                            <th class="text-end pe-4">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pagosTableBody">
+                        @if (Model.Pagos != null && Model.Pagos.Any())
+                        {
+                            foreach (var pago in Model.Pagos)
+                            {
+                                <tr>
+                                    <td class="ps-4">@pago.Id</td>
+                                    <td class="fw-medium">@(string.IsNullOrEmpty(pago.NombreReserva) ? "Sin reserva" : pago.NombreReserva)</td>
+                                    <td>
+                                        <span class="tipo-pago-badge" data-tipo="@pago.TipoPagoNombre.ToLower()">@pago.TipoPagoNombre</span>
+                                    </td>
+                                    <td>S/@pago.Monto</td>
+                                    <td>@pago.FechaPago.ToString("dd/MM/yyyy HH:mm")</td>
+                                    <td class="text-end pe-4">
+                                        <div class="btn-group">
+                                            <button class="btn btn-sm btn-outline-secondary edit-payment" 
+                                                    data-id="@pago.Id" 
+                                                    data-type="@pago.TipoPagoNombre"
+                                                    data-amount="@pago.Monto"
+                                                    data-reservation="@pago.NombreReserva"
+                                                    data-date="@pago.FechaPago.ToString("dd/MM/yyyy HH:mm")">
+                                                <i class="bi bi-pencil"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-danger delete-payment" 
+                                                    data-id="@pago.Id" 
+                                                    data-type="@pago.TipoPagoNombre"
+                                                    data-amount="@pago.Monto"
+                                                    data-date="@pago.FechaPago.ToString("dd/MM/yyyy HH:mm")">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center py-5">
+                                    <div class="d-flex flex-column align-items-center">
+                                        <i class="bi bi-cash-stack text-muted" style="font-size: 3rem;"></i>
+                                        <h5 class="mt-3">No se encontraron pagos</h5>
+                                        <p class="text-muted mb-4">Prueba ajustando los filtros o crea un nuevo pago</p>
+                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newPaymentModal">
+                                            <i class="bi bi-plus-circle me-2"></i>Nuevo Pago
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Paginación -->
+    @if (Model.Pagos != null && Model.Pagos.Any())
+    {
+        <div class="d-flex justify-content-between align-items-center mt-4">
+            <p class="text-muted">Mostrando <strong>@Model.Pagos.Count</strong> pagos</p>
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Siguiente</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    }
 </div>
+
+<!-- Modales -->
+<partial name="_NewPaymentModal" />
+<partial name="_EditPaymentModal" />
+<partial name="_DeletePaymentModal" />
+
+<div id="printSection" class="d-none"></div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Convertir los textos de tipo de pago a badges
+            convertirTiposPagoABadges();
+            
+            // Setup create payment form
+            setupCreatePaymentForm();
+            
+            // Setup edit payment buttons
+            setupEditPaymentButtons();
+            
+            // Setup delete payment buttons
+            setupDeletePaymentButtons();
+            
+            // Clear filters button
+            const clearFiltersBtn = document.getElementById('clearFilters');
+            if (clearFiltersBtn) {
+                clearFiltersBtn.addEventListener('click', function() {
+                    const searchTermInput = document.querySelector('[name="SearchTerm"]');
+                    const typeFilterSelect = document.querySelector('[name="TypeFilter"]');
+                    const dateFilterInput = document.querySelector('[name="DateFilter"]');
+                    
+                    if (searchTermInput) searchTermInput.value = '';
+                    if (typeFilterSelect) typeFilterSelect.value = '';
+                    if (dateFilterInput) dateFilterInput.value = '';
+                    
+                    const filterForm = document.getElementById('filterForm');
+                    if (filterForm) filterForm.submit();
+                });
+            }
+
+            // Función para configurar el formulario de creación de pagos
+            function setupCreatePaymentForm() {
+                const createPaymentBtn = document.getElementById('createPaymentBtn');
+                
+                if (createPaymentBtn) {
+                    createPaymentBtn.addEventListener('click', async function() {
+                        try {
+                            // Get form elements
+                            const reservaSelect = document.getElementById('paymentReservation');
+                            const tipoSelect = document.getElementById('paymentType');
+                            const montoInput = document.getElementById('paymentAmount');
+                            const errorDiv = document.getElementById('paymentError');
+                            const errorMessage = document.getElementById('paymentErrorMessage');
+                            
+                            // Hide previous errors
+                            errorDiv.classList.add('d-none');
+                            
+                            // Validate form
+                            let isValid = true;
+                            
+                            if (!reservaSelect.value) {
+                                reservaSelect.classList.add('is-invalid');
+                                isValid = false;
+                            } else {
+                                reservaSelect.classList.remove('is-invalid');
+                            }
+                            
+                            if (!tipoSelect.value) {
+                                tipoSelect.classList.add('is-invalid');
+                                isValid = false;
+                            } else {
+                                tipoSelect.classList.remove('is-invalid');
+                            }
+                            
+                            if (!montoInput.value || parseFloat(montoInput.value) <= 0) {
+                                montoInput.classList.add('is-invalid');
+                                isValid = false;
+                            } else {
+                                montoInput.classList.remove('is-invalid');
+                            }
+                            
+                            if (!isValid) {
+                                errorDiv.classList.remove('d-none');
+                                errorMessage.textContent = 'Por favor, completa todos los campos correctamente.';
+                                return;
+                            }
+                            
+                            // Show loading state
+                            const button = this;
+                            const originalHtml = button.innerHTML;
+                            button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Procesando...';
+                            button.disabled = true;
+                            
+                            // Prepare payment data
+                            const paymentData = {
+                                idReserva: reservaSelect.value,
+                                nombreTipoPago: tipoSelect.value,
+                                monto: montoInput.value
+                            };
+                            
+                            console.log('Enviando datos para crear pago:', paymentData);
+                            
+                            // Get anti-forgery token
+                            const tokenElement = document.querySelector('input[name="__RequestVerificationToken"]');
+                            const token = tokenElement ? tokenElement.value : '';
+                            
+                            // Send request to create payment
+                            const response = await fetch('?handler=CreatePayment', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'RequestVerificationToken': token,
+                                    'X-Requested-With': 'XMLHttpRequest'
+                                },
+                                body: JSON.stringify(paymentData)
+                            });
+                            
+                            // Parse response
+                            const responseText = await response.text();
+                            let result;
+                            try {
+                                result = JSON.parse(responseText);
+                            } catch (e) {
+                                console.error('Error parsing JSON response:', e, responseText);
+                                throw new Error('Error en la respuesta del servidor');
+                            }
+                            
+                            if (response.ok && result.success) {
+                                // Close modal
+                                const modalElement = document.getElementById('newPaymentModal');
+                                const modal = bootstrap.Modal.getInstance(modalElement);
+                                if (modal) {
+                                    modal.hide();
+                                }
+                                
+                                // Show success message and reload page
+                                setTimeout(() => {
+                                    window.location.href = '/Pagos?success=true';
+                                }, 500);
+                            } else {
+                                throw new Error(result.message || `Error ${response.status}: ${response.statusText}`);
+                            }
+                            
+                        } catch (error) {
+                            console.error('Error creating payment:', error);
+                            
+                            // Show error message
+                            const errorDiv = document.getElementById('paymentError');
+                            const errorMessage = document.getElementById('paymentErrorMessage');
+                            
+                            if (errorDiv && errorMessage) {
+                                errorDiv.classList.remove('d-none');
+                                errorMessage.textContent = error.message || 'Error al crear el pago';
+                            }
+                            
+                        } finally {
+                            // Restore button state
+                            const button = document.getElementById('createPaymentBtn');
+                            if (button) {
+                                button.innerHTML = '<i class="bi bi-save me-1"></i>Crear Pago';
+                                button.disabled = false;
+                            }
+                        }
+                    });
+                }
+            }
+            
+            // Función para configurar los botones de edición de pagos
+            function setupEditPaymentButtons() {
+                // Get all edit payment buttons
+                const editButtons = document.querySelectorAll('.edit-payment');
+                
+                editButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const paymentId = this.dataset.id;
+                        const paymentType = this.dataset.type;
+                        const paymentAmount = this.dataset.amount;
+                        const reservationName = this.dataset.reservation;
+                        const paymentDate = this.dataset.date; 
+                        
+                        console.log('Editando pago:', {
+                            id: paymentId,
+                            type: paymentType,
+                            amount: paymentAmount,
+                            reservation: reservationName,
+                            date: paymentDate 
+                        });
+                        
+                        // Set values in edit form
+                        document.getElementById('editPaymentId').value = paymentId;
+                        document.getElementById('editPaymentReservation').value = reservationName || 'Sin reserva';
+                        
+                        const typeSelect = document.getElementById('editPaymentType');
+                        typeSelect.value = paymentType.toLowerCase();
+                        
+                        document.getElementById('editPaymentAmount').value = paymentAmount;
+                        document.getElementById('editPaymentDate').value = paymentDate;
+                        
+                        // Clear previous errors
+                        const errorDiv = document.getElementById('editPaymentError');
+                        if (errorDiv) {
+                            errorDiv.classList.add('d-none');
+                        }
+                        
+                        // Show modal
+                        var modalElement = document.getElementById('editPaymentModal');
+                        if (modalElement) {
+                            var bsModal = new bootstrap.Modal(modalElement);
+                            bsModal.show();
+                        } else {
+                            console.error('Modal element not found!');
+                        }
+                    });
+                });
+                
+                // Handle update payment button click
+                const updatePaymentBtn = document.getElementById('updatePaymentBtn');
+                
+                if (updatePaymentBtn) {
+                    updatePaymentBtn.addEventListener('click', async function() {
+                        try {
+                            // Get form elements
+                            const paymentId = document.getElementById('editPaymentId').value;
+                            const tipoSelect = document.getElementById('editPaymentType');
+                            const montoInput = document.getElementById('editPaymentAmount');
+                            const errorDiv = document.getElementById('editPaymentError');
+                            const errorMessage = document.getElementById('editPaymentErrorMessage');
+                            
+                            // Hide previous errors
+                            errorDiv.classList.add('d-none');
+                            
+                            // Validate form
+                            let isValid = true;
+                            
+                            if (!tipoSelect.value) {
+                                tipoSelect.classList.add('is-invalid');
+                                isValid = false;
+                            } else {
+                                tipoSelect.classList.remove('is-invalid');
+                            }
+                            
+                            if (!montoInput.value || parseFloat(montoInput.value) <= 0) {
+                                montoInput.classList.add('is-invalid');
+                                isValid = false;
+                            } else {
+                                montoInput.classList.remove('is-invalid');
+                            }
+                            
+                            if (!isValid) {
+                                errorDiv.classList.remove('d-none');
+                                errorMessage.textContent = 'Por favor, completa todos los campos correctamente.';
+                                return;
+                            }
+                            
+                            // Show loading state
+                            const button = this;
+                            const originalHtml = button.innerHTML;
+                            button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Procesando...';
+                            button.disabled = true;
+                            
+                            // Prepare payment data
+                            const paymentData = {
+                                nombreTipoPago: tipoSelect.value,
+                                monto: montoInput.value
+                            };
+                            
+                            console.log('Enviando datos para actualizar pago:', paymentData);
+                            
+                            // Get anti-forgery token
+                            const tokenElement = document.querySelector('input[name="__RequestVerificationToken"]');
+                            const token = tokenElement ? tokenElement.value : '';
+                            
+                            // Send request to update payment
+                            const response = await fetch(`?handler=UpdatePayment&id=${encodeURIComponent(paymentId)}`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'RequestVerificationToken': token,
+                                    'X-Requested-With': 'XMLHttpRequest'
+                                },
+                                body: JSON.stringify(paymentData)
+                            });
+                            
+                            // Parse response
+                            const responseText = await response.text();
+                            let result;
+                            try {
+                                result = JSON.parse(responseText);
+                            } catch (e) {
+                                console.error('Error parsing JSON response:', e, responseText);
+                                throw new Error('Error en la respuesta del servidor');
+                            }
+                            
+                            if (response.ok && result.success) {
+                                // Close modal
+                                const modalElement = document.getElementById('editPaymentModal');
+                                const modal = bootstrap.Modal.getInstance(modalElement);
+                                if (modal) {
+                                    modal.hide();
+                                }
+                                
+                                // Show success message and reload page
+                                setTimeout(() => {
+                                    window.location.href = '/Pagos?success=true';
+                                }, 500);
+                            } else {
+                                throw new Error(result.message || `Error ${response.status}: ${response.statusText}`);
+                            }
+                            
+                        } catch (error) {
+                            console.error('Error updating payment:', error);
+                            
+                            // Show error message
+                            const errorDiv = document.getElementById('editPaymentError');
+                            const errorMessage = document.getElementById('editPaymentErrorMessage');
+                            
+                            if (errorDiv && errorMessage) {
+                                errorDiv.classList.remove('d-none');
+                                errorMessage.textContent = error.message || 'Error al actualizar el pago';
+                            }
+                            
+                        } finally {
+                            // Restore button state
+                            const button = document.getElementById('updatePaymentBtn');
+                            if (button) {
+                                button.innerHTML = '<i class="bi bi-save me-1"></i>Actualizar Pago';
+                                button.disabled = false;
+                            }
+                        }
+                    });
+                }
+            }
+            
+            // Función para configurar los botones de eliminación de pagos
+            function setupDeletePaymentButtons() {
+                // Get all delete payment buttons
+                const deleteButtons = document.querySelectorAll('.delete-payment');
+                
+                deleteButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const paymentId = this.dataset.id;
+                        const paymentType = this.dataset.type;
+                        const paymentAmount = this.dataset.amount;
+                        const paymentDate = this.dataset.date;  // Nueva línea
+                        
+                        console.log('Eliminando pago:', {
+                            id: paymentId,
+                            type: paymentType,
+                            amount: paymentAmount,
+                            date: paymentDate  // Nueva línea
+                        });
+                        
+                        // Set values in delete confirmation
+                        document.getElementById('deletePaymentId').value = paymentId;
+                        document.getElementById('deletePaymentType').textContent = paymentType;
+                        document.getElementById('deletePaymentAmount').textContent = paymentAmount;
+                        document.getElementById('deletePaymentDate').textContent = paymentDate;  // Nueva línea
+                        
+                        // Clear previous errors
+                        const errorDiv = document.getElementById('deletePaymentError');
+                        if (errorDiv) {
+                            errorDiv.classList.add('d-none');
+                        }
+                        
+                        // Show modal
+                        var modalElement = document.getElementById('deletePaymentModal');
+                        if (modalElement) {
+                            var bsModal = new bootstrap.Modal(modalElement);
+                            bsModal.show();
+                        } else {
+                            console.error('Modal element not found!');
+                        }
+                    });
+                });
+                
+                // Handle confirm delete button click
+                const confirmDeleteBtn = document.getElementById('confirmDeletePaymentBtn');
+                
+                if (confirmDeleteBtn) {
+                    confirmDeleteBtn.addEventListener('click', async function() {
+                        try {
+                            // Get payment id
+                            const paymentId = document.getElementById('deletePaymentId').value;
+                            const errorDiv = document.getElementById('deletePaymentError');
+                            const errorMessage = document.getElementById('deletePaymentErrorMessage');
+                            
+                            // Hide previous errors
+                            errorDiv.classList.add('d-none');
+                            
+                            if (!paymentId) {
+                                errorDiv.classList.remove('d-none');
+                                errorMessage.textContent = 'ID de pago no válido.';
+                                return;
+                            }
+                            
+                            // Show loading state
+                            const button = this;
+                            const originalHtml = button.innerHTML;
+                            button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Procesando...';
+                            button.disabled = true;
+                            
+                            console.log('Eliminando pago con ID:', paymentId);
+                            
+                            // Get anti-forgery token
+                            const tokenElement = document.querySelector('input[name="__RequestVerificationToken"]');
+                            const token = tokenElement ? tokenElement.value : '';
+                            
+                            // Send request to delete payment
+                            const response = await fetch(`?handler=DeletePayment&id=${encodeURIComponent(paymentId)}`, {
+                                method: 'POST',
+                                headers: {
+                                    'RequestVerificationToken': token,
+                                    'X-Requested-With': 'XMLHttpRequest'
+                                }
+                            });
+                            
+                            // Parse response
+                            const responseText = await response.text();
+                            let result;
+                            try {
+                                result = JSON.parse(responseText);
+                            } catch (e) {
+                                console.error('Error parsing JSON response:', e, responseText);
+                                throw new Error('Error en la respuesta del servidor');
+                            }
+                            
+                            if (response.ok && result.success) {
+                                // Close modal
+                                const modalElement = document.getElementById('deletePaymentModal');
+                                const modal = bootstrap.Modal.getInstance(modalElement);
+                                if (modal) {
+                                    modal.hide();
+                                }
+                                
+                                // Show success message and reload page
+                                setTimeout(() => {
+                                    window.location.href = '/Pagos?success=true';
+                                }, 500);
+                            } else {
+                                throw new Error(result.message || `Error ${response.status}: ${response.statusText}`);
+                            }
+                            
+                        } catch (error) {
+                            console.error('Error deleting payment:', error);
+                            
+                            // Show error message
+                            const errorDiv = document.getElementById('deletePaymentError');
+                            const errorMessage = document.getElementById('deletePaymentErrorMessage');
+                            
+                            if (errorDiv && errorMessage) {
+                                errorDiv.classList.remove('d-none');
+                                errorMessage.textContent = error.message || 'Error al eliminar el pago';
+                            }
+                            
+                        } finally {
+                            // Restore button state
+                            const button = document.getElementById('confirmDeletePaymentBtn');
+                            if (button) {
+                                button.innerHTML = 'Eliminar Pago';
+                                button.disabled = false;
+                            }
+                        }
+                    });
+                }
+            }
+            
+            // Función para convertir los tipos de pago a badges coloridos
+            function convertirTiposPagoABadges() {
+                // Mapeo de valores a nombres formateados
+                const nombresTiposPago = {
+                    'efectivo': 'Efectivo',
+                    'yape': 'Yape',
+                    'plin': 'Plin',
+                    'transferencia': 'Transferencia bancaria',
+                    'adelanto': 'Adelanto',
+                    'parcial': 'Pago parcial',
+                    'otro': 'Otro'
+                };
+                
+                const tiposPago = document.querySelectorAll('.tipo-pago-badge');
+                
+                tiposPago.forEach(elemento => {
+                    const tipo = elemento.getAttribute('data-tipo');
+                    let badgeClass = 'badge-otro';
+                    let icon = 'bi-question-circle';
+                    
+                    switch(tipo) {
+                        case 'efectivo':
+                            badgeClass = 'badge-efectivo';
+                            icon = 'bi-cash';
+                            break;
+                        case 'yape':
+                            badgeClass = 'badge-yape';
+                            icon = 'bi-phone';
+                            break;
+                        case 'plin':
+                            badgeClass = 'badge-plin';
+                            icon = 'bi-phone-fill';
+                            break;
+                        case 'transferencia':
+                            badgeClass = 'badge-transferencia';
+                            icon = 'bi-bank';
+                            break;
+                        case 'adelanto':
+                            badgeClass = 'badge-adelanto';
+                            icon = 'bi-credit-card-2-front';
+                            break;
+                        case 'parcial':
+                            badgeClass = 'badge-parcial';
+                            icon = 'bi-credit-card';
+                            break;
+                    }
+                    
+                    // Usar el nombre formateado en lugar del texto original
+                    const nombreFormateado = nombresTiposPago[tipo] || elemento.textContent;
+                    elemento.className = `tipo-badge ${badgeClass}`;
+                    elemento.innerHTML = `<i class="bi ${icon}"></i>${nombreFormateado}`;
+                });
+            }
+        });
+    </script>
+}

@@ -1,0 +1,38 @@
+@model gestor_eventos.Pages.Reservas.IndexModel
+
+<!-- Modal para visualizar la boleta -->
+<div class="modal fade" id="reciboModal" tabindex="-1" aria-labelledby="reciboModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="reciboModalLabel">
+                    <i class="bi bi-receipt me-2"></i>Boleta de Reserva
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <!-- Vista previa del recibo -->
+                <div class="container-fluid p-0">
+                    <div class="d-flex justify-content-end p-3 bg-light border-bottom">
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-outline-secondary" id="printReceiptBtn">
+                                <i class="bi bi-printer me-1"></i>Imprimir
+                            </button>
+                            <button class="btn btn-sm btn-outline-primary" id="downloadReceiptBtn">
+                                <i class="bi bi-file-earmark-pdf me-1"></i>Descargar PDF
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Contenido del recibo para imprimir -->
+                    <div id="receiptContent" class="p-4">
+                        <!-- El contenido se generará dinámicamente con JavaScript -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

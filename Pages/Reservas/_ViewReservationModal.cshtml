@@ -137,6 +137,37 @@
                             <p id="reservationDescription" class="mb-0"></p>
                         </div>
                     </div>
+
+                    <div class="card mb-3">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0"><i class="bi bi-credit-card me-2"></i>Historial de Pagos</h6>
+                        </div>
+                        <div class="card-body">
+                            <p id="noPaymentsMessage" class="text-muted mb-0">No hay pagos registrados para esta reserva.</p>
+                            <div class="table-responsive">
+                                <table id="paymentsTable" class="table table-sm mb-0" style="display: none;">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Tipo de Pago</th>
+                                            <th>Monto</th>
+                                            <th>Fecha</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="paymentTableBody">
+                                        <!-- Payments will be populated here -->
+                                    </tbody>
+                                    <tfoot>
+                                        <tr class="fw-bold bg-light">
+                                            <td colspan="2" class="text-end">Total:</td>
+                                            <td id="paymentsTotal">S/0.00</td>
+                                            <td></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
                 <div id="reservationError" class="text-center text-danger" style="display: none;">
@@ -147,10 +178,43 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeReservationModal()">Cerrar</button>
-                <button type="button" class="btn btn-primary" id="printReservationBtn">
-                    <i class="bi bi-printer me-1"></i>Imprimir
+                <button type="button" class="btn btn-primary" id="generateReceiptBtn">
+                    <i class="bi bi-receipt me-1"></i>Generar Boleta
                 </button>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Añadir estos estilos al inicio del archivo o en un bloque <style> -->
+<style>
+    /* Estilos para badges de tipos de pago */
+    .badge-efectivo {
+        background-color: #28a745;
+        color: white;
+    }
+    .badge-yape {
+        background-color: #8c44db;
+        color: white;
+    }
+    .badge-plin {
+        background-color: #0275d8;
+        color: white;
+    }
+    .badge-transferencia {
+        background-color: #17a2b8;
+        color: white;
+    }
+    .badge-adelanto {
+        background-color: #ffc107;
+        color: #212529;
+    }
+    .badge-parcial {
+        background-color: #fd7e14;
+        color: white;
+    }
+    .badge-otro {
+        background-color: #6c757d;
+        color: white;
+    }
+</style>

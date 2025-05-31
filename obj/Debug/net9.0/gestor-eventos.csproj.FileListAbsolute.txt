@@ -410,4 +410,4 @@ C:/Users/AUTONOMA/Documents/gestor-eventos/obj/Debug/net9.0/ref/gestor-eventos.d
 /Users/sagox16/Documents/Importants/gestor-eventos/obj/Debug/net9.0/gestor-eventos.pdb
 /Users/sagox16/Documents/Importants/gestor-eventos/obj/Debug/net9.0/gestor-eventos.genruntimeconfig.cache
 /Users/sagox16/Documents/Importants/gestor-eventos/obj/Debug/net9.0/ref/gestor-eventos.dll
-/Users/sagox16/Documents/Importants/gestor-eventos/obj/Debug/net9.0/compressed/9o3oe7ye3f-5l56qigh7a.gz
+/Users/sagox16/Documents/Importants/gestor-eventos/obj/Debug/net9.0/compressed/9o3oe7ye3f-1gesmmt3d6.gz

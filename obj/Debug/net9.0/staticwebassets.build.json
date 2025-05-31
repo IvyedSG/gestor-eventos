@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "u6l4LdcAXbe4ZfQUvWoCUxDXArlIM5uMV2/VctVc4xk=",
+  "Hash": "ztXbCbkcUK0mKFH5abjTuWHsorRl8HPxlmFeUffkBck=",
   "Source": "gestor-eventos",
   "BasePath": "_content/gestor-eventos",
   "Mode": "Default",
@@ -374,12 +374,12 @@
       "OriginalItemSpec": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/site.js"
     },
     {
-      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/obj/Debug/net9.0/compressed/9o3oe7ye3f-5l56qigh7a.gz",
+      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/obj/Debug/net9.0/compressed/9o3oe7ye3f-1gesmmt3d6.gz",
       "SourceId": "gestor-eventos",
       "SourceType": "Discovered",
       "ContentRoot": "/Users/sagox16/Documents/Importants/gestor-eventos/obj/Debug/net9.0/compressed/",
       "BasePath": "_content/gestor-eventos",
-      "RelativePath": "js/reservas#[.{fingerprint=5l56qigh7a}]?.js.gz",
+      "RelativePath": "js/reservas#[.{fingerprint=1gesmmt3d6}]?.js.gz",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Alternative",
@@ -388,8 +388,8 @@
       "RelatedAsset": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas.js",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "kgt0vhteix",
-      "Integrity": "3Lfd/YfnusL+uAYsUXPE75RoU9NKgaDLXrbo7uzNiSA=",
+      "Fingerprint": "5rnpcicp1u",
+      "Integrity": "gVi3TCrWrZk2NedPmrXZL8FYWwEHBYrBU9yH4hRne1g=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas.js"
@@ -1501,8 +1501,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "5l56qigh7a",
-      "Integrity": "N3wvv1237FeHu4tDy3UCf8zijyftqk3F/vC8blRpgZo=",
+      "Fingerprint": "1gesmmt3d6",
+      "Integrity": "Ibam5jFp/+VvCLJtpw8c3GC/kSm9NKK9ptQ5lAiX5EU=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/js/reservas.js"
@@ -4065,13 +4065,13 @@
       ]
     },
     {
-      "Route": "js/reservas.5l56qigh7a.js",
-      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/obj/Debug/net9.0/compressed/9o3oe7ye3f-5l56qigh7a.gz",
+      "Route": "js/reservas.1gesmmt3d6.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/obj/Debug/net9.0/compressed/9o3oe7ye3f-1gesmmt3d6.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000091937115"
+          "Quality": "0.000085653105"
         }
       ],
       "ResponseHeaders": [
@@ -4081,15 +4081,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "10876"
+          "Value": "11674"
         },
         {
           "Name": "ETag",
-          "Value": "\"3Lfd/YfnusL+uAYsUXPE75RoU9NKgaDLXrbo7uzNiSA=\""
+          "Value": "\"gVi3TCrWrZk2NedPmrXZL8FYWwEHBYrBU9yH4hRne1g=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 30 May 2025 03:00:22 GMT"
+          "Value": "Fri, 30 May 2025 03:51:13 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4109,13 +4109,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"N3wvv1237FeHu4tDy3UCf8zijyftqk3F/vC8blRpgZo=\""
+          "Value": "W/\"Ibam5jFp/+VvCLJtpw8c3GC/kSm9NKK9ptQ5lAiX5EU=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "5l56qigh7a"
+          "Value": "1gesmmt3d6"
         },
         {
           "Name": "label",
@@ -4123,12 +4123,12 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-N3wvv1237FeHu4tDy3UCf8zijyftqk3F/vC8blRpgZo="
+          "Value": "sha256-Ibam5jFp/+VvCLJtpw8c3GC/kSm9NKK9ptQ5lAiX5EU="
         }
       ]
     },
     {
-      "Route": "js/reservas.5l56qigh7a.js",
+      "Route": "js/reservas.1gesmmt3d6.js",
       "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas.js",
       "Selectors": [],
       "ResponseHeaders": [
@@ -4138,7 +4138,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "55904"
+          "Value": "59164"
         },
         {
           "Name": "Content-Type",
@@ -4146,11 +4146,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"N3wvv1237FeHu4tDy3UCf8zijyftqk3F/vC8blRpgZo=\""
+          "Value": "\"Ibam5jFp/+VvCLJtpw8c3GC/kSm9NKK9ptQ5lAiX5EU=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 30 May 2025 03:00:22 GMT"
+          "Value": "Fri, 30 May 2025 03:51:13 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4160,7 +4160,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "5l56qigh7a"
+          "Value": "1gesmmt3d6"
         },
         {
           "Name": "label",
@@ -4168,13 +4168,13 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-N3wvv1237FeHu4tDy3UCf8zijyftqk3F/vC8blRpgZo="
+          "Value": "sha256-Ibam5jFp/+VvCLJtpw8c3GC/kSm9NKK9ptQ5lAiX5EU="
         }
       ]
     },
     {
-      "Route": "js/reservas.5l56qigh7a.js.gz",
-      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/obj/Debug/net9.0/compressed/9o3oe7ye3f-5l56qigh7a.gz",
+      "Route": "js/reservas.1gesmmt3d6.js.gz",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/obj/Debug/net9.0/compressed/9o3oe7ye3f-1gesmmt3d6.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4183,7 +4183,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "10876"
+          "Value": "11674"
         },
         {
           "Name": "Content-Type",
@@ -4191,11 +4191,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"3Lfd/YfnusL+uAYsUXPE75RoU9NKgaDLXrbo7uzNiSA=\""
+          "Value": "\"gVi3TCrWrZk2NedPmrXZL8FYWwEHBYrBU9yH4hRne1g=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 30 May 2025 03:00:22 GMT"
+          "Value": "Fri, 30 May 2025 03:51:13 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4213,7 +4213,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "5l56qigh7a"
+          "Value": "1gesmmt3d6"
         },
         {
           "Name": "label",
@@ -4221,18 +4221,18 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-3Lfd/YfnusL+uAYsUXPE75RoU9NKgaDLXrbo7uzNiSA="
+          "Value": "sha256-gVi3TCrWrZk2NedPmrXZL8FYWwEHBYrBU9yH4hRne1g="
         }
       ]
     },
     {
       "Route": "js/reservas.js",
-      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/obj/Debug/net9.0/compressed/9o3oe7ye3f-5l56qigh7a.gz",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/obj/Debug/net9.0/compressed/9o3oe7ye3f-1gesmmt3d6.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000091937115"
+          "Quality": "0.000085653105"
         }
       ],
       "ResponseHeaders": [
@@ -4242,15 +4242,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "10876"
+          "Value": "11674"
         },
         {
           "Name": "ETag",
-          "Value": "\"3Lfd/YfnusL+uAYsUXPE75RoU9NKgaDLXrbo7uzNiSA=\""
+          "Value": "\"gVi3TCrWrZk2NedPmrXZL8FYWwEHBYrBU9yH4hRne1g=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 30 May 2025 03:00:22 GMT"
+          "Value": "Fri, 30 May 2025 03:51:13 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4270,13 +4270,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"N3wvv1237FeHu4tDy3UCf8zijyftqk3F/vC8blRpgZo=\""
+          "Value": "W/\"Ibam5jFp/+VvCLJtpw8c3GC/kSm9NKK9ptQ5lAiX5EU=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-N3wvv1237FeHu4tDy3UCf8zijyftqk3F/vC8blRpgZo="
+          "Value": "sha256-Ibam5jFp/+VvCLJtpw8c3GC/kSm9NKK9ptQ5lAiX5EU="
         }
       ]
     },
@@ -4291,7 +4291,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "55904"
+          "Value": "59164"
         },
         {
           "Name": "Content-Type",
@@ -4299,11 +4299,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"N3wvv1237FeHu4tDy3UCf8zijyftqk3F/vC8blRpgZo=\""
+          "Value": "\"Ibam5jFp/+VvCLJtpw8c3GC/kSm9NKK9ptQ5lAiX5EU=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 30 May 2025 03:00:22 GMT"
+          "Value": "Fri, 30 May 2025 03:51:13 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4313,13 +4313,13 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-N3wvv1237FeHu4tDy3UCf8zijyftqk3F/vC8blRpgZo="
+          "Value": "sha256-Ibam5jFp/+VvCLJtpw8c3GC/kSm9NKK9ptQ5lAiX5EU="
         }
       ]
     },
     {
       "Route": "js/reservas.js.gz",
-      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/obj/Debug/net9.0/compressed/9o3oe7ye3f-5l56qigh7a.gz",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/obj/Debug/net9.0/compressed/9o3oe7ye3f-1gesmmt3d6.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -4328,7 +4328,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "10876"
+          "Value": "11674"
         },
         {
           "Name": "Content-Type",
@@ -4336,11 +4336,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"3Lfd/YfnusL+uAYsUXPE75RoU9NKgaDLXrbo7uzNiSA=\""
+          "Value": "\"gVi3TCrWrZk2NedPmrXZL8FYWwEHBYrBU9yH4hRne1g=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 30 May 2025 03:00:22 GMT"
+          "Value": "Fri, 30 May 2025 03:51:13 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4358,7 +4358,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-3Lfd/YfnusL+uAYsUXPE75RoU9NKgaDLXrbo7uzNiSA="
+          "Value": "sha256-gVi3TCrWrZk2NedPmrXZL8FYWwEHBYrBU9yH4hRne1g="
         }
       ]
     },

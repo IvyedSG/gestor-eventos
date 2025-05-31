@@ -29,7 +29,8 @@ builder.Services.AddScoped<ClienteService>();
 builder.Services.AddScoped<ServicioService>();
 builder.Services.AddHttpClient<InventoryService>();
 builder.Services.AddScoped<DashboardService>();
-builder.Services.AddScoped<ReservacionService>(); // Add ReservacionService
+builder.Services.AddScoped<ReservacionService>(); 
+builder.Services.AddScoped<PagoService>(); 
 
 builder.Services.AddAuthentication(options => 
 {
