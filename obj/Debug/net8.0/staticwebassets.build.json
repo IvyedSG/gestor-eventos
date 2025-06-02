@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "+0vLBh5zyppgA37kINsY1IbSCI6RmyzikLOUr6yPdWw=",
+  "Hash": "5hDCYSjq3OLUvyj7Wjz8f35iquj/PcptIKxER0s4UZ8=",
   "Source": "gestor-eventos",
   "BasePath": "_content/gestor-eventos",
   "Mode": "Default",
@@ -94,8 +94,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "0rdv2lyklx",
-      "Integrity": "XC2/HsWuq2JGNkGRd2TO7wd1q+NBl7z5jXfhgbm6Wqc=",
+      "Fingerprint": "0zxqxx144c",
+      "Integrity": "fCOcvQKaqcp5Y1962DRFfbNPaWPiMkyF7c4m6aFXou0=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/css/recibo-styles.css"
@@ -157,8 +157,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "6rk6stx9zz",
-      "Integrity": "btHIZxIgPkbEEBdZ79iOc0JAVHXnjrEJhaqTJiTuy5k=",
+      "Fingerprint": "ru3z6n6jvy",
+      "Integrity": "Q6A323DwyURdGvVSms20qVQP7ofcxtFE6mERUoag37E=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/js/recibo-reserva.js"
@@ -1550,7 +1550,7 @@
       ]
     },
     {
-      "Route": "css/recibo-styles.0rdv2lyklx.css",
+      "Route": "css/recibo-styles.0zxqxx144c.css",
       "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/css/recibo-styles.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -1560,7 +1560,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "2797"
+          "Value": "3868"
         },
         {
           "Name": "Content-Type",
@@ -1568,11 +1568,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"XC2/HsWuq2JGNkGRd2TO7wd1q+NBl7z5jXfhgbm6Wqc=\""
+          "Value": "\"fCOcvQKaqcp5Y1962DRFfbNPaWPiMkyF7c4m6aFXou0=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 31 May 2025 07:01:07 GMT"
+          "Value": "Sat, 31 May 2025 07:25:41 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1582,7 +1582,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "0rdv2lyklx"
+          "Value": "0zxqxx144c"
         },
         {
           "Name": "label",
@@ -1590,7 +1590,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-XC2/HsWuq2JGNkGRd2TO7wd1q+NBl7z5jXfhgbm6Wqc="
+          "Value": "sha256-fCOcvQKaqcp5Y1962DRFfbNPaWPiMkyF7c4m6aFXou0="
         }
       ]
     },
@@ -1605,7 +1605,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "2797"
+          "Value": "3868"
         },
         {
           "Name": "Content-Type",
@@ -1613,11 +1613,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"XC2/HsWuq2JGNkGRd2TO7wd1q+NBl7z5jXfhgbm6Wqc=\""
+          "Value": "\"fCOcvQKaqcp5Y1962DRFfbNPaWPiMkyF7c4m6aFXou0=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 31 May 2025 07:01:07 GMT"
+          "Value": "Sat, 31 May 2025 07:25:41 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1627,7 +1627,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-XC2/HsWuq2JGNkGRd2TO7wd1q+NBl7z5jXfhgbm6Wqc="
+          "Value": "sha256-fCOcvQKaqcp5Y1962DRFfbNPaWPiMkyF7c4m6aFXou0="
         }
       ]
     },
@@ -1960,51 +1960,6 @@
       ]
     },
     {
-      "Route": "js/recibo-reserva.6rk6stx9zz.js",
-      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/recibo-reserva.js",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "20122"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/javascript"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"btHIZxIgPkbEEBdZ79iOc0JAVHXnjrEJhaqTJiTuy5k=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Sat, 31 May 2025 07:00:14 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "6rk6stx9zz"
-        },
-        {
-          "Name": "label",
-          "Value": "js/recibo-reserva.js"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-btHIZxIgPkbEEBdZ79iOc0JAVHXnjrEJhaqTJiTuy5k="
-        }
-      ]
-    },
-    {
       "Route": "js/recibo-reserva.js",
       "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/recibo-reserva.js",
       "Selectors": [],
@@ -2015,7 +1970,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "20122"
+          "Value": "23211"
         },
         {
           "Name": "Content-Type",
@@ -2023,11 +1978,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"btHIZxIgPkbEEBdZ79iOc0JAVHXnjrEJhaqTJiTuy5k=\""
+          "Value": "\"Q6A323DwyURdGvVSms20qVQP7ofcxtFE6mERUoag37E=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 31 May 2025 07:00:14 GMT"
+          "Value": "Sat, 31 May 2025 07:30:38 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2037,7 +1992,52 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-btHIZxIgPkbEEBdZ79iOc0JAVHXnjrEJhaqTJiTuy5k="
+          "Value": "sha256-Q6A323DwyURdGvVSms20qVQP7ofcxtFE6mERUoag37E="
+        }
+      ]
+    },
+    {
+      "Route": "js/recibo-reserva.ru3z6n6jvy.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/recibo-reserva.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "23211"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Q6A323DwyURdGvVSms20qVQP7ofcxtFE6mERUoag37E=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 31 May 2025 07:30:38 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "ru3z6n6jvy"
+        },
+        {
+          "Name": "label",
+          "Value": "js/recibo-reserva.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-Q6A323DwyURdGvVSms20qVQP7ofcxtFE6mERUoag37E="
         }
       ]
     },

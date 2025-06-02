@@ -30,8 +30,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>0rdv2lyklx</Fingerprint>
-      <Integrity>XC2/HsWuq2JGNkGRd2TO7wd1q+NBl7z5jXfhgbm6Wqc=</Integrity>
+      <Fingerprint>0zxqxx144c</Fingerprint>
+      <Integrity>fCOcvQKaqcp5Y1962DRFfbNPaWPiMkyF7c4m6aFXou0=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\recibo-styles.css'))</OriginalItemSpec>
@@ -102,8 +102,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>6rk6stx9zz</Fingerprint>
-      <Integrity>btHIZxIgPkbEEBdZ79iOc0JAVHXnjrEJhaqTJiTuy5k=</Integrity>
+      <Fingerprint>ru3z6n6jvy</Fingerprint>
+      <Integrity>Q6A323DwyURdGvVSms20qVQP7ofcxtFE6mERUoag37E=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\recibo-reserva.js'))</OriginalItemSpec>
