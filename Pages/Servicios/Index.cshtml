@@ -750,8 +750,8 @@ function showAlert(type, message) {
                     // Get antiforgery token
                     const token = $('input[name="__RequestVerificationToken"]').val();
                     
-                    // Send update request
-                    const response = await fetch(`/Servicios/${serviceId}`, {
+                    // Send update request - CORREGIR LA URL AQUÍ
+                    const response = await fetch(`/api/servicios/${serviceId}`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
@@ -835,10 +835,13 @@ function showAlert(type, message) {
                     // Obtener token CSRF
                     const token = $('input[name="__RequestVerificationToken"]').val();
                     
-                    // Enviar solicitud DELETE
-                    const response = await fetch(`/Servicios/${serviceId}`, {
+                    console.log('Eliminando servicio ID:', serviceId);
+                    
+                    // CORREGIR ESTA URL - Cambiar de /Servicios/ a /api/servicios/
+                    const response = await fetch(`/api/servicios/${serviceId}`, {
                         method: 'DELETE',
                         headers: {
+                            'Content-Type': 'application/json',
                             'RequestVerificationToken': token
                         }
                     });

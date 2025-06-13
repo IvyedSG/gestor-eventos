@@ -75,6 +75,11 @@ namespace gestor_eventos.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(string id)
         {
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest("ID del servicio es requerido");
+            }
+
             _logger.LogInformation("Recibida solicitud para eliminar servicio: {Id}", id);
             
             var result = await _servicioService.DeleteServicioAsync(id);
@@ -86,7 +91,7 @@ namespace gestor_eventos.Controllers
             }
 
             _logger.LogInformation("Servicio eliminado exitosamente: {Id}", id);
-            return Ok(new { message = "Servicio eliminado correctamente" });
+            return Ok(new { message = "Servicio eliminado exitosamente" });
         }
 
         [HttpGet]
