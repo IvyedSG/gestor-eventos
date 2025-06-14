@@ -135,7 +135,7 @@
                                     <div class="row mb-3">
                                         <div class="col-md-12">
                                             <select id="serviceSelect" class="form-select">
-                                                <option selected disabled>Seleccionar servicio para añadir</option>
+                                                <option value="" selected disabled>Seleccionar servicio</option>
                                                 @foreach (var servicio in Model.Servicios)
                                                 {
                                                     <option value="@servicio.Id" 
@@ -148,29 +148,24 @@
                                         </div>
                                     </div>
                                     
-                                    <div class="table-responsive">
-                                        <table class="table table-sm" id="servicesTable">
-                                            <thead>
-                                                <tr>
-                                                    <th>Servicio</th>
-                                                    <th>Precio</th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="servicesTableBody">
-                                                <!-- La tabla se llenará dinámicamente con JavaScript -->
-                                            </tbody>
-                                            <tfoot>
-                                                <tr class="fw-bold bg-light">
-                                                    <td class="text-end">Total:</td>
-                                                    <td id="servicesTotalAmount">S/0.00</td>
-                                                    <td></td>
-                                                </tr>
-                                            </tfoot>
-                                        </table>
+                                    <div id="selectedServiceDisplay" class="d-none">
+                                        <div class="card bg-light">
+                                            <div class="card-body py-2">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <strong id="selectedServiceName"></strong>
+                                                        <div class="text-muted small">Precio: <span id="selectedServicePrice"></span></div>
+                                                    </div>
+                                                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeSelectedService()">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+                                    
                                     <div id="servicesHelp" class="small text-danger d-none mt-2">
-                                        <i class="bi bi-exclamation-circle"></i> Debes añadir al menos un servicio
+                                        <i class="bi bi-exclamation-circle"></i> Debes seleccionar un servicio
                                     </div>
                                 </div>
                             </div>

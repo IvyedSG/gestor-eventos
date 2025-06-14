@@ -141,11 +141,18 @@ namespace gestor_eventos.Pages.Reservas
             }
         }
 
-        public async Task<IActionResult> OnPostUpdateReservationAsync([FromBody] ReservacionUpdateModel model, string id)
+        public async Task<IActionResult> OnPostUpdateReservationAsync([FromBody] ReservacionUpdateModel model)
         {
-            if (string.IsNullOrEmpty(id))
+            // Obtener el ID desde la query string usando Request.Query
+            if (!Request.Query.TryGetValue("id", out var idValues) || string.IsNullOrEmpty(idValues.FirstOrDefault()))
             {
                 return BadRequest(new { success = false, message = "ID de reserva no proporcionado" });
+            }
+            
+            string id = idValues.FirstOrDefault() ?? "";
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest(new { success = false, message = "ID de reserva no válido" });
             }
 
             try
@@ -222,7 +229,7 @@ namespace gestor_eventos.Pages.Reservas
 
         public class DeleteReservationRequest
         {
-            public string Id { get; set; }
+            public string? Id { get; set; }
         }
 
         private async Task LoadData()

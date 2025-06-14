@@ -28,6 +28,7 @@
                 
                 <!-- Form -->
                 <form id="editReservationForm" style="display: none;">
+                    @Html.AntiForgeryToken()
                     <input type="hidden" id="editReservationId" name="id" />
                     
                     <div class="mb-4">
@@ -80,14 +81,33 @@
                     <div class="mb-4">
                         <h5 class="border-bottom pb-2">Servicios</h5>
                         <div class="mb-3">
-                            <label for="editServiceSelect" class="form-label">Servicio Asociado</label>
-                            <select class="form-select" id="editServiceSelect">
+                            <label for="editServiceSelect" class="form-label">Servicio Asociado<span class="text-danger">*</span></label>
+                            <select class="form-select" id="editServiceSelect" required>
                                 <option value="" selected disabled>Seleccione un servicio...</option>
-                                <!-- Options will be loaded dynamically -->
+                                @foreach (var servicio in Model.Servicios)
+                                {
+                                    <option value="@servicio.Id" 
+                                            data-nombre="@servicio.NombreServicio" 
+                                            data-precio="@servicio.PrecioBase">
+                                        @servicio.NombreServicio - S/@servicio.PrecioBase.ToString("N2")
+                                    </option>
+                                }
                             </select>
+                            <div id="editSelectedServiceDisplay" class="d-none mt-2">
+                                <div class="card bg-light">
+                                    <div class="card-body py-2">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <strong id="editSelectedServiceName"></strong>
+                                                <div class="text-muted small">Precio: <span id="editSelectedServicePrice"></span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div id="editServicesHelp" class="form-text text-danger d-none">
                                 <i class="bi bi-exclamation-circle me-1"></i>
-                                Debe seleccionar al menos un servicio.
+                                Debe seleccionar un servicio.
                             </div>
                         </div>
                         

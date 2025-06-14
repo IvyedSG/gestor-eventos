@@ -82,38 +82,46 @@ function setupReservationForm() {
         });
     }
     
-    // Manejo de selección de servicio
+    // Manejo de selección de servicio (solo uno permitido)
     const serviceSelect = document.getElementById('serviceSelect');
-    const servicesTableBody = document.getElementById('servicesTableBody');
+    const selectedServiceDisplay = document.getElementById('selectedServiceDisplay');
+    const selectedServiceName = document.getElementById('selectedServiceName');
+    const selectedServicePrice = document.getElementById('selectedServicePrice');
     
-    if (serviceSelect && servicesTableBody) {
+    if (serviceSelect) {
         serviceSelect.addEventListener('change', function() {
             const selectedOption = this.options[this.selectedIndex];
             
-            if (selectedOption && !selectedOption.disabled) {
+            if (selectedOption && !selectedOption.disabled && selectedOption.value) {
                 const serviceId = selectedOption.value;
                 const serviceName = selectedOption.getAttribute('data-nombre');
                 const servicePrice = parseFloat(selectedOption.getAttribute('data-precio'));
                 
-                // Verificar si el servicio ya está seleccionado
-                if (selectedServices.some(s => s.id === serviceId)) {
-                    alert('Este servicio ya está agregado a la reserva');
-                    this.selectedIndex = 0;
-                    return;
-                }
-                
-                // Agregar a la lista de servicios seleccionados
-                selectedServices.push({
+                // Limpiar servicios previos y agregar solo el nuevo
+                selectedServices = [{
                     id: serviceId,
                     name: serviceName,
                     price: servicePrice
-                });
+                }];
                 
-                // Actualizar la tabla
-                updateServicesTable();
+                // Mostrar el servicio seleccionado
+                if (selectedServiceDisplay && selectedServiceName && selectedServicePrice) {
+                    selectedServiceName.textContent = serviceName;
+                    selectedServicePrice.textContent = `S/${servicePrice.toFixed(2)}`;
+                    selectedServiceDisplay.classList.remove('d-none');
+                }
                 
-                // Resetear el select
-                this.selectedIndex = 0;
+                // Actualizar precio total
+                updateTotalPrice();
+                
+                // Ocultar el select después de seleccionar
+                this.style.display = 'none';
+                
+                // Ocultar mensaje de error si estaba visible
+                const servicesHelp = document.getElementById('servicesHelp');
+                if (servicesHelp) {
+                    servicesHelp.classList.add('d-none');
+                }
             }
         });
     }
@@ -165,69 +173,26 @@ function setupReservationForm() {
         });
     }
 
-    // Función para actualizar la tabla de servicios
-    function updateServicesTable() {
-        if (!servicesTableBody) return;
-        
-        servicesTableBody.innerHTML = '';
-        
-        // Calculate the services total
+    // Función para actualizar el precio total basado en el servicio seleccionado
+    function updateTotalPrice() {
         let servicesTotalAmount = 0;
         
-        if (selectedServices.length === 0) {
-            // If no services selected
-            const emptyRow = document.createElement('tr');
-            emptyRow.innerHTML = `
-                <td colspan="3" class="text-center text-muted py-3">
-                    No hay servicios seleccionados
-                </td>
-            `;
-            servicesTableBody.appendChild(emptyRow);
-        } else {
-            // Create rows for each service
-            selectedServices.forEach((service, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${service.name}</td>
-                    <td>S/${service.price.toFixed(2)}</td>
-                    <td class="text-end">
-                        <button type="button" class="btn btn-sm btn-outline-danger remove-service" data-index="${index}">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </td>
-                `;
-                servicesTableBody.appendChild(row);
-                
-                // Add to services total
-                servicesTotalAmount += service.price;
-            });
-            
-            // Add event to remove services
-            document.querySelectorAll('.remove-service').forEach(button => {
-                button.addEventListener('click', function() {
-                    const index = parseInt(this.getAttribute('data-index'));
-                    selectedServices.splice(index, 1);
-                    updateServicesTable();
-                });
-            });
-        }
-        
-        // Display the services total
-        const servicesTotalAmountElement = document.getElementById('servicesTotalAmount');
-        if (servicesTotalAmountElement) {
-            servicesTotalAmountElement.textContent = `S/${servicesTotalAmount.toFixed(2)}`;
+        // Calcular total de servicios
+        if (selectedServices.length > 0) {
+            servicesTotalAmount = selectedServices[0].price;
         }
         
         // Update the total price input only if it wasn't manually edited
+        const totalPriceInput = document.getElementById('totalPrice');
         if (!priceManuallyEdited && totalPriceInput) {
             totalPriceInput.value = servicesTotalAmount.toFixed(2);
             totalAmount = servicesTotalAmount;
-        } else {
+        } else if (totalPriceInput) {
             // If manually edited, keep the user's value but update the internal variable
-            totalAmount = parseFloat(totalPriceInput.value);
+            totalAmount = parseFloat(totalPriceInput.value) || 0;
         }
         
-        // Hide error message if there are services selected
+        // Hide/show error message
         const servicesHelp = document.getElementById('servicesHelp');
         if (servicesHelp) {
             if (selectedServices.length > 0) {
@@ -236,6 +201,11 @@ function setupReservationForm() {
                 servicesHelp.classList.remove('d-none');
             }
         }
+    }
+
+    // Mantener compatibilidad con código existente
+    function updateServicesTable() {
+        updateTotalPrice();
     }
     
     // Add a reset function for when the modal is opened/closed
@@ -248,12 +218,29 @@ function setupReservationForm() {
         totalAmount = 0;
         
         // Update the UI
+        const totalPriceInput = document.getElementById('totalPrice');
         if (totalPriceInput) {
             totalPriceInput.value = "0.00";
         }
         
-        // Other form reset logic
-        // ...
+        // Reset service selection
+        const serviceSelect = document.getElementById('serviceSelect');
+        const selectedServiceDisplay = document.getElementById('selectedServiceDisplay');
+        
+        if (serviceSelect) {
+            serviceSelect.selectedIndex = 0;
+            serviceSelect.style.display = 'block';
+        }
+        
+        if (selectedServiceDisplay) {
+            selectedServiceDisplay.classList.add('d-none');
+        }
+        
+        // Hide service error message
+        const servicesHelp = document.getElementById('servicesHelp');
+        if (servicesHelp) {
+            servicesHelp.classList.add('d-none');
+        }
     }
     
     // Call resetReservationForm when modal is shown
@@ -375,6 +362,25 @@ function setupReservationForm() {
         });
     }
 }
+
+// Función para remover el servicio seleccionado
+window.removeSelectedService = function() {
+    selectedServices = [];
+    
+    const selectedServiceDisplay = document.getElementById('selectedServiceDisplay');
+    const serviceSelect = document.getElementById('serviceSelect');
+    
+    if (selectedServiceDisplay) {
+        selectedServiceDisplay.classList.add('d-none');
+    }
+    
+    if (serviceSelect) {
+        serviceSelect.style.display = 'block';
+        serviceSelect.selectedIndex = 0;
+    }
+    
+    updateTotalPrice();
+};
 
 function validateReservationForm() {
     let isValid = true;
@@ -499,6 +505,25 @@ function setupReservationActions() {
             openReservationDetailsModal(id);
         });
     });
+    
+    // Configurar el botón de actualizar reserva
+    const updateReservationBtn = document.getElementById('updateReservationBtn');
+    if (updateReservationBtn) {
+        // Eliminar listeners anteriores
+        const updateClone = updateReservationBtn.cloneNode(true);
+        updateReservationBtn.parentNode.replaceChild(updateClone, updateReservationBtn);
+        
+        // Agregar nuevo listener
+        updateClone.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Update reservation button clicked');
+            if (typeof window.updateReservation === 'function') {
+                window.updateReservation();
+            } else {
+                console.error('updateReservation function not found');
+            }
+        });
+    }
     
     // Resto de tu código para otros botones...
 }
@@ -955,123 +980,64 @@ window.openEditReservationModal = async function(reservationId) {
 // Variable separada para los servicios en el modal de edición
 let selectedServicesEdit = [];
 
-// Función simplificada para cargar servicios disponibles
+// Función simplificada para cargar servicios disponibles (solo uno permitido)
 async function loadAvailableServicesForEdit() {
     try {
-        console.log('Cargando servicios disponibles para edición');
+        console.log('Configurando servicios disponibles para edición');
         const serviceSelect = document.getElementById('editServiceSelect');
+        const editSelectedServiceDisplay = document.getElementById('editSelectedServiceDisplay');
+        const editSelectedServiceName = document.getElementById('editSelectedServiceName');
+        const editSelectedServicePrice = document.getElementById('editSelectedServicePrice');
+        
         if (!serviceSelect) return;
         
-        // Limpiar opciones existentes
-        serviceSelect.innerHTML = '<option value="" disabled selected>Seleccione un servicio...</option>';
-        
-        // Cargar servicios disponibles
-        const response = await fetch('/Servicios');
-        if (response.ok) {
-            const services = await response.json();
-            
-            // Añadir opciones al select
-            services.forEach(service => {
-                const option = document.createElement('option');
-                option.value = service.id;
-                option.textContent = `${service.nombreServicio} - S/${service.precioBase.toFixed(2)}`;
-                option.setAttribute('data-price', service.precioBase);
-                option.setAttribute('data-name', service.nombreServicio);
-                serviceSelect.appendChild(option);
-            });
-            
-            // Configurar el evento change - una sola vez
-            serviceSelect.onchange = function() {
-                if (this.value) {
-                    const selectedOption = this.options[this.selectedIndex];
-                    const serviceId = this.value;
-                    const serviceName = selectedOption.getAttribute('data-name');
-                    const servicePrice = parseFloat(selectedOption.getAttribute('data-price'));
-                    
-                    selectedServicesEdit.push({
-                        id: serviceId,
-                        nombre: serviceName,
-                        precio: servicePrice
-                    });
-                    
-                    updateEditServicesTable();
-                    this.selectedIndex = 0;
+        // Configurar el evento change para selección única
+        serviceSelect.onchange = function() {
+            if (this.value) {
+                const selectedOption = this.options[this.selectedIndex];
+                const serviceId = this.value;
+                const serviceName = selectedOption.getAttribute('data-nombre');
+                const servicePrice = parseFloat(selectedOption.getAttribute('data-precio'));
+                
+                // Reemplazar cualquier servicio previo con el nuevo (solo uno permitido)
+                selectedServicesEdit = [{
+                    id: serviceId,
+                    nombre: serviceName,
+                    precio: servicePrice
+                }];
+                
+                // Mostrar el servicio seleccionado
+                if (editSelectedServiceDisplay && editSelectedServiceName && editSelectedServicePrice) {
+                    editSelectedServiceName.textContent = serviceName;
+                    editSelectedServicePrice.textContent = `S/${servicePrice.toFixed(2)}`;
+                    editSelectedServiceDisplay.classList.remove('d-none');
                 }
-            };
-        }
+                
+                // Actualizar precio total si no fue editado manualmente
+                const totalPriceInput = document.getElementById('editTotalPrice');
+                if (totalPriceInput && !totalPriceInput.hasAttribute('data-manually-edited')) {
+                    totalPriceInput.value = servicePrice.toFixed(2);
+                }
+                
+                // Ocultar mensaje de error si estaba visible
+                const editServicesHelp = document.getElementById('editServicesHelp');
+                if (editServicesHelp) {
+                    editServicesHelp.classList.add('d-none');
+                }
+            }
+        };
+        
+        console.log('Servicios configurados correctamente para edición');
     } catch (error) {
-        console.error('Error loading available services:', error);
+        console.error('Error configuring available services:', error);
     }
 }
 
-// Función para actualizar la tabla de servicios en el modal de edición
+// Función simplificada para actualizar servicios en el modal de edición (solo uno permitido)
 function updateEditServicesTable() {
-    const tableBody = document.getElementById('editServicesTableBody');
-    const totalAmountElement = document.getElementById('editServicesTotalAmount');
-    const totalPriceInput = document.getElementById('editTotalPrice');
-    
-    if (!tableBody || !totalAmountElement) return;
-    
-    // Limpiar tabla
-    tableBody.innerHTML = '';
-    
-    // Si no hay servicios seleccionados
-    if (selectedServicesEdit.length === 0) {
-        const emptyRow = document.createElement('tr');
-        emptyRow.innerHTML = `
-            <td colspan="3" class="text-center text-muted py-3">
-                No hay servicios seleccionados
-            </td>
-        `;
-        tableBody.appendChild(emptyRow);
-        totalAmountElement.textContent = 'S/0.00';
-        
-        // Actualizar precio total solo si no ha sido editado manualmente
-        if (!priceManuallyEditedEdit) {
-            totalPriceInput.value = '0';
-        }
-        return;
-    }
-    
-    // Calcular total
-    let total = 0;
-    
-    // Añadir filas de servicios
-    selectedServicesEdit.forEach((service, index) => {
-        total += service.precio;
-        
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${service.nombre}</td>
-            <td>S/${service.precio.toFixed(2)}</td>
-            <td class="text-end">
-                <button type="button" class="btn btn-sm btn-outline-danger remove-service-edit" 
-                        data-index="${index}">
-                    <i class="bi bi-trash"></i>
-                </button>
-            </td>
-        `;
-        tableBody.appendChild(row);
-    });
-    
-    // Actualizar total
-    totalAmountElement.textContent = `S/${total.toFixed(2)}`;
-    
-    // Actualizar precio total solo si no ha sido editado manualmente
-    if (!priceManuallyEditedEdit) {
-        totalPriceInput.value = total.toFixed(2);
-    }
-    
-    // Añadir event listeners a los botones de eliminar
-    document.querySelectorAll('.remove-service-edit').forEach(button => {
-        button.addEventListener('click', function() {
-            const index = parseInt(this.getAttribute('data-index'));
-            if (!isNaN(index) && index >= 0 && index < selectedServicesEdit.length) {
-                selectedServicesEdit.splice(index, 1);
-                updateEditServicesTable();
-            }
-        });
-    });
+    // Esta función ya no es necesaria ya que manejamos la UI directamente
+    // en loadAvailableServicesForEdit, pero mantenemos por compatibilidad
+    console.log('Edit services updated');
 }
 
 // Variable para controlar si el precio fue editado manualmente en el modal de edición
@@ -1154,21 +1120,45 @@ function fillEditReservationForm(reservation) {
         document.getElementById('editTotalPrice').value = reservation.precioTotal || 0;
         document.getElementById('editAdvancePrice').value = reservation.precioAdelanto || 0;
         
-        // Cargar servicios de la reserva
+        // Cargar servicios de la reserva (solo uno permitido)
         selectedServicesEdit = [];
         
         // La API devuelve solo un servicio principal, no un array de servicios
         if (reservation.servicioId && reservation.nombreServicio) {
             console.log('Agregando servicio principal:', reservation.nombreServicio);
-            selectedServicesEdit.push({
+            
+            const serviceData = {
                 id: reservation.servicioId,
                 nombre: reservation.nombreServicio,
-                precio: parseFloat(reservation.precioTotal) || 0 // Asegurar que sea número
-            });
+                precio: parseFloat(reservation.precioTotal) || 0
+            };
+            
+            selectedServicesEdit.push(serviceData);
+            
+            // Actualizar UI para mostrar el servicio seleccionado
+            const serviceSelect = document.getElementById('editServiceSelect');
+            const editSelectedServiceDisplay = document.getElementById('editSelectedServiceDisplay');
+            const editSelectedServiceName = document.getElementById('editSelectedServiceName');
+            const editSelectedServicePrice = document.getElementById('editSelectedServicePrice');
+            
+            if (serviceSelect) {
+                // Seleccionar el servicio en el dropdown
+                for (let i = 0; i < serviceSelect.options.length; i++) {
+                    if (serviceSelect.options[i].value === reservation.servicioId) {
+                        serviceSelect.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+            
+            if (editSelectedServiceDisplay && editSelectedServiceName && editSelectedServicePrice) {
+                editSelectedServiceName.textContent = serviceData.nombre;
+                editSelectedServicePrice.textContent = `S/${serviceData.precio.toFixed(2)}`;
+                editSelectedServiceDisplay.classList.remove('d-none');
+            }
         }
         
-        // Actualizar tabla de servicios
-        updateEditServicesTable();
+        // No necesitamos llamar updateEditServicesTable ya que manejamos la UI directamente
         
         // Configurar evento para el total price para detectar ediciones manuales
         const editTotalPrice = document.getElementById('editTotalPrice');
@@ -1210,13 +1200,29 @@ window.updateReservation = async function() {
         
         if (!reservationId) {
             console.error('No reservation ID found');
-            alert('Error: No se encontró el ID de la reserva');
+            showAlert('danger', 'Error: No se encontró el ID de la reserva');
             return;
         }
         
         // Get the update button and show loading state
         const button = document.getElementById('updateReservationBtn');
         const originalHtml = button.innerHTML;
+        
+        // Validar que haya un servicio seleccionado
+        if (!selectedServicesEdit || selectedServicesEdit.length === 0) {
+            const editServicesHelp = document.getElementById('editServicesHelp');
+            if (editServicesHelp) {
+                editServicesHelp.classList.remove('d-none');
+            }
+            showAlert('warning', 'Debe seleccionar un servicio para la reserva');
+            return;
+        } else {
+            const editServicesHelp = document.getElementById('editServicesHelp');
+            if (editServicesHelp) {
+                editServicesHelp.classList.add('d-none');
+            }
+        }
+        
         button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Guardando...';
         button.disabled = true;
         
@@ -1231,7 +1237,7 @@ window.updateReservation = async function() {
             precioTotal: parseFloat(document.getElementById('editTotalPrice').value || 0),
             servicioId: selectedServicesEdit && selectedServicesEdit.length > 0 ? selectedServicesEdit[0].id : null,
             precioAdelanto: parseFloat(document.getElementById('editAdvancePrice').value || 0),
-            tipoEventoNombre: document.getElementById('editEventType').value || 'Otro'  // Cambiado de tipoEventoId a tipoEventoNombre
+            tipoEventoNombre: document.getElementById('editEventType').value || 'Otro'
         };
         
         console.log('Sending update data:', updateData);
@@ -1240,21 +1246,29 @@ window.updateReservation = async function() {
         const tokenElement = document.querySelector('input[name="__RequestVerificationToken"]');
         const token = tokenElement ? tokenElement.value : '';
         
-        // Utilizar el handler de Razor Pages
+        console.log('CSRF token found:', !!token);
+        console.log('Request URL will be:', `/Reservas?handler=UpdateReservation&id=${reservationId}`);
+        
+        // Preparar headers
+        const headers = {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        };
+        
+        // Solo agregar token si existe
+        if (token) {
+            headers['RequestVerificationToken'] = token;
+        }
+        
+        // Usar el handler de Razor Pages con el ID en el query string
         const response = await fetch(`/Reservas?handler=UpdateReservation&id=${reservationId}`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest',
-                'RequestVerificationToken': token
-            },
+            headers: headers,
             body: JSON.stringify(updateData)
         });
         
         const responseText = await response.text();
         console.log('Server response:', responseText);
-        
-        // También podemos inspeccionar el response.status
         console.log('Response status:', response.status);
         
         let result;
@@ -1262,16 +1276,24 @@ window.updateReservation = async function() {
             result = JSON.parse(responseText);
         } catch (e) {
             console.error('Error parsing JSON response:', e);
-            throw new Error(`Error en la respuesta del servidor: ${responseText.substring(0, 100)}...`);
+            // Si no es JSON, verificar si el status es 200 (éxito)
+            if (response.ok) {
+                result = { success: true, message: 'Reserva actualizada exitosamente' };
+            } else {
+                throw new Error(`Error en la respuesta del servidor: ${responseText.substring(0, 100)}...`);
+            }
         }
         
         if (!response.ok) {
             throw new Error(`Error ${response.status}: ${result?.message || response.statusText}`);
         }
         
-        if (result && result.success) {
+        if (response.ok) {
             // Show success message and close modal
             console.log('Reservation updated successfully');
+            
+            // Show success toast/alert using Bootstrap
+            showAlert('success', 'Reserva actualizada exitosamente');
             
             // Close modal properly
             const modalElement = document.getElementById('editReservationModal');
@@ -1280,7 +1302,7 @@ window.updateReservation = async function() {
                 modal.hide();
             }
             
-            // Asegurarse de eliminar el backdrop
+            // Clean up modal state and reload page
             setTimeout(() => {
                 const backdrops = document.querySelectorAll('.modal-backdrop');
                 backdrops.forEach(backdrop => backdrop.remove());
@@ -1289,14 +1311,14 @@ window.updateReservation = async function() {
                 document.body.style.paddingRight = '';
                 
                 // Recargar página para mostrar cambios
-                window.location.href = '/Reservas?success=true';
+                window.location.reload();
             }, 500);
         } else {
             throw new Error(result?.message || 'Error desconocido al actualizar la reserva');
         }
     } catch (error) {
         console.error('Error updating reservation:', error);
-        alert('Error al actualizar la reserva: ' + (error.message || 'Error desconocido'));
+        showAlert('danger', 'Error al actualizar la reserva: ' + (error.message || 'Error desconocido'));
     } finally {
         // Restore button state
         const button = document.getElementById('updateReservationBtn');
