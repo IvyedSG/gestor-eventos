@@ -36,3 +36,11 @@
 /Users/sagox16/Documents/Importants/gestor-eventos/obj/Debug/net8.0/gestor-eventos.pdb
 /Users/sagox16/Documents/Importants/gestor-eventos/obj/Debug/net8.0/gestor-eventos.genruntimeconfig.cache
 /Users/sagox16/Documents/Importants/gestor-eventos/obj/Debug/net8.0/ref/gestor-eventos.dll
+/Users/sagox16/Documents/Importants/gestor-eventos/bin/Debug/net8.0/EPPlus.dll
+/Users/sagox16/Documents/Importants/gestor-eventos/bin/Debug/net8.0/EPPlus.Interfaces.dll
+/Users/sagox16/Documents/Importants/gestor-eventos/bin/Debug/net8.0/EPPlus.System.Drawing.dll
+/Users/sagox16/Documents/Importants/gestor-eventos/bin/Debug/net8.0/Microsoft.IO.RecyclableMemoryStream.dll
+/Users/sagox16/Documents/Importants/gestor-eventos/bin/Debug/net8.0/Microsoft.Win32.SystemEvents.dll
+/Users/sagox16/Documents/Importants/gestor-eventos/bin/Debug/net8.0/System.Drawing.Common.dll
+/Users/sagox16/Documents/Importants/gestor-eventos/bin/Debug/net8.0/System.Private.Windows.Core.dll
+/Users/sagox16/Documents/Importants/gestor-eventos/bin/Debug/net8.0/runtimes/win/lib/net8.0/Microsoft.Win32.SystemEvents.dll

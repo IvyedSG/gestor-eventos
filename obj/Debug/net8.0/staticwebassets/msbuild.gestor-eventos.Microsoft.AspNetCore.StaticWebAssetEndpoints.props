@@ -72,17 +72,17 @@
       <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"ru3z6n6jvy"},{"Name":"integrity","Value":"sha256-Q6A323DwyURdGvVSms20qVQP7ofcxtFE6mERUoag37E="},{"Name":"label","Value":"_content/gestor-eventos/js/recibo-reserva.js"}]]]></EndpointProperties>
       <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"23211"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022Q6A323DwyURdGvVSms20qVQP7ofcxtFE6mERUoag37E=\u0022"},{"Name":"Last-Modified","Value":"Sat, 14 Jun 2025 02:49:43 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
-    <StaticWebAssetEndpoint Include="_content/gestor-eventos/js/reservas.hyxmtrkmjt.js">
-      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\reservas.js'))</AssetFile>
-      <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"hyxmtrkmjt"},{"Name":"integrity","Value":"sha256-aZ4UQC9aCJ5LLrsS557zQh2nfwlDcHx5AtARec/pTqM="},{"Name":"label","Value":"_content/gestor-eventos/js/reservas.js"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"67339"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022aZ4UQC9aCJ5LLrsS557zQh2nfwlDcHx5AtARec/pTqM=\u0022"},{"Name":"Last-Modified","Value":"Sat, 14 Jun 2025 04:20:56 GMT"}]]]></ResponseHeaders>
-    </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/gestor-eventos/js/reservas.js">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\reservas.js'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-aZ4UQC9aCJ5LLrsS557zQh2nfwlDcHx5AtARec/pTqM="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"67339"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022aZ4UQC9aCJ5LLrsS557zQh2nfwlDcHx5AtARec/pTqM=\u0022"},{"Name":"Last-Modified","Value":"Sat, 14 Jun 2025 04:20:56 GMT"}]]]></ResponseHeaders>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-SSSrfM\u002BHUhJ4aiNEqlnnamDEydy0R7iMBCCjuwl9UkU="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"68322"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022SSSrfM\u002BHUhJ4aiNEqlnnamDEydy0R7iMBCCjuwl9UkU=\u0022"},{"Name":"Last-Modified","Value":"Sat, 14 Jun 2025 04:33:00 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/gestor-eventos/js/reservas.lhlyfh34bv.js">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\reservas.js'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"lhlyfh34bv"},{"Name":"integrity","Value":"sha256-SSSrfM\u002BHUhJ4aiNEqlnnamDEydy0R7iMBCCjuwl9UkU="},{"Name":"label","Value":"_content/gestor-eventos/js/reservas.js"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"68322"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022SSSrfM\u002BHUhJ4aiNEqlnnamDEydy0R7iMBCCjuwl9UkU=\u0022"},{"Name":"Last-Modified","Value":"Sat, 14 Jun 2025 04:33:00 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/gestor-eventos/js/site.2ut828sknb.js">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\site.js'))</AssetFile>

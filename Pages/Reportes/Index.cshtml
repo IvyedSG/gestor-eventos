@@ -1,0 +1,1110 @@
+@page "/Reportes"
+@model gestor_eventos.Pages.Reportes.IndexModel
+@{
+    ViewData["Title"] = "Reportes";
+}
+
+@Html.AntiForgeryToken()
+
+<style>
+    .chart-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .chart-loading-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(255, 255, 255, 0.95);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        border-radius: 0.375rem;
+    }
+    
+    .chart-loading-overlay.hidden {
+        display: none !important;
+    }
+    
+    canvas {
+        position: relative;
+        z-index: 1;
+    }
+</style>
+
+<div class="container-fluid">
+    <!-- Header de la página -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="h3 mb-1 text-gray-800">
+                        <i class="bi bi-bar-chart-line me-2 text-primary"></i>
+                        Reportes y Análisis
+                    </h1>
+                    <p class="text-muted mb-0">
+                        <i class="bi bi-info-circle me-1"></i>
+                        Análisis detallado y visualización de datos del sistema
+                    </p>
+                </div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-outline-primary btn-sm" id="refreshReports">
+                        <i class="bi bi-arrow-clockwise me-1"></i>
+                        Actualizar
+                    </button>
+                    <button class="btn btn-success btn-sm" id="exportToExcel">
+                        <i class="bi bi-file-earmark-excel me-1"></i>
+                        Exportar a Excel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.LoadError)
+    {
+        <!-- Error Message -->
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-danger" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    <strong>Error:</strong> @Model.ErrorMessage
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- Filtros de fecha -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">
+                            <i class="bi bi-funnel me-2"></i>
+                            Filtros de Análisis
+                        </h5>
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <label for="dateFrom" class="form-label">Fecha Desde</label>
+                                <input type="date" class="form-control" id="dateFrom" name="dateFrom">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="dateTo" class="form-label">Fecha Hasta</label>
+                                <input type="date" class="form-control" id="dateTo" name="dateTo">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="reportPeriod" class="form-label">Período Rápido</label>
+                                <select class="form-select" id="reportPeriod">
+                                    <option value="">Personalizado</option>
+                                    <option value="7">Últimos 7 días</option>
+                                    <option value="30">Últimos 30 días</option>
+                                    <option value="90">Últimos 3 meses</option>
+                                    <option value="365" selected>Último año</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 d-flex align-items-end">
+                                <button type="button" class="btn btn-primary w-100" id="applyFilters">
+                                    <i class="bi bi-search me-1"></i>
+                                    Aplicar Filtros
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resumen Ejecutivo -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">
+                            <i class="bi bi-clipboard-data me-2"></i>
+                            Resumen Ejecutivo
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-4" id="executiveSummary">
+                            <!-- Tarjetas de métricas clave -->
+                            <div class="col-lg-3 col-md-6">
+                                <div class="card border-0 bg-light h-100">
+                                    <div class="card-body text-center">
+                                        <div class="text-primary mb-2">
+                                            <i class="bi bi-currency-dollar fs-1"></i>
+                                        </div>
+                                        <h6 class="card-title text-muted">Ingresos Totales</h6>
+                                        <h3 class="mb-0 text-success" id="totalRevenue">
+                                            @if (Model.ResumenEjecutivo != null)
+                                            {
+                                                <text>S/@Model.ResumenEjecutivo.IngresosTotales.ToString("N2")</text>
+                                            }
+                                            else
+                                            {
+                                                <text>S/0.00</text>
+                                            }
+                                        </h3>
+                                        <small class="text-muted">En el período seleccionado</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="card border-0 bg-light h-100">
+                                    <div class="card-body text-center">
+                                        <div class="text-info mb-2">
+                                            <i class="bi bi-calendar-event fs-1"></i>
+                                        </div>
+                                        <h6 class="card-title text-muted">Reservas Totales</h6>
+                                        <h3 class="mb-0 text-primary" id="totalEvents">
+                                            @(Model.ResumenEjecutivo?.TotalReservas ?? 0)
+                                        </h3>
+                                        <small class="text-muted">Reservas registradas</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="card border-0 bg-light h-100">
+                                    <div class="card-body text-center">
+                                        <div class="text-warning mb-2">
+                                            <i class="bi bi-people fs-1"></i>
+                                        </div>
+                                        <h6 class="card-title text-muted">Total Clientes</h6>
+                                        <h3 class="mb-0 text-warning" id="activeClients">
+                                            @(Model.ResumenEjecutivo?.TotalClientes ?? 0)
+                                        </h3>
+                                        <small class="text-muted">Clientes registrados</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <div class="card border-0 bg-light h-100">
+                                    <div class="card-body text-center">
+                                        <div class="text-secondary mb-2">
+                                            <i class="bi bi-graph-up-arrow fs-1"></i>
+                                        </div>
+                                        <h6 class="card-title text-muted">Tasa de Conversión</h6>
+                                        <h3 class="mb-0 text-secondary" id="conversionRate">
+                                            @if (Model.ResumenEjecutivo != null)
+                                            {
+                                                <text>@Model.ResumenEjecutivo.TasaConversionReservas.ToString("F1")%</text>
+                                            }
+                                            else
+                                            {
+                                                <text>0%</text>
+                                            }
+                                        </h3>
+                                        <small class="text-muted">Reservas confirmadas</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráficos principales -->
+        <div class="row mb-4">
+            <!-- Gráfico de Ingresos Mensuales -->
+            <div class="col-lg-8">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="bi bi-graph-up me-2"></i>
+                            Tendencia Mensual de Ingresos
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container" style="height: 350px;">
+                            <canvas id="revenueChart"></canvas>
+                            <div id="revenueChartLoading" class="chart-loading-overlay">
+                                <div class="text-center">
+                                    <div class="spinner-border text-primary mb-3" role="status">
+                                        <span class="visually-hidden">Cargando...</span>
+                                    </div>
+                                    <p>Cargando gráfico de ingresos...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Gráfico de Estados de Reservas -->
+            <div class="col-lg-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="bi bi-pie-chart me-2"></i>
+                            Estados de Reservas
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container" style="height: 350px;">
+                            <canvas id="reservationStatusChart"></canvas>
+                            <div id="reservationStatusChartLoading" class="chart-loading-overlay">
+                                <div class="text-center">
+                                    <div class="spinner-border text-primary mb-3" role="status">
+                                        <span class="visually-hidden">Cargando...</span>
+                                    </div>
+                                    <p>Cargando estados...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Segunda fila de gráficos -->
+        <div class="row mb-4">
+            <!-- Servicios más solicitados -->
+            <div class="col-lg-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="bi bi-star me-2"></i>
+                            Servicios Más Populares
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container" style="height: 300px;">
+                            <canvas id="popularServicesChart"></canvas>
+                            <div id="popularServicesChartLoading" class="chart-loading-overlay">
+                                <div class="text-center">
+                                    <div class="spinner-border text-primary mb-3" role="status">
+                                        <span class="visually-hidden">Cargando...</span>
+                                    </div>
+                                    <p>Cargando servicios...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Tendencia de clientes -->
+            <div class="col-lg-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="bi bi-people-fill me-2"></i>
+                            Crecimiento de Clientes
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container" style="height: 300px;">
+                            <canvas id="clientGrowthChart"></canvas>
+                            <div id="clientGrowthChartLoading" class="chart-loading-overlay">
+                                <div class="text-center">
+                                    <div class="spinner-border text-primary mb-3" role="status">
+                                        <span class="visually-hidden">Cargando...</span>
+                                    </div>
+                                    <p>Cargando crecimiento...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Items más utilizados y Disponibilidad -->
+        <div class="row">
+            <!-- Items más utilizados -->
+            <div class="col-lg-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="bi bi-box-seam me-2"></i>
+                            Items Más Utilizados
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container" style="height: 250px;">
+                            <canvas id="topItemsChart"></canvas>
+                            <div id="topItemsChartLoading" class="chart-loading-overlay">
+                                <div class="text-center">
+                                    <div class="spinner-border text-primary mb-3" role="status">
+                                        <span class="visually-hidden">Cargando...</span>
+                                    </div>
+                                    <p>Cargando items...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Análisis de rentabilidad por tipo de evento -->
+            <div class="col-lg-6">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="bi bi-calculator me-2"></i>
+                            Ingresos por Tipo de Evento
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container" style="height: 250px;">
+                            <canvas id="eventTypeProfitChart"></canvas>
+                            <div id="eventTypeProfitChartLoading" class="chart-loading-overlay">
+                                <div class="text-center">
+                                    <div class="spinner-border text-primary mb-3" role="status">
+                                        <span class="visually-hidden">Cargando...</span>
+                                    </div>
+                                    <p>Cargando rentabilidad...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Helper function para hacer fetch con token anti-falsificación
+        function fetchWithToken(url, options = {}) {
+            const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+            const headers = {
+                'RequestVerificationToken': token,
+                ...options.headers
+            };
+            return fetch(url, { ...options, headers });
+        }
+        
+        let reportesData = {
+            resumenEjecutivo: null,
+            clientes: null,
+            items: null,
+            pagos: null,
+            reservas: null,
+            servicios: null
+        };
+
+        let charts = {
+            revenue: null,
+            reservationStatus: null,
+            popularServices: null,
+            clientGrowth: null,
+            topItems: null,
+            eventTypeProfit: null
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM Loaded - Iniciando configuración de reportes');
+            
+            // Inicializar fechas por defecto (último año)
+            const today = new Date();
+            const lastYear = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
+            
+            document.getElementById('dateFrom').value = lastYear.toISOString().split('T')[0];
+            document.getElementById('dateTo').value = today.toISOString().split('T')[0];
+
+            console.log('Fechas inicializadas:', {
+                desde: document.getElementById('dateFrom').value,
+                hasta: document.getElementById('dateTo').value
+            });
+
+            // Event listeners
+            document.getElementById('reportPeriod').addEventListener('change', function() {
+                const days = parseInt(this.value);
+                if (days) {
+                    const endDate = new Date();
+                    const startDate = new Date();
+                    startDate.setDate(endDate.getDate() - days);
+                    
+                    document.getElementById('dateFrom').value = startDate.toISOString().split('T')[0];
+                    document.getElementById('dateTo').value = endDate.toISOString().split('T')[0];
+                }
+            });
+
+            document.getElementById('applyFilters').addEventListener('click', function() {
+                console.log('Aplicando filtros...');
+                loadAllReports();
+            });
+
+            document.getElementById('refreshReports').addEventListener('click', function() {
+                console.log('Refrescando reportes...');
+                loadAllReports();
+            });
+
+            // Funcionalidad de exportación a Excel
+            document.getElementById('exportToExcel').addEventListener('click', function() {
+                console.log('Exportando a Excel...');
+                exportToExcel();
+            });
+            
+            // Cargar reportes iniciales inmediatamente
+            console.log('Cargando reportes iniciales...');
+            loadAllReports();
+        });
+
+        async function loadAllReports() {
+            console.log('loadAllReports - Iniciando carga de reportes');
+            
+            // Mostrar todos los overlays de carga
+            showAllChartLoadings();
+            
+            const fechaInicio = document.getElementById('dateFrom').value;
+            const fechaFin = document.getElementById('dateTo').value;
+            
+            console.log('Fechas para consulta:', { fechaInicio, fechaFin });
+            
+            // Formatear fechas para la API (agregar tiempo)
+            const fechaInicioFormatted = fechaInicio ? `${fechaInicio}T00:00:00` : '';
+            const fechaFinFormatted = fechaFin ? `${fechaFin}T23:59:59` : '';
+            
+            console.log('Fechas formateadas:', { fechaInicioFormatted, fechaFinFormatted });
+            
+            try {
+                console.log('Haciendo llamadas a la API...');
+                
+                // Cargar todos los reportes en paralelo
+                const [resumenResp, clientesResp, itemsResp, pagosResp, reservasResp, serviciosResp] = await Promise.all([
+                    fetchWithToken(`/Reportes?handler=ResumenEjecutivo&fechaInicio=${fechaInicioFormatted}&fechaFin=${fechaFinFormatted}`),
+                    fetchWithToken(`/Reportes?handler=ReportesClientes&fechaInicio=${fechaInicioFormatted}&fechaFin=${fechaFinFormatted}`),
+                    fetchWithToken(`/Reportes?handler=ReportesItems&fechaInicio=${fechaInicioFormatted}&fechaFin=${fechaFinFormatted}&top=10`),
+                    fetchWithToken(`/Reportes?handler=ReportesPagos&fechaInicio=${fechaInicioFormatted}&fechaFin=${fechaFinFormatted}`),
+                    fetchWithToken(`/Reportes?handler=ReportesReservas&fechaInicio=${fechaInicioFormatted}&fechaFin=${fechaFinFormatted}`),
+                    fetchWithToken(`/Reportes?handler=ReportesServicios&fechaInicio=${fechaInicioFormatted}&fechaFin=${fechaFinFormatted}&top=10`)
+                ]);
+
+                console.log('Respuestas recibidas:', {
+                    resumen: resumenResp.status,
+                    clientes: clientesResp.status,
+                    items: itemsResp.status,
+                    pagos: pagosResp.status,
+                    reservas: reservasResp.status,
+                    servicios: serviciosResp.status
+                });
+
+                console.log('URLs llamadas:', {
+                    resumen: resumenResp.url,
+                    clientes: clientesResp.url,
+                    items: itemsResp.url,
+                    pagos: pagosResp.url,
+                    reservas: reservasResp.url,
+                    servicios: serviciosResp.url
+                });
+
+                // Procesar respuestas exitosas
+                if (resumenResp.ok) {
+                    reportesData.resumenEjecutivo = await resumenResp.json();
+                    console.log('Resumen ejecutivo cargado:', reportesData.resumenEjecutivo);
+                }
+                
+                if (clientesResp.ok) {
+                    reportesData.clientes = await clientesResp.json();
+                    console.log('Clientes cargado:', reportesData.clientes);
+                }
+                
+                if (itemsResp.ok) {
+                    reportesData.items = await itemsResp.json();
+                    console.log('Items cargado:', reportesData.items);
+                }
+                
+                if (pagosResp.ok) {
+                    const pagosText = await pagosResp.text();
+                    console.log('Respuesta de pagos (texto raw):', pagosText);
+                    
+                    try {
+                        if (pagosText && pagosText.trim() !== '' && pagosText.trim() !== 'null') {
+                            reportesData.pagos = JSON.parse(pagosText);
+                            console.log('Pagos cargado exitosamente:', reportesData.pagos);
+                        } else {
+                            console.warn('Respuesta de pagos está vacía o es null');
+                            reportesData.pagos = null;
+                        }
+                    } catch (parseError) {
+                        console.error('Error al parsear respuesta de pagos:', parseError);
+                        console.error('Contenido que falló al parsear:', pagosText);
+                        reportesData.pagos = null;
+                    }
+                } else {
+                    console.error('Error en endpoint de pagos:', {
+                        status: pagosResp.status,
+                        statusText: pagosResp.statusText,
+                        url: pagosResp.url
+                    });
+                    
+                    // Intentar leer el contenido del error
+                    try {
+                        const errorText = await pagosResp.text();
+                        console.error('Respuesta de error de pagos:', errorText);
+                    } catch (e) {
+                        console.error('No se pudo leer el error de pagos:', e);
+                    }
+                    
+                    reportesData.pagos = null;
+                }
+                
+                if (reservasResp.ok) {
+                    reportesData.reservas = await reservasResp.json();
+                    console.log('Reservas cargado:', reportesData.reservas);
+                }
+                
+                if (serviciosResp.ok) {
+                    reportesData.servicios = await serviciosResp.json();
+                    console.log('Servicios cargado:', reportesData.servicios);
+                }
+
+                // Actualizar UI
+                console.log('Actualizando tarjetas de resumen...');
+                updateSummaryCards();
+                
+                // Renderizar gráficos
+                console.log('Renderizando gráficos...');
+                renderAllCharts();
+                
+            } catch (error) {
+                console.error('Error al cargar reportes:', error);
+                alert('Error al cargar los reportes. Por favor, intente nuevamente. Error: ' + error.message);
+            }
+        }
+
+        function showAllChartLoadings() {
+            const loadingIds = [
+                'revenueChartLoading',
+                'reservationStatusChartLoading',
+                'popularServicesChartLoading',
+                'clientGrowthChartLoading',
+                'topItemsChartLoading',
+                'eventTypeProfitChartLoading'
+            ];
+            
+            loadingIds.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.classList.remove('hidden');
+                    element.style.display = 'flex';
+                    console.log(`Mostrando loading: ${id}`);
+                }
+            });
+        }
+
+        function updateSummaryCards() {
+            console.log('Actualizando tarjetas de resumen con:', reportesData.resumenEjecutivo);
+            
+            if (reportesData.resumenEjecutivo) {
+                const resumen = reportesData.resumenEjecutivo;
+                
+                document.getElementById('totalRevenue').textContent = `S/${resumen.ingresosTotales.toLocaleString('es-PE', {minimumFractionDigits: 2})}`;
+                document.getElementById('totalEvents').textContent = resumen.totalReservas.toString();
+                document.getElementById('activeClients').textContent = resumen.totalClientes.toString();
+                document.getElementById('conversionRate').textContent = `${resumen.tasaConversionReservas.toFixed(1)}%`;
+                
+                console.log('Tarjetas actualizadas correctamente');
+            } else {
+                console.warn('No hay datos de resumen ejecutivo para actualizar las tarjetas');
+            }
+        }
+
+        function renderAllCharts() {
+            console.log('Iniciando renderizado de todos los gráficos');
+            try {
+                renderRevenueChart();
+                renderReservationStatusChart();
+                renderPopularServicesChart();
+                renderClientGrowthChart();
+                renderTopItemsChart();
+                renderEventTypeProfitChart();
+                console.log('Todos los gráficos renderizados');
+            } catch (error) {
+                console.error('Error al renderizar gráficos:', error);
+            }
+        }
+
+        function hideChartLoading(chartId) {
+            console.log(`Ocultando loading para: ${chartId}`);
+            const loadingElement = document.getElementById(chartId + 'Loading');
+            if (loadingElement) {
+                loadingElement.style.display = 'none';
+                loadingElement.classList.add('hidden');
+                console.log(`Loading ocultado para: ${chartId}`);
+                
+                // Verificar que el canvas sea visible
+                const canvas = document.getElementById(chartId);
+                if (canvas) {
+                    console.log(`Canvas ${chartId} - Visible: ${canvas.offsetWidth > 0 && canvas.offsetHeight > 0}`);
+                }
+            } else {
+                console.warn(`No se encontró elemento loading: ${chartId}Loading`);
+            }
+        }
+
+        function renderRevenueChart() {
+            console.log('Renderizando gráfico de ingresos...');
+            const canvas = document.getElementById('revenueChart');
+            if (!canvas) {
+                console.error('Canvas revenueChart no encontrado');
+                return;
+            }
+            
+            if (!reportesData.pagos) {
+                console.warn('Datos de pagos no disponibles para gráfico de ingresos');
+                hideChartLoading('revenueChart');
+                return;
+            }
+
+            // Destroy existing chart
+            if (charts.revenue) {
+                charts.revenue.destroy();
+            }
+
+            const tendenciaData = reportesData.pagos.tendenciaMensualIngresos || [];
+            console.log('Datos de tendencia mensual:', tendenciaData);
+            
+            if (tendenciaData.length === 0) {
+                console.warn('No hay datos de tendencia mensual');
+                hideChartLoading('revenueChart');
+                
+                // Mostrar mensaje en el canvas
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.font = '16px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillStyle = '#666';
+                ctx.fillText('Los datos de pagos están disponibles pero', canvas.width / 2, canvas.height / 2 - 30);
+                ctx.fillText('no hay tendencia mensual para mostrar', canvas.width / 2, canvas.height / 2 - 10);
+                ctx.fillText('Intente con un rango de fechas más amplio', canvas.width / 2, canvas.height / 2 + 10);
+                
+                // Mostrar datos disponibles para debug
+                console.log('Estructura completa de datos de pagos:', reportesData.pagos);
+                return;
+            }
+            
+            // Remover el event listener del canvas si existía
+            canvas.onclick = null;
+            
+            const labels = tendenciaData.map(item => item.nombreMes);
+            const data = tendenciaData.map(item => item.montoTotal);
+
+            charts.revenue = new Chart(canvas, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Ingresos Mensuales',
+                        data: data,
+                        borderColor: 'rgb(79, 70, 229)',
+                        backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return 'S/' + value.toLocaleString('es-PE');
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': S/' + context.parsed.y.toLocaleString('es-PE', {minimumFractionDigits: 2});
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            setTimeout(() => {
+                hideChartLoading('revenueChart');
+                console.log('Gráfico de ingresos renderizado exitosamente');
+            }, 100);
+        }
+
+        function renderReservationStatusChart() {
+            console.log('Renderizando gráfico de estados de reservas...');
+            const canvas = document.getElementById('reservationStatusChart');
+            if (!canvas) {
+                console.error('Canvas reservationStatusChart no encontrado');
+                return;
+            }
+            
+            if (!reportesData.reservas) {
+                console.warn('Datos de reservas no disponibles');
+                hideChartLoading('reservationStatusChart');
+                return;
+            }
+
+            if (charts.reservationStatus) {
+                charts.reservationStatus.destroy();
+            }
+
+            const tasaConversion = reportesData.reservas.tasaConversionEstado;
+            console.log('Datos de estados:', tasaConversion);
+            
+            const data = [
+                tasaConversion.reservasPendientes,
+                tasaConversion.reservasConfirmadas,
+                tasaConversion.reservasCanceladas
+            ];
+
+            charts.reservationStatus = new Chart(canvas, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Pendientes', 'Confirmadas', 'Canceladas'],
+                    datasets: [{
+                        data: data,
+                        backgroundColor: [
+                            '#F59E0B',
+                            '#10B981',
+                            '#EF4444'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+            
+            setTimeout(() => {
+                hideChartLoading('reservationStatusChart');
+                console.log('Gráfico de estados renderizado exitosamente');
+            }, 100);
+        }
+
+        function renderPopularServicesChart() {
+            console.log('Renderizando gráfico de servicios populares...');
+            const canvas = document.getElementById('popularServicesChart');
+            if (!canvas) {
+                console.error('Canvas popularServicesChart no encontrado');
+                return;
+            }
+            
+            if (!reportesData.servicios) {
+                console.warn('Datos de servicios no disponibles');
+                hideChartLoading('popularServicesChart');
+                return;
+            }
+
+            if (charts.popularServices) {
+                charts.popularServices.destroy();
+            }
+
+            const serviciosData = reportesData.servicios.serviciosMasFrecuentes || [];
+            console.log('Datos de servicios:', serviciosData);
+            
+            const labels = serviciosData.map(item => item.nombreServicio);
+            const data = serviciosData.map(item => item.cantidadReservas);
+
+            charts.popularServices = new Chart(canvas, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Reservas',
+                        data: data,
+                        backgroundColor: 'rgba(79, 70, 229, 0.8)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            
+            setTimeout(() => {
+                hideChartLoading('popularServicesChart');
+                console.log('Gráfico de servicios renderizado exitosamente');
+            }, 100);
+        }
+
+        function renderClientGrowthChart() {
+            console.log('Renderizando gráfico de crecimiento de clientes...');
+            const canvas = document.getElementById('clientGrowthChart');
+            if (!canvas) {
+                console.error('Canvas clientGrowthChart no encontrado');
+                return;
+            }
+            
+            if (!reportesData.clientes) {
+                console.warn('Datos de clientes no disponibles');
+                hideChartLoading('clientGrowthChart');
+                return;
+            }
+
+            if (charts.clientGrowth) {
+                charts.clientGrowth.destroy();
+            }
+
+            const clientesData = reportesData.clientes.clientesNuevosPorMes || [];
+            console.log('Datos de clientes nuevos:', clientesData);
+            
+            const labels = clientesData.map(item => item.nombreMes);
+            const data = clientesData.map(item => item.cantidadClientesNuevos);
+
+            charts.clientGrowth = new Chart(canvas, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Clientes Nuevos',
+                        data: data,
+                        borderColor: 'rgb(16, 185, 129)',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            
+            setTimeout(() => {
+                hideChartLoading('clientGrowthChart');
+                console.log('Gráfico de clientes renderizado exitosamente');
+            }, 100);
+        }
+
+        function renderTopItemsChart() {
+            console.log('Renderizando gráfico de items más utilizados...');
+            const canvas = document.getElementById('topItemsChart');
+            if (!canvas) {
+                console.error('Canvas topItemsChart no encontrado');
+                return;
+            }
+            
+            if (!reportesData.items) {
+                console.warn('Datos de items no disponibles');
+                hideChartLoading('topItemsChart');
+                return;
+            }
+
+            if (charts.topItems) {
+                charts.topItems.destroy();
+            }
+
+            const itemsData = reportesData.items.itemsMasUtilizados?.slice(0, 5) || [];
+            console.log('Datos de items más utilizados:', itemsData);
+            
+            const labels = itemsData.map(item => item.nombreItem);
+            const data = itemsData.map(item => item.totalCantidadUtilizada);
+
+            charts.topItems = new Chart(canvas, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Cantidad Utilizada',
+                        data: data,
+                        backgroundColor: 'rgba(245, 158, 11, 0.8)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            
+            setTimeout(() => {
+                hideChartLoading('topItemsChart');
+                console.log('Gráfico de items renderizado exitosamente');
+            }, 100);
+        }
+
+        function renderEventTypeProfitChart() {
+            console.log('Renderizando gráfico de ingresos por tipo de evento...');
+            const canvas = document.getElementById('eventTypeProfitChart');
+            if (!canvas) {
+                console.error('Canvas eventTypeProfitChart no encontrado');
+                return;
+            }
+            
+            if (!reportesData.reservas) {
+                console.warn('Datos de reservas no disponibles para tipo de evento');
+                hideChartLoading('eventTypeProfitChart');
+                return;
+            }
+
+            if (charts.eventTypeProfit) {
+                charts.eventTypeProfit.destroy();
+            }
+
+            const eventosData = reportesData.reservas.ingresosPromedioPorTipoEvento || [];
+            console.log('Datos de ingresos por tipo de evento:', eventosData);
+            
+            const labels = eventosData.map(item => item.tipoEvento);
+            const data = eventosData.map(item => item.ingresoTotal);
+
+            charts.eventTypeProfit = new Chart(canvas, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Ingresos Totales',
+                        data: data,
+                        backgroundColor: 'rgba(139, 69, 19, 0.8)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return 'S/' + value.toLocaleString();
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return 'Ingresos: S/' + context.parsed.y.toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            setTimeout(() => {
+                hideChartLoading('eventTypeProfitChart');
+                console.log('Gráfico de tipo de evento renderizado exitosamente');
+            }, 100);
+        }
+
+        // Función para exportar a Excel
+        async function exportToExcel() {
+            try {
+                // Mostrar indicador de carga
+                const exportBtn = document.getElementById('exportToExcel');
+                const originalText = exportBtn.innerHTML;
+                exportBtn.disabled = true;
+                exportBtn.innerHTML = '<i class="bi bi-hourglass-split me-1"></i>Generando...';
+
+                // Obtener fechas del filtro
+                const fechaInicio = document.getElementById('dateFrom').value;
+                const fechaFin = document.getElementById('dateTo').value;
+
+                // Construir URL con parámetros
+                let url = '/Reportes?handler=ExportToExcel';
+                const params = new URLSearchParams();
+                
+                if (fechaInicio) {
+                    params.append('fechaInicio', fechaInicio);
+                }
+                if (fechaFin) {
+                    params.append('fechaFin', fechaFin);
+                }
+
+                if (params.toString()) {
+                    url += '&' + params.toString();
+                }
+
+                console.log('Exportando a:', url);
+
+                // Realizar la descarga
+                const response = await fetchWithToken(url);
+                
+                if (!response.ok) {
+                    throw new Error('Error al generar el archivo Excel');
+                }
+
+                // Obtener el blob y crear la descarga
+                const blob = await response.blob();
+                const contentDisposition = response.headers.get('Content-Disposition');
+                
+                let filename = 'Reporte_Gestor_Eventos.xlsx';
+                if (contentDisposition) {
+                    const filenameMatch = contentDisposition.match(/filename="([^"]+)"/);
+                    if (filenameMatch) {
+                        filename = filenameMatch[1];
+                    }
+                }
+
+                // Crear elemento de descarga temporal
+                const url2 = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url2;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url2);
+                document.body.removeChild(a);
+
+                console.log('Archivo Excel descargado exitosamente:', filename);
+                
+                // Mostrar mensaje de éxito
+                showNotification('Archivo Excel generado y descargado exitosamente', 'success');
+
+            } catch (error) {
+                console.error('Error al exportar a Excel:', error);
+                showNotification('Error al generar el archivo Excel: ' + error.message, 'error');
+            } finally {
+                // Restaurar botón
+                const exportBtn = document.getElementById('exportToExcel');
+                exportBtn.disabled = false;
+                exportBtn.innerHTML = '<i class="bi bi-file-earmark-excel me-1"></i>Exportar a Excel';
+            }
+        }
+
+        // Función helper para mostrar notificaciones
+        function showNotification(message, type = 'info') {
+            // Crear elemento de notificación
+            const notification = document.createElement('div');
+            notification.className = `alert alert-${type === 'error' ? 'danger' : 'success'} alert-dismissible fade show position-fixed`;
+            notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            notification.innerHTML = `
+                <i class="bi bi-${type === 'error' ? 'exclamation-circle' : 'check-circle'} me-2"></i>
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+
+            document.body.appendChild(notification);
+
+            // Auto-eliminar después de 5 segundos
+            setTimeout(() => {
+                if (notification && notification.parentNode) {
+                    notification.remove();
+                }
+            }, 5000);
+        }
+    </script>
+}

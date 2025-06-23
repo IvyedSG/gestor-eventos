@@ -31,6 +31,8 @@ builder.Services.AddHttpClient<InventoryService>();
 builder.Services.AddScoped<DashboardService>();
 builder.Services.AddScoped<ReservacionService>(); 
 builder.Services.AddScoped<PagoService>(); 
+builder.Services.AddHttpClient<ReportesService>();
+builder.Services.AddScoped<ExcelExportService>();
 
 builder.Services.AddAuthentication(options => 
 {

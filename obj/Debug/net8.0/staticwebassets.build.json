@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "8ZAc6mW0QXP+usUr4HGxu03y2v3RfiQgqxb5KOJdvm4=",
+  "Hash": "6kd4+9pPawadSJfbJKwZqoFeqEn9lKChYU/YYNFULkI=",
   "Source": "gestor-eventos",
   "BasePath": "_content/gestor-eventos",
   "Mode": "Default",
@@ -178,8 +178,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "hyxmtrkmjt",
-      "Integrity": "aZ4UQC9aCJ5LLrsS557zQh2nfwlDcHx5AtARec/pTqM=",
+      "Fingerprint": "lhlyfh34bv",
+      "Integrity": "SSSrfM+HUhJ4aiNEqlnnamDEydy0R7iMBCCjuwl9UkU=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/js/reservas.js"
@@ -2042,51 +2042,6 @@
       ]
     },
     {
-      "Route": "js/reservas.hyxmtrkmjt.js",
-      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas.js",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "67339"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/javascript"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"aZ4UQC9aCJ5LLrsS557zQh2nfwlDcHx5AtARec/pTqM=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Sat, 14 Jun 2025 04:20:56 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "hyxmtrkmjt"
-        },
-        {
-          "Name": "label",
-          "Value": "js/reservas.js"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-aZ4UQC9aCJ5LLrsS557zQh2nfwlDcHx5AtARec/pTqM="
-        }
-      ]
-    },
-    {
       "Route": "js/reservas.js",
       "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas.js",
       "Selectors": [],
@@ -2097,7 +2052,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "67339"
+          "Value": "68322"
         },
         {
           "Name": "Content-Type",
@@ -2105,11 +2060,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"aZ4UQC9aCJ5LLrsS557zQh2nfwlDcHx5AtARec/pTqM=\""
+          "Value": "\"SSSrfM+HUhJ4aiNEqlnnamDEydy0R7iMBCCjuwl9UkU=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 14 Jun 2025 04:20:56 GMT"
+          "Value": "Sat, 14 Jun 2025 04:33:00 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2119,7 +2074,52 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-aZ4UQC9aCJ5LLrsS557zQh2nfwlDcHx5AtARec/pTqM="
+          "Value": "sha256-SSSrfM+HUhJ4aiNEqlnnamDEydy0R7iMBCCjuwl9UkU="
+        }
+      ]
+    },
+    {
+      "Route": "js/reservas.lhlyfh34bv.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "68322"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"SSSrfM+HUhJ4aiNEqlnnamDEydy0R7iMBCCjuwl9UkU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 14 Jun 2025 04:33:00 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "lhlyfh34bv"
+        },
+        {
+          "Name": "label",
+          "Value": "js/reservas.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-SSSrfM+HUhJ4aiNEqlnnamDEydy0R7iMBCCjuwl9UkU="
         }
       ]
     },

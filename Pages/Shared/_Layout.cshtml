@@ -631,6 +631,12 @@
                         <span class="nav-text">Pagos</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="/Reportes" class="nav-link @(ViewContext.RouteData.Values["Page"]?.ToString() == "/Reportes/Index" ? "active" : "")">
+                        <i class="bi bi-bar-chart-line"></i>
+                        <span class="nav-text">Reportes</span>
+                    </a>
+                </li>
             </ul>
         </div>
         <!-- Botón de cerrar sesión separado al final del sidebar -->
@@ -743,54 +749,63 @@
  
         const userProfile = document.getElementById('userProfile');
         const profileDropdown = document.getElementById('profileDropdown');
-        
-        userProfile.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            profileDropdown.classList.toggle('show');
-            notificationsDropdown.classList.remove('show');
-        });
-        
- 
         const notificationsToggle = document.getElementById('notificationsToggle');
         const notificationsDropdown = document.getElementById('notificationsDropdown');
         
-        notificationsToggle.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            notificationsDropdown.classList.toggle('show');
-            profileDropdown.classList.remove('show');
-        });
+        // Solo agregar event listeners si los elementos existen
+        if (userProfile && profileDropdown) {
+            userProfile.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                profileDropdown.classList.toggle('show');
+                if (notificationsDropdown) {
+                    notificationsDropdown.classList.remove('show');
+                }
+            });
+        }
         
- 
+        if (notificationsToggle && notificationsDropdown) {
+            notificationsToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                notificationsDropdown.classList.toggle('show');
+                if (profileDropdown) {
+                    profileDropdown.classList.remove('show');
+                }
+            });
+        }
+        
+        // Event listener global para cerrar dropdowns
         document.addEventListener('click', function(e) {
-            if (!userProfile.contains(e.target) && !profileDropdown.contains(e.target)) {
+            if (userProfile && profileDropdown && !userProfile.contains(e.target) && !profileDropdown.contains(e.target)) {
                 profileDropdown.classList.remove('show');
             }
             
-            if (!notificationsToggle.contains(e.target) && !notificationsDropdown.contains(e.target)) {
+            if (notificationsToggle && notificationsDropdown && !notificationsToggle.contains(e.target) && !notificationsDropdown.contains(e.target)) {
                 notificationsDropdown.classList.remove('show');
             }
         });
         
- 
+        // Mobile toggle
         const mobileToggle = document.getElementById('mobileToggle');
         const sidebar = document.getElementById('sidebar');
         
-        mobileToggle.addEventListener('click', function() {
-            sidebar.classList.toggle('show');
-        });
-        
- 
-        document.addEventListener('click', function(e) {
-            if (window.innerWidth < 992) {
-                if (!sidebar.contains(e.target) && !mobileToggle.contains(e.target) && sidebar.classList.contains('show')) {
-                    sidebar.classList.remove('show');
+        if (mobileToggle && sidebar) {
+            mobileToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('show');
+            });
+            
+            // Cerrar sidebar en mobile cuando se hace click fuera
+            document.addEventListener('click', function(e) {
+                if (window.innerWidth < 992) {
+                    if (!sidebar.contains(e.target) && !mobileToggle.contains(e.target) && sidebar.classList.contains('show')) {
+                        sidebar.classList.remove('show');
+                    }
                 }
-            }
-        });
+            });
+        }
         
- 
+        // Actualizar título de página
         if (document.title) {
             const pageTitle = document.querySelector('.page-title');
             if (pageTitle) {
