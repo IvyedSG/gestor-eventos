@@ -17,8 +17,8 @@ namespace gestor_eventos.Pages.Pagos
         public List<PagoApi> Pagos { get; set; } = new List<PagoApi>();
         public List<ReservacionApi> Reservaciones { get; set; } = new List<ReservacionApi>();
         public bool HasError { get; set; }
-        public string ErrorMessage { get; set; }
-        public string SuccessMessage { get; set; }
+        public string ErrorMessage { get; set; } = string.Empty;
+        public string SuccessMessage { get; set; } = string.Empty;
 
         public IndexModel(ILogger<IndexModel> logger, PagoService pagoService)
         {
@@ -26,7 +26,7 @@ namespace gestor_eventos.Pages.Pagos
             _pagoService = pagoService;
         }
 
-        public async Task OnGetAsync(string success = null)
+        public async Task OnGetAsync(string? success = null)
         {
             _logger.LogInformation("Página de pagos cargada");
 
@@ -48,7 +48,6 @@ namespace gestor_eventos.Pages.Pagos
             }
         }
 
-        [HttpPost]
         public async Task<IActionResult> OnPostCreatePaymentAsync([FromBody] PagoCreateModel model)
         {
             try
@@ -86,7 +85,6 @@ namespace gestor_eventos.Pages.Pagos
             }
         }
 
-        [HttpPost]
         public async Task<IActionResult> OnPostUpdatePaymentAsync([FromQuery] string id, [FromBody] PagoUpdateModel model)
         {
             try
@@ -124,7 +122,6 @@ namespace gestor_eventos.Pages.Pagos
             }
         }
 
-        [HttpPost]
         public async Task<IActionResult> OnPostDeletePaymentAsync([FromQuery] string id)
         {
             try

@@ -5,9 +5,9 @@ namespace GestorEventos.Models.ApiModels
 {
     public class DashboardResponse
     {
-        public Metricas Metricas { get; set; }
-        public ProximasReservas ProximasReservas { get; set; }
-        public ActividadReciente ActividadReciente { get; set; }
+        public Metricas Metricas { get; set; } = new();
+        public ProximasReservas ProximasReservas { get; set; } = new();
+        public ActividadReciente ActividadReciente { get; set; } = new();
     }
 
     public class Metricas
@@ -28,11 +28,11 @@ namespace GestorEventos.Models.ApiModels
 
     public class ReservaResumen
     {
-        public string Id { get; set; }
-        public string NombreEvento { get; set; } 
-        public string FechaEvento { get; set; } 
-        public string HoraEvento { get; set; }  
-        public string Descripcion { get; set; }
+        public string Id { get; set; } = string.Empty;
+        public string NombreEvento { get; set; } = string.Empty; 
+        public string FechaEvento { get; set; } = string.Empty; 
+        public string HoraEvento { get; set; } = string.Empty;  
+        public string Descripcion { get; set; } = string.Empty;
         
  
         public DateTime Fecha => DateTime.TryParse(FechaEvento, out var date) ? date : DateTime.Now;
@@ -48,10 +48,10 @@ namespace GestorEventos.Models.ApiModels
 
     public class Actividad
     {
-        public string Id { get; set; }
-        public string Tipo { get; set; }
-        public string Nombre { get; set; }
+        public string Id { get; set; } = string.Empty;
+        public string Tipo { get; set; } = string.Empty;
+        public string Nombre { get; set; } = string.Empty;
         public DateTime FechaRegistro { get; set; }
-        public string TiempoTranscurrido { get; set; }
+        public string TiempoTranscurrido { get; set; } = string.Empty;
     }
 }

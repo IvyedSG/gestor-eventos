@@ -5,15 +5,15 @@ namespace gestor_eventos.Models
 {
     public class InventarioItemApi
     {
-        public string Id { get; set; }
-        public string Nombre { get; set; }
-        public string Descripcion { get; set; }
+        public string Id { get; set; } = string.Empty;
+        public string Nombre { get; set; } = string.Empty;
+        public string Descripcion { get; set; } = string.Empty;
         public int Stock { get; set; }
         public int StockDisponible { get; set; }
         public int ItemsEnUso { get; set; }
         
         // Propiedad original que coincide con la API
-        public string Preciobase { get; set; }
+        public string Preciobase { get; set; } = string.Empty;
         
         // Propiedad calculada para mantener compatibilidad con el código existente
         [JsonIgnore]

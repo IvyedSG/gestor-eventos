@@ -2,8 +2,8 @@ namespace gestor_eventos.Models.ApiModels
 {
     public class PagoCreateModel
     {
-        public string IdReserva { get; set; }
-        public string NombreTipoPago { get; set; }
-        public string Monto { get; set; }
+        public string IdReserva { get; set; } = string.Empty;
+        public string NombreTipoPago { get; set; } = string.Empty;
+        public string Monto { get; set; } = string.Empty;
     }
 }

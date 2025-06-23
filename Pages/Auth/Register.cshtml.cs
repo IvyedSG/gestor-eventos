@@ -20,13 +20,13 @@ namespace GestorEventos.Pages.Auth
         }
 
         [BindProperty]
-        public InputModel Input { get; set; }
+        public InputModel Input { get; set; } = new();
 
-        public string ErrorMessage { get; set; }
+        public string ErrorMessage { get; set; } = string.Empty;
         
  
         [TempData]
-        public string SuccessMessage { get; set; }
+        public string SuccessMessage { get; set; } = string.Empty;
 
         public class InputModel
         {

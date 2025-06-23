@@ -25,18 +25,18 @@ namespace gestor_eventos.Pages.Reservas
         public List<ServicioApi> Servicios { get; set; } = new List<ServicioApi>();
         
         public bool HasError { get; set; }
-        public string ErrorMessage { get; set; }
-        public string SuccessMessage { get; set; }
+        public string ErrorMessage { get; set; } = string.Empty;
+        public string SuccessMessage { get; set; } = string.Empty;
 
         // Agregar propiedades para los filtros
         [BindProperty(SupportsGet = true)]
-        public string SearchTerm { get; set; }
+        public string SearchTerm { get; set; } = string.Empty;
 
         [BindProperty(SupportsGet = true)]
-        public string StatusFilter { get; set; }
+        public string StatusFilter { get; set; } = string.Empty;
         
         [BindProperty(SupportsGet = true)]
-        public string DateFilter { get; set; }
+        public string DateFilter { get; set; } = string.Empty;
 
         public IndexModel(
             ILogger<IndexModel> logger,
@@ -52,7 +52,7 @@ namespace gestor_eventos.Pages.Reservas
             _pagoService = pagoService;
         }
 
-        public async Task OnGetAsync(string success = null)
+        public async Task OnGetAsync(string? success = null)
         {
             _logger.LogInformation("Página de reservas cargada");
 
@@ -80,7 +80,7 @@ namespace gestor_eventos.Pages.Reservas
         public ReservacionCreateModel NewReservacion { get; set; } = new ReservacionCreateModel();
 
         [HttpPost]
-        public async Task<IActionResult> OnPostAsync([FromBody]ReservacionCreateModel model = null)
+        public async Task<IActionResult> OnPostAsync([FromBody]ReservacionCreateModel? model = null)
         {
             try
             {

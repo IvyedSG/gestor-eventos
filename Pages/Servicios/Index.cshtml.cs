@@ -18,8 +18,8 @@ namespace gestor_eventos.Pages.Servicios
         public List<ServicioApi> Servicios { get; set; } = new List<ServicioApi>();
         public List<InventarioItemApi> InventarioItems { get; set; } = new List<InventarioItemApi>();
         public bool HasError { get; set; }
-        public string ErrorMessage { get; set; }
-        public string SuccessMessage { get; set; }
+        public string ErrorMessage { get; set; } = string.Empty;
+        public string SuccessMessage { get; set; } = string.Empty;
 
         public IndexModel(
             ILogger<IndexModel> logger, 
@@ -31,7 +31,7 @@ namespace gestor_eventos.Pages.Servicios
             _inventoryService = inventoryService;
         }
 
-        public async Task OnGetAsync(string success = null)
+        public async Task OnGetAsync(string? success = null)
         {
             _logger.LogInformation("Cargando página de servicios");
             

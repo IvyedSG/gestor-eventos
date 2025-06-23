@@ -24,13 +24,13 @@ namespace gestor_eventos.Pages.Clientes
         }
 
         [BindProperty(SupportsGet = true)]
-        public string SearchTerm { get; set; }
+        public string SearchTerm { get; set; } = string.Empty;
 
         [BindProperty(SupportsGet = true)]
-        public string TypeFilter { get; set; }
+        public string TypeFilter { get; set; } = string.Empty;
 
-        public List<Client> Clients { get; set; }
-        public string ErrorMessage { get; set; }
+        public List<Client> Clients { get; set; } = new();
+        public string ErrorMessage { get; set; } = string.Empty;
         public bool HasToken { get; set; }
 
         public async Task OnGetAsync()
@@ -103,13 +103,13 @@ namespace gestor_eventos.Pages.Clientes
 
         public class ClienteCreateRequest
         {
-            public string TipoCliente { get; set; }
-            public string Nombre { get; set; }
-            public string CorreoElectronico { get; set; }
-            public string Telefono { get; set; }
-            public string Direccion { get; set; }
-            public string Ruc { get; set; }
-            public string RazonSocial { get; set; }
+            public string TipoCliente { get; set; } = string.Empty;
+            public string Nombre { get; set; } = string.Empty;
+            public string CorreoElectronico { get; set; } = string.Empty;
+            public string Telefono { get; set; } = string.Empty;
+            public string Direccion { get; set; } = string.Empty;
+            public string Ruc { get; set; } = string.Empty;
+            public string RazonSocial { get; set; } = string.Empty;
         }
 
         [HttpPost]
@@ -178,14 +178,14 @@ namespace gestor_eventos.Pages.Clientes
 
         public class ClienteUpdateRequest
         {
-            public string Id { get; set; }
-            public string TipoCliente { get; set; }
-            public string Nombre { get; set; }
-            public string CorreoElectronico { get; set; }
-            public string Telefono { get; set; }
-            public string Direccion { get; set; }
-            public string Ruc { get; set; }
-            public string RazonSocial { get; set; }
+            public string Id { get; set; } = string.Empty;
+            public string TipoCliente { get; set; } = string.Empty;
+            public string Nombre { get; set; } = string.Empty;
+            public string CorreoElectronico { get; set; } = string.Empty;
+            public string Telefono { get; set; } = string.Empty;
+            public string Direccion { get; set; } = string.Empty;
+            public string Ruc { get; set; } = string.Empty;
+            public string RazonSocial { get; set; } = string.Empty;
         }
 
         [HttpPost]
@@ -254,7 +254,7 @@ namespace gestor_eventos.Pages.Clientes
 
         public class ClienteDeleteRequest
         {
-            public string Id { get; set; }
+            public string Id { get; set; } = string.Empty;
         }
 
         [HttpPost]
@@ -311,14 +311,14 @@ namespace gestor_eventos.Pages.Clientes
 
     public class Client
     {
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public string Type { get; set; }
-        public string Address { get; set; }
-        public string Ruc { get; set; }
-        public string RazonSocial { get; set; }
-        public string Phone { get; set; } // Agregamos esta propiedad
+        public string Id { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string Type { get; set; } = string.Empty;
+        public string Address { get; set; } = string.Empty;
+        public string Ruc { get; set; } = string.Empty;
+        public string RazonSocial { get; set; } = string.Empty;
+        public string Phone { get; set; } = string.Empty; // Agregamos esta propiedad
         public int EventCount { get; set; }
         public DateTime? LastReservation { get; set; }
     }

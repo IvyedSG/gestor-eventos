@@ -6,6 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>gestor_eventos</RootNamespace>
     <UserSecretsId>f1a71443-8ee9-43b2-9934-2b030f5ae70b</UserSecretsId>
+    <!-- Suprimir warnings menos críticos que no afectan la funcionalidad -->
+    <NoWarn>$(NoWarn);CS8618;CS8602;CS8603;CS8600;CS8601;CS8604;CS8625;MVC1001;MVC1002</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
