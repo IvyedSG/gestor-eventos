@@ -35,6 +35,13 @@
         position: relative;
         z-index: 1;
     }
+    
+    /* Estilo para canvas cuando no hay datos */
+    canvas.no-data {
+        background-color: #f9fafb;
+        border: 1px dashed #d1d5db;
+        border-radius: 0.375rem;
+    }
 </style>
 
 <div class="container-fluid">
@@ -590,6 +597,44 @@
             });
         }
 
+        // Función helper para mostrar mensaje de "no hay datos"
+        function showNoDataMessage(canvasId, message = 'No hay datos disponibles') {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Configurar el texto
+            ctx.font = '16px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillStyle = '#6B7280';
+            
+            // Calcular posición central
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            
+            // Dibujar icono simple (círculo con línea)
+            ctx.strokeStyle = '#D1D5DB';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(centerX, centerY - 40, 20, 0, 2 * Math.PI);
+            ctx.moveTo(centerX - 10, centerY - 40);
+            ctx.lineTo(centerX + 10, centerY - 40);
+            ctx.stroke();
+            
+            // Texto principal
+            ctx.fillStyle = '#374151';
+            ctx.font = 'bold 16px Arial';
+            ctx.fillText('Sin datos para mostrar', centerX, centerY - 10);
+            
+            // Texto secundario
+            ctx.fillStyle = '#6B7280';
+            ctx.font = '14px Arial';
+            ctx.fillText(message, centerX, centerY + 15);
+        }
+
         function updateSummaryCards() {
             console.log('Actualizando tarjetas de resumen con:', reportesData.resumenEjecutivo);
             
@@ -604,6 +649,12 @@
                 console.log('Tarjetas actualizadas correctamente');
             } else {
                 console.warn('No hay datos de resumen ejecutivo para actualizar las tarjetas');
+                
+                // Mostrar valores por defecto cuando no hay datos
+                document.getElementById('totalRevenue').textContent = 'S/0.00';
+                document.getElementById('totalEvents').textContent = '0';
+                document.getElementById('activeClients').textContent = '0';
+                document.getElementById('conversionRate').textContent = '0%';
             }
         }
 
@@ -651,6 +702,7 @@
             if (!reportesData.pagos) {
                 console.warn('Datos de pagos no disponibles para gráfico de ingresos');
                 hideChartLoading('revenueChart');
+                showNoDataMessage('revenueChart', 'No hay datos de pagos disponibles');
                 return;
             }
 
@@ -660,24 +712,13 @@
             }
 
             const tendenciaData = reportesData.pagos.tendenciaMensualIngresos || [];
+            
             console.log('Datos de tendencia mensual:', tendenciaData);
             
             if (tendenciaData.length === 0) {
                 console.warn('No hay datos de tendencia mensual');
                 hideChartLoading('revenueChart');
-                
-                // Mostrar mensaje en el canvas
-                const ctx = canvas.getContext('2d');
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.font = '16px Arial';
-                ctx.textAlign = 'center';
-                ctx.fillStyle = '#666';
-                ctx.fillText('Los datos de pagos están disponibles pero', canvas.width / 2, canvas.height / 2 - 30);
-                ctx.fillText('no hay tendencia mensual para mostrar', canvas.width / 2, canvas.height / 2 - 10);
-                ctx.fillText('Intente con un rango de fechas más amplio', canvas.width / 2, canvas.height / 2 + 10);
-                
-                // Mostrar datos disponibles para debug
-                console.log('Estructura completa de datos de pagos:', reportesData.pagos);
+                showNoDataMessage('revenueChart', 'No hay ingresos registrados en el período seleccionado');
                 return;
             }
             
@@ -739,9 +780,10 @@
                 return;
             }
             
-            if (!reportesData.reservas) {
+            if (!reportesData.reservas || !reportesData.reservas.tasaConversionEstado) {
                 console.warn('Datos de reservas no disponibles');
                 hideChartLoading('reservationStatusChart');
+                showNoDataMessage('reservationStatusChart', 'No hay datos de reservas disponibles');
                 return;
             }
 
@@ -751,6 +793,15 @@
 
             const tasaConversion = reportesData.reservas.tasaConversionEstado;
             console.log('Datos de estados:', tasaConversion);
+            
+            // Verificar si hay datos válidos
+            const totalReservas = tasaConversion.reservasPendientes + tasaConversion.reservasConfirmadas + tasaConversion.reservasCanceladas;
+            if (totalReservas === 0) {
+                console.warn('No hay reservas para mostrar');
+                hideChartLoading('reservationStatusChart');
+                showNoDataMessage('reservationStatusChart', 'No hay reservas registradas en el período seleccionado');
+                return;
+            }
             
             const data = [
                 tasaConversion.reservasPendientes,
@@ -799,6 +850,7 @@
             if (!reportesData.servicios) {
                 console.warn('Datos de servicios no disponibles');
                 hideChartLoading('popularServicesChart');
+                showNoDataMessage('popularServicesChart', 'No hay datos de servicios disponibles');
                 return;
             }
 
@@ -808,6 +860,13 @@
 
             const serviciosData = reportesData.servicios.serviciosMasFrecuentes || [];
             console.log('Datos de servicios:', serviciosData);
+            
+            if (serviciosData.length === 0) {
+                console.warn('No hay servicios para mostrar');
+                hideChartLoading('popularServicesChart');
+                showNoDataMessage('popularServicesChart', 'No hay servicios con reservas en el período seleccionado');
+                return;
+            }
             
             const labels = serviciosData.map(item => item.nombreServicio);
             const data = serviciosData.map(item => item.cantidadReservas);
@@ -850,6 +909,7 @@
             if (!reportesData.clientes) {
                 console.warn('Datos de clientes no disponibles');
                 hideChartLoading('clientGrowthChart');
+                showNoDataMessage('clientGrowthChart', 'No hay datos de clientes disponibles');
                 return;
             }
 
@@ -859,6 +919,13 @@
 
             const clientesData = reportesData.clientes.clientesNuevosPorMes || [];
             console.log('Datos de clientes nuevos:', clientesData);
+            
+            if (clientesData.length === 0) {
+                console.warn('No hay datos de crecimiento de clientes');
+                hideChartLoading('clientGrowthChart');
+                showNoDataMessage('clientGrowthChart', 'No hay registros de clientes nuevos en el período seleccionado');
+                return;
+            }
             
             const labels = clientesData.map(item => item.nombreMes);
             const data = clientesData.map(item => item.cantidadClientesNuevos);
@@ -904,6 +971,7 @@
             if (!reportesData.items) {
                 console.warn('Datos de items no disponibles');
                 hideChartLoading('topItemsChart');
+                showNoDataMessage('topItemsChart', 'No hay datos de inventario disponibles');
                 return;
             }
 
@@ -913,6 +981,13 @@
 
             const itemsData = reportesData.items.itemsMasUtilizados?.slice(0, 5) || [];
             console.log('Datos de items más utilizados:', itemsData);
+            
+            if (itemsData.length === 0) {
+                console.warn('No hay items utilizados para mostrar');
+                hideChartLoading('topItemsChart');
+                showNoDataMessage('topItemsChart', 'No hay items utilizados en el período seleccionado');
+                return;
+            }
             
             const labels = itemsData.map(item => item.nombreItem);
             const data = itemsData.map(item => item.totalCantidadUtilizada);
@@ -956,6 +1031,7 @@
             if (!reportesData.reservas) {
                 console.warn('Datos de reservas no disponibles para tipo de evento');
                 hideChartLoading('eventTypeProfitChart');
+                showNoDataMessage('eventTypeProfitChart', 'No hay datos de reservas disponibles');
                 return;
             }
 
@@ -965,6 +1041,13 @@
 
             const eventosData = reportesData.reservas.ingresosPromedioPorTipoEvento || [];
             console.log('Datos de ingresos por tipo de evento:', eventosData);
+            
+            if (eventosData.length === 0) {
+                console.warn('No hay datos de ingresos por tipo de evento');
+                hideChartLoading('eventTypeProfitChart');
+                showNoDataMessage('eventTypeProfitChart', 'No hay tipos de evento con ingresos en el período seleccionado');
+                return;
+            }
             
             const labels = eventosData.map(item => item.tipoEvento);
             const data = eventosData.map(item => item.ingresoTotal);
