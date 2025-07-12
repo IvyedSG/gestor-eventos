@@ -125,7 +125,7 @@
     </div>
 </div>
 
-<!-- Tabla de inventario (modificada para usar el nuevo modelo) -->
+<!-- Tabla de inventario -->
 <div class="card border-0 shadow-sm">
     <div class="card-body p-0">
         <div class="table-responsive">
@@ -226,7 +226,7 @@
     </div>
 </div>
 
-<!-- Paginación (versión corregida) -->
+<!-- Paginación -->
 @if (Model.InventoryItems != null && Model.InventoryItems.Any())
 {
     <div class="d-flex justify-content-between align-items-center mt-4">
@@ -273,7 +273,6 @@
                             <label for="itemName" class="form-label">Nombre del ítem <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="itemName" required>
                         </div>
-                        <!-- Eliminar el select de categoría -->
                         <div class="col-12">
                             <label for="itemStock" class="form-label">Stock inicial <span class="text-danger">*</span></label>
                             <input type="number" class="form-control" id="itemStock" min="0" required>
@@ -281,7 +280,7 @@
                         <div class="col-12">
                             <label for="itemPrice" class="form-label">Precio base <span class="text-danger">*</span></label>
                             <div class="input-group">
-                                <span class="input-group-text">$</span>
+                                <span class="input-group-text">S/</span>
                                 <input type="number" class="form-control" id="itemPrice" min="0" step="0.01" required>
                             </div>
                         </div>
@@ -320,7 +319,6 @@
                             <label for="editItemName" class="form-label">Nombre del ítem <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="editItemName" required>
                         </div>
-                        <!-- Eliminar el select de categoría -->
                         <div class="col-12">
                             <label for="editCurrentStock" class="form-label">Stock <span class="text-danger">*</span></label>
                             <input type="number" class="form-control" id="editCurrentStock" min="0" required>
@@ -328,7 +326,7 @@
                         <div class="col-12">
                             <label for="editItemPrice" class="form-label">Precio base <span class="text-danger">*</span></label>
                             <div class="input-group">
-                                <span class="input-group-text">$</span>
+                                <span class="input-group-text">S/</span>
                                 <input type="number" class="form-control" id="editItemPrice" min="0" step="0.01" required>
                             </div>
                         </div>
@@ -343,78 +341,6 @@
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-primary" id="saveEditItem">
                     <i class="bi bi-save me-1"></i>Guardar Cambios
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal para asignar a servicio/reserva -->
-<div class="modal fade" id="assignItemModal" tabindex="-1" aria-labelledby="assignItemModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-light">
-                <h5 class="modal-title" id="assignItemModalLabel">
-                    <i class="bi bi-calendar-plus me-2"></i>Asignar <span id="assignItemName"></span> a servicio
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="assignItemForm">
-                    <input type="hidden" id="assignItemId">
-                    <div class="mb-3">
-                        <label for="assignReservation" class="form-label">Reserva/Evento <span class="text-danger">*</span></label>
-                        <select class="form-select" id="assignReservation" required>
-                            <option value="">Seleccionar reserva</option>
-                            <option value="1">Boda de Carlos Rodríguez - 15/05/2025</option>
-                            <option value="2">Cumpleaños de María González - 22/04/2025</option>
-                            <option value="3">Conferencia Corporativa Empresa ABC - 05/05/2025</option>
-                            <option value="4">Graduación de Juan Pérez - 15/05/2025</option>
-                            <option value="5">Bautizo de Ana López - 30/04/2025</option>
-                        </select>
-                    </div>
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label for="assignQuantity" class="form-label">Cantidad <span class="text-danger">*</span></label>
-                            <input type="number" class="form-control" id="assignQuantity" min="1" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="assignPeriod" class="form-label">Período de alquiler <span class="text-danger">*</span></label>
-                            <select class="form-select" id="assignPeriod" required>
-                                <option value="daily">Por día</option>
-                                <option value="weekly">Por semana</option>
-                                <option value="monthly">Por mes</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="assignStartDate" class="form-label">Fecha inicio <span class="text-danger">*</span></label>
-                            <input type="date" class="form-control" id="assignStartDate" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="assignEndDate" class="form-label">Fecha fin <span class="text-danger">*</span></label>
-                            <input type="date" class="form-control" id="assignEndDate" required>
-                        </div>
-                        <div class="col-12">
-                            <div class="alert alert-info">
-                                <div class="d-flex align-items-center">
-                                    <i class="bi bi-info-circle-fill me-2"></i>
-                                    <div>
-                                        <strong>Stock disponible:</strong> <span id="availableStock">25</span> unidades
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <label for="assignNotes" class="form-label">Observaciones</label>
-                            <textarea class="form-control" id="assignNotes" rows="2"></textarea>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" id="saveAssignment">
-                    <i class="bi bi-check-circle me-1"></i>Confirmar Asignación
                 </button>
             </div>
         </div>
@@ -481,7 +407,6 @@
                             </div>
                         </div>
 
-
                         <hr class="my-3">
                         
                         <div>
@@ -512,345 +437,11 @@
         font-size: 1.2rem;
     }
     
-    .editable-field {
-        cursor: pointer;
-        position: relative;
-    }
-    
-    .editable-field:hover .editable-display {
-        background-color: rgba(0, 123, 255, 0.05);
-        border-radius: 4px;
-        padding: 2px 6px;
-    }
-    
-    .editable-field:hover .editable-display::after {
-        content: "\F4CA"; /* Código del ícono de lápiz en Bootstrap Icons */
-        font-family: "bootstrap-icons";
-        margin-left: 5px;
-        font-size: 0.8em;
-        opacity: 0.5;
-    }
-    
     .table-responsive {
         min-height: 300px;
     }
-    
-    .timeline-icon {
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    .timeline-item {
-        position: relative;
-        padding-bottom: 1rem;
-    }
-    
-    .timeline-item:not(:last-child)::after {
-        content: '';
-        position: absolute;
-        left: 15px;
-        top: 30px;
-        height: calc(100% - 15px);
-        width: 2px;
-        background-color: #e9ecef;
-    }
 </style>
 
-<script>
- 
-    function showAlert(message, type = 'info') {
-        const alertContainer = document.getElementById('alertContainer');
-        const alertDiv = document.createElement('div');
-        alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
-        alertDiv.innerHTML = `
-            ${message}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        `;
-        alertContainer.appendChild(alertDiv);
-        
- 
-        setTimeout(() => {
-            const alert = bootstrap.Alert.getOrCreateInstance(alertDiv);
-            alert.close();
-        }, 5000);
-    }
-    
- 
-    document.addEventListener('DOMContentLoaded', function() {
- 
-        document.getElementById('saveNewItem').addEventListener('click', function() {
-            const form = document.getElementById('newItemForm');
-            
-            if (!form.checkValidity()) {
-                form.reportValidity();
-                return;
-            }
-            
-            // Capture the correct data (removed categoria)
-            const nombre = document.getElementById('itemName').value;
-            const stock = parseInt(document.getElementById('itemStock').value) || 0;
-            const preciobase = document.getElementById('itemPrice').value || "0";
-            const descripcion = document.getElementById('itemDescription').value || "";
-            
-            // Create the object with the EXACT format expected by the API (no categoria)
-            const itemData = {
-                nombre: nombre,
-                descripcion: descripcion,
-                stock: stock,
-                preciobase: preciobase
-            };
-            
-            const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
-            
-            this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Guardando...';
-            this.disabled = true;
-            
-            fetch('?handler=SaveItem', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'RequestVerificationToken': token
-                },
-                body: JSON.stringify(itemData)
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then((data) => { // Fixed the missing parentheses here
-                if (data.success) {
-                    showAlert('Ítem creado correctamente', 'success');
-                    document.getElementById('newItemModal').querySelector('.btn-close').click();
-                    setTimeout(() => window.location.reload(), 1000);
-                } else {
-                    showAlert('Error: ' + data.message, 'danger');
-                }
-                
-                this.innerHTML = '<i class="bi bi-save me-1"></i>Guardar Ítem';
-                this.disabled = false;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                showAlert('Error al procesar la solicitud: ' + error.message, 'danger');
-                this.innerHTML = '<i class="bi bi-save me-1"></i>Guardar Ítem';
-                this.disabled = false;
-            });
-        });
-        
- 
-        document.querySelectorAll('.edit-item-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const itemId = this.dataset.id;
-                
-                const originalHTML = this.innerHTML;
-                this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
-                this.disabled = true;
-                
-                try {
-                    const row = this.closest('tr');
-                    if (!row) throw new Error('No se pudo encontrar la fila del ítem');
-                    
-                    const nombre = row.querySelector('[data-nombre]')?.getAttribute('data-nombre') || '';
-                    const descripcion = row.querySelector('[data-descripcion]')?.getAttribute('data-descripcion') || '';
-                    const stock = parseInt(row.querySelector('[data-stock]')?.getAttribute('data-stock') || '0');
-                    const precio = row.querySelector('[data-precio]')?.getAttribute('data-precio') || '0';
-                    
-                    this.innerHTML = originalHTML;
-                    this.disabled = false;
-                    
-                    document.getElementById('editItemId').value = itemId;
-                    document.getElementById('editItemName').value = nombre;
-                    document.getElementById('editCurrentStock').value = stock;
-                    document.getElementById('editItemPrice').value = precio;
-                    document.getElementById('editItemNotes').value = descripcion;
-                    
-                    const editModal = new bootstrap.Modal(document.getElementById('editItemModal'));
-                    editModal.show();
-                } catch (error) {
-                    this.innerHTML = originalHTML;
-                    this.disabled = false;
-                    console.error('Error:', error);
-                    showAlert('Error al cargar los datos del ítem: ' + error.message, 'danger');
-                }
-            });
-        });
-        
- 
-        document.querySelectorAll('.view-details-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const itemId = this.dataset.id;
-                const originalHTML = this.innerHTML;
-                this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
-                this.disabled = true;
-                
-                try {
-                    const row = this.closest('tr');
-                    if (!row) throw new Error('No se pudo encontrar la fila del ítem');
-                    
-                    const nombre = row.querySelector('[data-nombre]')?.getAttribute('data-nombre') || '';
-                    const descripcion = row.querySelector('[data-descripcion]')?.getAttribute('data-descripcion') || '';
-                    const stock = parseInt(row.querySelector('[data-stock]')?.getAttribute('data-stock') || '0');
-                    const stockDisponible = parseInt(row.querySelector('[data-stock-disponible]')?.getAttribute('data-stock-disponible') || '0');
-                    const itemsEnUso = parseInt(row.querySelector('[data-items-en-uso]')?.getAttribute('data-items-en-uso') || '0');
-                    
-                    this.innerHTML = originalHTML;
-                    this.disabled = false;
-                    
-                    document.getElementById('detailItemName').textContent = nombre;
-                    document.getElementById('detailItemStock').textContent = `${stock} unidades`;
-                    document.getElementById('detailItemStockDisponible').textContent = `${stockDisponible} unidades`;
-                    document.getElementById('detailItemsEnUso').textContent = `${itemsEnUso} unidades`;
-                    
-                    // Eliminar referencia a fecha
-                    document.getElementById('detailItemDescription').textContent = descripcion || 'Sin descripción disponible.';
-                    
-                    const detailsModal = new bootstrap.Modal(document.getElementById('itemDetailsModal'));
-                    detailsModal.show();
-                } catch (error) {
-                    this.innerHTML = originalHTML;
-                    this.disabled = false;
-                    console.error('Error:', error);
-                    showAlert('Error al cargar los detalles del ítem: ' + error.message, 'danger');
-                }
-            });
-        });
-        
- 
-        document.querySelectorAll('.delete-item-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const itemId = this.dataset.id;
-                const itemName = this.dataset.name;
-                
-                document.getElementById('deleteItemName').textContent = itemName;
-                const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
-                deleteModal.show();
-                
- 
-                document.getElementById('confirmDelete').dataset.id = itemId;
-            });
-        });
-        
- 
-        document.getElementById('saveEditItem').addEventListener('click', function() {
-            const form = document.getElementById('editItemForm');
-            
-            if (!form.checkValidity()) {
-                form.reportValidity();
-                return;
-            }
-            
-            const itemId = document.getElementById('editItemId').value;
-            
-            // Create the object with the EXACT format expected by the API (matching API spec)
-            const itemData = {
-                nombre: document.getElementById('editItemName').value,
-                descripcion: document.getElementById('editItemNotes').value || "",
-                stock: parseInt(document.getElementById('editCurrentStock').value) || 0,
-                preciobase: document.getElementById('editItemPrice').value || "0"
-            };
-            
-            const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
-            
-            this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Guardando...';
-            this.disabled = true;
-            
-            fetch(`?handler=UpdateItem&id=${itemId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'RequestVerificationToken': token
-                },
-                body: JSON.stringify(itemData)
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                this.innerHTML = '<i class="bi bi-save me-1"></i>Guardar Cambios';
-                this.disabled = false;
-                
-                if (data.success) {
-                    bootstrap.Modal.getInstance(document.getElementById('editItemModal')).hide();
-                    showAlert('Ítem actualizado correctamente', 'success');
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 1000);
-                } else {
-                    showAlert('Error al actualizar el ítem: ' + data.message, 'danger');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                this.innerHTML = '<i class="bi bi-save me-1"></i>Guardar Cambios';
-                this.disabled = false;
-                showAlert('Error al procesar la solicitud', 'danger');
-            });
-        });
-        
- 
-        document.getElementById('clearFilters').addEventListener('click', function() {
-            document.getElementById('filterForm').reset();
-            document.getElementById('filterForm').submit();
-        });
-    });
-    
- 
-    document.getElementById('confirmDelete').addEventListener('click', async function() {
- 
-        const itemId = this.dataset.id;
-        
- 
-        const originalHTML = this.innerHTML;
-        this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Eliminando...';
-        this.disabled = true;
-        
-        try {
- 
-            const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
-            
- 
-            const response = await fetch(`?handler=DeleteItem&id=${itemId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'RequestVerificationToken': token
-                }
-            });
-            
-            const data = await response.json();
-            
- 
-            this.innerHTML = originalHTML;
-            this.disabled = false;
-            
- 
-            bootstrap.Modal.getInstance(document.getElementById('deleteConfirmModal')).hide();
-            
-            if (data.success) {
- 
-                showAlert('Ítem eliminado correctamente', 'success');
-                
- 
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1000);
-            } else {
-                showAlert(`Error al eliminar el ítem: ${data.message}`, 'danger');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            this.innerHTML = originalHTML;
-            this.disabled = false;
-            showAlert('Error al procesar la solicitud de eliminación', 'danger');
-        }
-    });
-</script>
+@section Scripts {
+    <script type="module" src="~/js/inventario/main.js"></script>
+}

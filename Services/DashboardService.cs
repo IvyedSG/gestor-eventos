@@ -34,7 +34,6 @@ namespace gestor_eventos.Services
         {
             try
             {
- 
                 var token = _httpContextAccessor.HttpContext.User.FindFirst("AccessToken")?.Value;
                 
                 if (string.IsNullOrEmpty(token))
@@ -57,6 +56,7 @@ namespace gestor_eventos.Services
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
  
+                // Verificar que el endpoint coincida con tu API
                 var response = await _httpClient.GetAsync($"{_apiSettings.BaseUrl}/api/dashboard/{correo}");
                 
  
@@ -78,19 +78,9 @@ namespace gestor_eventos.Services
                 
                 return JsonSerializer.Deserialize<DashboardResponse>(content, options);
             }
-            catch (HttpRequestException ex)
-            {
-                _logger.LogError(ex, "Error de conexión al obtener datos del dashboard: {Message}", ex.Message);
-                return null;
-            }
-            catch (JsonException ex)
-            {
-                _logger.LogError(ex, "Error al procesar la respuesta del servidor: {Message}", ex.Message);
-                return null;
-            }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error inesperado: {Message}", ex.Message);
+                _logger.LogError(ex, "Error al obtener datos del dashboard para {Email}: {Message}", correo, ex.Message);
                 return null;
             }
         }

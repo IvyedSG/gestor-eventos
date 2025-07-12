@@ -38,6 +38,18 @@ namespace gestor_eventos.Pages.Reservas
         [BindProperty(SupportsGet = true)]
         public string DateFilter { get; set; } = string.Empty;
 
+        // Propiedades para paginación
+        [BindProperty(SupportsGet = true)]
+        public int CurrentPage { get; set; } = 1;
+
+        [BindProperty(SupportsGet = true)]
+        public int PageSize { get; set; } = 10;
+
+        public int TotalPages { get; set; }
+        public int TotalCount { get; set; }
+        public bool HasPreviousPage => CurrentPage > 1;
+        public bool HasNextPage => CurrentPage < TotalPages;
+
         public IndexModel(
             ILogger<IndexModel> logger,
             ReservacionService reservacionService,
@@ -89,6 +101,16 @@ namespace gestor_eventos.Pages.Reservas
                 // Use the model if provided, otherwise use NewReservacion
                 var reservationToCreate = model ?? NewReservacion;
                 
+                // *** NUEVA VALIDACIÓN: Verificar que la fecha del evento no sea en el pasado ***
+                if (DateTime.TryParse(reservationToCreate.FechaEjecucion, out DateTime fechaEvento))
+                {
+                    if (fechaEvento.Date < DateTime.Now.Date)
+                    {
+                        _logger.LogWarning("Intento de crear reserva con fecha pasada: {Fecha}", fechaEvento);
+                        return StatusCode(400, new { success = false, message = "No se puede crear una reserva con fecha anterior al día actual" });
+                    }
+                }
+                
                 _logger.LogInformation("Creando nueva reservación: {NombreEvento}", reservationToCreate.NombreEvento);
                 _logger.LogInformation("Datos de reservación: {@Reservation}", reservationToCreate);
                 
@@ -106,7 +128,9 @@ namespace gestor_eventos.Pages.Reservas
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error al procesar la solicitud: {Message}", ex.Message);
-                return StatusCode(500, new { success = false, message = $"Error: {ex.Message}" });
+                
+                // *** CAMBIO CRÍTICO: Devolver SIEMPRE el mensaje original de la excepción ***
+                return StatusCode(500, new { success = false, message = ex.Message });
             }
         }
 
@@ -164,6 +188,16 @@ namespace gestor_eventos.Pages.Reservas
                     return BadRequest(new { success = false, message = "No se proporcionaron datos para actualizar" });
                 }
 
+                // *** NUEVA VALIDACIÓN: Verificar que la fecha del evento no sea en el pasado ***
+                if (DateTime.TryParse(model.fechaEjecucion, out DateTime fechaEvento))
+                {
+                    if (fechaEvento.Date < DateTime.Now.Date)
+                    {
+                        _logger.LogWarning("Intento de actualizar reserva con fecha pasada: {Fecha}", fechaEvento);
+                        return StatusCode(400, new { success = false, message = "No se puede actualizar una reserva con fecha anterior al día actual" });
+                    }
+                }
+
                 // Log detallado para debugging
                 _logger.LogInformation("Datos recibidos para actualización: {@Model}", model);
 
@@ -194,7 +228,8 @@ namespace gestor_eventos.Pages.Reservas
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error al actualizar reserva: {Message}", ex.Message);
-                return StatusCode(500, new { success = false, message = $"Error detallado: {ex.Message}" });
+                
+                return StatusCode(500, new { success = false, message = ex.Message });
             }
         }
 
@@ -266,7 +301,22 @@ namespace gestor_eventos.Pages.Reservas
                 }
             }
 
-            Reservations = filteredReservations;
+            // Calcular totales para paginación
+            TotalCount = filteredReservations.Count;
+            TotalPages = (int)Math.Ceiling(TotalCount / (double)PageSize);
+
+            // Asegurar que CurrentPage esté dentro del rango válido
+            if (CurrentPage < 1) CurrentPage = 1;
+            if (CurrentPage > TotalPages && TotalPages > 0) CurrentPage = TotalPages;
+
+            // Aplicar paginación
+            Reservations = filteredReservations
+                .Skip((CurrentPage - 1) * PageSize)
+                .Take(PageSize)
+                .ToList();
+
+            _logger.LogInformation("Loaded {Count} reservations (Page {CurrentPage} of {TotalPages})", 
+                Reservations.Count, CurrentPage, TotalPages);
         }
 
         // Add this new handler method

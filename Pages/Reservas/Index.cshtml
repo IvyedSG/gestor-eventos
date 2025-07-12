@@ -35,6 +35,10 @@
     <div class="card shadow-sm mb-4">
         <div class="card-body">
             <form method="get" id="filterForm">
+                <!-- Campos ocultos para mantener la paginación -->
+                <input type="hidden" name="CurrentPage" value="1" />
+                <input type="hidden" name="PageSize" value="@Model.PageSize" />
+                
                 <div class="row g-3">
                     <div class="col-md-4">
                         <div class="input-group">
@@ -178,20 +182,102 @@
     @if (Model.Reservations != null && Model.Reservations.Any())
     {
         <div class="d-flex justify-content-between align-items-center mt-4">
-            <p class="text-muted">Mostrando <strong>@Model.Reservations.Count</strong> reservas</p>
-            <nav>
-                <ul class="pagination">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
-                    </li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Siguiente</a>
-                    </li>
-                </ul>
-            </nav>
+            <p class="text-muted">
+                Mostrando <strong>@((Model.CurrentPage - 1) * Model.PageSize + 1)</strong> 
+                a <strong>@(Math.Min(Model.CurrentPage * Model.PageSize, Model.TotalCount))</strong> 
+                de <strong>@Model.TotalCount</strong> reservas
+            </p>
+            
+            @if (Model.TotalPages > 1)
+            {
+                <nav aria-label="Paginación de reservas">
+                    <ul class="pagination">
+                        <!-- Botón Anterior -->
+                        <li class="page-item @(!Model.HasPreviousPage ? "disabled" : "")">
+                            @if (Model.HasPreviousPage)
+                            {
+                                <a class="page-link" href="?CurrentPage=@(Model.CurrentPage - 1)&PageSize=@Model.PageSize&SearchTerm=@Model.SearchTerm&StatusFilter=@Model.StatusFilter&DateFilter=@Model.DateFilter" tabindex="-1">
+                                    <i class="bi bi-chevron-left"></i> Anterior
+                                </a>
+                            }
+                            else
+                            {
+                                <span class="page-link" tabindex="-1" aria-disabled="true">
+                                    <i class="bi bi-chevron-left"></i> Anterior
+                                </span>
+                            }
+                        </li>
+
+                        <!-- Números de página -->
+                        @{
+                            int startPage = Math.Max(1, Model.CurrentPage - 2);
+                            int endPage = Math.Min(Model.TotalPages, Model.CurrentPage + 2);
+                        }
+
+                        @if (startPage > 1)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="?CurrentPage=1&PageSize=@Model.PageSize&SearchTerm=@Model.SearchTerm&StatusFilter=@Model.StatusFilter&DateFilter=@Model.DateFilter">1</a>
+                            </li>
+                            @if (startPage > 2)
+                            {
+                                <li class="page-item disabled">
+                                    <span class="page-link">...</span>
+                                </li>
+                            }
+                        }
+
+                        @for (int i = startPage; i <= endPage; i++)
+                        {
+                            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                                @if (i == Model.CurrentPage)
+                                {
+                                    <span class="page-link">@i</span>
+                                }
+                                else
+                                {
+                                    <a class="page-link" href="?CurrentPage=@i&PageSize=@Model.PageSize&SearchTerm=@Model.SearchTerm&StatusFilter=@Model.StatusFilter&DateFilter=@Model.DateFilter">@i</a>
+                                }
+                            </li>
+                        }
+
+                        @if (endPage < Model.TotalPages)
+                        {
+                            @if (endPage < Model.TotalPages - 1)
+                            {
+                                <li class="page-item disabled">
+                                    <span class="page-link">...</span>
+                                </li>
+                            }
+                            <li class="page-item">
+                                <a class="page-link" href="?CurrentPage=@Model.TotalPages&PageSize=@Model.PageSize&SearchTerm=@Model.SearchTerm&StatusFilter=@Model.StatusFilter&DateFilter=@Model.DateFilter">@Model.TotalPages</a>
+                            </li>
+                        }
+
+                        <!-- Botón Siguiente -->
+                        <li class="page-item @(!Model.HasNextPage ? "disabled" : "")">
+                            @if (Model.HasNextPage)
+                            {
+                                <a class="page-link" href="?CurrentPage=@(Model.CurrentPage + 1)&PageSize=@Model.PageSize&SearchTerm=@Model.SearchTerm&StatusFilter=@Model.StatusFilter&DateFilter=@Model.DateFilter">
+                                    Siguiente <i class="bi bi-chevron-right"></i>
+                                </a>
+                            }
+                            else
+                            {
+                                <span class="page-link" aria-disabled="true">
+                                    Siguiente <i class="bi bi-chevron-right"></i>
+                                </span>
+                            }
+                        </li>
+                    </ul>
+                </nav>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-4">
+            <p class="text-muted mb-0">No se encontraron reservas que coincidan con los criterios de búsqueda.</p>
         </div>
     }
 </div>
@@ -203,34 +289,6 @@
 <partial name="_ReciboModal" />
 
 @section Scripts {
-    <script src="~/js/reservas.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Reemplazar el código existente para los botones de eliminar con esta versión:
-            document.querySelectorAll('.delete-reservation').forEach(button => {
-                button.addEventListener('click', function(e) {
-                    // Importante: prevenir el comportamiento por defecto
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    const id = this.getAttribute('data-id');
-                    const name = this.getAttribute('data-name');
-                    const fecha = this.getAttribute('data-fecha');
-                    console.log('Delete button clicked for reservation:', id);
-                    
-                    // Usar setTimeout para desacoplar la ejecución del valor de retorno
-                    setTimeout(() => {
-                        if (typeof window.openDeleteReservationModal === 'function') {
-                            window.openDeleteReservationModal(id, name, fecha);
-                        } else {
-                            console.error('Function openDeleteReservationModal not defined');
-                        }
-                    }, 0);
-                    
-                    // Devolver false para evitar propagación
-                    return false;
-                });
-            });
-        });
-    </script>
+    <script type="module" src="~/js/reservas/main.js"></script>
+    <script src="~/js/recibo-reserva.js"></script>
 }

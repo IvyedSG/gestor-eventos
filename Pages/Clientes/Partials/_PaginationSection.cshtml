@@ -1,0 +1,104 @@
+@model gestor_eventos.Pages.Clientes.IndexModel
+
+<!-- Paginación -->
+@if (Model.Clients != null && Model.Clients.Any())
+{
+    <div class="d-flex justify-content-between align-items-center mt-4">
+        <p class="text-muted">
+            Mostrando <strong>@((Model.CurrentPage - 1) * Model.PageSize + 1)</strong> 
+            a <strong>@(Math.Min(Model.CurrentPage * Model.PageSize, Model.TotalCount))</strong> 
+            de <strong>@Model.TotalCount</strong> clientes
+        </p>
+        
+        @if (Model.TotalPages > 1)
+        {
+            <nav aria-label="Paginación de clientes">
+                <ul class="pagination">
+                    <!-- Botón Anterior -->
+                    <li class="page-item @(!Model.HasPreviousPage ? "disabled" : "")">
+                        @if (Model.HasPreviousPage)
+                        {
+                            <a class="page-link" href="?CurrentPage=@(Model.CurrentPage - 1)&PageSize=@Model.PageSize&SearchTerm=@Model.SearchTerm&TypeFilter=@Model.TypeFilter" tabindex="-1">
+                                <i class="bi bi-chevron-left"></i> Anterior
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="page-link" tabindex="-1" aria-disabled="true">
+                                <i class="bi bi-chevron-left"></i> Anterior
+                            </span>
+                        }
+                    </li>
+
+                    <!-- Números de página -->
+                    @{
+                        int startPage = Math.Max(1, Model.CurrentPage - 2);
+                        int endPage = Math.Min(Model.TotalPages, Model.CurrentPage + 2);
+                    }
+
+                    @if (startPage > 1)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="?CurrentPage=1&PageSize=@Model.PageSize&SearchTerm=@Model.SearchTerm&TypeFilter=@Model.TypeFilter">1</a>
+                        </li>
+                        @if (startPage > 2)
+                        {
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                        }
+                    }
+
+                    @for (int i = startPage; i <= endPage; i++)
+                    {
+                        <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                            @if (i == Model.CurrentPage)
+                            {
+                                <span class="page-link">@i</span>
+                            }
+                            else
+                            {
+                                <a class="page-link" href="?CurrentPage=@i&PageSize=@Model.PageSize&SearchTerm=@Model.SearchTerm&TypeFilter=@Model.TypeFilter">@i</a>
+                            }
+                        </li>
+                    }
+
+                    @if (endPage < Model.TotalPages)
+                    {
+                        @if (endPage < Model.TotalPages - 1)
+                        {
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                        }
+                        <li class="page-item">
+                            <a class="page-link" href="?CurrentPage=@Model.TotalPages&PageSize=@Model.PageSize&SearchTerm=@Model.SearchTerm&TypeFilter=@Model.TypeFilter">@Model.TotalPages</a>
+                        </li>
+                    }
+
+                    <!-- Botón Siguiente -->
+                    <li class="page-item @(!Model.HasNextPage ? "disabled" : "")">
+                        @if (Model.HasNextPage)
+                        {
+                            <a class="page-link" href="?CurrentPage=@(Model.CurrentPage + 1)&PageSize=@Model.PageSize&SearchTerm=@Model.SearchTerm&TypeFilter=@Model.TypeFilter">
+                                Siguiente <i class="bi bi-chevron-right"></i>
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="page-link" aria-disabled="true">
+                                Siguiente <i class="bi bi-chevron-right"></i>
+                            </span>
+                        }
+                    </li>
+                </ul>
+            </nav>
+        }
+    </div>
+}
+else
+{
+    <div class="text-center py-4">
+        <p class="text-muted mb-0">No se encontraron clientes que coincidan con los criterios de búsqueda.</p>
+    </div>
+}

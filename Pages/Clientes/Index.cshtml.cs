@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using GestorEventos.Services;
 using GestorEventos.Models.ApiModels;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
+using System.ComponentModel.DataAnnotations;
 
 namespace gestor_eventos.Pages.Clientes
 {
@@ -29,6 +31,18 @@ namespace gestor_eventos.Pages.Clientes
         [BindProperty(SupportsGet = true)]
         public string TypeFilter { get; set; } = string.Empty;
 
+        // Propiedades para paginación
+        [BindProperty(SupportsGet = true)]
+        public int CurrentPage { get; set; } = 1;
+
+        [BindProperty(SupportsGet = true)]
+        public int PageSize { get; set; } = 10;
+
+        public int TotalPages { get; set; }
+        public int TotalCount { get; set; }
+        public bool HasPreviousPage => CurrentPage > 1;
+        public bool HasNextPage => CurrentPage < TotalPages;
+
         public List<Client> Clients { get; set; } = new();
         public string ErrorMessage { get; set; } = string.Empty;
         public bool HasToken { get; set; }
@@ -39,7 +53,7 @@ namespace gestor_eventos.Pages.Clientes
             {
                 var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
                 
- 
+                // Verificar token
                 HasToken = User.FindFirst("AccessToken") != null;
                 
                 if (string.IsNullOrEmpty(userEmail))
@@ -56,15 +70,16 @@ namespace gestor_eventos.Pages.Clientes
                     return;
                 }
 
- 
+                // Obtener todos los clientes
                 var apiClients = await _clienteService.GetClientesByUsuarioAsync(userEmail);
                 
                 if (apiClients.Count == 0)
                 {
                     _logger.LogInformation("No se encontraron clientes para el usuario {Email}", userEmail);
                 }
-                
-                Clients = apiClients.Select(c => new Client
+
+                // Convertir a modelo local
+                var allClients = apiClients.Select(c => new Client
                 {
                     Id = c.Id,
                     Name = c.NombreUsuario,
@@ -73,25 +88,45 @@ namespace gestor_eventos.Pages.Clientes
                     Type = c.TipoCliente == "INDIVIDUAL" ? "Individual" : "Empresa",
                     Ruc = c.Ruc,
                     RazonSocial = c.RazonSocial,
-                    Phone = c.Telefono, // Updated to use the telefono property from API
+                    Phone = c.Telefono,
                     EventCount = c.TotalReservas,
                     LastReservation = c.UltimaFechaReserva
                 }).ToList();
 
- 
+                // Aplicar filtros
+                var filteredClients = allClients;
+
                 if (!string.IsNullOrEmpty(SearchTerm))
                 {
-                    Clients = Clients.Where(c => 
+                    filteredClients = filteredClients.Where(c => 
                         c.Name.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) || 
                         c.Email.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ||
+                        (c.Phone != null && c.Phone.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)) ||
                         (c.Address != null && c.Address.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase))
                     ).ToList();
                 }
 
                 if (!string.IsNullOrEmpty(TypeFilter))
                 {
-                    Clients = Clients.Where(c => c.Type.Equals(TypeFilter, StringComparison.OrdinalIgnoreCase)).ToList();
+                    filteredClients = filteredClients.Where(c => c.Type.Equals(TypeFilter, StringComparison.OrdinalIgnoreCase)).ToList();
                 }
+
+                // Calcular totales para paginación
+                TotalCount = filteredClients.Count;
+                TotalPages = (int)Math.Ceiling(TotalCount / (double)PageSize);
+
+                // Asegurar que CurrentPage esté dentro del rango válido
+                if (CurrentPage < 1) CurrentPage = 1;
+                if (CurrentPage > TotalPages && TotalPages > 0) CurrentPage = TotalPages;
+
+                // Aplicar paginación
+                Clients = filteredClients
+                    .Skip((CurrentPage - 1) * PageSize)
+                    .Take(PageSize)
+                    .ToList();
+
+                _logger.LogInformation("Loaded {Count} clients (Page {CurrentPage} of {TotalPages})", 
+                    Clients.Count, CurrentPage, TotalPages);
             }
             catch (Exception ex)
             {
@@ -138,10 +173,11 @@ namespace gestor_eventos.Pages.Clientes
                     return new JsonResult(new { success = false, message = "No se ha podido autenticar con el API. Por favor, vuelve a iniciar sesión." });
                 }
 
-                if (string.IsNullOrEmpty(request.Nombre) || string.IsNullOrEmpty(request.CorreoElectronico) || 
-                    string.IsNullOrEmpty(request.Telefono) || string.IsNullOrEmpty(request.TipoCliente))
+                // *** VALIDACIONES MEJORADAS ***
+                var validationResult = ValidateClientData(request);
+                if (!validationResult.IsValid)
                 {
-                    return new JsonResult(new { success = false, message = "Los campos obligatorios no pueden estar vacíos" });
+                    return new JsonResult(new { success = false, message = validationResult.ErrorMessage });
                 }
 
                 var clienteDto = new GestorEventos.Models.ApiModels.ClienteCreateDto
@@ -214,10 +250,11 @@ namespace gestor_eventos.Pages.Clientes
                     return new JsonResult(new { success = false, message = "No se ha podido autenticar con el API. Por favor, vuelve a iniciar sesión." });
                 }
 
-                if (string.IsNullOrEmpty(request.Nombre) || string.IsNullOrEmpty(request.CorreoElectronico) || 
-                    string.IsNullOrEmpty(request.Telefono) || string.IsNullOrEmpty(request.TipoCliente))
+                // *** VALIDACIONES MEJORADAS ***
+                var validationResult = ValidateClientData(request);
+                if (!validationResult.IsValid)
                 {
-                    return new JsonResult(new { success = false, message = "Los campos obligatorios no pueden estar vacíos" });
+                    return new JsonResult(new { success = false, message = validationResult.ErrorMessage });
                 }
 
                 var clienteDto = new GestorEventos.Models.ApiModels.ClienteCreateDto
@@ -306,6 +343,118 @@ namespace gestor_eventos.Pages.Clientes
                 _logger.LogError(ex, "Error al eliminar cliente");
                 return new JsonResult(new { success = false, message = "Ocurrió un error al procesar la solicitud" });
             }
+        }
+
+        private (bool IsValid, string ErrorMessage) ValidateClientData(ClienteCreateRequest request)
+        {
+            // Validar campos obligatorios
+            if (string.IsNullOrEmpty(request.Nombre?.Trim()))
+            {
+                return (false, "El nombre es obligatorio");
+            }
+
+            if (string.IsNullOrEmpty(request.CorreoElectronico?.Trim()))
+            {
+                return (false, "El correo electrónico es obligatorio");
+            }
+
+            if (string.IsNullOrEmpty(request.Telefono?.Trim()))
+            {
+                return (false, "El teléfono es obligatorio");
+            }
+
+            if (string.IsNullOrEmpty(request.TipoCliente))
+            {
+                return (false, "El tipo de cliente es obligatorio");
+            }
+
+            // Validar formato de correo electrónico
+            if (!IsValidEmail(request.CorreoElectronico))
+            {
+                return (false, "El formato del correo electrónico no es válido");
+            }
+
+            // Validar formato de teléfono (9 dígitos)
+            if (!IsValidPhone(request.Telefono))
+            {
+                return (false, "El teléfono debe contener exactamente 9 dígitos");
+            }
+
+            // Validaciones específicas para empresas
+            if (request.TipoCliente == "EMPRESA")
+            {
+                if (string.IsNullOrEmpty(request.Ruc?.Trim()))
+                {
+                    return (false, "El RUC es obligatorio para empresas");
+                }
+
+                if (string.IsNullOrEmpty(request.RazonSocial?.Trim()))
+                {
+                    return (false, "La razón social es obligatoria para empresas");
+                }
+
+                if (!IsValidRuc(request.Ruc))
+                {
+                    return (false, "El RUC debe contener exactamente 11 dígitos");
+                }
+            }
+
+            return (true, string.Empty);
+        }
+
+        // *** SOBRECARGA PARA ClienteUpdateRequest ***
+        private (bool IsValid, string ErrorMessage) ValidateClientData(ClienteUpdateRequest request)
+        {
+            // Crear un objeto ClienteCreateRequest para reutilizar la validación
+            var createRequest = new ClienteCreateRequest
+            {
+                TipoCliente = request.TipoCliente,
+                Nombre = request.Nombre,
+                CorreoElectronico = request.CorreoElectronico,
+                Telefono = request.Telefono,
+                Direccion = request.Direccion,
+                Ruc = request.Ruc,
+                RazonSocial = request.RazonSocial
+            };
+
+            return ValidateClientData(createRequest);
+        }
+
+        // *** FUNCIONES DE VALIDACIÓN ***
+        private bool IsValidEmail(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                return false;
+
+            try
+            {
+                var emailAttribute = new EmailAddressAttribute();
+                return emailAttribute.IsValid(email);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private bool IsValidPhone(string phone)
+        {
+            if (string.IsNullOrWhiteSpace(phone))
+                return false;
+
+            // Solo números, exactamente 9 dígitos
+            var phoneRegex = new Regex(@"^[0-9]{9}$");
+            return phoneRegex.IsMatch(phone);
+        }
+
+        private bool IsValidRuc(string ruc)
+        {
+            if (string.IsNullOrWhiteSpace(ruc))
+                return false;
+
+            // Solo números, exactamente 11 dígitos
+            var rucRegex = new Regex(@"^[0-9]{11}$");
+            return rucRegex.IsMatch(ruc);
         }
     }
 

@@ -109,7 +109,7 @@ namespace gestor_eventos.Services
                     if (string.IsNullOrEmpty(token))
                     {
                         _logger.LogWarning("Token no encontrado en las cookies ni en las claims");
-                        return null;
+                        throw new UnauthorizedAccessException("Token de autenticación no encontrado");
                     }
                 }
                 
@@ -132,7 +132,35 @@ namespace gestor_eventos.Services
                     var errorContent = await response.Content.ReadAsStringAsync();
                     _logger.LogWarning("Error al crear reservación. Código: {StatusCode}, Mensaje: {Message}, Detalle: {Detail}", 
                         (int)response.StatusCode, response.ReasonPhrase, errorContent);
-                    return null;
+            
+                    // *** CAMBIO IMPORTANTE: Propagar la excepción con el mensaje completo ***
+                    string errorMessage = $"Error del servidor: {errorContent}";
+            
+                    // Intentar extraer el mensaje de error del JSON de respuesta
+                    try
+                    {
+                        var errorResponse = JsonSerializer.Deserialize<JsonElement>(errorContent);
+                        if (errorResponse.TryGetProperty("message", out var messageElement))
+                        {
+                            errorMessage = messageElement.GetString();
+                        }
+                        else if (errorResponse.TryGetProperty("error", out var errorElement))
+                        {
+                            errorMessage = errorElement.GetString();
+                        }
+                        else if (errorResponse.TryGetProperty("detail", out var detailElement))
+                        {
+                            errorMessage = detailElement.GetString();
+                        }
+                    }
+                    catch (JsonException)
+                    {
+                        // Si no es JSON válido, usar el contenido completo
+                        errorMessage = errorContent;
+                    }
+            
+                    // Propagar la excepción con el mensaje detallado
+                    throw new InvalidOperationException(errorMessage);
                 }
                 
                 var responseContent = await response.Content.ReadAsStringAsync();
@@ -151,7 +179,9 @@ namespace gestor_eventos.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error al crear reservación: {Message}", ex.Message);
-                return null;
+                
+                // *** CAMBIO IMPORTANTE: Re-lanzar la excepción original ***
+                throw; // Esto preserva el mensaje original de la excepción
             }
         }
 
@@ -215,7 +245,7 @@ namespace gestor_eventos.Services
                     if (string.IsNullOrEmpty(token))
                     {
                         _logger.LogWarning("Token no encontrado");
-                        return null;
+                        throw new UnauthorizedAccessException("Token de autenticación no encontrado");
                     }
                 }
                 
@@ -238,7 +268,35 @@ namespace gestor_eventos.Services
                 {
                     _logger.LogWarning("Error al actualizar reserva. Status: {Status}, Detalle: {Detail}", 
                         (int)response.StatusCode, responseContent);
-                    return null;
+            
+                    // *** CAMBIO IMPORTANTE: Propagar la excepción con el mensaje completo ***
+                    string errorMessage = $"Error del servidor: {responseContent}";
+            
+                    // Intentar extraer el mensaje de error del JSON de respuesta
+                    try
+                    {
+                        var errorResponse = JsonSerializer.Deserialize<JsonElement>(responseContent);
+                        if (errorResponse.TryGetProperty("message", out var messageElement))
+                        {
+                            errorMessage = messageElement.GetString();
+                        }
+                        else if (errorResponse.TryGetProperty("error", out var errorElement))
+                        {
+                            errorMessage = errorElement.GetString();
+                        }
+                        else if (errorResponse.TryGetProperty("detail", out var detailElement))
+                        {
+                            errorMessage = detailElement.GetString();
+                        }
+                    }
+                    catch (JsonException)
+                    {
+                        // Si no es JSON válido, usar el contenido completo
+                        errorMessage = responseContent;
+                    }
+            
+                    // Propagar la excepción con el mensaje detallado
+                    throw new InvalidOperationException(errorMessage);
                 }
                 
                 var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
@@ -249,7 +307,9 @@ namespace gestor_eventos.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error al actualizar reservación: {Message}", ex.Message);
-                return null;
+                
+                // *** CAMBIO IMPORTANTE: Re-lanzar la excepción original ***
+                throw; // Esto preserva el mensaje original de la excepción
             }
         }
 

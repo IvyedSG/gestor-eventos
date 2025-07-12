@@ -1,0 +1,26 @@
+@model gestor_eventos.Pages.Clientes.IndexModel
+
+<!-- Modal para Confirmar Eliminación de Cliente -->
+<div class="modal fade" id="deleteClientModal" tabindex="-1" aria-labelledby="deleteClientModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="deleteClientModalLabel">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>Confirmar Eliminación
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="deleteClientId">
+                <p>¿Está seguro que desea eliminar al cliente <strong id="deleteClientName"></strong>?</p>
+                <p class="mb-0 text-danger"><i class="bi bi-exclamation-circle me-2"></i>Esta acción no se puede deshacer.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteClient">
+                    <i class="bi bi-trash me-1"></i>Eliminar Cliente
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using gestor_eventos.Models.ApiModels;
 using gestor_eventos.Services;
@@ -20,6 +21,28 @@ namespace gestor_eventos.Pages.Pagos
         public string ErrorMessage { get; set; } = string.Empty;
         public string SuccessMessage { get; set; } = string.Empty;
 
+        // Propiedades para filtros
+        [BindProperty(SupportsGet = true)]
+        public string SearchTerm { get; set; } = string.Empty;
+
+        [BindProperty(SupportsGet = true)]
+        public string TypeFilter { get; set; } = string.Empty;
+
+        [BindProperty(SupportsGet = true)]
+        public string DateFilter { get; set; } = string.Empty;
+
+        // Propiedades para paginación
+        [BindProperty(SupportsGet = true)]
+        public int CurrentPage { get; set; } = 1;
+
+        [BindProperty(SupportsGet = true)]
+        public int PageSize { get; set; } = 10;
+
+        public int TotalPages { get; set; }
+        public int TotalCount { get; set; }
+        public bool HasPreviousPage => CurrentPage > 1;
+        public bool HasNextPage => CurrentPage < TotalPages;
+
         public IndexModel(ILogger<IndexModel> logger, PagoService pagoService)
         {
             _logger = logger;
@@ -37,8 +60,7 @@ namespace gestor_eventos.Pages.Pagos
 
             try
             {
-                Pagos = await _pagoService.GetAllPagosAsync();
-                Reservaciones = await _pagoService.GetAllReservacionesAsync();
+                await LoadData();
             }
             catch (Exception ex)
             {
@@ -46,6 +68,58 @@ namespace gestor_eventos.Pages.Pagos
                 ErrorMessage = "Error al cargar los datos: " + ex.Message;
                 _logger.LogError(ex, "Error al cargar datos de pagos");
             }
+        }
+
+        private async Task LoadData()
+        {
+            var allPagos = await _pagoService.GetAllPagosAsync();
+            Reservaciones = await _pagoService.GetAllReservacionesAsync();
+
+            // Aplicar filtros
+            var filteredPagos = allPagos;
+
+            if (!string.IsNullOrEmpty(SearchTerm))
+            {
+                filteredPagos = filteredPagos.Where(p =>
+                    (p.NombreReserva?.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                    (p.Id?.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                    (p.TipoPagoNombre?.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ?? false)
+                ).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(TypeFilter))
+            {
+                filteredPagos = filteredPagos.Where(p =>
+                    p.TipoPagoNombre?.Equals(TypeFilter, StringComparison.OrdinalIgnoreCase) ?? false
+                ).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(DateFilter))
+            {
+                if (DateTime.TryParse(DateFilter, out DateTime dateValue))
+                {
+                    filteredPagos = filteredPagos.Where(p =>
+                        p.FechaPago.Date == dateValue.Date
+                    ).ToList();
+                }
+            }
+
+            // Calcular totales para paginación
+            TotalCount = filteredPagos.Count;
+            TotalPages = (int)Math.Ceiling(TotalCount / (double)PageSize);
+
+            // Asegurar que CurrentPage esté dentro del rango válido
+            if (CurrentPage < 1) CurrentPage = 1;
+            if (CurrentPage > TotalPages && TotalPages > 0) CurrentPage = TotalPages;
+
+            // Aplicar paginación
+            Pagos = filteredPagos
+                .Skip((CurrentPage - 1) * PageSize)
+                .Take(PageSize)
+                .ToList();
+
+            _logger.LogInformation("Loaded {Count} payments (Page {CurrentPage} of {TotalPages})", 
+                Pagos.Count, CurrentPage, TotalPages);
         }
 
         public async Task<IActionResult> OnPostCreatePaymentAsync([FromBody] PagoCreateModel model)

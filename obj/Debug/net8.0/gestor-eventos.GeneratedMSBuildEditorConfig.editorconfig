@@ -24,14 +24,6 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQXV0aC9BY2Nlc3NEZW5pZWQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/sagox16/Documents/Importants/gestor-eventos/Pages/Auth/ExternalLogin.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQXV0aC9FeHRlcm5hbExvZ2luLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[/Users/sagox16/Documents/Importants/gestor-eventos/Pages/Auth/ExternalLoginCallback.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQXV0aC9FeHRlcm5hbExvZ2luQ2FsbGJhY2suY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
 [/Users/sagox16/Documents/Importants/gestor-eventos/Pages/Auth/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQXV0aC9Mb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -46,6 +38,34 @@ build_metadata.AdditionalFiles.CssScope =
 
 [/Users/sagox16/Documents/Importants/gestor-eventos/Pages/Clientes/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQ2xpZW50ZXMvSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/sagox16/Documents/Importants/gestor-eventos/Pages/Clientes/Partials/_ClientsTable.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQ2xpZW50ZXMvUGFydGlhbHMvX0NsaWVudHNUYWJsZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/sagox16/Documents/Importants/gestor-eventos/Pages/Clientes/Partials/_DeleteClientModal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQ2xpZW50ZXMvUGFydGlhbHMvX0RlbGV0ZUNsaWVudE1vZGFsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/sagox16/Documents/Importants/gestor-eventos/Pages/Clientes/Partials/_EditClientModal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQ2xpZW50ZXMvUGFydGlhbHMvX0VkaXRDbGllbnRNb2RhbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/sagox16/Documents/Importants/gestor-eventos/Pages/Clientes/Partials/_FiltersSection.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQ2xpZW50ZXMvUGFydGlhbHMvX0ZpbHRlcnNTZWN0aW9uLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/sagox16/Documents/Importants/gestor-eventos/Pages/Clientes/Partials/_NewClientModal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQ2xpZW50ZXMvUGFydGlhbHMvX05ld0NsaWVudE1vZGFsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/sagox16/Documents/Importants/gestor-eventos/Pages/Clientes/Partials/_PaginationSection.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQ2xpZW50ZXMvUGFydGlhbHMvX1BhZ2luYXRpb25TZWN0aW9uLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/sagox16/Documents/Importants/gestor-eventos/Pages/Clientes/Partials/_ViewClientModal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQ2xpZW50ZXMvUGFydGlhbHMvX1ZpZXdDbGllbnRNb2RhbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/sagox16/Documents/Importants/gestor-eventos/Pages/Dashboard/Index.cshtml]

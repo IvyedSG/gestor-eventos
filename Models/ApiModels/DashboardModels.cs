@@ -30,14 +30,12 @@ namespace GestorEventos.Models.ApiModels
     {
         public string Id { get; set; } = string.Empty;
         public string NombreEvento { get; set; } = string.Empty; 
-        public string FechaEvento { get; set; } = string.Empty; 
-        public string HoraEvento { get; set; } = string.Empty;  
+        public string FechaEjecucion { get; set; } = string.Empty; // Cambiado de FechaEvento
         public string Descripcion { get; set; } = string.Empty;
+        public string Estado { get; set; } = string.Empty; // Agregado
         
- 
-        public DateTime Fecha => DateTime.TryParse(FechaEvento, out var date) ? date : DateTime.Now;
-        public TimeSpan HoraInicio => TimeSpan.TryParse(HoraEvento, out var time) ? time : TimeSpan.Zero;
-        public TimeSpan HoraFin => HoraInicio.Add(TimeSpan.FromHours(2));
+        // Propiedades calculadas actualizadas
+        public DateTime Fecha => DateTime.TryParse(FechaEjecucion, out var date) ? date : DateTime.Now;
         public string Nombre => NombreEvento;
     }
 

@@ -42,19 +42,22 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <label for="editEventDate" class="form-label">Fecha y Hora<span class="text-danger">*</span></label>
-                                <input type="datetime-local" class="form-control" id="editEventDate" name="fechaEjecucion" required>
+                                <label for="editEventDate" class="form-label">Fecha del Evento<span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="editEventDate" name="fechaEjecucion" required>
                                 <div class="invalid-feedback">
-                                    Debe seleccionar una fecha y hora válidas.
+                                    Debe seleccionar una fecha válida que no sea anterior al día de hoy.
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <label for="editEventType" class="form-label">Tipo de Evento<span class="text-danger">*</span></label>
                                 <select class="form-select" id="editEventType" name="tipoEventoNombre" required>
                                     <option value="" disabled selected>Seleccione un tipo...</option>
+                                    <option value="Fiesta">Fiesta</option>
                                     <option value="Boda">Boda</option>
                                     <option value="Cumpleaños">Cumpleaños</option>
                                     <option value="Aniversario">Aniversario</option>
+                                    <option value="Conferencia">Conferencia</option>
+                                    <option value="Reunión">Reunión</option>
                                     <option value="Corporativo">Corporativo</option>
                                     <option value="Otro">Otro</option>
                                 </select>

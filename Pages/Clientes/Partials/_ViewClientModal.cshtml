@@ -1,0 +1,66 @@
+<!-- filepath: /Users/sagox16/Documents/Importants/gestor-eventos/Pages/Clientes/Partials/_ViewClientModal.cshtml -->
+@model gestor_eventos.Pages.Clientes.IndexModel
+
+<!-- Modal para Ver Detalle de Cliente con su historial -->
+<div class="modal fade" id="viewClientModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title">
+                    <i class="bi bi-person me-2 text-primary"></i><span id="viewClientName">Nombre del Cliente</span>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <label class="text-muted">Correo electrónico:</label>
+                            <div id="viewClientEmail" class="fw-medium"></div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="text-muted">Teléfono:</label>
+                            <div id="viewClientPhone" class="fw-medium"></div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="text-muted">Dirección:</label>
+                            <div id="viewClientAddress"></div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="text-muted">Tipo de cliente:</label>
+                            <div id="viewClientType"></div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="text-muted">RUC:</label>
+                            <div id="viewClientRuc"></div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="text-muted">Razón Social:</label>
+                            <div id="viewClientRazonSocial"></div>
+                        </div>
+
+                        <hr class="my-4">
+                        
+                        <div class="mb-3">
+                            <span class="text-muted">Total eventos:</span>
+                            <span id="viewTotalEvents" class="ms-1 fw-bold"></span>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <span class="text-muted">Última reserva:</span>
+                            <span id="viewLastReservation" class="ms-1"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

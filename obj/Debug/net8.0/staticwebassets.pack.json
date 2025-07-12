@@ -21,16 +21,144 @@
       "PackagePath": "staticwebassets/favicon.ico"
     },
     {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/clientes/client-actions.js",
+      "PackagePath": "staticwebassets/js/clientes/client-actions.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/clientes/client-form.js",
+      "PackagePath": "staticwebassets/js/clientes/client-form.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/clientes/client-modals.js",
+      "PackagePath": "staticwebassets/js/clientes/client-modals.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/clientes/filters.js",
+      "PackagePath": "staticwebassets/js/clientes/filters.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/clientes/main.js",
+      "PackagePath": "staticwebassets/js/clientes/main.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/clientes/utils.js",
+      "PackagePath": "staticwebassets/js/clientes/utils.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/inventario/alerts.js",
+      "PackagePath": "staticwebassets/js/inventario/alerts.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/inventario/inventory-actions.js",
+      "PackagePath": "staticwebassets/js/inventario/inventory-actions.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/inventario/inventory-form.js",
+      "PackagePath": "staticwebassets/js/inventario/inventory-form.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/inventario/inventory-modals.js",
+      "PackagePath": "staticwebassets/js/inventario/inventory-modals.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/inventario/main.js",
+      "PackagePath": "staticwebassets/js/inventario/main.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/inventario/utils.js",
+      "PackagePath": "staticwebassets/js/inventario/utils.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/pagos/badges.js",
+      "PackagePath": "staticwebassets/js/pagos/badges.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/pagos/filters.js",
+      "PackagePath": "staticwebassets/js/pagos/filters.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/pagos/main.js",
+      "PackagePath": "staticwebassets/js/pagos/main.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/pagos/payment-actions.js",
+      "PackagePath": "staticwebassets/js/pagos/payment-actions.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/pagos/payment-form.js",
+      "PackagePath": "staticwebassets/js/pagos/payment-form.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/pagos/payment-modals.js",
+      "PackagePath": "staticwebassets/js/pagos/payment-modals.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/pagos/utils.js",
+      "PackagePath": "staticwebassets/js/pagos/utils.js"
+    },
+    {
       "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/recibo-reserva.js",
       "PackagePath": "staticwebassets/js/recibo-reserva.js"
     },
     {
-      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas.js",
-      "PackagePath": "staticwebassets/js/reservas.js"
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas/delete-reservation-modal.js",
+      "PackagePath": "staticwebassets/js/reservas/delete-reservation-modal.js"
     },
     {
-      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/site.js",
-      "PackagePath": "staticwebassets/js/site.js"
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas/edit-reservation-modal.js",
+      "PackagePath": "staticwebassets/js/reservas/edit-reservation-modal.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas/filters.js",
+      "PackagePath": "staticwebassets/js/reservas/filters.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas/main.js",
+      "PackagePath": "staticwebassets/js/reservas/main.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas/reservation-actions.js",
+      "PackagePath": "staticwebassets/js/reservas/reservation-actions.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas/reservation-form.js",
+      "PackagePath": "staticwebassets/js/reservas/reservation-form.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas/reservation-modals.js",
+      "PackagePath": "staticwebassets/js/reservas/reservation-modals.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas/utils.js",
+      "PackagePath": "staticwebassets/js/reservas/utils.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas/view-reservation-modal.js",
+      "PackagePath": "staticwebassets/js/reservas/view-reservation-modal.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/servicios/alerts.js",
+      "PackagePath": "staticwebassets/js/servicios/alerts.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/servicios/main.js",
+      "PackagePath": "staticwebassets/js/servicios/main.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/servicios/service-actions.js",
+      "PackagePath": "staticwebassets/js/servicios/service-actions.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/servicios/service-form.js",
+      "PackagePath": "staticwebassets/js/servicios/service-form.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/servicios/service-modals.js",
+      "PackagePath": "staticwebassets/js/servicios/service-modals.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/servicios/utils.js",
+      "PackagePath": "staticwebassets/js/servicios/utils.js"
     },
     {
       "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/lib/bootstrap/LICENSE",

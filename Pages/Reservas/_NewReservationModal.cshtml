@@ -107,16 +107,18 @@
                                                 <option value="Fiesta">Fiesta</option>
                                                 <option value="Boda">Boda</option>
                                                 <option value="Cumpleaños">Cumpleaños</option>
+                                                <option value="Aniversario">Aniversario</option>
                                                 <option value="Conferencia">Conferencia</option>
                                                 <option value="Reunión">Reunión</option>
+                                                <option value="Corporativo">Corporativo</option>
                                                 <option value="Otro">Otro</option>
                                             </select>
                                             <div class="invalid-feedback">Por favor selecciona un tipo de evento</div>
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label">Fecha del evento</label>
-                                            <input type="datetime" class="form-control" id="newEventDate">
-                                            <div class="invalid-feedback">Por favor selecciona una fecha válida</div>
+                                            <input type="date" class="form-control" id="newEventDate" required>
+                                            <div class="invalid-feedback">Por favor selecciona una fecha válida que no sea anterior al día de hoy</div>
                                         </div>
                                         <div class="col-md-12 mb-3">
                                             <label class="form-label">Descripción</label>

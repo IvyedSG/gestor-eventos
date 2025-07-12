@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "cvezsox2no1Lb0cg7mcSxU8TZfVdzx9iL/U++EvgPIA=",
+  "Hash": "nuz7zIVVIiF9yGneuP6PJn3SnT0wE/XkjpuNwFnOYAM=",
   "Source": "gestor-eventos",
   "BasePath": "_content/gestor-eventos",
   "Mode": "Default",
@@ -143,6 +143,405 @@
       "OriginalItemSpec": "wwwroot/favicon.ico"
     },
     {
+      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/clientes/client-actions.js",
+      "SourceId": "gestor-eventos",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/",
+      "BasePath": "_content/gestor-eventos",
+      "RelativePath": "js/clientes/client-actions#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "ywha1jf6ne",
+      "Integrity": "MraBe29qPs973aQ+S/5ss7M8zWddAvFxVX37asnVj+0=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/clientes/client-actions.js"
+    },
+    {
+      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/clientes/client-form.js",
+      "SourceId": "gestor-eventos",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/",
+      "BasePath": "_content/gestor-eventos",
+      "RelativePath": "js/clientes/client-form#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "32r6fkhwv3",
+      "Integrity": "ex3dNVaTE51l0eaHMJCmgOGYZi6qikh+8cuLv82L0ZY=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/clientes/client-form.js"
+    },
+    {
+      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/clientes/client-modals.js",
+      "SourceId": "gestor-eventos",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/",
+      "BasePath": "_content/gestor-eventos",
+      "RelativePath": "js/clientes/client-modals#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "inof4140jj",
+      "Integrity": "jpI30vi50bsKQd/uMBY48rbJmf6JSrFPMngv1rWl7G0=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/clientes/client-modals.js"
+    },
+    {
+      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/clientes/filters.js",
+      "SourceId": "gestor-eventos",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/",
+      "BasePath": "_content/gestor-eventos",
+      "RelativePath": "js/clientes/filters#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "f92905pxfb",
+      "Integrity": "TYhamEGjSYCnn7mzwtlQ80rL0jsZC3ee8+ARkyNjpaY=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/clientes/filters.js"
+    },
+    {
+      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/clientes/main.js",
+      "SourceId": "gestor-eventos",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/",
+      "BasePath": "_content/gestor-eventos",
+      "RelativePath": "js/clientes/main#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "5s95yt2u2e",
+      "Integrity": "O6mMb7aWOuXC7DNCylAJsNDFDvfhOIn2Th7fxeRmlq0=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/clientes/main.js"
+    },
+    {
+      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/clientes/utils.js",
+      "SourceId": "gestor-eventos",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/",
+      "BasePath": "_content/gestor-eventos",
+      "RelativePath": "js/clientes/utils#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "tzztm3q3mo",
+      "Integrity": "eX2BHDnKn0tdVfa33Dgda28s4fKZ6oPPjz1LT6rY5b4=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/clientes/utils.js"
+    },
+    {
+      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/inventario/alerts.js",
+      "SourceId": "gestor-eventos",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/",
+      "BasePath": "_content/gestor-eventos",
+      "RelativePath": "js/inventario/alerts#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "foe288veoy",
+      "Integrity": "MbFRH/owYhDfnOqncecFk3dhjSWO1GQxyo47+8qk/ac=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/inventario/alerts.js"
+    },
+    {
+      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/inventario/inventory-actions.js",
+      "SourceId": "gestor-eventos",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/",
+      "BasePath": "_content/gestor-eventos",
+      "RelativePath": "js/inventario/inventory-actions#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "fulukkbtw6",
+      "Integrity": "6eE5WxczujXhsKvCDbnCbkhEX42/Vu52FXbxuHshhr4=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/inventario/inventory-actions.js"
+    },
+    {
+      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/inventario/inventory-form.js",
+      "SourceId": "gestor-eventos",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/",
+      "BasePath": "_content/gestor-eventos",
+      "RelativePath": "js/inventario/inventory-form#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "pfq4j4saun",
+      "Integrity": "1SFTMsL2KTdbUAqwC0ffDDmzT9jTaSZFFyRGpQkeXrw=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/inventario/inventory-form.js"
+    },
+    {
+      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/inventario/inventory-modals.js",
+      "SourceId": "gestor-eventos",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/",
+      "BasePath": "_content/gestor-eventos",
+      "RelativePath": "js/inventario/inventory-modals#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "crvc06lp1o",
+      "Integrity": "yJPqvEq+4PhwDLQApwuWmJkAC+WnsnNLRqKwRRHT4vo=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/inventario/inventory-modals.js"
+    },
+    {
+      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/inventario/main.js",
+      "SourceId": "gestor-eventos",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/",
+      "BasePath": "_content/gestor-eventos",
+      "RelativePath": "js/inventario/main#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "acvfshy91x",
+      "Integrity": "aiwDXFFOBiYJvqsN37BsR6ZDS8qLqQBJT4t79dclfiE=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/inventario/main.js"
+    },
+    {
+      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/inventario/utils.js",
+      "SourceId": "gestor-eventos",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/",
+      "BasePath": "_content/gestor-eventos",
+      "RelativePath": "js/inventario/utils#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "tfju0s9drb",
+      "Integrity": "6X33+Y40GSZbUcpBKm2gN7hJbv+s3ST2fB+WJNB9JSE=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/inventario/utils.js"
+    },
+    {
+      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/pagos/badges.js",
+      "SourceId": "gestor-eventos",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/",
+      "BasePath": "_content/gestor-eventos",
+      "RelativePath": "js/pagos/badges#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "4kf60l1ztq",
+      "Integrity": "RNgKtYAeJCIzg3e6jTvKvyYmxngo37nxkelCYR8SC0U=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/pagos/badges.js"
+    },
+    {
+      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/pagos/filters.js",
+      "SourceId": "gestor-eventos",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/",
+      "BasePath": "_content/gestor-eventos",
+      "RelativePath": "js/pagos/filters#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "ujslrl1tzb",
+      "Integrity": "ykLeJYbIJyFFlXO7wCnWrrdiIEqxq0GiwDjmdDqB/iw=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/pagos/filters.js"
+    },
+    {
+      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/pagos/main.js",
+      "SourceId": "gestor-eventos",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/",
+      "BasePath": "_content/gestor-eventos",
+      "RelativePath": "js/pagos/main#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "srl4j7qi8m",
+      "Integrity": "ONb8Q49t6IsQX51QX36PyUGq1Uv9+4sLH8XOPj0CeJM=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/pagos/main.js"
+    },
+    {
+      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/pagos/payment-actions.js",
+      "SourceId": "gestor-eventos",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/",
+      "BasePath": "_content/gestor-eventos",
+      "RelativePath": "js/pagos/payment-actions#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "vwo2vwm188",
+      "Integrity": "YXYNatJddlTfx7lshqBOIwoekw7Hik/qMszx+UYX64k=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/pagos/payment-actions.js"
+    },
+    {
+      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/pagos/payment-form.js",
+      "SourceId": "gestor-eventos",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/",
+      "BasePath": "_content/gestor-eventos",
+      "RelativePath": "js/pagos/payment-form#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "t3t54nxnli",
+      "Integrity": "Z80K8PFPNVzaAm8wHJu9PlGq66CdZhJFAoCRZu8Dowc=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/pagos/payment-form.js"
+    },
+    {
+      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/pagos/payment-modals.js",
+      "SourceId": "gestor-eventos",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/",
+      "BasePath": "_content/gestor-eventos",
+      "RelativePath": "js/pagos/payment-modals#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "wvikcfe29o",
+      "Integrity": "ZNulRWXi4OauEnVKrlnS+0M8q41GdnJW4smp/CRdu80=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/pagos/payment-modals.js"
+    },
+    {
+      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/pagos/utils.js",
+      "SourceId": "gestor-eventos",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/",
+      "BasePath": "_content/gestor-eventos",
+      "RelativePath": "js/pagos/utils#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "1fvyqkn15z",
+      "Integrity": "ja1BsJH/rBB8g3kKhm0GS3VMcmJEFgZxfgW1cAHeizg=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/pagos/utils.js"
+    },
+    {
       "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/recibo-reserva.js",
       "SourceId": "gestor-eventos",
       "SourceType": "Discovered",
@@ -164,12 +563,12 @@
       "OriginalItemSpec": "wwwroot/js/recibo-reserva.js"
     },
     {
-      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas.js",
+      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas/delete-reservation-modal.js",
       "SourceId": "gestor-eventos",
       "SourceType": "Discovered",
       "ContentRoot": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/",
       "BasePath": "_content/gestor-eventos",
-      "RelativePath": "js/reservas#[.{fingerprint}]?.js",
+      "RelativePath": "js/reservas/delete-reservation-modal#[.{fingerprint}]?.js",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -178,19 +577,19 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "lhlyfh34bv",
-      "Integrity": "SSSrfM+HUhJ4aiNEqlnnamDEydy0R7iMBCCjuwl9UkU=",
+      "Fingerprint": "4c1afo8kag",
+      "Integrity": "RHQWa8VmCixtF5YAMGkeDEhI07bh3+aS+W1468R44s8=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot/js/reservas.js"
+      "OriginalItemSpec": "wwwroot/js/reservas/delete-reservation-modal.js"
     },
     {
-      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/site.js",
+      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas/edit-reservation-modal.js",
       "SourceId": "gestor-eventos",
       "SourceType": "Discovered",
       "ContentRoot": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/",
       "BasePath": "_content/gestor-eventos",
-      "RelativePath": "js/site#[.{fingerprint}]?.js",
+      "RelativePath": "js/reservas/edit-reservation-modal#[.{fingerprint}]?.js",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -199,11 +598,284 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "2ut828sknb",
-      "Integrity": "9pQroKrZC8PttCJ5Na5GWzysp1r+0En4jlEVY3BtV50=",
+      "Fingerprint": "1w8ssgj80p",
+      "Integrity": "/9dvVGBg5+frtDt5PCqaKgZgVJXrFflwsRb4FS0Tj2Q=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot/js/site.js"
+      "OriginalItemSpec": "wwwroot/js/reservas/edit-reservation-modal.js"
+    },
+    {
+      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas/filters.js",
+      "SourceId": "gestor-eventos",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/",
+      "BasePath": "_content/gestor-eventos",
+      "RelativePath": "js/reservas/filters#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "cph6dj8r9f",
+      "Integrity": "4Mf1ukWEi6axsvHqfWMiMgIizAooN0X+SufC5C9bmig=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/reservas/filters.js"
+    },
+    {
+      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas/main.js",
+      "SourceId": "gestor-eventos",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/",
+      "BasePath": "_content/gestor-eventos",
+      "RelativePath": "js/reservas/main#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "lsxlg45tx2",
+      "Integrity": "Vc51MJTonmJgZmUMLTmoxIwj5sk912b6YRFn5XnlI2c=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/reservas/main.js"
+    },
+    {
+      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas/reservation-actions.js",
+      "SourceId": "gestor-eventos",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/",
+      "BasePath": "_content/gestor-eventos",
+      "RelativePath": "js/reservas/reservation-actions#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "pqk7rpac6t",
+      "Integrity": "wQPvYRLk2GcaH7JLrXvsX7btRqcxyVBhGzgnnrOUeNA=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/reservas/reservation-actions.js"
+    },
+    {
+      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas/reservation-form.js",
+      "SourceId": "gestor-eventos",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/",
+      "BasePath": "_content/gestor-eventos",
+      "RelativePath": "js/reservas/reservation-form#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "z2hkxy0lgj",
+      "Integrity": "e1zt40aHHyUKIiUKkxCt1Bua6Un/r0LtCAxdt/62JWk=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/reservas/reservation-form.js"
+    },
+    {
+      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas/reservation-modals.js",
+      "SourceId": "gestor-eventos",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/",
+      "BasePath": "_content/gestor-eventos",
+      "RelativePath": "js/reservas/reservation-modals#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "2zjuzv3tha",
+      "Integrity": "ng9UrpGKVkEWucSMuYDy44pHXEOhxolKunja2J/z25o=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/reservas/reservation-modals.js"
+    },
+    {
+      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas/utils.js",
+      "SourceId": "gestor-eventos",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/",
+      "BasePath": "_content/gestor-eventos",
+      "RelativePath": "js/reservas/utils#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "sbkc4wkg6c",
+      "Integrity": "GMqUoFHlzP/sn/bakiCorbs6z/yspI4gG1umqNhcfP8=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/reservas/utils.js"
+    },
+    {
+      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas/view-reservation-modal.js",
+      "SourceId": "gestor-eventos",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/",
+      "BasePath": "_content/gestor-eventos",
+      "RelativePath": "js/reservas/view-reservation-modal#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "2c83pg2mb7",
+      "Integrity": "8uWbTIxPu610fD89LbReBSilaHUSEke914C31mE8wqY=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/reservas/view-reservation-modal.js"
+    },
+    {
+      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/servicios/alerts.js",
+      "SourceId": "gestor-eventos",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/",
+      "BasePath": "_content/gestor-eventos",
+      "RelativePath": "js/servicios/alerts#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "vmfwxx3gkq",
+      "Integrity": "2dPulwZaQVbQXvQj1nrbO56z1pP2+Ob6z+P8O8pTcL8=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/servicios/alerts.js"
+    },
+    {
+      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/servicios/main.js",
+      "SourceId": "gestor-eventos",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/",
+      "BasePath": "_content/gestor-eventos",
+      "RelativePath": "js/servicios/main#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "hzhk9omw7l",
+      "Integrity": "DQFDCjPQHhg57DLx5WdhIcy3b7F5GkpHszJjczZT2N4=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/servicios/main.js"
+    },
+    {
+      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/servicios/service-actions.js",
+      "SourceId": "gestor-eventos",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/",
+      "BasePath": "_content/gestor-eventos",
+      "RelativePath": "js/servicios/service-actions#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "ihu5ecnw3g",
+      "Integrity": "auhfkmK6IQKlZUiHFaqzDpFTQRxUUZObuNMK0tRJc/0=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/servicios/service-actions.js"
+    },
+    {
+      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/servicios/service-form.js",
+      "SourceId": "gestor-eventos",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/",
+      "BasePath": "_content/gestor-eventos",
+      "RelativePath": "js/servicios/service-form#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "d84j1i6b2q",
+      "Integrity": "0xpYrM8WJIvFjj0ED1vUM63ylORC4PODzS5xoSEyghc=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/servicios/service-form.js"
+    },
+    {
+      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/servicios/service-modals.js",
+      "SourceId": "gestor-eventos",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/",
+      "BasePath": "_content/gestor-eventos",
+      "RelativePath": "js/servicios/service-modals#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "0dj0j18pvx",
+      "Integrity": "/EYulCfxFRzgtzNoJ+4OLYc91PmqYCBF7QO8saSdjLc=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/servicios/service-modals.js"
+    },
+    {
+      "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/servicios/utils.js",
+      "SourceId": "gestor-eventos",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/",
+      "BasePath": "_content/gestor-eventos",
+      "RelativePath": "js/servicios/utils#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "9ftigebx1w",
+      "Integrity": "dV3pAv3cFrgrhDMVGQbsM1cCz/W2iOk7tWzYS5D4krs=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/servicios/utils.js"
     },
     {
       "Identity": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css",
@@ -1490,7 +2162,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1535,7 +2207,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1572,7 +2244,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1617,7 +2289,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1654,7 +2326,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1699,7 +2371,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1736,7 +2408,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1781,7 +2453,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1818,7 +2490,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1855,7 +2527,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1900,7 +2572,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1945,7 +2617,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -1956,6 +2628,1564 @@
         {
           "Name": "integrity",
           "Value": "sha256-O0GdeQgB52T0O+fFVdROdWI7L2sH8KK8jodfUf023io="
+        }
+      ]
+    },
+    {
+      "Route": "js/clientes/client-actions.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/clientes/client-actions.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "8429"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"MraBe29qPs973aQ+S/5ss7M8zWddAvFxVX37asnVj+0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:02:30 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-MraBe29qPs973aQ+S/5ss7M8zWddAvFxVX37asnVj+0="
+        }
+      ]
+    },
+    {
+      "Route": "js/clientes/client-actions.ywha1jf6ne.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/clientes/client-actions.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "8429"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"MraBe29qPs973aQ+S/5ss7M8zWddAvFxVX37asnVj+0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:02:30 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "ywha1jf6ne"
+        },
+        {
+          "Name": "label",
+          "Value": "js/clientes/client-actions.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-MraBe29qPs973aQ+S/5ss7M8zWddAvFxVX37asnVj+0="
+        }
+      ]
+    },
+    {
+      "Route": "js/clientes/client-form.32r6fkhwv3.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/clientes/client-form.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "8227"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ex3dNVaTE51l0eaHMJCmgOGYZi6qikh+8cuLv82L0ZY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 01:53:39 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "32r6fkhwv3"
+        },
+        {
+          "Name": "label",
+          "Value": "js/clientes/client-form.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-ex3dNVaTE51l0eaHMJCmgOGYZi6qikh+8cuLv82L0ZY="
+        }
+      ]
+    },
+    {
+      "Route": "js/clientes/client-form.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/clientes/client-form.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "8227"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ex3dNVaTE51l0eaHMJCmgOGYZi6qikh+8cuLv82L0ZY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 01:53:39 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-ex3dNVaTE51l0eaHMJCmgOGYZi6qikh+8cuLv82L0ZY="
+        }
+      ]
+    },
+    {
+      "Route": "js/clientes/client-modals.inof4140jj.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/clientes/client-modals.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2007"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"jpI30vi50bsKQd/uMBY48rbJmf6JSrFPMngv1rWl7G0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 01:53:53 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "inof4140jj"
+        },
+        {
+          "Name": "label",
+          "Value": "js/clientes/client-modals.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-jpI30vi50bsKQd/uMBY48rbJmf6JSrFPMngv1rWl7G0="
+        }
+      ]
+    },
+    {
+      "Route": "js/clientes/client-modals.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/clientes/client-modals.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2007"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"jpI30vi50bsKQd/uMBY48rbJmf6JSrFPMngv1rWl7G0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 01:53:53 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-jpI30vi50bsKQd/uMBY48rbJmf6JSrFPMngv1rWl7G0="
+        }
+      ]
+    },
+    {
+      "Route": "js/clientes/filters.f92905pxfb.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/clientes/filters.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "386"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"TYhamEGjSYCnn7mzwtlQ80rL0jsZC3ee8+ARkyNjpaY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 01:53:34 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "f92905pxfb"
+        },
+        {
+          "Name": "label",
+          "Value": "js/clientes/filters.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-TYhamEGjSYCnn7mzwtlQ80rL0jsZC3ee8+ARkyNjpaY="
+        }
+      ]
+    },
+    {
+      "Route": "js/clientes/filters.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/clientes/filters.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "386"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"TYhamEGjSYCnn7mzwtlQ80rL0jsZC3ee8+ARkyNjpaY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 01:53:34 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-TYhamEGjSYCnn7mzwtlQ80rL0jsZC3ee8+ARkyNjpaY="
+        }
+      ]
+    },
+    {
+      "Route": "js/clientes/main.5s95yt2u2e.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/clientes/main.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1577"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"O6mMb7aWOuXC7DNCylAJsNDFDvfhOIn2Th7fxeRmlq0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 01:53:18 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "5s95yt2u2e"
+        },
+        {
+          "Name": "label",
+          "Value": "js/clientes/main.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-O6mMb7aWOuXC7DNCylAJsNDFDvfhOIn2Th7fxeRmlq0="
+        }
+      ]
+    },
+    {
+      "Route": "js/clientes/main.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/clientes/main.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1577"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"O6mMb7aWOuXC7DNCylAJsNDFDvfhOIn2Th7fxeRmlq0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 01:53:18 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-O6mMb7aWOuXC7DNCylAJsNDFDvfhOIn2Th7fxeRmlq0="
+        }
+      ]
+    },
+    {
+      "Route": "js/clientes/utils.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/clientes/utils.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3524"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"eX2BHDnKn0tdVfa33Dgda28s4fKZ6oPPjz1LT6rY5b4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 01:53:24 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-eX2BHDnKn0tdVfa33Dgda28s4fKZ6oPPjz1LT6rY5b4="
+        }
+      ]
+    },
+    {
+      "Route": "js/clientes/utils.tzztm3q3mo.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/clientes/utils.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3524"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"eX2BHDnKn0tdVfa33Dgda28s4fKZ6oPPjz1LT6rY5b4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 01:53:24 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "tzztm3q3mo"
+        },
+        {
+          "Name": "label",
+          "Value": "js/clientes/utils.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-eX2BHDnKn0tdVfa33Dgda28s4fKZ6oPPjz1LT6rY5b4="
+        }
+      ]
+    },
+    {
+      "Route": "js/inventario/alerts.foe288veoy.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/inventario/alerts.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "493"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"MbFRH/owYhDfnOqncecFk3dhjSWO1GQxyo47+8qk/ac=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:52:17 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "foe288veoy"
+        },
+        {
+          "Name": "label",
+          "Value": "js/inventario/alerts.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-MbFRH/owYhDfnOqncecFk3dhjSWO1GQxyo47+8qk/ac="
+        }
+      ]
+    },
+    {
+      "Route": "js/inventario/alerts.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/inventario/alerts.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "493"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"MbFRH/owYhDfnOqncecFk3dhjSWO1GQxyo47+8qk/ac=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:52:17 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-MbFRH/owYhDfnOqncecFk3dhjSWO1GQxyo47+8qk/ac="
+        }
+      ]
+    },
+    {
+      "Route": "js/inventario/inventory-actions.fulukkbtw6.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/inventario/inventory-actions.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "6323"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"6eE5WxczujXhsKvCDbnCbkhEX42/Vu52FXbxuHshhr4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:52:40 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "fulukkbtw6"
+        },
+        {
+          "Name": "label",
+          "Value": "js/inventario/inventory-actions.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-6eE5WxczujXhsKvCDbnCbkhEX42/Vu52FXbxuHshhr4="
+        }
+      ]
+    },
+    {
+      "Route": "js/inventario/inventory-actions.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/inventario/inventory-actions.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "6323"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"6eE5WxczujXhsKvCDbnCbkhEX42/Vu52FXbxuHshhr4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:52:40 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-6eE5WxczujXhsKvCDbnCbkhEX42/Vu52FXbxuHshhr4="
+        }
+      ]
+    },
+    {
+      "Route": "js/inventario/inventory-form.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/inventario/inventory-form.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "5693"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"1SFTMsL2KTdbUAqwC0ffDDmzT9jTaSZFFyRGpQkeXrw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:52:27 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-1SFTMsL2KTdbUAqwC0ffDDmzT9jTaSZFFyRGpQkeXrw="
+        }
+      ]
+    },
+    {
+      "Route": "js/inventario/inventory-form.pfq4j4saun.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/inventario/inventory-form.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "5693"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"1SFTMsL2KTdbUAqwC0ffDDmzT9jTaSZFFyRGpQkeXrw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:52:27 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "pfq4j4saun"
+        },
+        {
+          "Name": "label",
+          "Value": "js/inventario/inventory-form.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-1SFTMsL2KTdbUAqwC0ffDDmzT9jTaSZFFyRGpQkeXrw="
+        }
+      ]
+    },
+    {
+      "Route": "js/inventario/inventory-modals.crvc06lp1o.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/inventario/inventory-modals.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2917"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"yJPqvEq+4PhwDLQApwuWmJkAC+WnsnNLRqKwRRHT4vo=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:52:53 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "crvc06lp1o"
+        },
+        {
+          "Name": "label",
+          "Value": "js/inventario/inventory-modals.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-yJPqvEq+4PhwDLQApwuWmJkAC+WnsnNLRqKwRRHT4vo="
+        }
+      ]
+    },
+    {
+      "Route": "js/inventario/inventory-modals.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/inventario/inventory-modals.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2917"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"yJPqvEq+4PhwDLQApwuWmJkAC+WnsnNLRqKwRRHT4vo=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:52:53 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-yJPqvEq+4PhwDLQApwuWmJkAC+WnsnNLRqKwRRHT4vo="
+        }
+      ]
+    },
+    {
+      "Route": "js/inventario/main.acvfshy91x.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/inventario/main.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1682"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"aiwDXFFOBiYJvqsN37BsR6ZDS8qLqQBJT4t79dclfiE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:51:57 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "acvfshy91x"
+        },
+        {
+          "Name": "label",
+          "Value": "js/inventario/main.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-aiwDXFFOBiYJvqsN37BsR6ZDS8qLqQBJT4t79dclfiE="
+        }
+      ]
+    },
+    {
+      "Route": "js/inventario/main.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/inventario/main.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1682"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"aiwDXFFOBiYJvqsN37BsR6ZDS8qLqQBJT4t79dclfiE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:51:57 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-aiwDXFFOBiYJvqsN37BsR6ZDS8qLqQBJT4t79dclfiE="
+        }
+      ]
+    },
+    {
+      "Route": "js/inventario/utils.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/inventario/utils.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3346"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"6X33+Y40GSZbUcpBKm2gN7hJbv+s3ST2fB+WJNB9JSE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:52:09 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-6X33+Y40GSZbUcpBKm2gN7hJbv+s3ST2fB+WJNB9JSE="
+        }
+      ]
+    },
+    {
+      "Route": "js/inventario/utils.tfju0s9drb.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/inventario/utils.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3346"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"6X33+Y40GSZbUcpBKm2gN7hJbv+s3ST2fB+WJNB9JSE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:52:09 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "tfju0s9drb"
+        },
+        {
+          "Name": "label",
+          "Value": "js/inventario/utils.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-6X33+Y40GSZbUcpBKm2gN7hJbv+s3ST2fB+WJNB9JSE="
+        }
+      ]
+    },
+    {
+      "Route": "js/pagos/badges.4kf60l1ztq.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/pagos/badges.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1867"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"RNgKtYAeJCIzg3e6jTvKvyYmxngo37nxkelCYR8SC0U=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:16:06 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "4kf60l1ztq"
+        },
+        {
+          "Name": "label",
+          "Value": "js/pagos/badges.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-RNgKtYAeJCIzg3e6jTvKvyYmxngo37nxkelCYR8SC0U="
+        }
+      ]
+    },
+    {
+      "Route": "js/pagos/badges.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/pagos/badges.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1867"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"RNgKtYAeJCIzg3e6jTvKvyYmxngo37nxkelCYR8SC0U=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:16:06 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-RNgKtYAeJCIzg3e6jTvKvyYmxngo37nxkelCYR8SC0U="
+        }
+      ]
+    },
+    {
+      "Route": "js/pagos/filters.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/pagos/filters.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "383"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ykLeJYbIJyFFlXO7wCnWrrdiIEqxq0GiwDjmdDqB/iw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:16:00 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-ykLeJYbIJyFFlXO7wCnWrrdiIEqxq0GiwDjmdDqB/iw="
+        }
+      ]
+    },
+    {
+      "Route": "js/pagos/filters.ujslrl1tzb.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/pagos/filters.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "383"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ykLeJYbIJyFFlXO7wCnWrrdiIEqxq0GiwDjmdDqB/iw=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:16:00 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "ujslrl1tzb"
+        },
+        {
+          "Name": "label",
+          "Value": "js/pagos/filters.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-ykLeJYbIJyFFlXO7wCnWrrdiIEqxq0GiwDjmdDqB/iw="
+        }
+      ]
+    },
+    {
+      "Route": "js/pagos/main.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/pagos/main.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1640"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ONb8Q49t6IsQX51QX36PyUGq1Uv9+4sLH8XOPj0CeJM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:15:49 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-ONb8Q49t6IsQX51QX36PyUGq1Uv9+4sLH8XOPj0CeJM="
+        }
+      ]
+    },
+    {
+      "Route": "js/pagos/main.srl4j7qi8m.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/pagos/main.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1640"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ONb8Q49t6IsQX51QX36PyUGq1Uv9+4sLH8XOPj0CeJM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:15:49 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "srl4j7qi8m"
+        },
+        {
+          "Name": "label",
+          "Value": "js/pagos/main.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-ONb8Q49t6IsQX51QX36PyUGq1Uv9+4sLH8XOPj0CeJM="
+        }
+      ]
+    },
+    {
+      "Route": "js/pagos/payment-actions.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/pagos/payment-actions.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "6409"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"YXYNatJddlTfx7lshqBOIwoekw7Hik/qMszx+UYX64k=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:16:18 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-YXYNatJddlTfx7lshqBOIwoekw7Hik/qMszx+UYX64k="
+        }
+      ]
+    },
+    {
+      "Route": "js/pagos/payment-actions.vwo2vwm188.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/pagos/payment-actions.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "6409"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"YXYNatJddlTfx7lshqBOIwoekw7Hik/qMszx+UYX64k=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:16:18 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "vwo2vwm188"
+        },
+        {
+          "Name": "label",
+          "Value": "js/pagos/payment-actions.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-YXYNatJddlTfx7lshqBOIwoekw7Hik/qMszx+UYX64k="
+        }
+      ]
+    },
+    {
+      "Route": "js/pagos/payment-form.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/pagos/payment-form.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "7464"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Z80K8PFPNVzaAm8wHJu9PlGq66CdZhJFAoCRZu8Dowc=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:16:10 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-Z80K8PFPNVzaAm8wHJu9PlGq66CdZhJFAoCRZu8Dowc="
+        }
+      ]
+    },
+    {
+      "Route": "js/pagos/payment-form.t3t54nxnli.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/pagos/payment-form.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "7464"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Z80K8PFPNVzaAm8wHJu9PlGq66CdZhJFAoCRZu8Dowc=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:16:10 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "t3t54nxnli"
+        },
+        {
+          "Name": "label",
+          "Value": "js/pagos/payment-form.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-Z80K8PFPNVzaAm8wHJu9PlGq66CdZhJFAoCRZu8Dowc="
+        }
+      ]
+    },
+    {
+      "Route": "js/pagos/payment-modals.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/pagos/payment-modals.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1867"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ZNulRWXi4OauEnVKrlnS+0M8q41GdnJW4smp/CRdu80=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:16:26 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-ZNulRWXi4OauEnVKrlnS+0M8q41GdnJW4smp/CRdu80="
+        }
+      ]
+    },
+    {
+      "Route": "js/pagos/payment-modals.wvikcfe29o.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/pagos/payment-modals.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1867"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ZNulRWXi4OauEnVKrlnS+0M8q41GdnJW4smp/CRdu80=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:16:26 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "wvikcfe29o"
+        },
+        {
+          "Name": "label",
+          "Value": "js/pagos/payment-modals.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-ZNulRWXi4OauEnVKrlnS+0M8q41GdnJW4smp/CRdu80="
+        }
+      ]
+    },
+    {
+      "Route": "js/pagos/utils.1fvyqkn15z.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/pagos/utils.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3517"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ja1BsJH/rBB8g3kKhm0GS3VMcmJEFgZxfgW1cAHeizg=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:15:53 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "1fvyqkn15z"
+        },
+        {
+          "Name": "label",
+          "Value": "js/pagos/utils.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-ja1BsJH/rBB8g3kKhm0GS3VMcmJEFgZxfgW1cAHeizg="
+        }
+      ]
+    },
+    {
+      "Route": "js/pagos/utils.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/pagos/utils.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3517"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ja1BsJH/rBB8g3kKhm0GS3VMcmJEFgZxfgW1cAHeizg=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:15:53 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-ja1BsJH/rBB8g3kKhm0GS3VMcmJEFgZxfgW1cAHeizg="
         }
       ]
     },
@@ -1982,7 +4212,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2019,7 +4249,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2042,8 +4272,8 @@
       ]
     },
     {
-      "Route": "js/reservas.js",
-      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas.js",
+      "Route": "js/reservas/delete-reservation-modal.4c1afo8kag.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas/delete-reservation-modal.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2052,7 +4282,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "68322"
+          "Value": "7355"
         },
         {
           "Name": "Content-Type",
@@ -2060,48 +4290,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"SSSrfM+HUhJ4aiNEqlnnamDEydy0R7iMBCCjuwl9UkU=\""
+          "Value": "\"RHQWa8VmCixtF5YAMGkeDEhI07bh3+aS+W1468R44s8=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-SSSrfM+HUhJ4aiNEqlnnamDEydy0R7iMBCCjuwl9UkU="
-        }
-      ]
-    },
-    {
-      "Route": "js/reservas.lhlyfh34bv.js",
-      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas.js",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "68322"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/javascript"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"SSSrfM+HUhJ4aiNEqlnnamDEydy0R7iMBCCjuwl9UkU=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 01:21:07 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2111,21 +4304,21 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "lhlyfh34bv"
+          "Value": "4c1afo8kag"
         },
         {
           "Name": "label",
-          "Value": "js/reservas.js"
+          "Value": "js/reservas/delete-reservation-modal.js"
         },
         {
           "Name": "integrity",
-          "Value": "sha256-SSSrfM+HUhJ4aiNEqlnnamDEydy0R7iMBCCjuwl9UkU="
+          "Value": "sha256-RHQWa8VmCixtF5YAMGkeDEhI07bh3+aS+W1468R44s8="
         }
       ]
     },
     {
-      "Route": "js/site.2ut828sknb.js",
-      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/site.js",
+      "Route": "js/reservas/delete-reservation-modal.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas/delete-reservation-modal.js",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2134,7 +4327,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "14"
+          "Value": "7355"
         },
         {
           "Name": "Content-Type",
@@ -2142,56 +4335,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"9pQroKrZC8PttCJ5Na5GWzysp1r+0En4jlEVY3BtV50=\""
+          "Value": "\"RHQWa8VmCixtF5YAMGkeDEhI07bh3+aS+W1468R44s8=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "fingerprint",
-          "Value": "2ut828sknb"
-        },
-        {
-          "Name": "label",
-          "Value": "js/site.js"
-        },
-        {
-          "Name": "integrity",
-          "Value": "sha256-9pQroKrZC8PttCJ5Na5GWzysp1r+0En4jlEVY3BtV50="
-        }
-      ]
-    },
-    {
-      "Route": "js/site.js",
-      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/site.js",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "14"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/javascript"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"9pQroKrZC8PttCJ5Na5GWzysp1r+0En4jlEVY3BtV50=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 01:21:07 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2201,7 +4349,1155 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-9pQroKrZC8PttCJ5Na5GWzysp1r+0En4jlEVY3BtV50="
+          "Value": "sha256-RHQWa8VmCixtF5YAMGkeDEhI07bh3+aS+W1468R44s8="
+        }
+      ]
+    },
+    {
+      "Route": "js/reservas/edit-reservation-modal.1w8ssgj80p.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas/edit-reservation-modal.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "18956"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"/9dvVGBg5+frtDt5PCqaKgZgVJXrFflwsRb4FS0Tj2Q=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:10:00 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "1w8ssgj80p"
+        },
+        {
+          "Name": "label",
+          "Value": "js/reservas/edit-reservation-modal.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-/9dvVGBg5+frtDt5PCqaKgZgVJXrFflwsRb4FS0Tj2Q="
+        }
+      ]
+    },
+    {
+      "Route": "js/reservas/edit-reservation-modal.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas/edit-reservation-modal.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "18956"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"/9dvVGBg5+frtDt5PCqaKgZgVJXrFflwsRb4FS0Tj2Q=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:10:00 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-/9dvVGBg5+frtDt5PCqaKgZgVJXrFflwsRb4FS0Tj2Q="
+        }
+      ]
+    },
+    {
+      "Route": "js/reservas/filters.cph6dj8r9f.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas/filters.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "386"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"4Mf1ukWEi6axsvHqfWMiMgIizAooN0X+SufC5C9bmig=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 01:41:27 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "cph6dj8r9f"
+        },
+        {
+          "Name": "label",
+          "Value": "js/reservas/filters.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-4Mf1ukWEi6axsvHqfWMiMgIizAooN0X+SufC5C9bmig="
+        }
+      ]
+    },
+    {
+      "Route": "js/reservas/filters.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas/filters.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "386"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"4Mf1ukWEi6axsvHqfWMiMgIizAooN0X+SufC5C9bmig=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 01:41:27 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-4Mf1ukWEi6axsvHqfWMiMgIizAooN0X+SufC5C9bmig="
+        }
+      ]
+    },
+    {
+      "Route": "js/reservas/main.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas/main.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1653"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Vc51MJTonmJgZmUMLTmoxIwj5sk912b6YRFn5XnlI2c=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 01:20:52 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-Vc51MJTonmJgZmUMLTmoxIwj5sk912b6YRFn5XnlI2c="
+        }
+      ]
+    },
+    {
+      "Route": "js/reservas/main.lsxlg45tx2.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas/main.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1653"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"Vc51MJTonmJgZmUMLTmoxIwj5sk912b6YRFn5XnlI2c=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 01:20:52 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "lsxlg45tx2"
+        },
+        {
+          "Name": "label",
+          "Value": "js/reservas/main.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-Vc51MJTonmJgZmUMLTmoxIwj5sk912b6YRFn5XnlI2c="
+        }
+      ]
+    },
+    {
+      "Route": "js/reservas/reservation-actions.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas/reservation-actions.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4842"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"wQPvYRLk2GcaH7JLrXvsX7btRqcxyVBhGzgnnrOUeNA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 01:21:16 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-wQPvYRLk2GcaH7JLrXvsX7btRqcxyVBhGzgnnrOUeNA="
+        }
+      ]
+    },
+    {
+      "Route": "js/reservas/reservation-actions.pqk7rpac6t.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas/reservation-actions.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4842"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"wQPvYRLk2GcaH7JLrXvsX7btRqcxyVBhGzgnnrOUeNA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 01:21:16 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "pqk7rpac6t"
+        },
+        {
+          "Name": "label",
+          "Value": "js/reservas/reservation-actions.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-wQPvYRLk2GcaH7JLrXvsX7btRqcxyVBhGzgnnrOUeNA="
+        }
+      ]
+    },
+    {
+      "Route": "js/reservas/reservation-form.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas/reservation-form.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "16149"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"e1zt40aHHyUKIiUKkxCt1Bua6Un/r0LtCAxdt/62JWk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:10:00 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-e1zt40aHHyUKIiUKkxCt1Bua6Un/r0LtCAxdt/62JWk="
+        }
+      ]
+    },
+    {
+      "Route": "js/reservas/reservation-form.z2hkxy0lgj.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas/reservation-form.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "16149"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"e1zt40aHHyUKIiUKkxCt1Bua6Un/r0LtCAxdt/62JWk=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:10:00 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "z2hkxy0lgj"
+        },
+        {
+          "Name": "label",
+          "Value": "js/reservas/reservation-form.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-e1zt40aHHyUKIiUKkxCt1Bua6Un/r0LtCAxdt/62JWk="
+        }
+      ]
+    },
+    {
+      "Route": "js/reservas/reservation-modals.2zjuzv3tha.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas/reservation-modals.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1912"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ng9UrpGKVkEWucSMuYDy44pHXEOhxolKunja2J/z25o=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 01:20:46 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "2zjuzv3tha"
+        },
+        {
+          "Name": "label",
+          "Value": "js/reservas/reservation-modals.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-ng9UrpGKVkEWucSMuYDy44pHXEOhxolKunja2J/z25o="
+        }
+      ]
+    },
+    {
+      "Route": "js/reservas/reservation-modals.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas/reservation-modals.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1912"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ng9UrpGKVkEWucSMuYDy44pHXEOhxolKunja2J/z25o=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 01:20:46 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-ng9UrpGKVkEWucSMuYDy44pHXEOhxolKunja2J/z25o="
+        }
+      ]
+    },
+    {
+      "Route": "js/reservas/utils.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas/utils.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3420"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"GMqUoFHlzP/sn/bakiCorbs6z/yspI4gG1umqNhcfP8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:10:00 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-GMqUoFHlzP/sn/bakiCorbs6z/yspI4gG1umqNhcfP8="
+        }
+      ]
+    },
+    {
+      "Route": "js/reservas/utils.sbkc4wkg6c.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas/utils.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3420"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"GMqUoFHlzP/sn/bakiCorbs6z/yspI4gG1umqNhcfP8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:10:00 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "sbkc4wkg6c"
+        },
+        {
+          "Name": "label",
+          "Value": "js/reservas/utils.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-GMqUoFHlzP/sn/bakiCorbs6z/yspI4gG1umqNhcfP8="
+        }
+      ]
+    },
+    {
+      "Route": "js/reservas/view-reservation-modal.2c83pg2mb7.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas/view-reservation-modal.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "11389"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"8uWbTIxPu610fD89LbReBSilaHUSEke914C31mE8wqY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 01:13:45 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "2c83pg2mb7"
+        },
+        {
+          "Name": "label",
+          "Value": "js/reservas/view-reservation-modal.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-8uWbTIxPu610fD89LbReBSilaHUSEke914C31mE8wqY="
+        }
+      ]
+    },
+    {
+      "Route": "js/reservas/view-reservation-modal.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas/view-reservation-modal.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "11389"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"8uWbTIxPu610fD89LbReBSilaHUSEke914C31mE8wqY=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 01:13:45 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-8uWbTIxPu610fD89LbReBSilaHUSEke914C31mE8wqY="
+        }
+      ]
+    },
+    {
+      "Route": "js/servicios/alerts.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/servicios/alerts.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "478"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"2dPulwZaQVbQXvQj1nrbO56z1pP2+Ob6z+P8O8pTcL8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:25:58 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-2dPulwZaQVbQXvQj1nrbO56z1pP2+Ob6z+P8O8pTcL8="
+        }
+      ]
+    },
+    {
+      "Route": "js/servicios/alerts.vmfwxx3gkq.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/servicios/alerts.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "478"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"2dPulwZaQVbQXvQj1nrbO56z1pP2+Ob6z+P8O8pTcL8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:25:58 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "vmfwxx3gkq"
+        },
+        {
+          "Name": "label",
+          "Value": "js/servicios/alerts.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-2dPulwZaQVbQXvQj1nrbO56z1pP2+Ob6z+P8O8pTcL8="
+        }
+      ]
+    },
+    {
+      "Route": "js/servicios/main.hzhk9omw7l.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/servicios/main.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2048"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"DQFDCjPQHhg57DLx5WdhIcy3b7F5GkpHszJjczZT2N4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:25:47 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "hzhk9omw7l"
+        },
+        {
+          "Name": "label",
+          "Value": "js/servicios/main.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-DQFDCjPQHhg57DLx5WdhIcy3b7F5GkpHszJjczZT2N4="
+        }
+      ]
+    },
+    {
+      "Route": "js/servicios/main.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/servicios/main.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2048"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"DQFDCjPQHhg57DLx5WdhIcy3b7F5GkpHszJjczZT2N4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:25:47 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-DQFDCjPQHhg57DLx5WdhIcy3b7F5GkpHszJjczZT2N4="
+        }
+      ]
+    },
+    {
+      "Route": "js/servicios/service-actions.ihu5ecnw3g.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/servicios/service-actions.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "7407"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"auhfkmK6IQKlZUiHFaqzDpFTQRxUUZObuNMK0tRJc/0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:33:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "ihu5ecnw3g"
+        },
+        {
+          "Name": "label",
+          "Value": "js/servicios/service-actions.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-auhfkmK6IQKlZUiHFaqzDpFTQRxUUZObuNMK0tRJc/0="
+        }
+      ]
+    },
+    {
+      "Route": "js/servicios/service-actions.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/servicios/service-actions.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "7407"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"auhfkmK6IQKlZUiHFaqzDpFTQRxUUZObuNMK0tRJc/0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:33:04 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-auhfkmK6IQKlZUiHFaqzDpFTQRxUUZObuNMK0tRJc/0="
+        }
+      ]
+    },
+    {
+      "Route": "js/servicios/service-form.d84j1i6b2q.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/servicios/service-form.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "10396"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"0xpYrM8WJIvFjj0ED1vUM63ylORC4PODzS5xoSEyghc=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:26:03 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "d84j1i6b2q"
+        },
+        {
+          "Name": "label",
+          "Value": "js/servicios/service-form.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-0xpYrM8WJIvFjj0ED1vUM63ylORC4PODzS5xoSEyghc="
+        }
+      ]
+    },
+    {
+      "Route": "js/servicios/service-form.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/servicios/service-form.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "10396"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"0xpYrM8WJIvFjj0ED1vUM63ylORC4PODzS5xoSEyghc=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:26:03 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-0xpYrM8WJIvFjj0ED1vUM63ylORC4PODzS5xoSEyghc="
+        }
+      ]
+    },
+    {
+      "Route": "js/servicios/service-modals.0dj0j18pvx.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/servicios/service-modals.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "16008"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"/EYulCfxFRzgtzNoJ+4OLYc91PmqYCBF7QO8saSdjLc=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:26:25 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "0dj0j18pvx"
+        },
+        {
+          "Name": "label",
+          "Value": "js/servicios/service-modals.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-/EYulCfxFRzgtzNoJ+4OLYc91PmqYCBF7QO8saSdjLc="
+        }
+      ]
+    },
+    {
+      "Route": "js/servicios/service-modals.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/servicios/service-modals.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "16008"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"/EYulCfxFRzgtzNoJ+4OLYc91PmqYCBF7QO8saSdjLc=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:26:25 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-/EYulCfxFRzgtzNoJ+4OLYc91PmqYCBF7QO8saSdjLc="
+        }
+      ]
+    },
+    {
+      "Route": "js/servicios/utils.9ftigebx1w.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/servicios/utils.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3481"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"dV3pAv3cFrgrhDMVGQbsM1cCz/W2iOk7tWzYS5D4krs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:25:52 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "9ftigebx1w"
+        },
+        {
+          "Name": "label",
+          "Value": "js/servicios/utils.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-dV3pAv3cFrgrhDMVGQbsM1cCz/W2iOk7tWzYS5D4krs="
+        }
+      ]
+    },
+    {
+      "Route": "js/servicios/utils.js",
+      "AssetFile": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/servicios/utils.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3481"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"dV3pAv3cFrgrhDMVGQbsM1cCz/W2iOk7tWzYS5D4krs=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 12 Jul 2025 02:25:52 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-dV3pAv3cFrgrhDMVGQbsM1cCz/W2iOk7tWzYS5D4krs="
         }
       ]
     },
@@ -2228,7 +5524,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2273,7 +5569,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2310,7 +5606,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2355,7 +5651,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2392,7 +5688,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2429,7 +5725,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2474,7 +5770,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2511,7 +5807,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2556,7 +5852,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2593,7 +5889,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2638,7 +5934,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2675,7 +5971,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2720,7 +6016,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2757,7 +6053,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2802,7 +6098,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2839,7 +6135,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2884,7 +6180,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2921,7 +6217,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2966,7 +6262,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3003,7 +6299,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3048,7 +6344,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3085,7 +6381,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3130,7 +6426,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3167,7 +6463,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3204,7 +6500,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3249,7 +6545,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3286,7 +6582,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3323,7 +6619,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3368,7 +6664,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3405,7 +6701,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3450,7 +6746,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3495,7 +6791,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3540,7 +6836,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3577,7 +6873,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3614,7 +6910,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3659,7 +6955,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3704,7 +7000,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3741,7 +7037,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3786,7 +7082,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3823,7 +7119,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3868,7 +7164,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3905,7 +7201,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3950,7 +7246,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3987,7 +7283,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4032,7 +7328,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4069,7 +7365,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4106,7 +7402,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4151,7 +7447,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4196,7 +7492,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4233,7 +7529,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4270,7 +7566,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4315,7 +7611,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4360,7 +7656,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4397,7 +7693,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4434,7 +7730,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4479,7 +7775,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4524,7 +7820,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4561,7 +7857,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4606,7 +7902,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4643,7 +7939,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4680,7 +7976,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4725,7 +8021,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4762,7 +8058,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4807,7 +8103,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4852,7 +8148,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4889,7 +8185,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4934,7 +8230,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -4971,7 +8267,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5008,7 +8304,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5053,7 +8349,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5090,7 +8386,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5135,7 +8431,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5180,7 +8476,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5225,7 +8521,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5262,7 +8558,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5307,7 +8603,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5344,7 +8640,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5381,7 +8677,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5418,7 +8714,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5463,7 +8759,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5508,7 +8804,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5545,7 +8841,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5590,7 +8886,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5627,7 +8923,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5672,7 +8968,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5709,7 +9005,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5754,7 +9050,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5791,7 +9087,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5836,7 +9132,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5873,7 +9169,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5918,7 +9214,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -5955,7 +9251,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6000,7 +9296,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6037,7 +9333,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6082,7 +9378,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6127,7 +9423,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6164,7 +9460,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6201,7 +9497,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6238,7 +9534,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6283,7 +9579,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6328,7 +9624,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6373,7 +9669,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6410,7 +9706,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6455,7 +9751,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6492,7 +9788,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6529,7 +9825,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6574,7 +9870,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6611,7 +9907,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6648,7 +9944,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6685,7 +9981,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6730,7 +10026,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6775,7 +10071,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6812,7 +10108,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6857,7 +10153,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6894,7 +10190,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6931,7 +10227,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -6976,7 +10272,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -7021,7 +10317,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -7066,7 +10362,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -7111,7 +10407,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Jun 2025 18:48:50 GMT"
+          "Value": "Sat, 12 Jul 2025 00:04:02 GMT"
         },
         {
           "Name": "Cache-Control",

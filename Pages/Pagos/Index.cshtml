@@ -4,6 +4,7 @@
     ViewData["Title"] = "Gestión de Pagos";
 }
 
+<!-- Estilos CSS existentes... -->
 <style>
     /* Estilos para badges de tipos de pago */
     .badge-efectivo {
@@ -15,7 +16,7 @@
         color: white;
     }
     .badge-plin {
-        background-color: #0275d8;
+        background-color: #0c6521ff;
         color: white;
     }
     .badge-transferencia {
@@ -47,12 +48,15 @@
 <div class="container-fluid py-4">
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h3">Administra los pagos de tus reservas</h1>
+        <h1 class="h3">
+            <i class="bi bi-cash-stack me-2"></i>Gestión de Pagos
+        </h1>
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newPaymentModal">
             <i class="bi bi-plus-circle me-2"></i>Nuevo Pago
         </button>
     </div>
 
+    <!-- Mensajes de estado -->
     @if (Model.HasError)
     {
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -72,30 +76,90 @@
     <!-- Filtros -->
     <div class="card shadow-sm mb-4">
         <div class="card-body">
-            <form id="filterForm" method="get">
+            <form method="get" id="filterForm">
+                <!-- Campos ocultos para mantener la paginación -->
+                <input type="hidden" name="CurrentPage" value="1" />
+                <input type="hidden" name="PageSize" value="@Model.PageSize" />
+                
                 <div class="row g-3">
                     <div class="col-md-4">
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-search"></i></span>
-                            <input type="text" class="form-control" placeholder="Buscar por nombre..." name="SearchTerm" value="@Request.Query["SearchTerm"]">
+                            <input type="text" class="form-control" placeholder="Buscar por nombre..." 
+                                   name="SearchTerm" value="@Model.SearchTerm">
                         </div>
                     </div>
                     <div class="col-md-3">
                         <select class="form-select" name="TypeFilter">
-                            <option value="" selected>Método de pago</option>
-                            <option value="efectivo">Efectivo</option>
-                            <option value="yape">Yape</option>
-                            <option value="plin">Plin</option>
-                            <option value="transferencia">Transferencia bancaria</option>
-                            <option value="parcial">Pago parcial</option>
-                            <option value="adelanto">Adelanto</option>
-                            <option value="otro">Otro</option>
+                            <option value="">Método de pago</option>
+                            @if (Model.TypeFilter == "efectivo")
+                            {
+                                <option value="efectivo" selected>Efectivo</option>
+                            }
+                            else
+                            {
+                                <option value="efectivo">Efectivo</option>
+                            }
+                            
+                            @if (Model.TypeFilter == "yape")
+                            {
+                                <option value="yape" selected>Yape</option>
+                            }
+                            else
+                            {
+                                <option value="yape">Yape</option>
+                            }
+                            
+                            @if (Model.TypeFilter == "plin")
+                            {
+                                <option value="plin" selected>Plin</option>
+                            }
+                            else
+                            {
+                                <option value="plin">Plin</option>
+                            }
+                            
+                            @if (Model.TypeFilter == "transferencia")
+                            {
+                                <option value="transferencia" selected>Transferencia bancaria</option>
+                            }
+                            else
+                            {
+                                <option value="transferencia">Transferencia bancaria</option>
+                            }
+                            
+                            @if (Model.TypeFilter == "parcial")
+                            {
+                                <option value="parcial" selected>Pago parcial</option>
+                            }
+                            else
+                            {
+                                <option value="parcial">Pago parcial</option>
+                            }
+                            
+                            @if (Model.TypeFilter == "adelanto")
+                            {
+                                <option value="adelanto" selected>Adelanto</option>
+                            }
+                            else
+                            {
+                                <option value="adelanto">Adelanto</option>
+                            }
+                            
+                            @if (Model.TypeFilter == "otro")
+                            {
+                                <option value="otro" selected>Otro</option>
+                            }
+                            else
+                            {
+                                <option value="otro">Otro</option>
+                            }
                         </select>
                     </div>
                     <div class="col-md-3">
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-calendar3"></i></span>
-                            <input type="date" class="form-control" name="DateFilter" value="@Request.Query["DateFilter"]">
+                            <input type="date" class="form-control" name="DateFilter" value="@Model.DateFilter">
                         </div>
                     </div>
                     <div class="col-md-2 d-flex">
@@ -126,10 +190,10 @@
                             <th class="text-end pe-4">Acciones</th>
                         </tr>
                     </thead>
-                    <tbody id="pagosTableBody">
+                    <tbody>
                         @if (Model.Pagos != null && Model.Pagos.Any())
                         {
-                            foreach (var pago in Model.Pagos)
+                            @foreach (var pago in Model.Pagos)
                             {
                                 <tr>
                                     <td class="ps-4">@pago.Id</td>
@@ -168,7 +232,16 @@
                                     <div class="d-flex flex-column align-items-center">
                                         <i class="bi bi-cash-stack text-muted" style="font-size: 3rem;"></i>
                                         <h5 class="mt-3">No se encontraron pagos</h5>
-                                        <p class="text-muted mb-4">Prueba ajustando los filtros o crea un nuevo pago</p>
+                                        <p class="text-muted mb-4">
+                                            @if (!string.IsNullOrEmpty(Model.SearchTerm) || !string.IsNullOrEmpty(Model.TypeFilter) || !string.IsNullOrEmpty(Model.DateFilter))
+                                            {
+                                                <span>Intenta ajustando los filtros o crea un nuevo pago</span>
+                                            }
+                                            else
+                                            {
+                                                <span>Comienza agregando tu primer pago</span>
+                                            }
+                                        </p>
                                         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newPaymentModal">
                                             <i class="bi bi-plus-circle me-2"></i>Nuevo Pago
                                         </button>
@@ -186,20 +259,102 @@
     @if (Model.Pagos != null && Model.Pagos.Any())
     {
         <div class="d-flex justify-content-between align-items-center mt-4">
-            <p class="text-muted">Mostrando <strong>@Model.Pagos.Count</strong> pagos</p>
-            <nav>
-                <ul class="pagination">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
-                    </li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Siguiente</a>
-                    </li>
-                </ul>
-            </nav>
+            <p class="text-muted">
+                Mostrando <strong>@((Model.CurrentPage - 1) * Model.PageSize + 1)</strong> 
+                a <strong>@(Math.Min(Model.CurrentPage * Model.PageSize, Model.TotalCount))</strong> 
+                de <strong>@Model.TotalCount</strong> pagos
+            </p>
+            
+            @if (Model.TotalPages > 1)
+            {
+                <nav aria-label="Paginación de pagos">
+                    <ul class="pagination">
+                        <!-- Botón Anterior -->
+                        <li class="page-item @(!Model.HasPreviousPage ? "disabled" : "")">
+                            @if (Model.HasPreviousPage)
+                            {
+                                <a class="page-link" href="?CurrentPage=@(Model.CurrentPage - 1)&PageSize=@Model.PageSize&SearchTerm=@Model.SearchTerm&TypeFilter=@Model.TypeFilter&DateFilter=@Model.DateFilter" tabindex="-1">
+                                    <i class="bi bi-chevron-left"></i> Anterior
+                                </a>
+                            }
+                            else
+                            {
+                                <span class="page-link" tabindex="-1" aria-disabled="true">
+                                    <i class="bi bi-chevron-left"></i> Anterior
+                                </span>
+                            }
+                        </li>
+
+                        <!-- Números de página -->
+                        @{
+                            int startPage = Math.Max(1, Model.CurrentPage - 2);
+                            int endPage = Math.Min(Model.TotalPages, Model.CurrentPage + 2);
+                        }
+
+                        @if (startPage > 1)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="?CurrentPage=1&PageSize=@Model.PageSize&SearchTerm=@Model.SearchTerm&TypeFilter=@Model.TypeFilter&DateFilter=@Model.DateFilter">1</a>
+                            </li>
+                            @if (startPage > 2)
+                            {
+                                <li class="page-item disabled">
+                                    <span class="page-link">...</span>
+                                </li>
+                            }
+                        }
+
+                        @for (int i = startPage; i <= endPage; i++)
+                        {
+                            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                                @if (i == Model.CurrentPage)
+                                {
+                                    <span class="page-link">@i</span>
+                                }
+                                else
+                                {
+                                    <a class="page-link" href="?CurrentPage=@i&PageSize=@Model.PageSize&SearchTerm=@Model.SearchTerm&TypeFilter=@Model.TypeFilter&DateFilter=@Model.DateFilter">@i</a>
+                                }
+                            </li>
+                        }
+
+                        @if (endPage < Model.TotalPages)
+                        {
+                            @if (endPage < Model.TotalPages - 1)
+                            {
+                                <li class="page-item disabled">
+                                    <span class="page-link">...</span>
+                                </li>
+                            }
+                            <li class="page-item">
+                                <a class="page-link" href="?CurrentPage=@Model.TotalPages&PageSize=@Model.PageSize&SearchTerm=@Model.SearchTerm&TypeFilter=@Model.TypeFilter&DateFilter=@Model.DateFilter">@Model.TotalPages</a>
+                            </li>
+                        }
+
+                        <!-- Botón Siguiente -->
+                        <li class="page-item @(!Model.HasNextPage ? "disabled" : "")">
+                            @if (Model.HasNextPage)
+                            {
+                                <a class="page-link" href="?CurrentPage=@(Model.CurrentPage + 1)&PageSize=@Model.PageSize&SearchTerm=@Model.SearchTerm&TypeFilter=@Model.TypeFilter&DateFilter=@Model.DateFilter">
+                                    Siguiente <i class="bi bi-chevron-right"></i>
+                                </a>
+                            }
+                            else
+                            {
+                                <span class="page-link" aria-disabled="true">
+                                    Siguiente <i class="bi bi-chevron-right"></i>
+                                </span>
+                            }
+                        </li>
+                    </ul>
+                </nav>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-4">
+            <p class="text-muted mb-0">No se encontraron pagos que coincidan con los criterios de búsqueda.</p>
         </div>
     }
 </div>
@@ -209,519 +364,6 @@
 <partial name="_EditPaymentModal" />
 <partial name="_DeletePaymentModal" />
 
-<div id="printSection" class="d-none"></div>
-
 @section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Convertir los textos de tipo de pago a badges
-            convertirTiposPagoABadges();
-            
-            // Setup create payment form
-            setupCreatePaymentForm();
-            
-            // Setup edit payment buttons
-            setupEditPaymentButtons();
-            
-            // Setup delete payment buttons
-            setupDeletePaymentButtons();
-            
-            // Clear filters button
-            const clearFiltersBtn = document.getElementById('clearFilters');
-            if (clearFiltersBtn) {
-                clearFiltersBtn.addEventListener('click', function() {
-                    const searchTermInput = document.querySelector('[name="SearchTerm"]');
-                    const typeFilterSelect = document.querySelector('[name="TypeFilter"]');
-                    const dateFilterInput = document.querySelector('[name="DateFilter"]');
-                    
-                    if (searchTermInput) searchTermInput.value = '';
-                    if (typeFilterSelect) typeFilterSelect.value = '';
-                    if (dateFilterInput) dateFilterInput.value = '';
-                    
-                    const filterForm = document.getElementById('filterForm');
-                    if (filterForm) filterForm.submit();
-                });
-            }
-
-            // Función para configurar el formulario de creación de pagos
-            function setupCreatePaymentForm() {
-                const createPaymentBtn = document.getElementById('createPaymentBtn');
-                
-                if (createPaymentBtn) {
-                    createPaymentBtn.addEventListener('click', async function() {
-                        try {
-                            // Get form elements
-                            const reservaSelect = document.getElementById('paymentReservation');
-                            const tipoSelect = document.getElementById('paymentType');
-                            const montoInput = document.getElementById('paymentAmount');
-                            const errorDiv = document.getElementById('paymentError');
-                            const errorMessage = document.getElementById('paymentErrorMessage');
-                            
-                            // Hide previous errors
-                            errorDiv.classList.add('d-none');
-                            
-                            // Validate form
-                            let isValid = true;
-                            
-                            if (!reservaSelect.value) {
-                                reservaSelect.classList.add('is-invalid');
-                                isValid = false;
-                            } else {
-                                reservaSelect.classList.remove('is-invalid');
-                            }
-                            
-                            if (!tipoSelect.value) {
-                                tipoSelect.classList.add('is-invalid');
-                                isValid = false;
-                            } else {
-                                tipoSelect.classList.remove('is-invalid');
-                            }
-                            
-                            if (!montoInput.value || parseFloat(montoInput.value) <= 0) {
-                                montoInput.classList.add('is-invalid');
-                                isValid = false;
-                            } else {
-                                montoInput.classList.remove('is-invalid');
-                            }
-                            
-                            if (!isValid) {
-                                errorDiv.classList.remove('d-none');
-                                errorMessage.textContent = 'Por favor, completa todos los campos correctamente.';
-                                return;
-                            }
-                            
-                            // Show loading state
-                            const button = this;
-                            const originalHtml = button.innerHTML;
-                            button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Procesando...';
-                            button.disabled = true;
-                            
-                            // Prepare payment data
-                            const paymentData = {
-                                idReserva: reservaSelect.value,
-                                nombreTipoPago: tipoSelect.value,
-                                monto: montoInput.value
-                            };
-                            
-                            console.log('Enviando datos para crear pago:', paymentData);
-                            
-                            // Get anti-forgery token
-                            const tokenElement = document.querySelector('input[name="__RequestVerificationToken"]');
-                            const token = tokenElement ? tokenElement.value : '';
-                            
-                            // Send request to create payment
-                            const response = await fetch('?handler=CreatePayment', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'RequestVerificationToken': token,
-                                    'X-Requested-With': 'XMLHttpRequest'
-                                },
-                                body: JSON.stringify(paymentData)
-                            });
-                            
-                            // Parse response
-                            const responseText = await response.text();
-                            let result;
-                            try {
-                                result = JSON.parse(responseText);
-                            } catch (e) {
-                                console.error('Error parsing JSON response:', e, responseText);
-                                throw new Error('Error en la respuesta del servidor');
-                            }
-                            
-                            if (response.ok && result.success) {
-                                // Close modal
-                                const modalElement = document.getElementById('newPaymentModal');
-                                const modal = bootstrap.Modal.getInstance(modalElement);
-                                if (modal) {
-                                    modal.hide();
-                                }
-                                
-                                // Show success message and reload page
-                                setTimeout(() => {
-                                    window.location.href = '/Pagos?success=true';
-                                }, 500);
-                            } else {
-                                throw new Error(result.message || `Error ${response.status}: ${response.statusText}`);
-                            }
-                            
-                        } catch (error) {
-                            console.error('Error creating payment:', error);
-                            
-                            // Show error message
-                            const errorDiv = document.getElementById('paymentError');
-                            const errorMessage = document.getElementById('paymentErrorMessage');
-                            
-                            if (errorDiv && errorMessage) {
-                                errorDiv.classList.remove('d-none');
-                                errorMessage.textContent = error.message || 'Error al crear el pago';
-                            }
-                            
-                        } finally {
-                            // Restore button state
-                            const button = document.getElementById('createPaymentBtn');
-                            if (button) {
-                                button.innerHTML = '<i class="bi bi-save me-1"></i>Crear Pago';
-                                button.disabled = false;
-                            }
-                        }
-                    });
-                }
-            }
-            
-            // Función para configurar los botones de edición de pagos
-            function setupEditPaymentButtons() {
-                // Get all edit payment buttons
-                const editButtons = document.querySelectorAll('.edit-payment');
-                
-                editButtons.forEach(button => {
-                    button.addEventListener('click', function() {
-                        const paymentId = this.dataset.id;
-                        const paymentType = this.dataset.type;
-                        const paymentAmount = this.dataset.amount;
-                        const reservationName = this.dataset.reservation;
-                        const paymentDate = this.dataset.date; 
-                        
-                        console.log('Editando pago:', {
-                            id: paymentId,
-                            type: paymentType,
-                            amount: paymentAmount,
-                            reservation: reservationName,
-                            date: paymentDate 
-                        });
-                        
-                        // Set values in edit form
-                        document.getElementById('editPaymentId').value = paymentId;
-                        document.getElementById('editPaymentReservation').value = reservationName || 'Sin reserva';
-                        
-                        const typeSelect = document.getElementById('editPaymentType');
-                        typeSelect.value = paymentType.toLowerCase();
-                        
-                        document.getElementById('editPaymentAmount').value = paymentAmount;
-                        document.getElementById('editPaymentDate').value = paymentDate;
-                        
-                        // Clear previous errors
-                        const errorDiv = document.getElementById('editPaymentError');
-                        if (errorDiv) {
-                            errorDiv.classList.add('d-none');
-                        }
-                        
-                        // Show modal
-                        var modalElement = document.getElementById('editPaymentModal');
-                        if (modalElement) {
-                            var bsModal = new bootstrap.Modal(modalElement);
-                            bsModal.show();
-                        } else {
-                            console.error('Modal element not found!');
-                        }
-                    });
-                });
-                
-                // Handle update payment button click
-                const updatePaymentBtn = document.getElementById('updatePaymentBtn');
-                
-                if (updatePaymentBtn) {
-                    updatePaymentBtn.addEventListener('click', async function() {
-                        try {
-                            // Get form elements
-                            const paymentId = document.getElementById('editPaymentId').value;
-                            const tipoSelect = document.getElementById('editPaymentType');
-                            const montoInput = document.getElementById('editPaymentAmount');
-                            const errorDiv = document.getElementById('editPaymentError');
-                            const errorMessage = document.getElementById('editPaymentErrorMessage');
-                            
-                            // Hide previous errors
-                            errorDiv.classList.add('d-none');
-                            
-                            // Validate form
-                            let isValid = true;
-                            
-                            if (!tipoSelect.value) {
-                                tipoSelect.classList.add('is-invalid');
-                                isValid = false;
-                            } else {
-                                tipoSelect.classList.remove('is-invalid');
-                            }
-                            
-                            if (!montoInput.value || parseFloat(montoInput.value) <= 0) {
-                                montoInput.classList.add('is-invalid');
-                                isValid = false;
-                            } else {
-                                montoInput.classList.remove('is-invalid');
-                            }
-                            
-                            if (!isValid) {
-                                errorDiv.classList.remove('d-none');
-                                errorMessage.textContent = 'Por favor, completa todos los campos correctamente.';
-                                return;
-                            }
-                            
-                            // Show loading state
-                            const button = this;
-                            const originalHtml = button.innerHTML;
-                            button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Procesando...';
-                            button.disabled = true;
-                            
-                            // Prepare payment data
-                            const paymentData = {
-                                nombreTipoPago: tipoSelect.value,
-                                monto: montoInput.value
-                            };
-                            
-                            console.log('Enviando datos para actualizar pago:', paymentData);
-                            
-                            // Get anti-forgery token
-                            const tokenElement = document.querySelector('input[name="__RequestVerificationToken"]');
-                            const token = tokenElement ? tokenElement.value : '';
-                            
-                            // Send request to update payment
-                            const response = await fetch(`?handler=UpdatePayment&id=${encodeURIComponent(paymentId)}`, {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'RequestVerificationToken': token,
-                                    'X-Requested-With': 'XMLHttpRequest'
-                                },
-                                body: JSON.stringify(paymentData)
-                            });
-                            
-                            // Parse response
-                            const responseText = await response.text();
-                            let result;
-                            try {
-                                result = JSON.parse(responseText);
-                            } catch (e) {
-                                console.error('Error parsing JSON response:', e, responseText);
-                                throw new Error('Error en la respuesta del servidor');
-                            }
-                            
-                            if (response.ok && result.success) {
-                                // Close modal
-                                const modalElement = document.getElementById('editPaymentModal');
-                                const modal = bootstrap.Modal.getInstance(modalElement);
-                                if (modal) {
-                                    modal.hide();
-                                }
-                                
-                                // Show success message and reload page
-                                setTimeout(() => {
-                                    window.location.href = '/Pagos?success=true';
-                                }, 500);
-                            } else {
-                                throw new Error(result.message || `Error ${response.status}: ${response.statusText}`);
-                            }
-                            
-                        } catch (error) {
-                            console.error('Error updating payment:', error);
-                            
-                            // Show error message
-                            const errorDiv = document.getElementById('editPaymentError');
-                            const errorMessage = document.getElementById('editPaymentErrorMessage');
-                            
-                            if (errorDiv && errorMessage) {
-                                errorDiv.classList.remove('d-none');
-                                errorMessage.textContent = error.message || 'Error al actualizar el pago';
-                            }
-                            
-                        } finally {
-                            // Restore button state
-                            const button = document.getElementById('updatePaymentBtn');
-                            if (button) {
-                                button.innerHTML = '<i class="bi bi-save me-1"></i>Actualizar Pago';
-                                button.disabled = false;
-                            }
-                        }
-                    });
-                }
-            }
-            
-            // Función para configurar los botones de eliminación de pagos
-            function setupDeletePaymentButtons() {
-                // Get all delete payment buttons
-                const deleteButtons = document.querySelectorAll('.delete-payment');
-                
-                deleteButtons.forEach(button => {
-                    button.addEventListener('click', function() {
-                        const paymentId = this.dataset.id;
-                        const paymentType = this.dataset.type;
-                        const paymentAmount = this.dataset.amount;
-                        const paymentDate = this.dataset.date;  // Nueva línea
-                        
-                        console.log('Eliminando pago:', {
-                            id: paymentId,
-                            type: paymentType,
-                            amount: paymentAmount,
-                            date: paymentDate  // Nueva línea
-                        });
-                        
-                        // Set values in delete confirmation
-                        document.getElementById('deletePaymentId').value = paymentId;
-                        document.getElementById('deletePaymentType').textContent = paymentType;
-                        document.getElementById('deletePaymentAmount').textContent = paymentAmount;
-                        document.getElementById('deletePaymentDate').textContent = paymentDate;  // Nueva línea
-                        
-                        // Clear previous errors
-                        const errorDiv = document.getElementById('deletePaymentError');
-                        if (errorDiv) {
-                            errorDiv.classList.add('d-none');
-                        }
-                        
-                        // Show modal
-                        var modalElement = document.getElementById('deletePaymentModal');
-                        if (modalElement) {
-                            var bsModal = new bootstrap.Modal(modalElement);
-                            bsModal.show();
-                        } else {
-                            console.error('Modal element not found!');
-                        }
-                    });
-                });
-                
-                // Handle confirm delete button click
-                const confirmDeleteBtn = document.getElementById('confirmDeletePaymentBtn');
-                
-                if (confirmDeleteBtn) {
-                    confirmDeleteBtn.addEventListener('click', async function() {
-                        try {
-                            // Get payment id
-                            const paymentId = document.getElementById('deletePaymentId').value;
-                            const errorDiv = document.getElementById('deletePaymentError');
-                            const errorMessage = document.getElementById('deletePaymentErrorMessage');
-                            
-                            // Hide previous errors
-                            errorDiv.classList.add('d-none');
-                            
-                            if (!paymentId) {
-                                errorDiv.classList.remove('d-none');
-                                errorMessage.textContent = 'ID de pago no válido.';
-                                return;
-                            }
-                            
-                            // Show loading state
-                            const button = this;
-                            const originalHtml = button.innerHTML;
-                            button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Procesando...';
-                            button.disabled = true;
-                            
-                            console.log('Eliminando pago con ID:', paymentId);
-                            
-                            // Get anti-forgery token
-                            const tokenElement = document.querySelector('input[name="__RequestVerificationToken"]');
-                            const token = tokenElement ? tokenElement.value : '';
-                            
-                            // Send request to delete payment
-                            const response = await fetch(`?handler=DeletePayment&id=${encodeURIComponent(paymentId)}`, {
-                                method: 'POST',
-                                headers: {
-                                    'RequestVerificationToken': token,
-                                    'X-Requested-With': 'XMLHttpRequest'
-                                }
-                            });
-                            
-                            // Parse response
-                            const responseText = await response.text();
-                            let result;
-                            try {
-                                result = JSON.parse(responseText);
-                            } catch (e) {
-                                console.error('Error parsing JSON response:', e, responseText);
-                                throw new Error('Error en la respuesta del servidor');
-                            }
-                            
-                            if (response.ok && result.success) {
-                                // Close modal
-                                const modalElement = document.getElementById('deletePaymentModal');
-                                const modal = bootstrap.Modal.getInstance(modalElement);
-                                if (modal) {
-                                    modal.hide();
-                                }
-                                
-                                // Show success message and reload page
-                                setTimeout(() => {
-                                    window.location.href = '/Pagos?success=true';
-                                }, 500);
-                            } else {
-                                throw new Error(result.message || `Error ${response.status}: ${response.statusText}`);
-                            }
-                            
-                        } catch (error) {
-                            console.error('Error deleting payment:', error);
-                            
-                            // Show error message
-                            const errorDiv = document.getElementById('deletePaymentError');
-                            const errorMessage = document.getElementById('deletePaymentErrorMessage');
-                            
-                            if (errorDiv && errorMessage) {
-                                errorDiv.classList.remove('d-none');
-                                errorMessage.textContent = error.message || 'Error al eliminar el pago';
-                            }
-                            
-                        } finally {
-                            // Restore button state
-                            const button = document.getElementById('confirmDeletePaymentBtn');
-                            if (button) {
-                                button.innerHTML = 'Eliminar Pago';
-                                button.disabled = false;
-                            }
-                        }
-                    });
-                }
-            }
-            
-            // Función para convertir los tipos de pago a badges coloridos
-            function convertirTiposPagoABadges() {
-                // Mapeo de valores a nombres formateados
-                const nombresTiposPago = {
-                    'efectivo': 'Efectivo',
-                    'yape': 'Yape',
-                    'plin': 'Plin',
-                    'transferencia': 'Transferencia bancaria',
-                    'adelanto': 'Adelanto',
-                    'parcial': 'Pago parcial',
-                    'otro': 'Otro'
-                };
-                
-                const tiposPago = document.querySelectorAll('.tipo-pago-badge');
-                
-                tiposPago.forEach(elemento => {
-                    const tipo = elemento.getAttribute('data-tipo');
-                    let badgeClass = 'badge-otro';
-                    let icon = 'bi-question-circle';
-                    
-                    switch(tipo) {
-                        case 'efectivo':
-                            badgeClass = 'badge-efectivo';
-                            icon = 'bi-cash';
-                            break;
-                        case 'yape':
-                            badgeClass = 'badge-yape';
-                            icon = 'bi-phone';
-                            break;
-                        case 'plin':
-                            badgeClass = 'badge-plin';
-                            icon = 'bi-phone-fill';
-                            break;
-                        case 'transferencia':
-                            badgeClass = 'badge-transferencia';
-                            icon = 'bi-bank';
-                            break;
-                        case 'adelanto':
-                            badgeClass = 'badge-adelanto';
-                            icon = 'bi-credit-card-2-front';
-                            break;
-                        case 'parcial':
-                            badgeClass = 'badge-parcial';
-                            icon = 'bi-credit-card';
-                            break;
-                    }
-                    
-                    // Usar el nombre formateado en lugar del texto original
-                    const nombreFormateado = nombresTiposPago[tipo] || elemento.textContent;
-                    elemento.className = `tipo-badge ${badgeClass}`;
-                    elemento.innerHTML = `<i class="bi ${icon}"></i>${nombreFormateado}`;
-                });
-            }
-        });
-    </script>
+    <script type="module" src="~/js/pagos/main.js"></script>
 }
