@@ -9,7 +9,8 @@ export let charts = {
     popularServices: null,
     clientGrowth: null,
     topItems: null,
-    eventTypeProfit: null
+    eventTypeProfit: null,
+    reservationTrend: null // Nuevo
 };
 
 export function initializeCharts() {
@@ -17,15 +18,16 @@ export function initializeCharts() {
 }
 
 export function renderAllCharts(reportesData) {
-    console.log('Iniciando renderizado de todos los gráficos');
+    console.log('Iniciando renderizado de todos los gráficos (actualizado)');
     try {
         renderRevenueChart(reportesData.pagos);
-        renderReservationStatusChart(reportesData.reservas);
+        renderReservationStatusChart(reportesData.reservas); // Actualizado
         renderPopularServicesChart(reportesData.servicios);
         renderClientGrowthChart(reportesData.clientes);
         renderTopItemsChart(reportesData.items);
         renderEventTypeProfitChart(reportesData.reservas);
-        console.log('Todos los gráficos renderizados');
+        renderReservationTrendChart(reportesData.reservas); // Nuevo - opcional
+        console.log('Todos los gráficos renderizados (incluidas reservas finalizadas)');
     } catch (error) {
         console.error('Error al renderizar gráficos:', error);
     }
@@ -132,10 +134,14 @@ function renderReservationStatusChart(reservasData) {
     }
 
     const tasaConversion = reservasData.tasaConversionEstado;
-    console.log('Datos de estados:', tasaConversion);
+    console.log('Datos de estados (actualizado):', tasaConversion);
     
-    // Verificar si hay datos válidos
-    const totalReservas = tasaConversion.reservasPendientes + tasaConversion.reservasConfirmadas + tasaConversion.reservasCanceladas;
+    // *** ACTUALIZADO: Incluir reservas finalizadas ***
+    const totalReservas = tasaConversion.reservasPendientes + 
+                         tasaConversion.reservasConfirmadas + 
+                         tasaConversion.reservasCanceladas + 
+                         (tasaConversion.reservasFinalizadas || 0); // Nuevo campo
+    
     if (totalReservas === 0) {
         console.warn('No hay reservas para mostrar');
         hideChartLoading('reservationStatusChart');
@@ -143,22 +149,27 @@ function renderReservationStatusChart(reservasData) {
         return;
     }
     
+    // *** ACTUALIZADO: Agregar datos de reservas finalizadas ***
     const data = [
         tasaConversion.reservasPendientes,
         tasaConversion.reservasConfirmadas,
-        tasaConversion.reservasCanceladas
+        tasaConversion.reservasCanceladas,
+        tasaConversion.reservasFinalizadas || 0 // Nuevo
     ];
+
+    const labels = ['Pendientes', 'Confirmadas', 'Canceladas', 'Finalizadas']; // Actualizado
 
     charts.reservationStatus = new Chart(canvas, {
         type: 'doughnut',
         data: {
-            labels: ['Pendientes', 'Confirmadas', 'Canceladas'],
+            labels: labels,
             datasets: [{
                 data: data,
                 backgroundColor: [
-                    '#F59E0B',
-                    '#10B981',
-                    '#EF4444'
+                    '#F59E0B', // Pendientes - Amarillo
+                    '#10B981', // Confirmadas - Verde
+                    '#EF4444', // Canceladas - Rojo
+                    '#6366F1'  // Finalizadas - Azul/Púrpura
                 ]
             }]
         },
@@ -168,6 +179,16 @@ function renderReservationStatusChart(reservasData) {
             plugins: {
                 legend: {
                     position: 'bottom'
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const label = context.label || '';
+                            const value = context.parsed;
+                            const percentage = ((value / totalReservas) * 100).toFixed(1);
+                            return `${label}: ${value} (${percentage}%)`;
+                        }
+                    }
                 }
             }
         }
@@ -175,7 +196,122 @@ function renderReservationStatusChart(reservasData) {
     
     setTimeout(() => {
         hideChartLoading('reservationStatusChart');
-        console.log('Gráfico de estados renderizado exitosamente');
+        console.log('Gráfico de estados renderizado exitosamente con reservas finalizadas');
+    }, 100);
+}
+
+// *** NUEVA FUNCIÓN: Gráfico de reservas por mes ***
+function renderReservationTrendChart(reservasData) {
+    console.log('Renderizando gráfico de tendencia de reservas...');
+    const canvas = document.getElementById('reservationTrendChart');
+    if (!canvas) {
+        console.warn('Canvas reservationTrendChart no encontrado - probablemente opcional');
+        return;
+    }
+    
+    if (!reservasData || !reservasData.reservasPorMes) {
+        console.warn('Datos de reservas por mes no disponibles');
+        hideChartLoading('reservationTrendChart');
+        showNoDataMessage('reservationTrendChart', 'No hay datos de reservas mensuales disponibles');
+        return;
+    }
+
+    if (charts.reservationTrend) {
+        charts.reservationTrend.destroy();
+    }
+
+    const reservasPorMes = reservasData.reservasPorMes || [];
+    console.log('Datos de reservas por mes:', reservasPorMes);
+    
+    if (reservasPorMes.length === 0) {
+        console.warn('No hay datos de reservas mensuales');
+        hideChartLoading('reservationTrendChart');
+        showNoDataMessage('reservationTrendChart', 'No hay reservas mensuales en el período seleccionado');
+        return;
+    }
+    
+    const labels = reservasPorMes.map(item => item.nombreMes);
+    const cantidadData = reservasPorMes.map(item => item.cantidadReservas);
+    const montoData = reservasPorMes.map(item => item.montoTotal);
+
+    charts.reservationTrend = new Chart(canvas, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Cantidad de Reservas',
+                    data: cantidadData,
+                    borderColor: 'rgb(99, 102, 241)',
+                    backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                    tension: 0.4,
+                    yAxisID: 'y'
+                },
+                {
+                    label: 'Monto Total (S/)',
+                    data: montoData,
+                    borderColor: 'rgb(16, 185, 129)',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    tension: 0.4,
+                    yAxisID: 'y1'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
+            scales: {
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Cantidad'
+                    }
+                },
+                y1: {
+                    type: 'linear',
+                    display: true,
+                    position: 'right',
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Monto (S/)'
+                    },
+                    grid: {
+                        drawOnChartArea: false,
+                    },
+                    ticks: {
+                        callback: function(value) {
+                            return 'S/' + value.toLocaleString();
+                        }
+                    }
+                }
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            if (context.datasetIndex === 1) {
+                                return `${context.dataset.label}: S/${context.parsed.y.toLocaleString()}`;
+                            }
+                            return `${context.dataset.label}: ${context.parsed.y}`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+    
+    setTimeout(() => {
+        hideChartLoading('reservationTrendChart');
+        console.log('Gráfico de tendencia de reservas renderizado exitosamente');
     }, 100);
 }
 

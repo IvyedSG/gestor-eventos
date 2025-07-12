@@ -120,8 +120,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>32r6fkhwv3</Fingerprint>
-      <Integrity>ex3dNVaTE51l0eaHMJCmgOGYZi6qikh+8cuLv82L0ZY=</Integrity>
+      <Fingerprint>iojetuekri</Fingerprint>
+      <Integrity>3k9M5Mx7mXHt56Vi6G+PuTG2CaVxkOAC+YVaGlz+vIs=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\clientes\client-form.js'))</OriginalItemSpec>
@@ -216,6 +216,24 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\inventario\alerts.js'))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\inventario\filters.js'))">
+      <SourceType>Package</SourceType>
+      <SourceId>gestor-eventos</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/gestor-eventos</BasePath>
+      <RelativePath>js/inventario/filters.js</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>c0uegcwv2v</Fingerprint>
+      <Integrity>lPAR8Cnrjxj74Wm+h0KfasL2ZD4+gyBmUOgSxPaaf20=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\inventario\filters.js'))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\inventario\inventory-actions.js'))">
       <SourceType>Package</SourceType>
       <SourceId>gestor-eventos</SourceId>
@@ -228,8 +246,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>fulukkbtw6</Fingerprint>
-      <Integrity>6eE5WxczujXhsKvCDbnCbkhEX42/Vu52FXbxuHshhr4=</Integrity>
+      <Fingerprint>w8ad7z64fp</Fingerprint>
+      <Integrity>IKjH6RkQMWo4SKsvra4klgvpMk0TAWollNlONKzLn6g=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\inventario\inventory-actions.js'))</OriginalItemSpec>
@@ -282,8 +300,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>acvfshy91x</Fingerprint>
-      <Integrity>aiwDXFFOBiYJvqsN37BsR6ZDS8qLqQBJT4t79dclfiE=</Integrity>
+      <Fingerprint>93u7vibb78</Fingerprint>
+      <Integrity>6/Tm06YfVL6/skja7eZA6gUCL3l6g1AzaP/Wb9tzzT0=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\inventario\main.js'))</OriginalItemSpec>
@@ -450,6 +468,132 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\recibo-reserva.js'))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\reportes\alerts.js'))">
+      <SourceType>Package</SourceType>
+      <SourceId>gestor-eventos</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/gestor-eventos</BasePath>
+      <RelativePath>js/reportes/alerts.js</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>b8ogb5qihk</Fingerprint>
+      <Integrity>VeLrZMYKCPPWQzsVdiWgBL91Stc8Xu3QNzRAC0+Q55w=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\reportes\alerts.js'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\reportes\charts.js'))">
+      <SourceType>Package</SourceType>
+      <SourceId>gestor-eventos</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/gestor-eventos</BasePath>
+      <RelativePath>js/reportes/charts.js</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>uiqe9brcqf</Fingerprint>
+      <Integrity>Oh2SXDdaan6p9HhKBMgnn64MGry2lUoz9ZtpzE3cU5w=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\reportes\charts.js'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\reportes\export.js'))">
+      <SourceType>Package</SourceType>
+      <SourceId>gestor-eventos</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/gestor-eventos</BasePath>
+      <RelativePath>js/reportes/export.js</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>ei7g6976d8</Fingerprint>
+      <Integrity>+vtePKjc07iX/8wS2l3jA86m8go3LEyi3jeK8vmtQ6w=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\reportes\export.js'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\reportes\filters.js'))">
+      <SourceType>Package</SourceType>
+      <SourceId>gestor-eventos</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/gestor-eventos</BasePath>
+      <RelativePath>js/reportes/filters.js</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>cf3268wwea</Fingerprint>
+      <Integrity>KJx/IzIFNyK0NSqxq0MN4TvMOlNyNM+bgCHAsEJ6ADc=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\reportes\filters.js'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\reportes\main.js'))">
+      <SourceType>Package</SourceType>
+      <SourceId>gestor-eventos</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/gestor-eventos</BasePath>
+      <RelativePath>js/reportes/main.js</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>szv0h4qggg</Fingerprint>
+      <Integrity>+IL68u8RIxYD51Hq4IXP1NpDdIk9GUbVlFoMiPX7cbk=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\reportes\main.js'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\reportes\reports-data.js'))">
+      <SourceType>Package</SourceType>
+      <SourceId>gestor-eventos</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/gestor-eventos</BasePath>
+      <RelativePath>js/reportes/reports-data.js</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>i06l0pnf14</Fingerprint>
+      <Integrity>TrplThfQld/LSMTrS58rOhEuWGdEPDfZNSRHMjNUwTc=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\reportes\reports-data.js'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\reportes\utils.js'))">
+      <SourceType>Package</SourceType>
+      <SourceId>gestor-eventos</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/gestor-eventos</BasePath>
+      <RelativePath>js/reportes/utils.js</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>j63gq53w81</Fingerprint>
+      <Integrity>GzKsy2wMoysSUgIYOgkEb/6BVyAJyIaXecLG8oeqKfo=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\reportes\utils.js'))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\reservas\delete-reservation-modal.js'))">
       <SourceType>Package</SourceType>
       <SourceId>gestor-eventos</SourceId>
@@ -480,8 +624,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>1w8ssgj80p</Fingerprint>
-      <Integrity>/9dvVGBg5+frtDt5PCqaKgZgVJXrFflwsRb4FS0Tj2Q=</Integrity>
+      <Fingerprint>zbi67u7wud</Fingerprint>
+      <Integrity>T7HKrYgVmgxfedbBSkfkRWyJwdUmSc4H95volT+F/ro=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\reservas\edit-reservation-modal.js'))</OriginalItemSpec>
@@ -516,8 +660,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>lsxlg45tx2</Fingerprint>
-      <Integrity>Vc51MJTonmJgZmUMLTmoxIwj5sk912b6YRFn5XnlI2c=</Integrity>
+      <Fingerprint>wsmtaqr42x</Fingerprint>
+      <Integrity>UEVwhhyjtp/db6LX6Yu0IGBQd0TQy/nR12Wm2pQ4Dfk=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\reservas\main.js'))</OriginalItemSpec>
@@ -534,8 +678,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>pqk7rpac6t</Fingerprint>
-      <Integrity>wQPvYRLk2GcaH7JLrXvsX7btRqcxyVBhGzgnnrOUeNA=</Integrity>
+      <Fingerprint>iuv40lbj25</Fingerprint>
+      <Integrity>Ol5dDk8dnow9sw9zHZA30GYtEWP/ngUPK5/S2Ktajjo=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\reservas\reservation-actions.js'))</OriginalItemSpec>
@@ -552,8 +696,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>z2hkxy0lgj</Fingerprint>
-      <Integrity>e1zt40aHHyUKIiUKkxCt1Bua6Un/r0LtCAxdt/62JWk=</Integrity>
+      <Fingerprint>vm4asuhr66</Fingerprint>
+      <Integrity>CSb9eBQqWkuRWLx1UsoawR/mGum0WTNXiOfjHRYGy3U=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\reservas\reservation-form.js'))</OriginalItemSpec>

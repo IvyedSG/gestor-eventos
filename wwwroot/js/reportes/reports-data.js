@@ -127,7 +127,19 @@ async function processResponses(resumenResp, clientesResp, itemsResp, pagosResp,
     // Procesar reservas
     if (reservasResp.ok) {
         reportesData.reservas = await reservasResp.json();
-        console.log('Reservas cargado:', reportesData.reservas);
+        console.log('Reservas cargado (con finalizadas):', reportesData.reservas);
+        
+        // *** NUEVO: Log específico para verificar estados ***
+        if (reportesData.reservas?.tasaConversionEstado) {
+            const estados = reportesData.reservas.tasaConversionEstado;
+            console.log('Estados de reservas actualizados:', {
+                pendientes: estados.reservasPendientes,
+                confirmadas: estados.reservasConfirmadas,
+                canceladas: estados.reservasCanceladas,
+                finalizadas: estados.reservasFinalizadas || 0,
+                tasaFinalizacion: estados.tasaFinalizacion || 0
+            });
+        }
     }
     
     // Procesar servicios

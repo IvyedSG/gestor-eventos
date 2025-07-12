@@ -143,7 +143,8 @@ export function showAllChartLoadings() {
         'popularServicesChartLoading',
         'clientGrowthChartLoading',
         'topItemsChartLoading',
-        'eventTypeProfitChartLoading'
+        'eventTypeProfitChartLoading',
+        'reservationTrendChartLoading' // *** NUEVO ***
     ];
     
     loadingIds.forEach(id => {

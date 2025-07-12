@@ -203,8 +203,10 @@ namespace GestorEventos.Models.ApiModels
         public int ReservasPendientes { get; set; }
         public int ReservasConfirmadas { get; set; }
         public int ReservasCanceladas { get; set; }
+        public int ReservasFinalizadas { get; set; } // *** NUEVO CAMPO ***
         public double TasaConversionPendienteConfirmado { get; set; }
         public double TasaCancelacion { get; set; }
+        public double TasaFinalizacion { get; set; } // *** NUEVO CAMPO ***
     }
 
     public class DistribucionReservaPorCliente

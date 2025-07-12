@@ -49,6 +49,10 @@
       "PackagePath": "staticwebassets/js/inventario/alerts.js"
     },
     {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/inventario/filters.js",
+      "PackagePath": "staticwebassets/js/inventario/filters.js"
+    },
+    {
       "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/inventario/inventory-actions.js",
       "PackagePath": "staticwebassets/js/inventario/inventory-actions.js"
     },
@@ -99,6 +103,34 @@
     {
       "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/recibo-reserva.js",
       "PackagePath": "staticwebassets/js/recibo-reserva.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reportes/alerts.js",
+      "PackagePath": "staticwebassets/js/reportes/alerts.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reportes/charts.js",
+      "PackagePath": "staticwebassets/js/reportes/charts.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reportes/export.js",
+      "PackagePath": "staticwebassets/js/reportes/export.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reportes/filters.js",
+      "PackagePath": "staticwebassets/js/reportes/filters.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reportes/main.js",
+      "PackagePath": "staticwebassets/js/reportes/main.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reportes/reports-data.js",
+      "PackagePath": "staticwebassets/js/reportes/reports-data.js"
+    },
+    {
+      "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reportes/utils.js",
+      "PackagePath": "staticwebassets/js/reportes/utils.js"
     },
     {
       "Id": "/Users/sagox16/Documents/Importants/gestor-eventos/wwwroot/js/reservas/delete-reservation-modal.js",

@@ -25,7 +25,7 @@ namespace gestor_eventos.Services
             CreateResumenEjecutivoSheet(package, resumenEjecutivo, fechaInicio, fechaFin);
             CreateClientesSheet(package, reportesClientes);
             CreatePagosSheet(package, reportesPagos);
-            CreateReservasSheet(package, reportesReservas);
+            CreateReservasSheet(package, reportesReservas, fechaInicio, fechaFin);
             CreateServiciosSheet(package, reportesServicios);
             CreateInventarioSheet(package, reportesItems);
             
@@ -496,226 +496,152 @@ namespace gestor_eventos.Services
             worksheet.Column(3).Width = 30; // Razón social (puede ser largo)
         }
 
-        private void CreateReservasSheet(ExcelPackage package, ReportesReservasResponse? data)
+        private void CreateReservasSheet(ExcelPackage package, ReportesReservasResponse? reservas, DateTime? fechaInicio, DateTime? fechaFin)
         {
+            if (reservas == null) return;
+
             var worksheet = package.Workbook.Worksheets.Add("Reservas");
-            
-            // Encabezado
-            worksheet.Cells["A1"].Value = "REPORTE DE RESERVAS";
-            worksheet.Cells["A1:G1"].Merge = true;
-            ApplyHeaderStyle(worksheet.Cells["A1:G1"], Color.FromArgb(255, 140, 0));
-            
-            int row = 3;
-            
-            if (data != null)
+            int row = 1;
+
+            // Título
+            worksheet.Cells[row, 1].Value = "REPORTE DE RESERVAS";
+            worksheet.Cells[row, 1, row, 6].Merge = true;
+            SetTitleStyle(worksheet.Cells[row, 1, row, 6]);
+            row += 2;
+
+            // Período
+            var periodoTexto = GetPeriodoTexto(fechaInicio, fechaFin);
+            worksheet.Cells[row, 1].Value = $"Período: {periodoTexto}";
+            SetSubtitleStyle(worksheet.Cells[row, 1]);
+            row += 2;
+
+            // *** SECCIÓN 1: Estados de Reservas (ACTUALIZADA) ***
+            worksheet.Cells[row, 1].Value = "ESTADOS DE RESERVAS";
+            SetSectionHeaderStyle(worksheet.Cells[row, 1]);
+            row++;
+
+            // Headers
+            worksheet.Cells[row, 1].Value = "Estado";
+            worksheet.Cells[row, 2].Value = "Cantidad";
+            worksheet.Cells[row, 3].Value = "Porcentaje";
+            SetHeaderStyle(worksheet.Cells[row, 1, row, 3]);
+            row++;
+
+            if (reservas.TasaConversionEstado != null)
             {
-                // SECCIÓN 1: Reservas por Mes
-                if (data.ReservasPorMes != null && data.ReservasPorMes.Any())
-                {
-                    worksheet.Cells[$"A{row}"].Value = "RESERVAS POR MES";
-                    worksheet.Cells[$"A{row}:G{row}"].Merge = true;
-                    ApplySectionHeaderStyle(worksheet.Cells[$"A{row}:G{row}"]);
-                    row++;
-                    
-                    worksheet.Cells[$"A{row}"].Value = "Año";
-                    worksheet.Cells[$"B{row}"].Value = "Mes";
-                    worksheet.Cells[$"C{row}"].Value = "Cantidad Reservas";
-                    worksheet.Cells[$"D{row}"].Value = "Monto Total";
-                    worksheet.Cells[$"E{row}"].Value = "Monto Promedio";
-                    ApplyTableHeaderStyle(worksheet.Cells[$"A{row}:E{row}"]);
-                    row++;
-                    
-                    foreach (var reserva in data.ReservasPorMes)
-                    {
-                        worksheet.Cells[$"A{row}"].Value = reserva.Año;
-                        worksheet.Cells[$"B{row}"].Value = reserva.NombreMes;
-                        worksheet.Cells[$"C{row}"].Value = reserva.CantidadReservas;
-                        worksheet.Cells[$"D{row}"].Value = reserva.MontoTotal;
-                        worksheet.Cells[$"D{row}"].Style.Numberformat.Format = "\"S/. \"#,##0.00";
-                        worksheet.Cells[$"E{row}"].Value = reserva.MontoPromedio;
-                        worksheet.Cells[$"E{row}"].Style.Numberformat.Format = "\"S/. \"#,##0.00";
-                        ApplyDataRowStyle(worksheet.Cells[$"A{row}:E{row}"], row % 2 == 0);
-                        row++;
-                    }
-                    row += 2;
-                }
-                
-                // SECCIÓN 2: Ingresos Promedio por Tipo de Evento
-                if (data.IngresosPromedioPorTipoEvento != null && data.IngresosPromedioPorTipoEvento.Any())
-                {
-                    worksheet.Cells[$"A{row}"].Value = "INGRESOS POR TIPO DE EVENTO";
-                    worksheet.Cells[$"A{row}:G{row}"].Merge = true;
-                    ApplySectionHeaderStyle(worksheet.Cells[$"A{row}:G{row}"]);
-                    row++;
-                    
-                    worksheet.Cells[$"A{row}"].Value = "Tipo de Evento";
-                    worksheet.Cells[$"B{row}"].Value = "Cantidad Reservas";
-                    worksheet.Cells[$"C{row}"].Value = "Ingreso Promedio";
-                    worksheet.Cells[$"D{row}"].Value = "Ingreso Total";
-                    worksheet.Cells[$"E{row}"].Value = "Ingreso Mínimo";
-                    worksheet.Cells[$"F{row}"].Value = "Ingreso Máximo";
-                    ApplyTableHeaderStyle(worksheet.Cells[$"A{row}:F{row}"]);
-                    row++;
-                    
-                    foreach (var tipo in data.IngresosPromedioPorTipoEvento)
-                    {
-                        worksheet.Cells[$"A{row}"].Value = tipo.TipoEvento;
-                        worksheet.Cells[$"B{row}"].Value = tipo.CantidadReservas;
-                        worksheet.Cells[$"C{row}"].Value = tipo.IngresoPromedio;
-                        worksheet.Cells[$"C{row}"].Style.Numberformat.Format = "\"S/. \"#,##0.00";
-                        worksheet.Cells[$"D{row}"].Value = tipo.IngresoTotal;
-                        worksheet.Cells[$"D{row}"].Style.Numberformat.Format = "\"S/. \"#,##0.00";
-                        worksheet.Cells[$"E{row}"].Value = tipo.IngresoMinimo;
-                        worksheet.Cells[$"E{row}"].Style.Numberformat.Format = "\"S/. \"#,##0.00";
-                        worksheet.Cells[$"F{row}"].Value = tipo.IngresoMaximo;
-                        worksheet.Cells[$"F{row}"].Style.Numberformat.Format = "\"S/. \"#,##0.00";
-                        ApplyDataRowStyle(worksheet.Cells[$"A{row}:F{row}"], row % 2 == 0);
-                        row++;
-                    }
-                    row += 2;
-                }
-                
-                // SECCIÓN 3: Reservas con Adelanto Alto
-                if (data.ReservasAdelantoAlto != null && data.ReservasAdelantoAlto.Any())
-                {
-                    worksheet.Cells[$"A{row}"].Value = "RESERVAS CON ADELANTO ALTO";
-                    worksheet.Cells[$"A{row}:G{row}"].Merge = true;
-                    ApplySectionHeaderStyle(worksheet.Cells[$"A{row}:G{row}"]);
-                    row++;
-                    
-                    worksheet.Cells[$"A{row}"].Value = "ID Reserva";
-                    worksheet.Cells[$"B{row}"].Value = "Nombre Evento";
-                    worksheet.Cells[$"C{row}"].Value = "Cliente";
-                    worksheet.Cells[$"D{row}"].Value = "Precio Total";
-                    worksheet.Cells[$"E{row}"].Value = "Monto Adelanto";
-                    worksheet.Cells[$"F{row}"].Value = "% Adelanto";
-                    ApplyTableHeaderStyle(worksheet.Cells[$"A{row}:F{row}"]);
-                    row++;
-                    
-                    foreach (var reserva in data.ReservasAdelantoAlto)
-                    {
-                        worksheet.Cells[$"A{row}"].Value = reserva.ReservaId;
-                        worksheet.Cells[$"B{row}"].Value = reserva.NombreEvento;
-                        worksheet.Cells[$"C{row}"].Value = string.IsNullOrEmpty(reserva.ClienteRazonSocial) ? "Cliente Individual" : reserva.ClienteRazonSocial;
-                        worksheet.Cells[$"D{row}"].Value = reserva.PrecioTotal;
-                        worksheet.Cells[$"D{row}"].Style.Numberformat.Format = "\"S/. \"#,##0.00";
-                        worksheet.Cells[$"E{row}"].Value = reserva.MontoAdelanto;
-                        worksheet.Cells[$"E{row}"].Style.Numberformat.Format = "\"S/. \"#,##0.00";
-                        worksheet.Cells[$"F{row}"].Value = reserva.PorcentajeAdelanto / 100;
-                        worksheet.Cells[$"F{row}"].Style.Numberformat.Format = "0.00%";
-                        ApplyDataRowStyle(worksheet.Cells[$"A{row}:F{row}"], row % 2 == 0);
-                        row++;
-                    }
-                    row += 2;
-                }
-                
-                // SECCIÓN 4: Duración Promedio de Reservas
-                if (data.DuracionPromedioReservas != null)
-                {
-                    worksheet.Cells[$"A{row}"].Value = "DURACIÓN PROMEDIO DE RESERVAS";
-                    worksheet.Cells[$"A{row}:G{row}"].Merge = true;
-                    ApplySectionHeaderStyle(worksheet.Cells[$"A{row}:G{row}"]);
-                    row++;
-                    
-                    worksheet.Cells[$"A{row}"].Value = "Métrica";
-                    worksheet.Cells[$"B{row}"].Value = "Días";
-                    worksheet.Cells[$"C{row}"].Value = "Cantidad Reservas";
-                    ApplyTableHeaderStyle(worksheet.Cells[$"A{row}:C{row}"]);
-                    row++;
-                    
-                    var duracion = data.DuracionPromedioReservas;
-                    var metricas = new[]
-                    {
-                        ("Duración Promedio", duracion.DuracionPromedioDias, (int?)duracion.CantidadReservas),
-                        ("Duración Mínima", duracion.DuracionMinimaDias, (int?)null),
-                        ("Duración Máxima", duracion.DuracionMaximaDias, (int?)null)
-                    };
-                    
-                    foreach (var (metrica, valor, cantidad) in metricas)
-                    {
-                        worksheet.Cells[$"A{row}"].Value = metrica;
-                        worksheet.Cells[$"B{row}"].Value = Math.Round(valor, 1);
-                        if (cantidad.HasValue)
-                        {
-                            worksheet.Cells[$"C{row}"].Value = cantidad.Value;
-                        }
-                        ApplyDataRowStyle(worksheet.Cells[$"A{row}:C{row}"], row % 2 == 0);
-                        row++;
-                    }
-                    row += 2;
-                }
-                
-                // SECCIÓN 5: Tasa de Conversión por Estado
-                if (data.TasaConversionEstado != null)
-                {
-                    worksheet.Cells[$"A{row}"].Value = "ANÁLISIS DE ESTADOS DE RESERVAS";
-                    worksheet.Cells[$"A{row}:G{row}"].Merge = true;
-                    ApplySectionHeaderStyle(worksheet.Cells[$"A{row}:G{row}"]);
-                    row++;
-                    
-                    worksheet.Cells[$"A{row}"].Value = "Estado";
-                    worksheet.Cells[$"B{row}"].Value = "Cantidad";
-                    worksheet.Cells[$"C{row}"].Value = "Tasa de Conversión";
-                    ApplyTableHeaderStyle(worksheet.Cells[$"A{row}:C{row}"]);
-                    row++;
-                    
-                    var tasas = data.TasaConversionEstado;
-                    var estados = new[]
-                    {
-                        ("Pendientes", tasas.ReservasPendientes, (double?)null),
-                        ("Confirmadas", tasas.ReservasConfirmadas, tasas.TasaConversionPendienteConfirmado),
-                        ("Canceladas", tasas.ReservasCanceladas, tasas.TasaCancelacion)
-                    };
-                    
-                    foreach (var (estado, cantidad, porcentaje) in estados)
-                    {
-                        worksheet.Cells[$"A{row}"].Value = estado;
-                        worksheet.Cells[$"B{row}"].Value = cantidad;
-                        if (porcentaje.HasValue)
-                        {
-                            worksheet.Cells[$"C{row}"].Value = porcentaje.Value / 100;
-                            worksheet.Cells[$"C{row}"].Style.Numberformat.Format = "0.00%";
-                        }
-                        ApplyDataRowStyle(worksheet.Cells[$"A{row}:C{row}"], row % 2 == 0);
-                        row++;
-                    }
-                    row += 2;
-                }
-                
-                // SECCIÓN 6: Distribución de Reservas por Cliente
-                if (data.DistribucionReservasPorCliente != null && data.DistribucionReservasPorCliente.Any())
-                {
-                    worksheet.Cells[$"A{row}"].Value = "DISTRIBUCIÓN DE RESERVAS POR CLIENTE";
-                    worksheet.Cells[$"A{row}:G{row}"].Merge = true;
-                    ApplySectionHeaderStyle(worksheet.Cells[$"A{row}:G{row}"]);
-                    row++;
-                    
-                    worksheet.Cells[$"A{row}"].Value = "ID Cliente";
-                    worksheet.Cells[$"B{row}"].Value = "Razón Social";
-                    worksheet.Cells[$"C{row}"].Value = "Total Reservas";
-                    worksheet.Cells[$"D{row}"].Value = "Reservas (3 meses)";
-                    worksheet.Cells[$"E{row}"].Value = "Monto Total";
-                    worksheet.Cells[$"F{row}"].Value = "Última Reserva";
-                    ApplyTableHeaderStyle(worksheet.Cells[$"A{row}:F{row}"]);
-                    row++;
-                    
-                    foreach (var cliente in data.DistribucionReservasPorCliente)
-                    {
-                        worksheet.Cells[$"A{row}"].Value = cliente.ClienteId;
-                        worksheet.Cells[$"B{row}"].Value = string.IsNullOrEmpty(cliente.RazonSocial) ? "Cliente Individual" : cliente.RazonSocial;
-                        worksheet.Cells[$"C{row}"].Value = cliente.TotalReservas;
-                        worksheet.Cells[$"D{row}"].Value = cliente.ReservasUltimosTresMeses;
-                        worksheet.Cells[$"E{row}"].Value = cliente.MontoTotalReservas;
-                        worksheet.Cells[$"E{row}"].Style.Numberformat.Format = "\"S/. \"#,##0.00";
-                        worksheet.Cells[$"F{row}"].Value = cliente.UltimaReserva;
-                        worksheet.Cells[$"F{row}"].Style.Numberformat.Format = "dd/mm/yyyy";
-                        ApplyDataRowStyle(worksheet.Cells[$"A{row}:F{row}"], row % 2 == 0);
-                        row++;
-                    }
-                }
+                var conversion = reservas.TasaConversionEstado;
+                var total = conversion.ReservasPendientes + conversion.ReservasConfirmadas + 
+                           conversion.ReservasCanceladas + conversion.ReservasFinalizadas;
+
+                // Pendientes
+                worksheet.Cells[row, 1].Value = "Pendientes";
+                worksheet.Cells[row, 2].Value = conversion.ReservasPendientes;
+                worksheet.Cells[row, 3].Value = total > 0 ? (conversion.ReservasPendientes * 100.0 / total).ToString("F1") + "%" : "0%";
+                row++;
+
+                // Confirmadas
+                worksheet.Cells[row, 1].Value = "Confirmadas";
+                worksheet.Cells[row, 2].Value = conversion.ReservasConfirmadas;
+                worksheet.Cells[row, 3].Value = total > 0 ? (conversion.ReservasConfirmadas * 100.0 / total).ToString("F1") + "%" : "0%";
+                row++;
+
+                // *** NUEVO: Finalizadas ***
+                worksheet.Cells[row, 1].Value = "Finalizadas";
+                worksheet.Cells[row, 2].Value = conversion.ReservasFinalizadas;
+                worksheet.Cells[row, 3].Value = total > 0 ? (conversion.ReservasFinalizadas * 100.0 / total).ToString("F1") + "%" : "0%";
+                row++;
+
+                // Canceladas
+                worksheet.Cells[row, 1].Value = "Canceladas";
+                worksheet.Cells[row, 2].Value = conversion.ReservasCanceladas;
+                worksheet.Cells[row, 3].Value = total > 0 ? (conversion.ReservasCanceladas * 100.0 / total).ToString("F1") + "%" : "0%";
+                row++;
+
+                // *** NUEVA SECCIÓN: Tasas de conversión ***
+                row++;
+                worksheet.Cells[row, 1].Value = "TASAS DE CONVERSIÓN";
+                SetSectionHeaderStyle(worksheet.Cells[row, 1]);
+                row++;
+
+                worksheet.Cells[row, 1].Value = "Tasa Pendiente → Confirmado";
+                worksheet.Cells[row, 2].Value = conversion.TasaConversionPendienteConfirmado.ToString("F1") + "%";
+                row++;
+
+                worksheet.Cells[row, 1].Value = "Tasa de Cancelación";
+                worksheet.Cells[row, 2].Value = conversion.TasaCancelacion.ToString("F1") + "%";
+                row++;
+
+                worksheet.Cells[row, 1].Value = "Tasa de Finalización";
+                worksheet.Cells[row, 2].Value = conversion.TasaFinalizacion.ToString("F1") + "%";
+                row++;
             }
-            
-            worksheet.Cells.AutoFitColumns();
+
+            row += 2;
+
+            // *** SECCIÓN 2: Reservas por Mes ***
+            worksheet.Cells[row, 1].Value = "RESERVAS POR MES";
+            SetSectionHeaderStyle(worksheet.Cells[row, 1]);
+            row++;
+
+            // Headers
+            worksheet.Cells[row, 1].Value = "Año";
+            worksheet.Cells[row, 2].Value = "Mes";
+            worksheet.Cells[row, 3].Value = "Cantidad";
+            worksheet.Cells[row, 4].Value = "Monto Total";
+            worksheet.Cells[row, 5].Value = "Monto Promedio";
+            SetHeaderStyle(worksheet.Cells[row, 1, row, 5]);
+            row++;
+
+            foreach (var reservaMes in reservas.ReservasPorMes ?? new List<ReservaPorMes>())
+            {
+                worksheet.Cells[row, 1].Value = reservaMes.Año;
+                worksheet.Cells[row, 2].Value = reservaMes.NombreMes;
+                worksheet.Cells[row, 3].Value = reservaMes.CantidadReservas;
+                worksheet.Cells[row, 4].Value = reservaMes.MontoTotal;
+                worksheet.Cells[row, 5].Value = reservaMes.MontoPromedio;
+                
+                // Formatear como moneda
+                worksheet.Cells[row, 4].Style.Numberformat.Format = "\"S/\"#,##0.00";
+                worksheet.Cells[row, 5].Style.Numberformat.Format = "\"S/\"#,##0.00";
+                row++;
+            }
+
+            row += 2;
+
+            // *** SECCIÓN 3: Ingresos por Tipo de Evento ***
+            worksheet.Cells[row, 1].Value = "INGRESOS POR TIPO DE EVENTO";
+            SetSectionHeaderStyle(worksheet.Cells[row, 1]);
+            row++;
+
+            // Headers
+            worksheet.Cells[row, 1].Value = "Tipo de Evento";
+            worksheet.Cells[row, 2].Value = "Cantidad Reservas";
+            worksheet.Cells[row, 3].Value = "Ingreso Total";
+            worksheet.Cells[row, 4].Value = "Ingreso Promedio";
+            worksheet.Cells[row, 5].Value = "Ingreso Mínimo";
+            worksheet.Cells[row, 6].Value = "Ingreso Máximo";
+            SetHeaderStyle(worksheet.Cells[row, 1, row, 6]);
+            row++;
+
+            foreach (var evento in reservas.IngresosPromedioPorTipoEvento ?? new List<IngresoPromedioPorTipoEvento>())
+            {
+                worksheet.Cells[row, 1].Value = evento.TipoEvento;
+                worksheet.Cells[row, 2].Value = evento.CantidadReservas;
+                worksheet.Cells[row, 3].Value = evento.IngresoTotal;
+                worksheet.Cells[row, 4].Value = evento.IngresoPromedio;
+                worksheet.Cells[row, 5].Value = evento.IngresoMinimo;
+                worksheet.Cells[row, 6].Value = evento.IngresoMaximo;
+                
+                // Formatear como moneda
+                for (int col = 3; col <= 6; col++)
+                {
+                    worksheet.Cells[row, col].Style.Numberformat.Format = "\"S/\"#,##0.00";
+                }
+                row++;
+            }
+
+            // Ajustar ancho de columnas
+            worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
         }
 
         private void CreateServiciosSheet(ExcelPackage package, ReportesServiciosResponse? data)
@@ -1054,6 +980,54 @@ namespace gestor_eventos.Services
                 12 => "Diciembre",
                 _ => month.ToString()
             };
+        }
+
+        private void SetTitleStyle(ExcelRange range)
+        {
+            range.Style.Font.Bold = true;
+            range.Style.Font.Size = 16;
+            range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            range.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+        }
+
+        private void SetSubtitleStyle(ExcelRange range)
+        {
+            range.Style.Font.Italic = true;
+            range.Style.Font.Size = 12;
+            range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            range.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+        }
+
+        private void SetSectionHeaderStyle(ExcelRange range)
+        {
+            range.Style.Fill.PatternType = ExcelFillStyle.Solid;
+            range.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(191, 191, 191));
+            range.Style.Font.Bold = true;
+            range.Style.Font.Size = 12;
+            range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+            range.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+        }
+
+        private void SetHeaderStyle(ExcelRange range)
+        {
+            range.Style.Fill.PatternType = ExcelFillStyle.Solid;
+            range.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(79, 129, 189));
+            range.Style.Font.Color.SetColor(Color.White);
+            range.Style.Font.Bold = true;
+            range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            range.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+        }
+
+        private string GetPeriodoTexto(DateTime? fechaInicio, DateTime? fechaFin)
+        {
+            if (fechaInicio == null && fechaFin == null)
+                return "Todo el tiempo";
+            else if (fechaInicio != null && fechaFin == null)
+                return $"Desde {fechaInicio.Value:dd/MM/yyyy}";
+            else if (fechaInicio == null && fechaFin != null)
+                return $"Hasta {fechaFin.Value:dd/MM/yyyy}";
+            else
+                return $"Desde {fechaInicio.Value:dd/MM/yyyy} hasta {fechaFin.Value:dd/MM/yyyy}";
         }
     }
 }

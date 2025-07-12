@@ -48,7 +48,8 @@ window.addEventListener('load', function() {
         'popularServicesChart',
         'clientGrowthChart',
         'topItemsChart',
-        'eventTypeProfitChart'
+        'eventTypeProfitChart',
+        'reservationTrendChart' // *** NUEVO ***
     ];
     
     const missingElements = criticalElements.filter(id => !document.getElementById(id));
@@ -56,6 +57,6 @@ window.addEventListener('load', function() {
     if (missingElements.length > 0) {
         console.warn('Missing critical chart elements:', missingElements);
     } else {
-        console.log('All critical chart elements found');
+        console.log('All critical chart elements found (incluye reservas finalizadas)');
     }
 });

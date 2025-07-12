@@ -320,6 +320,34 @@
             </div>
         </div>
 
+        <!-- Tercera fila de gráficos - Análisis de Reservas -->
+        <div class="row mb-4">
+            <!-- Tendencia de reservas por mes -->
+            <div class="col-lg-12">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="bi bi-calendar-check me-2"></i>
+                            Tendencia de Reservas Mensuales
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container" style="height: 300px;">
+                            <canvas id="reservationTrendChart"></canvas>
+                            <div id="reservationTrendChartLoading" class="chart-loading-overlay">
+                                <div class="text-center">
+                                    <div class="spinner-border text-primary mb-3" role="status">
+                                        <span class="visually-hidden">Cargando...</span>
+                                    </div>
+                                    <p>Cargando tendencia de reservas...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Items más utilizados y Disponibilidad -->
         <div class="row">
             <!-- Items más utilizados -->
