@@ -18,11 +18,18 @@
                         <label for="paymentReservation" class="form-label">Reserva</label>
                         <select class="form-select" id="paymentReservation" required>
                             <option value="" selected disabled>Selecciona una reserva</option>
-                            @foreach (var reserva in Model.Reservaciones)
+                            @if (Model.Reservaciones != null)
                             {
-                                <option value="@reserva.Id" data-nombre="@reserva.NombreEvento">
-                                    @reserva.NombreEvento (@reserva.Id)
-                                </option>
+                                @foreach (var reserva in Model.Reservaciones)
+                                {
+                                    <option value="@reserva.Id" data-nombre="@Html.Raw(reserva.NombreEvento)">
+                                        @reserva.NombreEvento (@reserva.Id)
+                                    </option>
+                                }
+                            }
+                            else
+                            {
+                                <option value="" disabled>No hay reservas disponibles</option>
                             }
                         </select>
                         <div class="form-text">La reserva a la que se asociará este pago.</div>

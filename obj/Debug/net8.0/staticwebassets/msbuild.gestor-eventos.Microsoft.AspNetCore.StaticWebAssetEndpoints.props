@@ -244,13 +244,13 @@
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\pagos\main.js'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
       <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-ONb8Q49t6IsQX51QX36PyUGq1Uv9\u002B4sLH8XOPj0CeJM="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"1640"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022ONb8Q49t6IsQX51QX36PyUGq1Uv9\u002B4sLH8XOPj0CeJM=\u0022"},{"Name":"Last-Modified","Value":"Sat, 12 Jul 2025 02:15:49 GMT"}]]]></ResponseHeaders>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"1640"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022ONb8Q49t6IsQX51QX36PyUGq1Uv9\u002B4sLH8XOPj0CeJM=\u0022"},{"Name":"Last-Modified","Value":"Mon, 14 Jul 2025 02:24:20 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/gestor-eventos/js/pagos/main.srl4j7qi8m.js">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\pagos\main.js'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
       <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"srl4j7qi8m"},{"Name":"integrity","Value":"sha256-ONb8Q49t6IsQX51QX36PyUGq1Uv9\u002B4sLH8XOPj0CeJM="},{"Name":"label","Value":"_content/gestor-eventos/js/pagos/main.js"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"1640"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022ONb8Q49t6IsQX51QX36PyUGq1Uv9\u002B4sLH8XOPj0CeJM=\u0022"},{"Name":"Last-Modified","Value":"Sat, 12 Jul 2025 02:15:49 GMT"}]]]></ResponseHeaders>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"1640"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022ONb8Q49t6IsQX51QX36PyUGq1Uv9\u002B4sLH8XOPj0CeJM=\u0022"},{"Name":"Last-Modified","Value":"Mon, 14 Jul 2025 02:24:20 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/gestor-eventos/js/pagos/payment-actions.js">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\pagos\payment-actions.js'))</AssetFile>
@@ -267,26 +267,26 @@
     <StaticWebAssetEndpoint Include="_content/gestor-eventos/js/pagos/payment-form.js">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\pagos\payment-form.js'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-Z80K8PFPNVzaAm8wHJu9PlGq66CdZhJFAoCRZu8Dowc="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"7464"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022Z80K8PFPNVzaAm8wHJu9PlGq66CdZhJFAoCRZu8Dowc=\u0022"},{"Name":"Last-Modified","Value":"Sat, 12 Jul 2025 02:16:10 GMT"}]]]></ResponseHeaders>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-smlRTnFZ\u002BJWuRP9xza2Y6Hb/HEaj2AmhwWYGyR641Gs="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"8830"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022smlRTnFZ\u002BJWuRP9xza2Y6Hb/HEaj2AmhwWYGyR641Gs=\u0022"},{"Name":"Last-Modified","Value":"Mon, 14 Jul 2025 02:48:44 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
-    <StaticWebAssetEndpoint Include="_content/gestor-eventos/js/pagos/payment-form.t3t54nxnli.js">
+    <StaticWebAssetEndpoint Include="_content/gestor-eventos/js/pagos/payment-form.m2f8sjlyc9.js">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\pagos\payment-form.js'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"t3t54nxnli"},{"Name":"integrity","Value":"sha256-Z80K8PFPNVzaAm8wHJu9PlGq66CdZhJFAoCRZu8Dowc="},{"Name":"label","Value":"_content/gestor-eventos/js/pagos/payment-form.js"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"7464"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022Z80K8PFPNVzaAm8wHJu9PlGq66CdZhJFAoCRZu8Dowc=\u0022"},{"Name":"Last-Modified","Value":"Sat, 12 Jul 2025 02:16:10 GMT"}]]]></ResponseHeaders>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"m2f8sjlyc9"},{"Name":"integrity","Value":"sha256-smlRTnFZ\u002BJWuRP9xza2Y6Hb/HEaj2AmhwWYGyR641Gs="},{"Name":"label","Value":"_content/gestor-eventos/js/pagos/payment-form.js"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"8830"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022smlRTnFZ\u002BJWuRP9xza2Y6Hb/HEaj2AmhwWYGyR641Gs=\u0022"},{"Name":"Last-Modified","Value":"Mon, 14 Jul 2025 02:48:44 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/gestor-eventos/js/pagos/payment-modals.js">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\pagos\payment-modals.js'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-ZNulRWXi4OauEnVKrlnS\u002B0M8q41GdnJW4smp/CRdu80="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"1867"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022ZNulRWXi4OauEnVKrlnS\u002B0M8q41GdnJW4smp/CRdu80=\u0022"},{"Name":"Last-Modified","Value":"Sat, 12 Jul 2025 02:16:26 GMT"}]]]></ResponseHeaders>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-sxpULPeYn6YOoESIqUvT5xlipVNeVZ7/xB62Z\u002BPr9BY="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"2118"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022sxpULPeYn6YOoESIqUvT5xlipVNeVZ7/xB62Z\u002BPr9BY=\u0022"},{"Name":"Last-Modified","Value":"Mon, 14 Jul 2025 02:34:39 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
-    <StaticWebAssetEndpoint Include="_content/gestor-eventos/js/pagos/payment-modals.wvikcfe29o.js">
+    <StaticWebAssetEndpoint Include="_content/gestor-eventos/js/pagos/payment-modals.rixozydj1d.js">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\pagos\payment-modals.js'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
-      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"wvikcfe29o"},{"Name":"integrity","Value":"sha256-ZNulRWXi4OauEnVKrlnS\u002B0M8q41GdnJW4smp/CRdu80="},{"Name":"label","Value":"_content/gestor-eventos/js/pagos/payment-modals.js"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"1867"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022ZNulRWXi4OauEnVKrlnS\u002B0M8q41GdnJW4smp/CRdu80=\u0022"},{"Name":"Last-Modified","Value":"Sat, 12 Jul 2025 02:16:26 GMT"}]]]></ResponseHeaders>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"rixozydj1d"},{"Name":"integrity","Value":"sha256-sxpULPeYn6YOoESIqUvT5xlipVNeVZ7/xB62Z\u002BPr9BY="},{"Name":"label","Value":"_content/gestor-eventos/js/pagos/payment-modals.js"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"2118"},{"Name":"Content-Type","Value":"text/javascript"},{"Name":"ETag","Value":"\u0022sxpULPeYn6YOoESIqUvT5xlipVNeVZ7/xB62Z\u002BPr9BY=\u0022"},{"Name":"Last-Modified","Value":"Mon, 14 Jul 2025 02:34:39 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/gestor-eventos/js/pagos/utils.1fvyqkn15z.js">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\pagos\utils.js'))</AssetFile>

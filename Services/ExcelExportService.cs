@@ -272,7 +272,7 @@ namespace gestor_eventos.Services
                 {
                     worksheet.Cells[$"A{row}"].Value = cliente.ClienteId;
                     worksheet.Cells[$"B{row}"].Value = string.IsNullOrEmpty(cliente.RazonSocial) ? "Sin especificar" : cliente.RazonSocial;
-                    worksheet.Cells[$"C{row}"].Value = cliente.PromedioAdelantoPorc / 100;
+                    worksheet.Cells[$"C{row}"].Value = cliente.PromedioAdelantoPorc / 100.0;
                     worksheet.Cells[$"C{row}"].Style.Numberformat.Format = "0.00%";
                     worksheet.Cells[$"D{row}"].Value = cliente.CantidadReservas;
                     ApplyDataRowStyle(worksheet.Cells[$"A{row}:D{row}"], row % 2 == 0);
@@ -1027,7 +1027,7 @@ namespace gestor_eventos.Services
             else if (fechaInicio == null && fechaFin != null)
                 return $"Hasta {fechaFin.Value:dd/MM/yyyy}";
             else
-                return $"Desde {fechaInicio.Value:dd/MM/yyyy} hasta {fechaFin.Value:dd/MM/yyyy}";
+                return $"Desde {fechaInicio!.Value:dd/MM/yyyy} hasta {fechaFin!.Value:dd/MM/yyyy}";
         }
     }
 }

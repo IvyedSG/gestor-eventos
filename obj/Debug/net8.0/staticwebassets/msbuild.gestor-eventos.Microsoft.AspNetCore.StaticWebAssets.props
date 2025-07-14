@@ -408,8 +408,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>t3t54nxnli</Fingerprint>
-      <Integrity>Z80K8PFPNVzaAm8wHJu9PlGq66CdZhJFAoCRZu8Dowc=</Integrity>
+      <Fingerprint>m2f8sjlyc9</Fingerprint>
+      <Integrity>smlRTnFZ+JWuRP9xza2Y6Hb/HEaj2AmhwWYGyR641Gs=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\pagos\payment-form.js'))</OriginalItemSpec>
@@ -426,8 +426,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>wvikcfe29o</Fingerprint>
-      <Integrity>ZNulRWXi4OauEnVKrlnS+0M8q41GdnJW4smp/CRdu80=</Integrity>
+      <Fingerprint>rixozydj1d</Fingerprint>
+      <Integrity>sxpULPeYn6YOoESIqUvT5xlipVNeVZ7/xB62Z+Pr9BY=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\pagos\payment-modals.js'))</OriginalItemSpec>

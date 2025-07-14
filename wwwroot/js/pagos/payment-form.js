@@ -144,41 +144,74 @@ function collectCreatePaymentData() {
     const errorMessage = document.getElementById('paymentErrorMessage');
     
     // Ocultar errores previos
-    errorDiv.classList.add('d-none');
+    if (errorDiv) {
+        errorDiv.classList.add('d-none');
+    }
     
     // Validar formulario
     let isValid = true;
     
-    if (!reservaSelect.value) {
-        reservaSelect.classList.add('is-invalid');
+    if (!reservaSelect || !reservaSelect.value) {
+        if (reservaSelect) reservaSelect.classList.add('is-invalid');
         isValid = false;
     } else {
         reservaSelect.classList.remove('is-invalid');
     }
     
-    if (!tipoSelect.value) {
-        tipoSelect.classList.add('is-invalid');
+    if (!tipoSelect || !tipoSelect.value) {
+        if (tipoSelect) tipoSelect.classList.add('is-invalid');
         isValid = false;
     } else {
         tipoSelect.classList.remove('is-invalid');
     }
     
-    if (!montoInput.value || parseFloat(montoInput.value) <= 0) {
-        montoInput.classList.add('is-invalid');
+    if (!montoInput || !montoInput.value || parseFloat(montoInput.value) <= 0) {
+        if (montoInput) montoInput.classList.add('is-invalid');
         isValid = false;
     } else {
         montoInput.classList.remove('is-invalid');
     }
     
     if (!isValid) {
-        errorDiv.classList.remove('d-none');
-        errorMessage.textContent = 'Por favor, completa todos los campos correctamente.';
+        if (errorDiv && errorMessage) {
+            errorDiv.classList.remove('d-none');
+            errorMessage.textContent = 'Por favor, completa todos los campos correctamente.';
+        }
+        return null;
+    }
+    
+    // Extraer el nombre de la reserva del select
+    const selectedOption = reservaSelect.options[reservaSelect.selectedIndex];
+    let nombreReserva = '';
+    
+    if (selectedOption) {
+        nombreReserva = selectedOption.getAttribute('data-nombre');
+        
+        // Fallback: extraer del texto si data-nombre no existe
+        if (!nombreReserva) {
+            const optionText = selectedOption.text;
+            const match = optionText.match(/^(.*?)\s*\([^)]+\)$/);
+            if (match) {
+                nombreReserva = match[1].trim();
+            } else {
+                nombreReserva = optionText;
+            }
+        }
+    }
+    
+    // Validar que se extrajo el nombre de la reserva
+    if (!nombreReserva || nombreReserva.trim() === '') {
+        if (errorDiv && errorMessage) {
+            errorDiv.classList.remove('d-none');
+            errorMessage.textContent = 'Error al obtener el nombre de la reserva seleccionada.';
+        }
         return null;
     }
     
     return {
         idReserva: reservaSelect.value,
         nombreTipoPago: tipoSelect.value,
+        nombreReserva: nombreReserva,
         monto: montoInput.value
     };
 }
@@ -191,28 +224,32 @@ function collectUpdatePaymentData() {
     const errorMessage = document.getElementById('editPaymentErrorMessage');
     
     // Ocultar errores previos
-    errorDiv.classList.add('d-none');
+    if (errorDiv) {
+        errorDiv.classList.add('d-none');
+    }
     
     // Validar formulario
     let isValid = true;
     
-    if (!tipoSelect.value) {
-        tipoSelect.classList.add('is-invalid');
+    if (!tipoSelect || !tipoSelect.value) {
+        if (tipoSelect) tipoSelect.classList.add('is-invalid');
         isValid = false;
     } else {
         tipoSelect.classList.remove('is-invalid');
     }
     
-    if (!montoInput.value || parseFloat(montoInput.value) <= 0) {
-        montoInput.classList.add('is-invalid');
+    if (!montoInput || !montoInput.value || parseFloat(montoInput.value) <= 0) {
+        if (montoInput) montoInput.classList.add('is-invalid');
         isValid = false;
     } else {
         montoInput.classList.remove('is-invalid');
     }
     
     if (!isValid) {
-        errorDiv.classList.remove('d-none');
-        errorMessage.textContent = 'Por favor, completa todos los campos correctamente.';
+        if (errorDiv && errorMessage) {
+            errorDiv.classList.remove('d-none');
+            errorMessage.textContent = 'Por favor, completa todos los campos correctamente.';
+        }
         return { paymentId: null, paymentData: null };
     }
     

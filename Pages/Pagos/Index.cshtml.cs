@@ -138,6 +138,11 @@ namespace gestor_eventos.Pages.Pagos
                     return BadRequest(new { success = false, message = "El tipo de pago es obligatorio" });
                 }
                 
+                if (string.IsNullOrEmpty(model.NombreReserva))
+                {
+                    return BadRequest(new { success = false, message = "El nombre de la reserva es obligatorio" });
+                }
+                
                 if (string.IsNullOrEmpty(model.Monto) || !decimal.TryParse(model.Monto, out _))
                 {
                     return BadRequest(new { success = false, message = "El monto debe ser un número válido" });

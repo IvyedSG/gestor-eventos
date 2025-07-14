@@ -167,25 +167,19 @@ namespace gestor_eventos.Services
                 
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 
-                var content = new StringContent(
-                    JsonSerializer.Serialize(pago),
-                    Encoding.UTF8,
-                    "application/json"
-                );
+                var json = JsonSerializer.Serialize(pago);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
                 
                 var response = await _httpClient.PostAsync($"{_apiSettings.BaseUrl}/api/pagos", content);
                 
                 if (!response.IsSuccessStatusCode)
                 {
-                    var errorContent = await response.Content.ReadAsStringAsync();
-                    _logger.LogWarning("Error al crear pago. Código: {StatusCode}, Mensaje: {Message}, Contenido: {ErrorContent}", 
-                        (int)response.StatusCode, response.ReasonPhrase, errorContent);
-                        
+                    _logger.LogWarning("Error al crear pago. Código: {StatusCode}, Mensaje: {Message}", 
+                        (int)response.StatusCode, response.ReasonPhrase);
                     return null;
                 }
                 
                 var responseContent = await response.Content.ReadAsStringAsync();
-                _logger.LogDebug("Respuesta del API: {Response}", responseContent);
                 
                 var options = new JsonSerializerOptions
                 {
