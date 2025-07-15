@@ -533,7 +533,7 @@ function renderEventTypeProfitChart(reservasData) {
         data: {
             labels: labels,
             datasets: [{
-                label: 'Ingresos Totales',
+                label: 'Ingresos Totales Esperados',
                 data: data,
                 backgroundColor: 'rgba(139, 69, 19, 0.8)'
             }]

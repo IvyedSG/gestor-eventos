@@ -106,7 +106,7 @@ namespace gestor_eventos.Services
                 {
                     ("Total Reservas", data.TotalReservas.ToString(), "Número total de reservas realizadas"),
                     ("Reservas (Último Mes)", data.ReservasUltimoMes.ToString(), "Reservas realizadas en el último mes"),
-                    ("Ingresos Totales", data.IngresosTotales.ToString("C", new System.Globalization.CultureInfo("es-PE")), "Monto total de ingresos generados"),
+                    ("Ingresos Totales Esperados", data.IngresosTotales.ToString("C", new System.Globalization.CultureInfo("es-PE")), "Monto total de ingresos generados"),
                     ("Ingresos (Último Mes)", data.IngresosUltimoMes.ToString("C", new System.Globalization.CultureInfo("es-PE")), "Ingresos del último mes"),
                     ("Monto Promedio/Reserva", data.MontoPromedioReserva.ToString("C", new System.Globalization.CultureInfo("es-PE")), "Promedio de ingresos por reserva"),
                     ("Tasa de Conversión", $"{data.TasaConversionReservas:P1}", "Porcentaje de conversión de consultas a reservas")
