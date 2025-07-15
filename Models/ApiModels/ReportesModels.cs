@@ -266,7 +266,6 @@ namespace GestorEventos.Models.ApiModels
         public string NombreServicio { get; set; } = string.Empty;
         public string Descripcion { get; set; } = string.Empty;
         public decimal PrecioBase { get; set; }
-        public int DiasInactivo { get; set; }
     }
 
     public class ServicioEventoCancelado

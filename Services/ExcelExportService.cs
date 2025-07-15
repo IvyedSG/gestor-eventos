@@ -648,169 +648,154 @@ namespace gestor_eventos.Services
         {
             var worksheet = package.Workbook.Worksheets.Add("Servicios");
             
-            // Encabezado
-            worksheet.Cells["A1"].Value = "REPORTE DE SERVICIOS";
-            worksheet.Cells["A1:G1"].Merge = true;
-            ApplyHeaderStyle(worksheet.Cells["A1:G1"], Color.FromArgb(147, 112, 219));
-            
-            int row = 3;
-            
-            if (data != null)
+            if (data == null)
             {
-                // SECCIÓN 1: Servicios Más Frecuentes
-                if (data.ServiciosMasFrecuentes != null && data.ServiciosMasFrecuentes.Any())
-                {
-                    worksheet.Cells[$"A{row}"].Value = "SERVICIOS MÁS FRECUENTES";
-                    worksheet.Cells[$"A{row}:G{row}"].Merge = true;
-                    ApplySectionHeaderStyle(worksheet.Cells[$"A{row}:G{row}"]);
-                    row++;
-                    
-                    worksheet.Cells[$"A{row}"].Value = "ID Servicio";
-                    worksheet.Cells[$"B{row}"].Value = "Nombre Servicio";
-                    worksheet.Cells[$"C{row}"].Value = "Cantidad Reservas";
-                    worksheet.Cells[$"D{row}"].Value = "% de Uso";
-                    worksheet.Cells[$"E{row}"].Value = "Ingreso Total";
-                    worksheet.Cells[$"F{row}"].Value = "Ingreso Promedio";
-                    ApplyTableHeaderStyle(worksheet.Cells[$"A{row}:F{row}"]);
-                    row++;
-                    
-                    foreach (var servicio in data.ServiciosMasFrecuentes)
-                    {
-                        worksheet.Cells[$"A{row}"].Value = servicio.ServicioId;
-                        worksheet.Cells[$"B{row}"].Value = servicio.NombreServicio;
-                        worksheet.Cells[$"C{row}"].Value = servicio.CantidadReservas;
-                        worksheet.Cells[$"D{row}"].Value = servicio.PorcentajeUso / 100;
-                        worksheet.Cells[$"D{row}"].Style.Numberformat.Format = "0.00%";
-                        worksheet.Cells[$"E{row}"].Value = servicio.IngresoTotal;
-                        worksheet.Cells[$"E{row}"].Style.Numberformat.Format = "\"S/. \"#,##0.00";
-                        worksheet.Cells[$"F{row}"].Value = servicio.IngresoPromedio;
-                        worksheet.Cells[$"F{row}"].Style.Numberformat.Format = "\"S/. \"#,##0.00";
-                        ApplyDataRowStyle(worksheet.Cells[$"A{row}:F{row}"], row % 2 == 0);
-                        row++;
-                    }
-                    row += 2;
-                }
-                
-                // SECCIÓN 2: Variación de Ingresos Mensuales por Servicio
-                if (data.VariacionIngresosMensualesServicio != null && data.VariacionIngresosMensualesServicio.Any())
-                {
-                    worksheet.Cells[$"A{row}"].Value = "VARIACIÓN DE INGRESOS MENSUALES POR SERVICIO";
-                    worksheet.Cells[$"A{row}:G{row}"].Merge = true;
-                    ApplySectionHeaderStyle(worksheet.Cells[$"A{row}:G{row}"]);
-                    row++;
-                    
-                    worksheet.Cells[$"A{row}"].Value = "Servicio";
-                    worksheet.Cells[$"B{row}"].Value = "Año";
-                    worksheet.Cells[$"C{row}"].Value = "Mes";
-                    worksheet.Cells[$"D{row}"].Value = "Monto Mensual";
-                    worksheet.Cells[$"E{row}"].Value = "Cantidad Reservas";
-                    worksheet.Cells[$"F{row}"].Value = "Variación %";
-                    ApplyTableHeaderStyle(worksheet.Cells[$"A{row}:F{row}"]);
-                    row++;
-                    
-                    foreach (var variacion in data.VariacionIngresosMensualesServicio)
-                    {
-                        worksheet.Cells[$"A{row}"].Value = variacion.NombreServicio;
-                        worksheet.Cells[$"B{row}"].Value = variacion.Año;
-                        worksheet.Cells[$"C{row}"].Value = variacion.NombreMes;
-                        worksheet.Cells[$"D{row}"].Value = variacion.MontoMensual;
-                        worksheet.Cells[$"D{row}"].Style.Numberformat.Format = "\"S/. \"#,##0.00";
-                        worksheet.Cells[$"E{row}"].Value = variacion.CantidadReservas;
-                        worksheet.Cells[$"F{row}"].Value = variacion.VariacionPorc / 100;
-                        worksheet.Cells[$"F{row}"].Style.Numberformat.Format = "0.00%";
-                        ApplyDataRowStyle(worksheet.Cells[$"A{row}:F{row}"], row % 2 == 0);
-                        row++;
-                    }
-                    row += 2;
-                }
-                
-                // SECCIÓN 3: Promedio de Items por Servicio
-                if (data.PromedioItemsPorServicio != null && data.PromedioItemsPorServicio.Any())
-                {
-                    worksheet.Cells[$"A{row}"].Value = "PROMEDIO DE ITEMS POR SERVICIO";
-                    worksheet.Cells[$"A{row}:G{row}"].Merge = true;
-                    ApplySectionHeaderStyle(worksheet.Cells[$"A{row}:G{row}"]);
-                    row++;
-                    
-                    worksheet.Cells[$"A{row}"].Value = "Servicio";
-                    worksheet.Cells[$"B{row}"].Value = "Promedio Items Usados";
-                    worksheet.Cells[$"C{row}"].Value = "Total Detalles";
-                    worksheet.Cells[$"D{row}"].Value = "Cantidad Reservas";
-                    ApplyTableHeaderStyle(worksheet.Cells[$"A{row}:D{row}"]);
-                    row++;
-                    
-                    foreach (var promedio in data.PromedioItemsPorServicio)
-                    {
-                        worksheet.Cells[$"A{row}"].Value = promedio.NombreServicio;
-                        worksheet.Cells[$"B{row}"].Value = Math.Round(promedio.PromedioItemsUsados, 2);
-                        worksheet.Cells[$"C{row}"].Value = promedio.TotalDetalles;
-                        worksheet.Cells[$"D{row}"].Value = promedio.CantidadReservas;
-                        ApplyDataRowStyle(worksheet.Cells[$"A{row}:D{row}"], row % 2 == 0);
-                        row++;
-                    }
-                    row += 2;
-                }
-                
-                // SECCIÓN 4: Servicios Sin Reservas
-                if (data.ServiciosSinReservas != null && data.ServiciosSinReservas.Any())
-                {
-                    worksheet.Cells[$"A{row}"].Value = "SERVICIOS SIN RESERVAS";
-                    worksheet.Cells[$"A{row}:G{row}"].Merge = true;
-                    ApplySectionHeaderStyle(worksheet.Cells[$"A{row}:G{row}"]);
-                    row++;
-                    
-                    worksheet.Cells[$"A{row}"].Value = "Servicio";
-                    worksheet.Cells[$"B{row}"].Value = "Descripción";
-                    worksheet.Cells[$"C{row}"].Value = "Precio Base";
-                    worksheet.Cells[$"D{row}"].Value = "Días Inactivo";
-                    ApplyTableHeaderStyle(worksheet.Cells[$"A{row}:D{row}"]);
-                    row++;
-                    
-                    foreach (var servicio in data.ServiciosSinReservas)
-                    {
-                        worksheet.Cells[$"A{row}"].Value = servicio.NombreServicio;
-                        worksheet.Cells[$"B{row}"].Value = servicio.Descripcion;
-                        worksheet.Cells[$"C{row}"].Value = servicio.PrecioBase;
-                        worksheet.Cells[$"C{row}"].Style.Numberformat.Format = "\"S/. \"#,##0.00";
-                        worksheet.Cells[$"D{row}"].Value = servicio.DiasInactivo;
-                        ApplyDataRowStyle(worksheet.Cells[$"A{row}:D{row}"], row % 2 == 0);
-                        row++;
-                    }
-                    row += 2;
-                }
-                
-                // SECCIÓN 5: Servicios con Eventos Cancelados
-                if (data.ServiciosEventosCancelados != null && data.ServiciosEventosCancelados.Any())
-                {
-                    worksheet.Cells[$"A{row}"].Value = "ANÁLISIS DE CANCELACIONES POR SERVICIO";
-                    worksheet.Cells[$"A{row}:G{row}"].Merge = true;
-                    ApplySectionHeaderStyle(worksheet.Cells[$"A{row}:G{row}"]);
-                    row++;
-                    
-                    worksheet.Cells[$"A{row}"].Value = "Servicio";
-                    worksheet.Cells[$"B{row}"].Value = "Total Reservas";
-                    worksheet.Cells[$"C{row}"].Value = "Reservas Canceladas";
-                    worksheet.Cells[$"D{row}"].Value = "% Cancelación";
-                    worksheet.Cells[$"E{row}"].Value = "Monto Perdidas";
-                    ApplyTableHeaderStyle(worksheet.Cells[$"A{row}:E{row}"]);
-                    row++;
-                    
-                    foreach (var servicio in data.ServiciosEventosCancelados)
-                    {
-                        worksheet.Cells[$"A{row}"].Value = servicio.NombreServicio;
-                        worksheet.Cells[$"B{row}"].Value = servicio.TotalReservas;
-                        worksheet.Cells[$"C{row}"].Value = servicio.ReservasCanceladas;
-                        worksheet.Cells[$"D{row}"].Value = servicio.PorcentajeCancelacion / 100;
-                        worksheet.Cells[$"D{row}"].Style.Numberformat.Format = "0.00%";
-                        worksheet.Cells[$"E{row}"].Value = servicio.MontoPerdidasCancelacion;
-                        worksheet.Cells[$"E{row}"].Style.Numberformat.Format = "\"S/. \"#,##0.00";
-                        ApplyDataRowStyle(worksheet.Cells[$"A{row}:E{row}"], row % 2 == 0);
-                        row++;
-                    }
-                }
+                worksheet.Cells[1, 1].Value = "No hay datos de servicios disponibles";
+                return;
             }
             
-            worksheet.Cells.AutoFitColumns();
+            int row = 1;
+            
+            // SECCIÓN 1: Servicios Más Frecuentes
+            worksheet.Cells[row, 1].Value = "SERVICIOS MÁS FRECUENTES";
+            SetSectionHeaderStyle(worksheet.Cells[row, 1]);
+            row++;
+            
+            // Headers
+            worksheet.Cells[row, 1].Value = "Servicio";
+            worksheet.Cells[row, 2].Value = "Cantidad Reservas";
+            worksheet.Cells[row, 3].Value = "Porcentaje Uso";
+            worksheet.Cells[row, 4].Value = "Ingreso Total";
+            worksheet.Cells[row, 5].Value = "Ingreso Promedio";
+            SetHeaderStyle(worksheet.Cells[row, 1, row, 5]);
+            row++;
+            
+            foreach (var servicio in data.ServiciosMasFrecuentes ?? new List<ServicioMasFrecuente>())
+            {
+                worksheet.Cells[row, 1].Value = servicio.NombreServicio;
+                worksheet.Cells[row, 2].Value = servicio.CantidadReservas;
+                worksheet.Cells[row, 3].Value = servicio.PorcentajeUso / 100; 
+                worksheet.Cells[row, 3].Style.Numberformat.Format = "0.00%";
+                worksheet.Cells[row, 4].Value = servicio.IngresoTotal;
+                worksheet.Cells[row, 4].Style.Numberformat.Format = "\"S/. \"#,##0.00";
+                worksheet.Cells[row, 5].Value = servicio.IngresoPromedio;
+                worksheet.Cells[row, 5].Style.Numberformat.Format = "\"S/. \"#,##0.00";
+                ApplyDataRowStyle(worksheet.Cells[row, 1, row, 5], row % 2 == 0);
+                row++;
+            }
+            
+            row += 2;
+            
+            // SECCIÓN 2: Variación de Ingresos Mensuales por Servicio
+            worksheet.Cells[row, 1].Value = "VARIACIÓN DE INGRESOS MENSUALES POR SERVICIO";
+            SetSectionHeaderStyle(worksheet.Cells[row, 1]);
+            row++;
+            
+            // Headers
+            worksheet.Cells[row, 1].Value = "Servicio";
+            worksheet.Cells[row, 2].Value = "Año";
+            worksheet.Cells[row, 3].Value = "Mes";
+            worksheet.Cells[row, 4].Value = "Monto Mensual";
+            worksheet.Cells[row, 5].Value = "Cantidad Reservas";
+            worksheet.Cells[row, 6].Value = "Variación %";
+            SetHeaderStyle(worksheet.Cells[row, 1, row, 6]);
+            row++;
+            
+            foreach (var variacion in data.VariacionIngresosMensualesServicio ?? new List<VariacionIngresosMensualesServicio>())
+            {
+                worksheet.Cells[row, 1].Value = variacion.NombreServicio;
+                worksheet.Cells[row, 2].Value = variacion.Año;
+                worksheet.Cells[row, 3].Value = variacion.NombreMes;
+                worksheet.Cells[row, 4].Value = variacion.MontoMensual;
+                worksheet.Cells[row, 4].Style.Numberformat.Format = "\"S/. \"#,##0.00";
+                worksheet.Cells[row, 5].Value = variacion.CantidadReservas;
+                worksheet.Cells[row, 6].Value = variacion.VariacionPorc / 100;
+                worksheet.Cells[row, 6].Style.Numberformat.Format = "0.00%";
+                ApplyDataRowStyle(worksheet.Cells[row, 1, row, 6], row % 2 == 0);
+                row++;
+            }
+            
+            row += 2;
+            
+            // SECCIÓN 3: Promedio de Items por Servicio
+            worksheet.Cells[row, 1].Value = "PROMEDIO DE ITEMS POR SERVICIO";
+            SetSectionHeaderStyle(worksheet.Cells[row, 1]);
+            row++;
+            
+            // Headers
+            worksheet.Cells[row, 1].Value = "Servicio";
+            worksheet.Cells[row, 2].Value = "Promedio Items Usados";
+            worksheet.Cells[row, 3].Value = "Total Detalles";
+            worksheet.Cells[row, 4].Value = "Cantidad Reservas";
+            SetHeaderStyle(worksheet.Cells[row, 1, row, 4]);
+            row++;
+            
+            foreach (var promedio in data.PromedioItemsPorServicio ?? new List<PromedioItemsPorServicio>())
+            {
+                worksheet.Cells[row, 1].Value = promedio.NombreServicio;
+                worksheet.Cells[row, 2].Value = promedio.PromedioItemsUsados;
+                worksheet.Cells[row, 2].Style.Numberformat.Format = "0.00";
+                worksheet.Cells[row, 3].Value = promedio.TotalDetalles;
+                worksheet.Cells[row, 4].Value = promedio.CantidadReservas;
+                ApplyDataRowStyle(worksheet.Cells[row, 1, row, 4], row % 2 == 0);
+                row++;
+            }
+            
+            row += 2;
+            
+            // SECCIÓN 4: Servicios Sin Reservas (SIN DÍAS INACTIVOS)
+            worksheet.Cells[row, 1].Value = "SERVICIOS SIN RESERVAS";
+            SetSectionHeaderStyle(worksheet.Cells[row, 1]);
+            row++;
+            
+            // Headers
+            worksheet.Cells[row, 1].Value = "Servicio";
+            worksheet.Cells[row, 2].Value = "Descripción";
+            worksheet.Cells[row, 3].Value = "Precio Base";
+            SetHeaderStyle(worksheet.Cells[row, 1, row, 3]);
+            row++;
+            
+            foreach (var servicio in data.ServiciosSinReservas ?? new List<ServicioSinReserva>())
+            {
+                worksheet.Cells[row, 1].Value = servicio.NombreServicio;
+                worksheet.Cells[row, 2].Value = servicio.Descripcion;
+                worksheet.Cells[row, 3].Value = servicio.PrecioBase;
+                worksheet.Cells[row, 3].Style.Numberformat.Format = "\"S/. \"#,##0.00";
+                ApplyDataRowStyle(worksheet.Cells[row, 1, row, 3], row % 2 == 0);
+                row++;
+            }
+            
+            row += 2;
+            
+            // SECCIÓN 5: Servicios con Eventos Cancelados
+            worksheet.Cells[row, 1].Value = "SERVICIOS CON EVENTOS CANCELADOS";
+            SetSectionHeaderStyle(worksheet.Cells[row, 1]);
+            row++;
+            
+            // Headers
+            worksheet.Cells[row, 1].Value = "Servicio";
+            worksheet.Cells[row, 2].Value = "Total Reservas";
+            worksheet.Cells[row, 3].Value = "Reservas Canceladas";
+            worksheet.Cells[row, 4].Value = "Porcentaje Cancelación";
+            worksheet.Cells[row, 5].Value = "Monto Pérdidas";
+            SetHeaderStyle(worksheet.Cells[row, 1, row, 5]);
+            row++;
+            
+            foreach (var servicio in data.ServiciosEventosCancelados ?? new List<ServicioEventoCancelado>())
+            {
+                worksheet.Cells[row, 1].Value = servicio.NombreServicio;
+                worksheet.Cells[row, 2].Value = servicio.TotalReservas;
+                worksheet.Cells[row, 3].Value = servicio.ReservasCanceladas;
+                worksheet.Cells[row, 4].Value = servicio.PorcentajeCancelacion / 100; 
+                worksheet.Cells[row, 4].Style.Numberformat.Format = "0.00%";
+                worksheet.Cells[row, 5].Value = servicio.MontoPerdidasCancelacion;
+                worksheet.Cells[row, 5].Style.Numberformat.Format = "\"S/. \"#,##0.00";
+                ApplyDataRowStyle(worksheet.Cells[row, 1, row, 5], row % 2 == 0);
+                row++;
+            }
+            
+            // Ajustar ancho de columnas
+            worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
         }
 
         private void CreateInventarioSheet(ExcelPackage package, ReportesItemsResponse? data)
