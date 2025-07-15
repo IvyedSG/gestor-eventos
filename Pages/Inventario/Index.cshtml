@@ -35,8 +35,8 @@
                     </div>
                     <span class="badge bg-warning bg-opacity-10 text-warning px-2 py-1 small">Stock Bajo</span>
                 </div>
-                <h6 class="fw-bold mb-0">@Model.InventoryItems.Count(i => i.Stock < 10 && i.Stock > 0) ítems</h6>
-                <p class="text-muted mb-0 small">con stock bajo</p>
+                <h6 class="fw-bold mb-0">@Model.InventoryItems.Count(i => i.Stock <= 10 && i.Stock > 0) ítems</h6>
+                <p class="text-muted mb-0 small">con 10 o menos de stock</p>
             </div>
         </div>
     </div>
@@ -152,7 +152,7 @@
                             {
                                 rowClass = "table-danger";
                             }
-                            else if (item.StockDisponible <= 2)
+                            else if (item.Stock <= 10) // Cambio aquí: usar Stock en lugar de StockDisponible y <= 10
                             {
                                 rowClass = "table-warning";
                             }

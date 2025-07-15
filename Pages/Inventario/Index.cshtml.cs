@@ -45,29 +45,29 @@ namespace gestor_eventos.Pages.Inventario
         
         public async Task OnGetAsync()
         {
- 
+            // Validar página actual
             if (CurrentPage < 1)
             {
                 CurrentPage = 1;
             }
             
- 
+            // Cargar datos de la API
             await FetchInventoryItemsFromApi();
             
- 
+            // Aplicar filtros
             ApplyFilters();
             
- 
+            // Calcular totales
             TotalItems = InventoryItems.Count;
             
- 
+            // Aplicar paginación
             InventoryItems = InventoryItems
                 .Skip((CurrentPage - 1) * PageSize)
                 .Take(PageSize)
                 .ToList();
             
- 
-            HasLowStockItems = InventoryItems.Any(i => i.Stock < 10);
+            // Detectar ítems con stock bajo (10 o menos)
+            HasLowStockItems = InventoryItems.Any(i => i.Stock <= 10);
         }
         
         private async Task FetchInventoryItemsFromApi()
@@ -122,11 +122,11 @@ namespace gestor_eventos.Pages.Inventario
         
         private void ApplyFilters()
         {
- 
+            // Verificar si hay datos
             if (InventoryItems == null)
                 return;
                 
- 
+            // Aplicar filtro de búsqueda
             if (!string.IsNullOrWhiteSpace(SearchTerm))
             {
                 InventoryItems = InventoryItems.Where(i => 
@@ -135,16 +135,16 @@ namespace gestor_eventos.Pages.Inventario
                 ).ToList();
             }
             
- 
+            // Aplicar filtro de estado
             if (!string.IsNullOrWhiteSpace(StatusFilter))
             {
                 if (StatusFilter == "Normal")
                 {
-                    InventoryItems = InventoryItems.Where(i => i.Stock >= 10).ToList();
+                    InventoryItems = InventoryItems.Where(i => i.Stock > 10).ToList(); // Cambio aquí: > 10
                 }
                 else if (StatusFilter == "Bajo")
                 {
-                    InventoryItems = InventoryItems.Where(i => i.Stock > 0 && i.Stock < 10).ToList();
+                    InventoryItems = InventoryItems.Where(i => i.Stock > 0 && i.Stock <= 10).ToList(); // Cambio aquí: <= 10
                 }
                 else if (StatusFilter == "Agotado")
                 {
