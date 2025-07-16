@@ -77,7 +77,7 @@ namespace gestor_eventos.Services
                 {
                     ("Total Clientes", data.TotalClientes.ToString(), "Número total de clientes registrados"),
                     ("Nuevos (Último Mes)", data.ClientesNuevosUltimoMes.ToString(), "Clientes registrados en el último mes"),
-                    ("Tasa de Retención", $"{data.TasaRetencionClientes:P1}", "Porcentaje de clientes que mantienen actividad")
+                    ("Tasa de Retención", $"{data.TasaRetencionClientes:F1}%", "Porcentaje de clientes que mantienen actividad")
                 };
                 
                 foreach (var (metrica, valor, descripcion) in metricasClientes)
@@ -109,7 +109,7 @@ namespace gestor_eventos.Services
                     ("Ingresos Totales", data.IngresosTotales.ToString("C", new System.Globalization.CultureInfo("es-PE")), "Monto total de ingresos generados"),
                     ("Ingresos (Último Mes)", data.IngresosUltimoMes.ToString("C", new System.Globalization.CultureInfo("es-PE")), "Ingresos del último mes"),
                     ("Monto Promedio/Reserva", data.MontoPromedioReserva.ToString("C", new System.Globalization.CultureInfo("es-PE")), "Promedio de ingresos por reserva"),
-                    ("Tasa de Conversión", $"{data.TasaConversionReservas:P1}", "Porcentaje de conversión de consultas a reservas")
+                    ("Tasa de Conversión", $"{data.TasaConversionReservas:F1}%", "Porcentaje de conversión de consultas a reservas")
                 };
                 
                 foreach (var (metrica, valor, descripcion) in metricasReservas)
@@ -136,7 +136,7 @@ namespace gestor_eventos.Services
                 
                 var metricasPagos = new[]
                 {
-                    ("% Pagos Completos", $"{data.PorcentajePagosCompletos:P1}", "Porcentaje de reservas con pagos completados"),
+                    ("% Pagos Completos", $"{data.PorcentajePagosCompletos:F1}%", "Porcentaje de reservas con pagos completados"),
                     ("Promedio Días de Pago", $"{data.PromedioDiasPago:F2}", "Tiempo promedio entre reserva y pago completo")
                 };
                 
@@ -194,7 +194,7 @@ namespace gestor_eventos.Services
                 var metricasInventario = new[]
                 {
                     ("Total Items", data.TotalItems.ToString(), "Número total de items en inventario"),
-                    ("Tasa Disponibilidad Promedio", $"{data.TasaDisponibilidadPromedio:P1}", "Porcentaje promedio de disponibilidad de items"),
+                    ("Tasa Disponibilidad Promedio", $"{data.TasaDisponibilidadPromedio:F1}%", "Porcentaje promedio de disponibilidad de items"),
                     ("Item Más Utilizado", data.ItemMasUtilizado, "Item con mayor frecuencia de uso en eventos")
                 };
                 
